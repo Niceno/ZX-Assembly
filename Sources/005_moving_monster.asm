@@ -59,7 +59,7 @@ Main:
 
 Loop:
   call SetCoords     ; set up our x/y coords.
-  ld a, $93          ; want an asterisk here.
+  ld a, $94          ; want an asterisk here.
   rst ROM_PRINT_A_1  ; display it.
   call Delay         ; want a delay.
   call SetCoords     ; set up our x/y coords.
@@ -150,6 +150,16 @@ udgs:
   defb %00111100
   defb %01100110
   defb %01000010
+
+  ; Monster #3 starts at $94
+  defb %00100100
+  defb %01111110
+  defb %11111111
+  defb %11011011
+  defb %01111110
+  defb %01000010
+  defb %10111101
+  defb %10000001
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
