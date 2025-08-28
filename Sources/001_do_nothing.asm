@@ -1,22 +1,4 @@
-;-------------------------------------------------------------------------------
-; ZX Spectrum 48 K Memory Map:
-;
-; $0000 – $3FFF  ( 16 KB)  ROM
-; $4000 – $57FF  (  6 KB)  Screen bitmap (pixels, 256*192)
-; $5800 – $5AFF  (768  B)  Screen attributes (color, 32x24)
-; $5B00 – $5BFF  (256  B)  Printer buffer
-; $5C00 – $5CBF  (192  B)  System variables
-; $5CC0 – $5CCA  ( 11  B)  Reserved
-; $5CCB – $FF57  (~39 KB)  Available RAM (between PROG and RAMTOP)
-; $FF58 – $FFFF  (168  B)  Reserved
-;-------------------------------------------------------------------------------
-MEM_ROM_START       equ  $0000
-MEM_SCREEN_PIXELS   equ  $4000
-MEM_SCREEN_ATTRIBS  equ  $5800
-MEM_PRINTER_BUFFER  equ  $5B00
-MEM_SYS_VARS        equ  $5C00
-MEM_AVAILABLE_RAM   equ  $5CCB
-MEM_PROGRAM_START   equ  $8000
+  include "spectrum48.inc"
 
 ;-------------------------------------------------------------------------------
 ; Set the architecture you'll be using
