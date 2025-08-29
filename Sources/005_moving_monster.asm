@@ -53,7 +53,7 @@ Loop:
   call Set_Text_Coords     ; set up our row/column coords
 
   ; Print monster
-  ld A, $94          ; want a monster (UDG) here
+  ld A, $99          ; want a monster (UDG) here
   rst ROM_PRINT_A_1  ; display it
 
   call Delay         ; want a delay
@@ -117,55 +117,38 @@ text_column:
   defb 15
 
 udgs:
-  ; Little ghost starts at $90 (144)
-  defb %00111100
-  defb %01111110
-  defb %11011011
-  defb %10011001
-  defb %11111111
-  defb %11111111
-  defb %11011011
-  defb %11011011
 
-  ; Little human starts at $91 (145)
-  defb %00011000
-  defb %00111100
-  defb %00011000
-  defb %11111111
-  defb %00011000
-  defb %00111100
-  defb %00100100
-  defb %01100110
+; The 8x8 sprites which follow, were created with the command:
+; python.exe .\convert_sprite_8x8.py .\[name].8x8 in the directory Figures
+ghost_01: ; starts at 90
+  defb $3C, $7E, $DB, $99, $FF, $FF, $DB, $DB
 
-  ; Monster #1 starts at $92
-  defb %10011001
-  defb %10111101
-  defb %01011010
-  defb %01111110
-  defb %01000010
-  defb %00111100
-  defb %11011011
-  defb %10000001
+human_01: ; starts at 91
+  defb $18, $3C, $18, $FF, $18, $3C, $24, $66
 
-  ; Monster #2 starts at $93
-  defb %00100100
-  defb %00111100
-  defb %00111100
-  defb %01011010
-  defb %10111101
-  defb %00111100
-  defb %01100110
-  defb %01000010
+monster_01: ; starts at $92
+  defb $99, $BD, $5A, $7E, $42, $3C, $DB, $81
 
-  ; Monster #3 starts at $94
-  defb %00100100
-  defb %01111110
-  defb %11111111
-  defb %11011011
-  defb %01111110
-  defb %01000010
-  defb %10111101
-  defb %10000001
+monster_02: ; starts at $93
+  defb $24, $3C, $3C, $5A, $BD, $3C, $66, $42
+
+monster_03: ; starts at $94
+  defb $24, $7E, $FF, $DB, $7E, $42, $BD, $81
+
+monster_04: ; starts at $95
+  defb $42, $81, $BD, $5A, $66, $3C, $66, $A5
+
+arrow_up: ; starts at $96
+  defb $18, $24, $42, $C3, $24, $24, $24, $3C
+
+arrow_down: ; starts at $97
+  defb $3C, $24, $24, $24, $C3, $42, $24, $18
+
+arrow_left: ; starts at $98
+  defb $10, $30, $4F, $81, $81, $4F, $30, $10
+
+arrow_right: ; starts at $99
+  defb $08, $0C, $F2, $81, $81, $F2, $0C, $08
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
