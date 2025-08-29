@@ -24,24 +24,24 @@ Main:
   ;----------------------------------
   ; Open the channel to upper screen
   ;----------------------------------
-  ld a, 2             ; upper screen is 2
+  ld A, 2             ; upper screen is 2
   call ROM_CHAN_OPEN  ; open channel
 
   ;-------------------------
   ; Initialize loop counter
   ;-------------------------
-  ld a, (loop_count)  ; you can't do: ld b, (address)
-  ld b, a
+  ld A, (loop_count)  ; you can't do: ld b, (address)
+  ld B, A
 
   ;-------------------------------------------------
   ; Print ten times using ROM routine ROM_PR_STRING
   ;-------------------------------------------------
 Loop:
-  push bc
-  ld de, bojan_string                     ; address of string
-  ld bc, bojan_string_end - bojan_string  ; length of string to print
+  push BC
+  ld DE, bojan_string                     ; address of string
+  ld BC, bojan_string_end - bojan_string  ; length of string to print
   call ROM_PR_STRING                      ; print the string
-  pop bc
+  pop BC
   djnz Loop                               ; decrease B and jump if non zero
 
   ret
