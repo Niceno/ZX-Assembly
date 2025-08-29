@@ -1,15 +1,14 @@
   include "spectrum48.inc"
 
-;-------------------------------------------------------------------------------
+;--------------------------------------
 ; Set the architecture you'll be using
-;-------------------------------------------------------------------------------
+;--------------------------------------
   device zxspectrum48
 
-;-------------------------------------------------------------------------------
+;-----------------------------------------------
 ; Memory address at which the program will load
-;-------------------------------------------------------------------------------
+;-----------------------------------------------
   org MEM_PROGRAM_START
-
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -17,26 +16,33 @@
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-;-------------------------------------------------------------------------------
-; Mark the address where the program will start the execution
+;===============================================================================
+; Main subroutine begins here
 ;-------------------------------------------------------------------------------
 Main:
-  ld a, 2             ; upper screen
+
+  ;----------------------------------
+  ; Open the channel to upper screen
+  ;----------------------------------
+  ld a, 2             ; upper screen is 2
   call ROM_CHAN_OPEN  ; open channel
 
-;-------------------------
-; Initialize loop counter
-;-------------------------
-  ld a, (loopcount)  ; you can't do: ld b, (address)
+  ;-------------------------
+  ; Initialize loop counter
+  ;-------------------------
+  ld a, (loop_count)  ; you can't do: ld b, (address)
   ld b, a
 
+  ;-------------------------------------------------
+  ; Print ten times using ROM routine ROM_PR_STRING
+  ;-------------------------------------------------
 Loop:
   push bc
-  ld de, bojanstring                 ; address of string
-  ld bc, bojanstringend-bojanstring  ; length of string to print
-  call ROM_PR_STRING                 ; print the string
+  ld de, bojan_string                     ; address of string
+  ld bc, bojan_string_end - bojan_string  ; length of string to print
+  call ROM_PR_STRING                      ; print the string
   pop bc
-  djnz Loop                         ; decrease B and jump if non zero
+  djnz Loop                               ; decrease B and jump if non zero
 
   ret
 
@@ -49,16 +55,16 @@ Loop:
 ;--------------
 ; Loop counter
 ;--------------
-loopcount:
+loop_count:
   defb 10
 
 ;-----------------
 ; String to print
 ;-----------------
-bojanstring:
-  defb "Bojan is cool!"
+bojan_string:
+  defb "Bojan is cool!"  ; the string data
   defb 13                ; new line
-bojanstringend equ $
+bojan_string_end equ $
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main

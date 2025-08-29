@@ -1,13 +1,13 @@
   include "spectrum48.inc"
 
-;-------------------------------------------------------------------------------
+;--------------------------------------
 ; Set the architecture you'll be using
-;-------------------------------------------------------------------------------
+;--------------------------------------
   device zxspectrum48
 
-;-------------------------------------------------------------------------------
+;-----------------------------------------------
 ; Memory address at which the program will load
-;-------------------------------------------------------------------------------
+;-----------------------------------------------
   org MEM_PROGRAM_START
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -16,42 +16,63 @@
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-;-------------------------------------------------------------------------------
-; Mark the address where the program will start the execution
+;===============================================================================
+; Main subroutine begins here
 ;-------------------------------------------------------------------------------
 Main:
 
-  ld a, 2             ; upper screen
+  ;----------------------------------
+  ; Open the channel to upper screen
+  ;----------------------------------
+  ld a, 2             ; upper screen is 2
   call ROM_CHAN_OPEN  ; open channel
 
+  ;------------------------------
+  ; Specify the beginning of UDG
+  ;------------------------------
   ld hl, udgs                         ; user defined graphics (UDGs)
   ld (MEM_USER_DEFINED_GRAPHICS), hl  ; set up UDG system variable.
 
-  ld a, 21        ; row 21 = bottom of screen.
-  ld (xcoord), a  ; set initial x coordinate.
+  ;---------------------------------------------
+  ; Initialize text row in which you will start
+  ;---------------------------------------------
+  ld a, 21          ; row 21 = bottom of screen.
+  ld (text_row), a  ; set initial text row
 
+  ; --------------
   ; Set the color
-  ld a, RED_INK + CYAN_PAPER        ; load A with desired color
-  ld (MEM_STORE_SCREEN_COLOR), a    ; set the screen colors
-  call ROM_CLEAR_SCREEN             ; clear the screen
+  ; --------------
+  ld a, RED_INK + CYAN_PAPER      ; load A with desired color
+  ld (MEM_STORE_SCREEN_COLOR), a  ; set the screen colors
+  call ROM_CLEAR_SCREEN           ; clear the screen
 
+  ;---------------------
+  ; Move the monster up
+  ;---------------------
 Loop:
-  call SetCoords     ; set up our x/y coords
-  ld a, $94          ; want an asterisk here
+  call Set_Text_Coords     ; set up our row/column coords
+
+  ; Print monster
+  ld a, $94          ; want a monster (UDG) here
   rst ROM_PRINT_A_1  ; display it
+
   call Delay         ; want a delay
-  call SetCoords     ; set up our x/y coords
-  ld a, 32           ; ASCII code for space
-  rst ROM_PRINT_A_1  ; delete old asterisk
-  ld hl, xcoord      ; vertical position
-  dec (hl)           ; move it up one line
-  ld a, (hl)         ; where is it now?
-  cp 255             ; past top of screen yet?
-  jr nz, Loop        ; no, carry on
 
-  ret            ; end of the main program
+  ; Delete the monster (print space over it)
+  call Set_Text_Coords  ; set up our row/column coords
+  ld a, 32              ; ASCII code for space
+  rst ROM_PRINT_A_1     ; delete old monster
 
-;-------------------------------------------------------------------------------
+  ; Decrease text row -> move monster position up
+  ld hl, text_row  ; vertical position
+  dec (hl)         ; move it up one line
+  ld a, (hl)       ; where is it now?
+  cp 255           ; past top of screen yet?
+  jr nz, Loop      ; no, carry on
+
+  ret  ; end of the main program
+
+;===============================================================================
 ; Delay subroutine
 ;-------------------------------------------------------------------------------
 Delay:
@@ -60,32 +81,39 @@ Delay:
   ld b, 10   ; length of delay; translates to roughly 0.2 s
 
 Delay0:
-  halt         ; wait for an interrupt.
-  djnz Delay0  ; loop.
+  halt         ; wait for an interrupt
+  djnz Delay0  ; loop
 
-  ret        ; return.
+  ret        ; return
 
-;-------------------------------------------------------------------------------
+;===============================================================================
 ; Set coordinates subroutine
+;
+; Uses "variables" text_row and text_column to set printing position
 ;-------------------------------------------------------------------------------
-SetCoords:
- ld a, 22            ; ASCII control code for AT.
- rst ROM_PRINT_A_1   ; print it.
- ld a, (xcoord)      ; vertical position.
- rst ROM_PRINT_A_1   ; print it.
- ld a, (ycoord)      ; y coordinate.
- rst ROM_PRINT_A_1   ; print it.
- ret
+Set_Text_Coords:
+
+ ld a, 22             ; ASCII control code for "at"
+                      ; should be followed by row and column entries
+ rst ROM_PRINT_A_1    ; "print" it
+
+ ld a, (text_row)     ; row
+ rst ROM_PRINT_A_1    ; "print" it
+
+ ld a, (text_column)  ; column
+ rst ROM_PRINT_A_1    ; "print" it
+
+  ret
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-xcoord:
+text_row:
   defb 0
 
-ycoord:
+text_column:
   defb 15
 
 udgs:
