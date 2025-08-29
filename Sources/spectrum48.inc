@@ -59,6 +59,20 @@ BRIGHT         equ  64
 FLASH          equ 128
 
 ;-------------------------------------------------------------------------------
+; Try to map the key codes; ports and bits
+;
+; http://www.breakintoprogram.co.uk/hardware/computers/zx-spectrum/keyboard
+;-------------------------------------------------------------------------------
+KEYS_12345      equ  $F7FE  ; 63486
+KEYS_67890      equ  $EFFE  ; 61438
+KEYS_QWERT      equ  $FBFE  ; 64510
+KEYS_YUIOP      equ  $DFFE  ; 57342
+KEYS_ASDFG      equ  $FDFE  ; 65022
+KEYS_HJKLENTER  equ  $BFFE  ; 49150
+KEYS_CAPSZXCV   equ  $FEFE  ; 65278
+KEYS_BNMSYMSPC  equ  $7FFE  ; 32766
+
+;-------------------------------------------------------------------------------
 ; ZX Spectrum character set
 ;
 ; (https://worldofspectrum.net/ZXBasicManual/zxmanappa.html)
@@ -83,4 +97,28 @@ CHAR_QUESTION_MARK     equ  63
 CHAR_AT                equ  64
 CHAR_A_UPP             equ  65
 CHAR_B_UPP             equ  66
+CHAR_C_UPP             equ  67
+CHAR_D_UPP             equ  68
+CHAR_E_UPP             equ  69
+CHAR_F_UPP             equ  70
+CHAR_G_UPP             equ  71
+CHAR_H_UPP             equ  72
+CHAR_I_UPP             equ  73
+CHAR_J_UPP             equ  74
+CHAR_K_UPP             equ  75
+CHAR_L_UPP             equ  76
+CHAR_M_UPP             equ  77
+CHAR_N_UPP             equ  78
+CHAR_O_UPP             equ  79
+CHAR_P_UPP             equ  80
+CHAR_Q_UPP             equ  81
+CHAR_R_UPP             equ  82
+CHAR_S_UPP             equ  83
+CHAR_T_UPP             equ  84
+CHAR_U_UPP             equ  85
+CHAR_V_UPP             equ  86
+CHAR_W_UPP             equ  87
+CHAR_X_UPP             equ  88
+CHAR_Y_UPP             equ  89
+CHAR_Z_UPP             equ  90
 
