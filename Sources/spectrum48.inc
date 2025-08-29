@@ -57,3 +57,29 @@ YELLOW_PAPER   equ  48
 WHITE_PAPER    equ  56
 BRIGHT         equ  64
 FLASH          equ 128
+
+;-------------------------------------------------------------------------------
+; ZX Spectrum character set
+;
+; (https://worldofspectrum.net/ZXBasicManual/zxmanappa.html)
+;-------------------------------------------------------------------------------
+CHAR_AT_CONTROL        equ  22
+CHAR_SPACE             equ  32
+CHAR_EXCLAMATION_MARK  equ  33
+CHAR_AND_SYMBOL        equ  38
+CHAR_ASTERISK          equ  42
+CHAR_0                 equ  48
+CHAR_1                 equ  49
+CHAR_2                 equ  50
+CHAR_3                 equ  51
+CHAR_4                 equ  52
+CHAR_5                 equ  53
+CHAR_6                 equ  54
+CHAR_7                 equ  55
+CHAR_8                 equ  56
+CHAR_9                 equ  57
+CHAR_QUESTION_MARK     equ  63
+CHAR_AT                equ  64
+CHAR_A_UPP             equ  65
+CHAR_B_UPP             equ  66
+
