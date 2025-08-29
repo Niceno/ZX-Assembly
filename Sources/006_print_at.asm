@@ -34,39 +34,43 @@ Main:
   ld (text_row), A              ; store row coordinate
   ld A,  5                      ; column
   ld (text_column), A           ; store column coordinate
-  ld A, 1                       ; length of the string
-  ld (text_length), A           ; store text length
+  ld A,  1                      ; length of the string
+  ld (text_length), A           ; store the length
+  ld A,  1                      ; height
+  ld (text_height), A           ; store the height
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
-  ld (text_color), A            ; store color
+  ld (text_color), A            ; store the color
+  call Set_Text_Coords          ; set up our row/column coords
 
-  call Set_Text_Coords  ; set up our row/column coords
   ld A, CHAR_ASTERISK   ; print an asterisk
   rst ROM_PRINT_A_1     ; display it
 
   ;---------------------
   ; Color that asterisk
   ;---------------------
-  call Color_Text_Row
+  call Color_Text_Box
 
   ;--------------------------------------------
   ; Set coordinates to 9, 9 and print a string
   ;--------------------------------------------
   ld A, 9                                ; row
-  ld (text_row), A                       ; set initial row
+  ld (text_row), A                       ; store row coordinate
   ld A, 9                                ; column
-  ld (text_column), A                    ; set initial column
+  ld (text_column), A                    ; store column coordinate
   ld A, bojan_string_end - bojan_string  ; length of the string
-  ld (text_length), A                    ; set the length of the string
+  ld (text_length), A                    ; store the length of the string
+  ld A,  1                               ; height
+  ld (text_height), A                    ; store the height
   call Set_Text_Coords                   ; set up our x/y coords.
 
   ld DE, bojan_string                     ; address of string
-  ld bc, bojan_string_end - bojan_string  ; length of string to print
+  ld BC, bojan_string_end - bojan_string  ; length of string to print
   call ROM_PR_STRING                      ; print the string
 
   ;-------------------------
   ; Color that line of text
   ;-------------------------
-  call Color_Text_Row
+  call Color_Text_Box
 
   ;---------------------------------------------------------
   ; Set coordinates to 13, 13 and print a five digit number
@@ -75,6 +79,10 @@ Main:
   ld (text_row), A      ; store row coordinate
   ld A, 13              ; column
   ld (text_column), A   ; store column coordinate
+  ld A,  5              ; length of the string
+  ld (text_length), A   ; store the length
+  ld A,  1              ; height
+  ld (text_height), A   ; store the height
   call Set_Text_Coords  ; set up our row/column coords
 
   ;-----------------------------
@@ -90,7 +98,7 @@ Main:
   ld A, RED_INK + CYAN_PAPER  ; color of the string
   ld (text_color), A          ; store the text color
 
-  call Color_Text_Row
+  call Color_Text_Box
 
   ;---------------
   ; Make a column
@@ -99,10 +107,14 @@ Main:
   ld (text_row), A      ; store row
   ld A, 24
   ld (text_column), A   ; store column coordinate
+  ld A,  1
+  ld (text_length), A   ; store box length
+  ld A, 10
+  ld (text_height), A   ; store box height
   ld A, WHITE_INK + RED_PAPER
   ld (text_color), A    ; store color
 
-  call Color_Text_Column
+  call Color_Text_Box
 
   ;------------
   ; Make a box
@@ -171,7 +183,7 @@ Print_Five_Digit_Number:
   rst ROM_PRINT_A_1       ; display it
 
 NoMorePadding:
-  ld bc, (number)
+  ld BC, (number)
   call ROM_STACK_BC  ; transform the number in BC register to floating point
   call ROM_PRINT_FP  ; print the floating point number in the calculator stack
 
@@ -201,7 +213,7 @@ Set_Text_Coords:
  ret  ; end of subroutine
 
 ;===============================================================================
-; Color_Tex_Box
+; Color_Text_Box
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Colors a box of text with specified length and height
@@ -268,108 +280,6 @@ LoopLength:          ; loop over B, inner loop
 
   dec A              ; decrease A, outer loop counter
   jr nz, LoopHeight  ; repeat if A is nonzero
-
-  ret  ; end of subroutine
-
-;===============================================================================
-; Color_Tex_Column
-;-------------------------------------------------------------------------------
-; Purpose:
-; - Colors a column of text with specified height
-;
-; Parameters (passed via memory locations):
-; - text_row
-; - text_column
-; - text_height
-;-------------------------------------------------------------------------------
-Color_Text_Column:
-
-  ;------------------------------------------------------------------------
-  ; Set initial value of HL to point to the beginning of screen attributes
-  ;------------------------------------------------------------------------
-  ld HL, MEM_SCREEN_COLORS  ; load HL with the address of screen color
-
-  ;------------------------------------------------------------------
-  ; Increase HL text_column times, to shift it to the desired column
-  ;------------------------------------------------------------------
-  ld A, (text_column)  ; prepare B as loop counter
-  ld B, A              ; ld B, (text_column) wouldn't work
-LoopColumns_2:
-  inc HL               ; increase HL text_row times
-  djnz LoopColumns_2   ; decrease B and jump if nonzero
-
-  ;-----------------------------------------------------------------
-  ; Increase HL text_row * 32 times, to shift it to the desired row
-  ;-----------------------------------------------------------------
-  ld A, (text_row)  ; prepare B as loop counter
-  ld B, A           ; ld B, (text_column) wouldn't work
-  ld DE, 32         ; there are 32 columns, this is not space character
-LoopRows_2:
-  add HL, DE        ; increase HL by 32
-  djnz LoopRows_2   ; decrease B and repeat the loop if nonzero
-
-  ;---------------------------------------------------------------
-  ; Now the HL holds the correct position of the screen attribute
-  ; memory loop through text_lenght to color and set the color
-  ;---------------------------------------------------------------
-  ld A, (text_height)  ; prepare B as loop counter
-  ld B, A
-  ld A, (text_color)
-LoopHeight_2:
-  ld (HL), A         ; set the color at position pointed by HL registers
-  add HL, DE         ; go to the next position
-  djnz LoopHeight_2  ; decrease B and repeat if nonzero
-
-  ret  ; end of subroutine
-
-;===============================================================================
-; Color_Tex_Row
-;-------------------------------------------------------------------------------
-; Purpose:
-; - Colors a row of text with specified length
-;
-; Parameters (passed via memory locations):
-; - text_row
-; - text_column
-; - text_length
-;-------------------------------------------------------------------------------
-Color_Text_Row:
-
-  ;------------------------------------------------------------------------
-  ; Set initial value of HL to point to the beginning of screen attributes
-  ;------------------------------------------------------------------------
-  ld HL, MEM_SCREEN_COLORS  ; load HL with the address of screen color
-
-  ;------------------------------------------------------------------
-  ; Increase HL text_column times, to shift it to the desired column
-  ;------------------------------------------------------------------
-  ld A, (text_column)  ; prepare B as loop counter
-  ld B, A              ; ld B, (text_column) wouldn't work
-LoopColumns_3:
-  inc HL               ; increase HL text_row times
-  djnz LoopColumns_3   ; decrease B and jump if nonzero
-
-  ;-----------------------------------------------------------------
-  ; Increase HL text_row * 32 times, to shift it to the desired row
-  ;-----------------------------------------------------------------
-  ld A, (text_row)  ; prepare B as loop counter
-  ld B, A           ; ld B, (text_column) wouldn't work
-  ld DE, 32         ; there are 32 columns, this is not space character
-LoopRows_3:
-  add HL, DE        ; increase HL by 32
-  djnz LoopRows_3   ; decrease B and repeat the loop if nonzero
-
-  ;---------------------------------------------------------------
-  ; Now the HL holds the correct position of the screen attribute
-  ; memory loop through text_lenght to color and set the color
-  ;---------------------------------------------------------------
-  ld A, (text_length)  ; prepare B as loop counter
-  ld B, A
-  ld A, (text_color)
-LoopLength_3:
-  ld (HL), A         ; set the color at position pointed by HL registers
-  inc HL             ; go to the next position
-  djnz LoopLength_3  ; decrease B and repeat if nonzero
 
   ret  ; end of subroutine
 
