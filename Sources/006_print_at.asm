@@ -1,13 +1,13 @@
   include "spectrum48.inc"
 
-;-------------------------------------------------------------------------------
+;--------------------------------------
 ; Set the architecture you'll be using
-;-------------------------------------------------------------------------------
+;--------------------------------------
   device zxspectrum48
 
-;-------------------------------------------------------------------------------
+;-----------------------------------------------
 ; Memory address at which the program will load
-;-------------------------------------------------------------------------------
+;-----------------------------------------------
   org MEM_PROGRAM_START
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -16,98 +16,130 @@
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-;-------------------------------------------------------------------------------
-; Mark the address where the program will start the execution
+;===============================================================================
+; Main subroutine begins here
 ;-------------------------------------------------------------------------------
 Main:
 
-  ld a, 2             ; upper screen
+  ;----------------------------------
+  ; Open the channel to upper screen
+  ;----------------------------------
+  ld A, 2             ; upper screen is 2
   call ROM_CHAN_OPEN  ; open channel
 
   ;------------------------------------------------------------
   ; Set coordinates to 5, 5, length to 1 and print an asterisk
   ;------------------------------------------------------------
-  ld a, 5                       ; row
-  ld (xcoord), a                ; set x coordinate.
-  ld a, 5                       ; column
-  ld (ycoord), a                ; set y coordinate.
-  ld a, 1                       ; length of the string
-  ld (length), a                ; set length
-  ld a, RED_INK + YELLOW_PAPER  ; color of the string
-  ld (color), a                 ; set color
+  ld A, 15                      ; row
+  ld (text_row), A              ; store row coordinate
+  ld A,  5                      ; column
+  ld (text_column), A           ; store column coordinate
+  ld A, 1                       ; length of the string
+  ld (text_length), A           ; store text length
+  ld A, RED_INK + YELLOW_PAPER  ; color of the string
+  ld (text_color), A            ; store color
 
-  call SetCoords       ; set up our x/y coords.
-  ld a, CHAR_ASTERISK  ; print an asterisk
-  rst ROM_PRINT_A_1    ; display it
+  call Set_Text_Coords  ; set up our row/column coords
+  ld A, CHAR_ASTERISK   ; print an asterisk
+  rst ROM_PRINT_A_1     ; display it
 
   ;---------------------
   ; Color that asterisk
   ;---------------------
-  call ColorRowOfText
+  call Color_Text_Row
 
   ;--------------------------------------------
   ; Set coordinates to 9, 9 and print a string
   ;--------------------------------------------
-  ld a, 9                           ; row
-  ld (xcoord), a                    ; set initial x coordinate.
-  ld a, 9                           ; column
-  ld (ycoord), a                    ; set initial x coordinate.
-  ld a, bojanstringend-bojanstring  ; length of the string
-  ld (length), a                    ; set the length of the string
-  call SetCoords                    ; set up our x/y coords.
+  ld A, 9                                ; row
+  ld (text_row), A                       ; set initial row
+  ld A, 9                                ; column
+  ld (text_column), A                    ; set initial column
+  ld A, bojan_string_end - bojan_string  ; length of the string
+  ld (text_length), A                    ; set the length of the string
+  call Set_Text_Coords                   ; set up our x/y coords.
 
-  ld de, bojanstring                   ; address of string
-  ld bc, bojanstringend - bojanstring  ; length of string to print
-  call ROM_PR_STRING                   ; print the string
+  ld DE, bojan_string                     ; address of string
+  ld bc, bojan_string_end - bojan_string  ; length of string to print
+  call ROM_PR_STRING                      ; print the string
 
   ;-------------------------
   ; Color that line of text
   ;-------------------------
-  call ColorRowOfText
+  call Color_Text_Row
 
   ;---------------------------------------------------------
   ; Set coordinates to 13, 13 and print a five digit number
   ;---------------------------------------------------------
-  ld a, 13        ; row
-  ld (xcoord), a  ; set initial x coordinate
-  ld a, 13        ; column
-  ld (ycoord), a  ; set initial x coordinate
-  call SetCoords  ; set up our x/y coords
+  ld A, 13              ; row
+  ld (text_row), A      ; store row coordinate
+  ld A, 13              ; column
+  ld (text_column), A   ; store column coordinate
+  call Set_Text_Coords  ; set up our row/column coords
+
+  ;-----------------------------
+  ; Print the five digit number
+  ;-----------------------------
+  call Print_Five_Digit_Number
+
+  ;-------------------
+  ; Color that number
+  ;-------------------
+  ld A, 5                     ; number is five digits long
+  ld (text_length), A         ; store the length of the string
+  ld A, RED_INK + CYAN_PAPER  ; color of the string
+  ld (text_color), A          ; store the text color
+
+  call Color_Text_Row
+
+  ret  ; end of the main program
+
+;===============================================================================
+; Print_Five_Digit_Number
+;-------------------------------------------------------------------------------
+; Purpose:
+; - Prints right-aligned, five digit number
+;
+; Parameters (passed via memory locations):
+; - text_row
+; - text_column
+;-------------------------------------------------------------------------------
+Print_Five_Digit_Number:
 
   ; Check if it has 5 digits
-  ld  hl, (number)        ; store number in HL
-  ld  de, 10000           ; store dividend in DE
-  or a                    ; clear the c flag
-  sbc hl, de              ; HL = HL - DE
+  ld  HL, (number)        ; store number in HL
+  ld  DE, 10000           ; store dividend in DE
+  or A                    ; clear the c flag
+  sbc HL, DE              ; HL = HL - DE
   jr nc, NoMorePadding    ; HL > 10000
-  ld a, CHAR_SPACE        ; print an underscore
+  ld A, CHAR_SPACE        ; print an underscore
   rst ROM_PRINT_A_1       ; display it
 
   ; Check if it has 4 digits
-  ld  hl, (number)        ; store number in HL
-  ld  de, 1000            ; store dividend in DE
-  or a                    ; clear the c flag
-  sbc hl, de              ; HL = HL - DE
+  ld  HL, (number)        ; store number in HL
+  ld  DE, 1000            ; store dividend in DE
+  or A                    ; clear the c flag
+  sbc HL, DE              ; HL = HL - DE
   jr nc, NoMorePadding    ; HL > 1000
-  ld a, CHAR_SPACE        ; print an underscore
+  ld A, CHAR_SPACE        ; print an underscore
   rst ROM_PRINT_A_1       ; display it
 
   ; Check if it has 3 digits
-  ld  hl, (number)        ; store number in HL
-  ld  de, 100             ; store dividend in DE
-  or a                    ; clear the c flag
-  sbc hl, de              ; HL = HL - DE
+  ld  HL, (number)        ; store number in HL
+  ld  DE, 100             ; store dividend in DE
+  or A                    ; clear the c flag
+  sbc HL, DE              ; HL = HL - DE
   jr nc, NoMorePadding    ; HL > 1000
-  ld a, CHAR_SPACE        ; print an underscore
+  ld A, CHAR_SPACE        ; print an underscore
   rst ROM_PRINT_A_1       ; display it
 
   ; Check if it has 2 digits
-  ld  hl, (number)        ; store number in HL
-  ld  de, 10              ; store dividend in DE
-  or a                    ; clear the c flag
-  sbc hl, de              ; HL = HL - DE
+  ld  HL, (number)        ; store number in HL
+  ld  DE, 10              ; store dividend in DE
+  or A                    ; clear the c flag
+  sbc HL, DE              ; HL = HL - DE
   jr nc, NoMorePadding    ; HL > 1000
-  ld a, CHAR_SPACE        ; print an underscore
+  ld A, CHAR_SPACE        ; print an underscore
   rst ROM_PRINT_A_1       ; display it
 
 NoMorePadding:
@@ -115,76 +147,104 @@ NoMorePadding:
   call ROM_STACK_BC  ; transform the number in BC register to floating point
   call ROM_PRINT_FP  ; print the floating point number in the calculator stack
 
-  ;-------------------------
-  ; Color that line of text
-  ;-------------------------
-  ld a, 5                     ; number is five digits long
-  ld (length), a              ; set the length of the string
-  ld a, RED_INK + CYAN_PAPER  ; color of the string
-  ld (color), a               ; set color
+  ret  ; end of subroutine
 
-  call ColorRowOfText
-
-  ret            ; end of the main program
-
+;===============================================================================
+; Set_Text_Coords
 ;-------------------------------------------------------------------------------
-; Set coordinates subroutine
+; Purpose:
+; - Set coordinates for printing text
+;
+; Parameters (passed via memory locations):
+; - text_row
+; - text_column
 ;-------------------------------------------------------------------------------
-SetCoords:
- ld a, 22            ; ASCII control code for AT.
- rst ROM_PRINT_A_1   ; print it.
- ld a, (xcoord)      ; vertical position.
- rst ROM_PRINT_A_1   ; print it.
- ld a, (ycoord)      ; y coordinate.
- rst ROM_PRINT_A_1   ; print it.
- ret
+Set_Text_Coords:
 
-ColorRowOfText:
-  ld hl, MEM_SCREEN_COLORS  ; load HL with the address of screen color
+ ld A, CHAR_AT_CONTROL  ; ASCII control code for AT.
+ rst ROM_PRINT_A_1      ; print it.
 
-  ld a, (xcoord)
+ ld A, (text_row)       ; vertical position.
+ rst ROM_PRINT_A_1      ; print it.
+
+ ld A, (text_column)    ; y coordinate.
+ rst ROM_PRINT_A_1      ; print it.
+
+ ret  ; end of subroutine
+
+;===============================================================================
+; Color_Tex_Row
+;-------------------------------------------------------------------------------
+; Purpose:
+; - Colors a row of text with specified length
+;
+; Parameters (passed via memory locations):
+; - text_row
+; - text_column
+; - text_length
+;-------------------------------------------------------------------------------
+Color_Text_Row:
+
+  ;------------------------------------------------------------------------
+  ; Set initial value of HL to point to the beginning of screen attributes
+  ;------------------------------------------------------------------------
+  ld HL, MEM_SCREEN_COLORS  ; load HL with the address of screen color
+
+  ;------------------------------------------------------------------
+  ; Increase HL text_column times, to shift it to the desired column
+  ;------------------------------------------------------------------
+  ld A, (text_column)  ; loop counter
 LoopColumns:
-  inc hl       ; this is where the action is going, increase hl xcoord times
-  dec a
-  jr nz, LoopColumns
+  inc HL               ; increase HL text_row times
+  dec A                ; decrease counter
+  jr nz, LoopColumns   ; repeat the loop
 
-  ld a, (ycoord)
-  ld de, CHAR_SPACE
+  ;-----------------------------------------------------------------
+  ; Increase HL text_row * 32 times, to shift it to the desired row
+  ;-----------------------------------------------------------------
+  ld A, (text_row)  ; loop counter
+  ld DE, 32         ; there are 32 columns, this is not space character
 LoopRows:
-  add hl, de   ; this is where the action is going, add 32 to hl ycoord times
-  dec a
-  jr nz, LoopRows
+  add HL, DE        ; increase HL by 32
+  dec A             ; decrease counter
+  jr nz, LoopRows   ; repeat the loop
 
-  ld a, (color)
-  ld b, a
-  ld a, (length)
+
+  ;---------------------------------------------------------------
+  ; Now the HL holds the correct position of the screen attribute
+  ; memory loop through text_lenght to color and set the color
+  ;---------------------------------------------------------------
+  ld A, (text_color)
+  ld B, A
+  ld A, (text_length)
 LoopLength:
-  ld (HL), b  ; if I hardcode the color here, it wors fine
-  inc hl
-  dec a
+  ld (HL), B  ; set the color at position pointed by HL registers
+  inc HL      ; go to the next position
+  dec A
   jr nz, LoopLength
-  ret
+
+  ret  ; end of subroutine
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-xcoord:
+text_row:
   defb 0                 ; defb = define byte
 
-ycoord:
+text_column:
   defb 15                ; defb = define byte
 
-length:
+text_length:
   defb  1                ; defb = define byte
 
-color:
+text_color:
   defb  0                ; defb = define byte
 
-bojanstring:
+bojan_string:
   defb "Bojan is cool!"  ; defb = define byte
-bojanstringend equ $
+bojan_string_end equ $
 
 number:
   defw  9999             ; defw = define word  <---=
