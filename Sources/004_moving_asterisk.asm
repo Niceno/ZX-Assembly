@@ -24,14 +24,14 @@ Main:
   ;----------------------------------
   ; Open the channel to upper screen
   ;----------------------------------
-  ld a, 2             ; upper screen is 2
+  ld A, 2             ; upper screen is 2
   call ROM_CHAN_OPEN  ; open channel
 
   ;---------------------------------------------
   ; Initialize text row in which you will start
   ;---------------------------------------------
-  ld a, 21          ; row 21 = bottom of screen.
-  ld (text_row), a  ; set initial text row
+  ld A, 21          ; row 21 = bottom of screen.
+  ld (text_row), A  ; set initial text row
 
   ;----------------------
   ; Move the asterisk up
@@ -40,20 +40,20 @@ Loop:
   call Set_Text_Coords  ; set up our row/column coords
 
   ; Print asterisk
-  ld a, '*'             ; want an asterisk here
+  ld A, CHAR_ASTERISK   ; want an asterisk here
   rst ROM_PRINT_A_1     ; display it
 
   call Delay            ; want a delay
 
   ; Delete the asterisk (print space over it)
   call Set_Text_Coords  ; set up our row/column coords
-  ld a, 32              ; ASCII code for space
+  ld A, CHAR_SPACE      ; ASCII code for space
   rst ROM_PRINT_A_1     ; delete old asterisk
 
   ; Decrease text row -> move asterisk position up
-  ld hl, text_row  ; vertical position
-  dec (hl)         ; move it up one line
-  ld a, (hl)       ; where is it now?
+  ld HL, text_row  ; vertical position
+  dec (HL)         ; move it up one line
+  ld A, (HL)       ; where is it now?
   cp 255           ; past top of screen yet?
   jr nz, Loop      ; no, carry on
 
@@ -65,7 +65,7 @@ Loop:
 Delay:
   ei         ; enable interrupts, otherwise it gets stuck
              ; Speccy creates ~ 50 interruts per second, or each 0.02 seconds
-  ld b, 10   ; length of delay; translates to roughly 0.2 s
+  ld B, 10   ; length of delay; translates to roughly 0.2 s
 
 Delay0:
   halt         ; wait for an interrupt
@@ -80,15 +80,15 @@ Delay0:
 ;-------------------------------------------------------------------------------
 Set_Text_Coords:
 
- ld a, 22             ; ASCII control code for "at"
-                      ; should be followed by row and column entries
- rst ROM_PRINT_A_1    ; "print" it
+  ld A, CHAR_AT_CONTROL  ; ASCII control code for "at"
+                         ; should be followed by row and column entries
+  rst ROM_PRINT_A_1      ; "print" it
 
- ld a, (text_row)     ; row
- rst ROM_PRINT_A_1    ; "print" it
+  ld A, (text_row)       ; row
+  rst ROM_PRINT_A_1      ; "print" it
 
- ld a, (text_column)  ; column
- rst ROM_PRINT_A_1    ; "print" it
+  ld A, (text_column)    ; column
+  rst ROM_PRINT_A_1      ; "print" it
 
   ret
 

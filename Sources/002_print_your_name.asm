@@ -30,19 +30,18 @@ Main:
   ;-------------------------
   ; Initialize loop counter
   ;-------------------------
-  ld A, 10
+  ld B, 10
 
   ;-------------------------------------------------
   ; Print ten times using ROM routine ROM_PR_STRING
   ;-------------------------------------------------
 Loop:
-  push AF
+  push BC
   ld DE, bojan_string                     ; address of string
   ld BC, bojan_string_end - bojan_string  ; length of string to print
   call ROM_PR_STRING                      ; print the string
-  pop AF
-  dec A
-  jr nz, Loop                             ; jump back if z is not zero
+  pop BC
+  djnz Loop                               ; decrease B and jump if non zero
 
   ret
 
@@ -57,7 +56,7 @@ Loop:
 ;-----------------
 bojan_string:
   defb "Bojan is cool!"
-  defb 13                ; new line
+  defb CHAR_ENTER        ; new line
 bojan_string_end equ $
 
 ;-------------------------------------------------------------------------------

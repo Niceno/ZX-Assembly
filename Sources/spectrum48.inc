@@ -63,6 +63,7 @@ FLASH          equ 128
 ;
 ; (https://worldofspectrum.net/ZXBasicManual/zxmanappa.html)
 ;-------------------------------------------------------------------------------
+CHAR_ENTER             equ  13
 CHAR_AT_CONTROL        equ  22
 CHAR_SPACE             equ  32
 CHAR_EXCLAMATION_MARK  equ  33

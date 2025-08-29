@@ -63,7 +63,7 @@ loop_count:
 ;-----------------
 bojan_string:
   defb "Bojan is cool!"  ; the string data
-  defb 13                ; new line
+  defb CHAR_ENTER        ; new line
 bojan_string_end equ $
 
 ;-------------------------------------------------------------------------------
