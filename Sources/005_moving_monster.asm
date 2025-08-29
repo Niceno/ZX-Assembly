@@ -120,10 +120,10 @@ udgs:
 
 ; The 8x8 sprites which follow, were created with the command:
 ; python.exe .\convert_sprite_8x8.py .\[name].8x8 in the directory Figures
-ghost_01: ; starts at 90
+ghost_01: ; starts at $90
   defb $3C, $7E, $DB, $99, $FF, $FF, $DB, $DB
 
-human_01: ; starts at 91
+human_01: ; starts at $91
   defb $18, $3C, $18, $FF, $18, $3C, $24, $66
 
 monster_01: ; starts at $92
