@@ -60,12 +60,12 @@ Main:
   ; - We load the contents of a "KEYS_....." port into BC register
   ; - Then we read from the port addressed by BC, and stores the
   ;   result in A (this is what "in" command does.
-  ; - Then we compare the content of A with a mask, like 00000001
-  ;   For example:  A (11111110)
-  ;                and 00000001
-  ;   will result in 00000000, meaning that zero flag is set.
-  ; - When the result is zero (i.e., key is pressed), the zero flag
-  ;   is set, and we jump to the label that handles printing that key.
+  ; - Then we compare a particular bit of A using the bit command
+  ;   (The bit command only modifies the Zero (Z) flag.
+  ;    > If the tested bit is 1, the Z flag is reset to 0.
+  ;    > If the tested bit is 0, the Z flag is set to 1.
+  ; - When the zero flag is zero (i.e., key is pressed), we jump to
+  ;   the label that handles printing that key.
   ;
   ; (It would be better to use "jr z, Address" here, but there
   ;  are simply too many keys now.  When it gets smaller again.)
@@ -75,153 +75,153 @@ WaitForKey:
   ; Keyboard row
   ld BC, KEYS_12345
 
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000001        ; bit 0 = key "1"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 0, A        ; bit 0 = key "1"
   jp z, Print1
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000010        ; bit 1 = key "2"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 1, A        ; bit 1 = key "2"
   jp z, Print2
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000100        ; bit 2 = key "3"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 2, A        ; bit 2 = key "3"
   jp z, Print3
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00001000        ; bit 3 = key "4"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 3, A        ; bit 3 = key "4"
   jp z, Print4
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00010000        ; bit 4 = key "5"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 4, A        ; bit 4 = key "5"
   jp z, Print5
 
   ; Keyboard row
   ld BC, KEYS_67890
 
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00010000        ; bit 4 = key "6"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 4, A        ; bit 4 = key "6"
   jp z, Print6
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00001000        ; bit 3 = key "7"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 3, A        ; bit 3 = key "7"
   jp z, Print7
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000100        ; bit 2 = key "8"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 2, A        ; bit 2 = key "8"
   jp z, Print8
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000010        ; bit 1 = key "9"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 1, A        ; bit 1 = key "9"
   jp z, Print9
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000001        ; bit 0 = key "0"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 0, A        ; bit 0 = key "0"
   jp z, Print0
 
   ; Keyboard row
   ld BC, KEYS_QWERT
 
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000001        ; bit 0 = key "Q"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 0, A        ; bit 0 = key "Q"
   jp z, PrintQ
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000010        ; bit 1 = key "W"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 1, A        ; bit 1 = key "W"
   jp z, PrintW
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000100        ; bit 2 = key "E"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 2, A        ; bit 2 = key "E"
   jp z, PrintE
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00001000        ; bit 3 = key "R"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 3, A        ; bit 3 = key "R"
   jp z, PrintR
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00010000        ; bit 4 = key "T"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 4, A        ; bit 4 = key "T"
   jp z, PrintT
 
   ; Keyboard row
   ld BC, KEYS_YUIOP
 
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00010000        ; bit 4 = key "Y"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 4, A        ; bit 4 = key "Y"
   jp z, PrintY
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00001000        ; bit 3 = key "U"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 3, A        ; bit 3 = key "U"
   jp z, PrintU
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000100        ; bit 2 = key "I"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 2, A        ; bit 2 = key "I"
   jp z, PrintI
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000010        ; bit 1 = key "O"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 1, A        ; bit 1 = key "O"
   jp z, PrintO
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000001        ; bit 0 = key "P"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 0, A        ; bit 0 = key "P"
   jp z, PrintP
 
   ; Keyboard row
   ld BC, KEYS_ASDFG
 
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000001        ; bit 0 = key "A"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 0, A        ; bit 0 = key "A"
   jp z, PrintA
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000010        ; bit 1 = key "S"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 1, A        ; bit 1 = key "S"
   jp z, PrintS
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000100        ; bit 2 = key "D"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 2, A        ; bit 2 = key "D"
   jp z, PrintD
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00001000        ; bit 3 = key "F"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 3, A        ; bit 3 = key "F"
   jp z, PrintF
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00010000        ; bit 4 = key "G"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 4, A        ; bit 4 = key "G"
   jp z, PrintG
 
   ; Keyboard row
   ld BC, KEYS_HJKLENTER
 
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00010000        ; bit 4 = key "H"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 4, A        ; bit 4 = key "H"
   jp z, PrintH
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00001000        ; bit 3 = key "J"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 3, A        ; bit 3 = key "J"
   jp z, PrintJ
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000100        ; bit 2 = key "K"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 2, A        ; bit 2 = key "K"
   jp z, PrintK
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000010        ; bit 1 = key "L"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 1, A        ; bit 1 = key "L"
   jp z, PrintL
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000001        ; bit 0 = key "ENTER"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 0, A        ; bit 0 = key "ENTER"
   jp z, PrintEnter
 
   ; Keyboard row
   ld BC, KEYS_CAPSZXCV
 
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000001        ; bit 0 = key "CAPS SHIFT"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 0, A        ; bit 0 = key "CAPS SHIFT"
   jp z, PrintCaps
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000010        ; bit 1 = key "Z"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 1, A        ; bit 1 = key "Z"
   jp z, PrintZ
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000100        ; bit 2 = key "X"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 2, A        ; bit 2 = key "X"
   jp z, PrintX
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00001000        ; bit 3 = key "C"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 3, A        ; bit 3 = key "C"
   jp z, PrintC
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00010000        ; bit 4 = key "V"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 4, A        ; bit 4 = key "V"
   jp z, PrintV
 
   ; Keyboard row
   ld BC, KEYS_BNMSYMSPC
 
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00010000        ; bit 4 = key "B"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 4, A        ; bit 4 = key "B"
   jp z, PrintB
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00001000        ; bit 3 = key "N"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 3, A        ; bit 3 = key "N"
   jp z, PrintN
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000100        ; bit 2 = key "M"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 2, A        ; bit 2 = key "M"
   jp z, PrintM
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000010        ; bit 1 = key "SYMBOL SHIFT"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 1, A        ; bit 1 = key "SYMBOL SHIFT"
   jp z, PrintSymb
-  in A, (c)            ; read key states (1 = not pressed, 0 = pressed)
-  and %00000001        ; bit 0 = key "SPACE"
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 0, A        ; bit 0 = key "SPACE"
   jp z, PrintSpace
 
   jp WaitForKey    ; if not pressed, repeat loop
