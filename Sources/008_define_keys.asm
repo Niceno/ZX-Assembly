@@ -405,6 +405,14 @@ PrintSpace:
 DoneSetting:
   rst ROM_PRINT_A_1     ; display it
   call Color_Text_Box   ; this seems to be needed every time
+
+  ;------------------------------------------------------------
+  ; Increase the text row by 2 for next key (or final message)
+  ;------------------------------------------------------------
+  ld A, (text_row)      ; Load current row
+  add A, 2              ; Add 2 to row
+  ld (text_row), A      ; Store back to memory
+
   call Set_Text_Coords  ; set up our row/column coords
 
   ;--------------------------------------
