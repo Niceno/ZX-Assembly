@@ -70,7 +70,7 @@ Main:
   ; (It would be better to use "jr z, Address" here, but there
   ;  are simply too many keys now.  When it gets smaller again.)
   ;--------------------------------------------------------------------
-WaitForKey:
+ReadNextKey:
 
   ; Keyboard row
   ld BC, KEYS_12345
@@ -224,7 +224,7 @@ WaitForKey:
   bit 0, A        ; bit 0 = key "SPACE"
   jp z, PrintSpace
 
-  jp WaitForKey    ; if not pressed, repeat loop
+  jp ReadNextKey    ; if not pressed, repeat loop
 
   ;--------------------------
   ; Set the proper character
@@ -396,7 +396,8 @@ DoneSetting:
   rst ROM_PRINT_A_1     ; display it
   call Color_Text_Box   ; this seems to be needed every time
   call Set_Text_Coords  ; set up our row/column coords
-  jp WaitForKey
+
+  jp ReadNextKey
 
   ret  ; end of the main program
 
