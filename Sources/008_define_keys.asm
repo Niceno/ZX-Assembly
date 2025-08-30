@@ -407,58 +407,29 @@ DoneSetting:
   call Color_Text_Box   ; this seems to be needed every time
   call Set_Text_Coords  ; set up our row/column coords
 
-  ;---------------------------------------
-  ; Loop untill all the keys are released
-  ;---------------------------------------
+  ;--------------------------------------
+  ; Loop until all the keys are released
+  ;--------------------------------------
 Unpress:
 
-  ld BC, KEYS_12345      ; keyboard row
-  in A, (C)              ; read key states (1 = not pressed, 0 = pressed)
-  and  %00011111         ; mask out upper three bits, keep lower five
-  cp   %00011111         ; compare with all ones in lower five bits
-  jr nz, Unpress         ; if not all are 1, go back an read the keyboar again
+  ; Set the HL to point to the beginning of array all_key_ports
+  ld HL, all_key_ports
 
-  ld BC, KEYS_67890      ; keyboard row
-  in A, (C)              ; read key states (1 = not pressed, 0 = pressed)
-  and  %00011111         ; mask out upper three bits, keep lower five
-  cp   %00011111         ; compare with all ones in lower five bits
-  jr nz, Unpress         ; if not all are 1, go back an read the keyboar again
+  ld D, 8  ; there are eight rows of keys
+BrowseKeyRows:
 
-  ld BC, KEYS_QWERT      ; keyboard row
-  in A, (C)              ; read key states (1 = not pressed, 0 = pressed)
-  and  %00011111         ; mask out upper three bits, keep lower five
-  cp   %00011111         ; compare with all ones in lower five bits
-  jr nz, Unpress         ; if not all are 1, go back an read the keyboar again
+  ; Load the port number into BC indirectly through HL
+  ld C, (HL)      ; low byte into C
+  inc HL
+  ld B, (HL)      ; high byte into B
+  inc HL
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  and  %00011111  ; mask out upper three bits, keep lower five
+  cp   %00011111  ; compare with all ones in lower five bits
+  jr nz, Unpress  ; if not all are 1, go back an read the keyboar again
 
-  ld BC, KEYS_YUIOP      ; keyboard row
-  in A, (C)              ; read key states (1 = not pressed, 0 = pressed)
-  and  %00011111         ; mask out upper three bits, keep lower five
-  cp   %00011111         ; compare with all ones in lower five bits
-  jr nz, Unpress         ; if not all are 1, go back an read the keyboar again
-
-  ld BC, KEYS_ASDFG      ; keyboard row
-  in A, (C)              ; read key states (1 = not pressed, 0 = pressed)
-  and  %00011111         ; mask out upper three bits, keep lower five
-  cp   %00011111         ; compare with all ones in lower five bits
-  jr nz, Unpress         ; if not all are 1, go back an read the keyboar again
-
-  ld BC, KEYS_HJKLENTER  ; keyboard row
-  in A, (C)              ; read key states (1 = not pressed, 0 = pressed)
-  and  %00011111         ; mask out upper three bits, keep lower five
-  cp   %00011111         ; compare with all ones in lower five bits
-  jr nz, Unpress         ; if not all are 1, go back an read the keyboar again
-
-  ld BC, KEYS_CAPSZXCV   ; keyboard row
-  in A, (C)              ; read key states (1 = not pressed, 0 = pressed)
-  and  %00011111         ; mask out upper three bits, keep lower five
-  cp   %00011111         ; compare with all ones in lower five bits
-  jr nz, Unpress         ; if not all are 1, go back an read the keyboar again
-
-  ld BC, KEYS_BNMSYMSPC  ; keyboard row
-  in A, (C)              ; read key states (1 = not pressed, 0 = pressed)
-  and  %00011111         ; mask out upper three bits, keep lower five
-  cp   %00011111         ; compare with all ones in lower five bits
-  jr nz, Unpress         ; if not all are 1, go back an read the keyboar again
+  dec D
+  jr nz, BrowseKeyRows
 
   ;--------------------------
   ; Retreive the key counter
@@ -591,6 +562,16 @@ text_color:
 bojan_string:
   defb "Bojan is cool!"  ; defb = define byte
 bojan_string_end equ $
+
+all_key_ports:          ; this is like first array I created!
+  defw KEYS_12345
+  defw KEYS_67890
+  defw KEYS_QWERT
+  defw KEYS_YUIOP
+  defw KEYS_ASDFG
+  defw KEYS_HJKLENTER
+  defw KEYS_CAPSZXCV
+  defw KEYS_BNMSYMSPC
 
 number:
   defw  9999             ; defw = define word  <---=
