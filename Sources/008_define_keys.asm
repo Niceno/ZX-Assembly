@@ -33,6 +33,23 @@ Main:
   ld hl, udgs                         ; user defined graphics (UDGs)
   ld (MEM_USER_DEFINED_GRAPHICS), hl  ; set up UDG system variable.
 
+  ;--------------------------------------------
+  ; Set coordinates to 3, 3 and print a string
+  ;--------------------------------------------
+  ld A, 3                                        ; row
+  ld (text_row), A                               ; store row coordinate
+  ld A, 3                                        ; column
+  ld (text_column), A                            ; store column coordinate
+  ld A, text_press_a_key_end - text_press_a_key  ; length of the string
+  ld (text_length), A                            ; store the length of the string
+  ld A,  1                                       ; height
+  ld (text_height), A                            ; store the height
+  call Set_Text_Coords                           ; set up our x/y coords.
+
+  ld DE, text_press_a_key                         ; address of the string
+  ld BC, text_press_a_key_end - text_press_a_key  ; length of string to print
+  call ROM_PR_STRING                              ; print the string
+
   ;-------------------------------------------------
   ; Set coordinates to 5, 5, length and height to 1
   ;-------------------------------------------------
@@ -429,8 +446,25 @@ DoneSetting:
   jp nz, AskAgain
 
   ; End the program by printing Z without background
-  ld A, CHAR_Z_UPP
-  rst ROM_PRINT_A_1     ; display it
+  ; ld A, CHAR_Z_UPP
+  ; rst ROM_PRINT_A_1     ; display it
+
+  ;--------------------------------------------
+  ; Set coordinates to 21, 3 and print a string
+  ;--------------------------------------------
+  ld A, 21                                         ; row
+  ld (text_row), A                                 ; store row coordinate
+  ld A,  3                                         ; column
+  ld (text_column), A                              ; store column coordinate
+  ld A, text_keys_defined_end - text_keys_defined  ; length of the string
+  ld (text_length), A                              ; store length of the string
+  ld A,  1                                         ; height
+  ld (text_height), A                              ; store the height
+  call Set_Text_Coords                             ; set up our row/col coords.
+
+  ld DE, text_keys_defined                          ; address of the string
+  ld BC, text_keys_defined_end - text_keys_defined  ; length of string
+  call ROM_PR_STRING                                ; print the string
 
   ret  ; end of the main program
 
@@ -572,25 +606,37 @@ LoopLength:          ; loop over B, inner loop
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-text_row:
-  defb 0                 ; defb = define byte
 
-text_column:
-  defb 15                ; defb = define byte
+;-----------------------------------
+; Variables which define text boxes
+;-----------------------------------
+text_row:      defb  0  ; defb = define byte
+text_column:   defb 15
+text_length:   defb  1
+text_height:   defb 10
+text_color:    defb  0
 
-text_length:
-  defb  1                ; defb = define byte
+;---------------------
+; Texts to be written
+;---------------------
+text_press_a_key:      defb "Press a key for "
+text_press_a_key_end   equ $
+text_keys_defined:     defb "All keys defined"
+text_keys_defined_end  equ $
+text_up:               defb "up"
+text_up_end            equ $
+text_down:             defb "down"
+text_down_end          equ $
+text_left:             defb "left"
+text_left_end          equ $
+text_right:            defb "down"
+text_right_end         equ $
+text_fire:             defb "fire"
+text_fire_end          equ $
 
-text_height:
-  defb  10               ; defb = define byte
-
-text_color:
-  defb  0                ; defb = define byte
-
-bojan_string:
-  defb "Bojan is cool!"  ; defb = define byte
-bojan_string_end equ $
-
+;---------------------------------------------------------------------------
+; All key ports; used only in Unpressed now, maybe it can be defined there?
+;---------------------------------------------------------------------------
 all_key_ports:          ; this is like first array I created!
   defw KEYS_12345
   defw KEYS_67890
@@ -601,22 +647,17 @@ all_key_ports:          ; this is like first array I created!
   defw KEYS_CAPSZXCV
   defw KEYS_BNMSYMSPC
 
-number:
-  defw  9999             ; defw = define word  <---=
+number: defw  9999  ; defw = define word  <---=
 
+;-----------------------------------------------------------
+; User defined graphics (start at $90, then go $91, $92 ...
+;-----------------------------------------------------------
 udgs:
 
-enter: ; symbol for enter; starts at $90  why?
-  defb $00, $02, $12, $32, $7E, $30, $10, $00
-
-caps_shift: ; symbol for caps shift starts at $91 why?
-  defb $00, $10, $38, $7C, $10, $10, $10, $00
-
-symbol_shift: ; symbol for symbol shift starts at $92
-  defb $00, $7E, $4E, $4E, $72, $72, $7E, $00
-
-space: ; symbol for space starts at $93
-  defb $00, $00, $00, $00, $00, $42, $7E, $00
+enter:         defb $00, $02, $12, $32, $7E, $30, $10, $00  ; $90
+caps_shift:    defb $00, $10, $38, $7C, $10, $10, $10, $00  ; $91
+symbol_shift:  defb $00, $7E, $4E, $4E, $72, $72, $7E, $00  ; $92
+space:         defb $00, $00, $00, $00, $00, $42, $7E, $00  ; $93
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
