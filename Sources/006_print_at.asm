@@ -61,7 +61,7 @@ Main:
   ld (text_length), A                    ; store the length of the string
   ld A,  1                               ; height
   ld (text_height), A                    ; store the height
-  call Set_Text_Coords                   ; set up our x/y coords.
+  call Set_Text_Coords                   ; set up our row/col coords
 
   ld DE, bojan_string                     ; address of string
   ld BC, bojan_string_end - bojan_string  ; length of string to print
