@@ -34,7 +34,7 @@ Main:
   ld (MEM_USER_DEFINED_GRAPHICS), hl  ; set up UDG system variable.
 
   ;--------------------------------------------
-  ; Set coordinates to 3, 3 and print a string
+  ; Print text "Press a key for" at 3, 3
   ;--------------------------------------------
   ld A, 3                                        ; row
   ld (text_row), A                               ; store row coordinate
@@ -44,30 +44,16 @@ Main:
   ld (text_length), A                            ; store the length of the string
   ld A,  1                                       ; height
   ld (text_height), A                            ; store the height
-  call Set_Text_Coords                           ; set up our x/y coords.
+  call Set_Text_Coords                           ; set up our row/col coords.
 
+  ; Use ROM routine to print (this too over-rides the colors)
   ld DE, text_press_a_key                         ; address of the string
   ld BC, text_press_a_key_end - text_press_a_key  ; length of string to print
   call ROM_PR_STRING                              ; print the string
 
-  ;-------------------------------------------------
-  ; Set coordinates to 5, 5, length and height to 1
-  ;-------------------------------------------------
-  ld A,  5                      ; row
-  ld (text_row), A              ; store row coordinate
-  ld A,  5                      ; column
-  ld (text_column), A           ; store column coordinate
-  ld A,  1                      ; length of the string
-  ld (text_length), A           ; store the length
-  ld A,  1                      ; height
-  ld (text_height), A           ; store the height
-  ld A, RED_INK + YELLOW_PAPER  ; color of the string
+  ; Color the text box
+  ld A, BLUE_INK + WHITE_PAPER  ; color of the string
   ld (text_color), A            ; store the color
-  call Set_Text_Coords          ; set up our row/column coords
-
-  ;---------------------
-  ; Color that asterisk
-  ;---------------------
   call Color_Text_Box
 
   ;--------------------------
@@ -75,10 +61,30 @@ Main:
   ; Loop to define five keys
   ;
   ;--------------------------
-  ld A, 5  ; you will define five keys
+  ld B, 5  ; you will define five keys
 
 AskAgain:
-  push AF
+  push BC  ; store the counter
+
+  ;--------------------------------------------------
+  ; Print a little yellow flashing box for the entry
+  ;--------------------------------------------------
+  ld A, (text_row)                      ; current row
+  inc A                                 ; icrease it ...
+  inc A                                 ; .. by two
+  ld (text_row), A                      ; store row coordinate
+  ld A,  5                              ; column
+  ld (text_column), A                   ; store column coordinate
+  ld A,  1                              ; length of the string
+  ld (text_length), A                   ; store the length
+  ld A,  1                              ; height
+  ld (text_height), A                   ; store the height
+  ld A, RED_INK + YELLOW_PAPER + FLASH  ; color of the string
+  ld (text_color), A                    ; store the color
+  call Set_Text_Coords                  ; set up our row/column coords
+
+  ; Color that little box
+  call Color_Text_Box
 
   ;--------------------------------------------------------------------
   ; Wait until a key is pressed
@@ -416,21 +422,16 @@ PrintSpace:
   ld A, $93
   jp DoneSetting
 
-  ;--------------------------------------------------
-  ; Done setting the character, you can print it now
-  ;--------------------------------------------------
+  ;---------------------------------------------------------------------
+  ; Done setting the character, you can print it now, and stop flashing
+  ;---------------------------------------------------------------------
 DoneSetting:
   rst ROM_PRINT_A_1     ; display it
-  call Color_Text_Box   ; this seems to be needed every time
 
-  ;------------------------------------------------------------
-  ; Increase the text row by 2 for next key (or final message)
-  ;------------------------------------------------------------
-  ld A, (text_row)      ; Load current row
-  add A, 2              ; Add 2 to row
-  ld (text_row), A      ; Store back to memory
-
-  call Set_Text_Coords  ; set up our row/column coords
+  ld A, RED_INK + YELLOW_PAPER  ; color of the string
+  ld (text_color), A            ; store the color
+  call Color_Text_Box           ; this seems to be needed
+                                ; after calling ROM routines
 
   ;--------------------------------------
   ; Loop until all the keys are released
@@ -440,18 +441,14 @@ DoneSetting:
   ;--------------------------
   ; Retreive the key counter
   ;--------------------------
-  pop AF
-  dec A
+  pop BC
 
+  dec B
   jp nz, AskAgain
 
-  ; End the program by printing Z without background
-  ; ld A, CHAR_Z_UPP
-  ; rst ROM_PRINT_A_1     ; display it
-
-  ;--------------------------------------------
-  ; Set coordinates to 21, 3 and print a string
-  ;--------------------------------------------
+  ;----------------------------------------------------------
+  ; End the program with a message that all keys are defined
+  ;----------------------------------------------------------
   ld A, 21                                         ; row
   ld (text_row), A                                 ; store row coordinate
   ld A,  3                                         ; column
