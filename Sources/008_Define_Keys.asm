@@ -274,8 +274,6 @@ all_characters:
 ; defb $91,        CHAR_Z_UPP, CHAR_X_UPP, CHAR_C_UPP, CHAR_V_UPP
 ; defb CHAR_B_UPP, CHAR_N_UPP, CHAR_M_UPP, $92,        $93
 
-number: defw  9999  ; defw = define word  <---=
-
 ;-----------------------------------------------------------
 ; User defined graphics (start at $90, then go $91, $92 ...
 ;-----------------------------------------------------------
