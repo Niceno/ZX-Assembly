@@ -19,7 +19,7 @@
 ;===============================================================================
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-Main:
+Main_Sub:
 
   ;----------------------------------
   ; Open the channel to upper screen
@@ -44,7 +44,7 @@ Main:
   ld (text_length), A                            ; store the length of the string
   ld A,  1                                       ; height
   ld (text_height), A                            ; store the height
-  call Set_Text_Coords                           ; set up our row/col coords.
+  call Set_Text_Coords_Sub                       ; set up our row/col coords.
 
   ; Use ROM routine to print (this too over-rides the colors)
   ld DE, text_press_a_key                         ; address of the string
@@ -54,7 +54,7 @@ Main:
   ; Color the text box
   ld A, BLUE_INK + WHITE_PAPER  ; color of the string
   ld (text_color), A            ; store the color
-  call Color_Text_Box
+  call Color_Text_Box_Sub
 
   ;--------------------------
   ;
@@ -63,7 +63,7 @@ Main:
   ;--------------------------
   ld B, 5  ; you will define five keys
 
-AskAgain:
+Main_Ask_Again:
   push BC  ; store the counter
 
   ;--------------------------------------------------
@@ -81,10 +81,10 @@ AskAgain:
   ld (text_height), A                   ; store the height
   ld A, RED_INK + YELLOW_PAPER + FLASH  ; color of the string
   ld (text_color), A                    ; store the color
-  call Set_Text_Coords                  ; set up our row/column coords
+  call Set_Text_Coords_Sub              ; set up our row/column coords
 
   ; Color that little box
-  call Color_Text_Box
+  call Color_Text_Box_Sub
 
   ;--------------------------------------------------------------------
   ; Wait until a key is pressed
@@ -103,222 +103,74 @@ AskAgain:
   ; (It would be better to use "jr z, Address" here, but there
   ;  are simply too many keys now.  When it gets smaller again.)
   ;--------------------------------------------------------------------
-ReadNextKey:
+Main_Read_Next_Key:
 
-  ; Character array
-  ld IX, all_characters
-  dec IX                 ; make sure first inc points to all_characters
+  ;--------------------------------------
+  ; Let IX point to all characters array
+  ;--------------------------------------
+  ld IX, all_characters - 1  ; make sure first inc points to all_characters
 
-  ; Keyboard row
-  ld BC, KEYS_12345
+  ;-------------------------------------------------------------
+  ; Set the HL to point to the beginning of array all_key_ports
+  ;-------------------------------------------------------------
+  ld HL, all_key_ports
 
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 0, A        ; bit 0 = key "1"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 1, A        ; bit 1 = key "2"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 2, A        ; bit 2 = key "3"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 3, A        ; bit 3 = key "4"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 4, A        ; bit 4 = key "5"
-  inc IX
-  jp z, PrintOne
+  ;------------------------------
+  ; There are eight rows of keys
+  ;------------------------------
+  ld D, 8              ; there are eight rows of keys
 
-  ; Keyboard row
-  ld BC, KEYS_67890
+Main_Browse_Key_Rows:
+
+  ; Keyboard row; load the port number into BC indirectly through HL
+  ld C, (HL)      ; low byte into C
+  inc HL
+  ld B, (HL)      ; high byte into B
+  inc HL
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 4, A        ; bit 4 = key "6"
+  bit 0, A        ; bit 0
   inc IX
-  jp z, PrintOne
+  jp z, Main_Print_One
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 3, A        ; bit 3 = key "7"
+  bit 1, A        ; bit 1
   inc IX
-  jp z, PrintOne
+  jp z, Main_Print_One
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 2, A        ; bit 2 = key "8"
+  bit 2, A        ; bit 2
   inc IX
-  jp z, PrintOne
+  jp z, Main_Print_One
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 1, A        ; bit 1 = key "9"
+  bit 3, A        ; bit 3
   inc IX
-  jp z, PrintOne
+  jp z, Main_Print_One
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 0, A        ; bit 0 = key "0"
+  bit 4, A        ; bit 4
   inc IX
-  jp z, PrintOne
+  jp z, Main_Print_One
 
-  ; Keyboard row
-  ld BC, KEYS_QWERT
+  dec D
 
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 0, A        ; bit 0 = key "Q"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 1, A        ; bit 1 = key "W"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 2, A        ; bit 2 = key "E"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 3, A        ; bit 3 = key "R"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 4, A        ; bit 4 = key "T"
-  inc IX
-  jp z, PrintOne
+  jr nz, Main_Browse_Key_Rows
 
-  ; Keyboard row
-  ld BC, KEYS_YUIOP
-
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 4, A        ; bit 4 = key "Y"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 3, A        ; bit 3 = key "U"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 2, A        ; bit 2 = key "I"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 1, A        ; bit 1 = key "O"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 0, A        ; bit 0 = key "P"
-  inc IX
-  jp z, PrintOne
-
-  ; Keyboard row
-  ld BC, KEYS_ASDFG
-
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 0, A        ; bit 0 = key "A"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 1, A        ; bit 1 = key "S"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 2, A        ; bit 2 = key "D"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 3, A        ; bit 3 = key "F"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 4, A        ; bit 4 = key "G"
-  inc IX
-  jp z, PrintOne
-
-  ; Keyboard row
-  ld BC, KEYS_HJKLENTER
-
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 4, A        ; bit 4 = key "H"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 3, A        ; bit 3 = key "J"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 2, A        ; bit 2 = key "K"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 1, A        ; bit 1 = key "L"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 0, A        ; bit 0 = key "ENTER"
-  inc IX
-  jp z, PrintOne
-
-  ; Keyboard row
-  ld BC, KEYS_CAPSZXCV
-
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 0, A        ; bit 0 = key "CAPS SHIFT"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 1, A        ; bit 1 = key "Z"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 2, A        ; bit 2 = key "X"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 3, A        ; bit 3 = key "C"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 4, A        ; bit 4 = key "V"
-  inc IX
-  jp z, PrintOne
-
-  ; Keyboard row
-  ld BC, KEYS_BNMSYMSPC
-
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 4, A        ; bit 4 = key "B"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 3, A        ; bit 3 = key "N"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 2, A        ; bit 2 = key "M"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 1, A        ; bit 1 = key "SYMBOL SHIFT"
-  inc IX
-  jp z, PrintOne
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 0, A        ; bit 0 = key "SPACE"
-  inc IX
-  jp z, PrintOne
-
-  jp ReadNextKey    ; if not pressed, repeat loop
+  jp Main_Read_Next_Key    ; if not pressed, repeat loop
 
   ;----------------------------
   ; Print the proper character
   ;----------------------------
-PrintOne:
+Main_Print_One:
   ld A, (IX)
   rst ROM_PRINT_A_1     ; display it
 
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
   ld (text_color), A            ; store the color
-  call Color_Text_Box           ; this seems to be needed
+  call Color_Text_Box_Sub       ; this seems to be needed
                                 ; after calling ROM routines
 
   ;--------------------------------------
   ; Loop until all the keys are released
   ;--------------------------------------
-  call Unpress
+  call Unpress_Sub
 
   ;--------------------------
   ; Retreive the key counter
@@ -326,7 +178,7 @@ PrintOne:
   pop BC
 
   dec B
-  jp nz, AskAgain
+  jp nz, Main_Ask_Again
 
   ;----------------------------------------------------------
   ; End the program with a message that all keys are defined
@@ -339,7 +191,7 @@ PrintOne:
   ld (text_length), A                              ; store length of the string
   ld A,  1                                         ; height
   ld (text_height), A                              ; store the height
-  call Set_Text_Coords                             ; set up our row/col coords.
+  call Set_Text_Coords_Sub                         ; set up our row/col coords.
 
   ld DE, text_keys_defined                          ; address of the string
   ld BC, text_keys_defined_end - text_keys_defined  ; length of string
@@ -348,7 +200,7 @@ PrintOne:
   ret  ; end of the main program
 
 ;===============================================================================
-; Unpress
+; Unpress_Sub
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Waits until all keys are unpressed
@@ -356,7 +208,7 @@ PrintOne:
 ; Parameters (passed via memory locations)
 ; - all_key_ports
 ;-------------------------------------------------------------------------------
-Unpress:
+Unpress_Sub:
 
   ;-------------------------------------------------------------
   ; Set the HL to point to the beginning of array all_key_ports
@@ -368,26 +220,26 @@ Unpress:
   ;------------------------------
   ld D, 8              ; there are eight rows of keys
 
-BrowseKeyRows:
+Unpress_Browse_Key_Rows:
 
   ; Load the port number into BC indirectly through HL
-  ld C, (HL)      ; low byte into C
+  ld C, (HL)  ; low byte into C
   inc HL
-  ld B, (HL)      ; high byte into B
+  ld B, (HL)  ; high byte into B
   inc HL
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  and  %00011111  ; mask out upper three bits, keep lower five
-  cp   %00011111  ; compare with all ones in lower five bits
-  jr nz, Unpress  ; if not all are 1, go back an read the keyboar again
+  in A, (C)           ; read key states (1 = not pressed, 0 = pressed)
+  and  %00011111      ; mask out upper three bits, keep lower five
+  cp   %00011111      ; compare with all ones in lower five bits
+  jr nz, Unpress_Sub  ; if not all are 1, go back an read the keyboar again
 
   dec D
 
-  jr nz, BrowseKeyRows
+  jr nz, Unpress_Browse_Key_Rows
 
-  ret  ; end of the subroutine
+  ret
 
 ;===============================================================================
-; Set_Text_Coords
+; Set_Text_Coords_Sub
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Set coordinates for printing text
@@ -396,21 +248,22 @@ BrowseKeyRows:
 ; - text_row
 ; - text_column
 ;-------------------------------------------------------------------------------
-Set_Text_Coords:
+Set_Text_Coords_Sub:
 
- ld A, CHAR_AT_CONTROL  ; ASCII control code for AT.
- rst ROM_PRINT_A_1      ; print it.
+  ld A, CHAR_AT_CONTROL  ; ASCII control code for "at"
+                         ; should be followed by row and column entries
+  rst ROM_PRINT_A_1      ; "print" it
 
- ld A, (text_row)       ; vertical position.
- rst ROM_PRINT_A_1      ; print it.
+  ld A, (text_row)       ; row
+  rst ROM_PRINT_A_1      ; "print" it
 
- ld A, (text_column)    ; y coordinate.
- rst ROM_PRINT_A_1      ; print it.
+  ld A, (text_column)    ; column
+  rst ROM_PRINT_A_1      ; "print" it
 
- ret  ; end of subroutine
+  ret
 
 ;===============================================================================
-; Color_Text_Box
+; Color_Text_Box_Sub
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Colors a box of text with specified length and height
@@ -421,7 +274,7 @@ Set_Text_Coords:
 ; - text_length
 ; - text_height
 ;-------------------------------------------------------------------------------
-Color_Text_Box:
+Color_Text_Box_Sub:
 
   ;------------------------------------------------------------------------
   ; Set initial value of HL to point to the beginning of screen attributes
@@ -433,9 +286,9 @@ Color_Text_Box:
   ;------------------------------------------------------------------
   ld A, (text_column)  ; prepare B as loop counter
   ld B, A              ; ld B, (text_column) wouldn't work
-LoopColumns:
-  inc HL               ; increase HL text_row times
-  djnz LoopColumns     ; decrease B and jump if nonzero
+Color_Text_Box_Loop_Columns:
+  inc HL                            ; increase HL text_row times
+  djnz Color_Text_Box_Loop_Columns  ; decrease B and jump if nonzero
 
   ;-----------------------------------------------------------------
   ; Increase HL text_row * 32 times, to shift it to the desired row
@@ -443,9 +296,9 @@ LoopColumns:
   ld A, (text_row)  ; prepare B as loop counter
   ld B, A           ; ld B, (text_column) wouldn't work
   ld DE, 32         ; there are 32 columns, this is not space character
-LoopRows:
-  add HL, DE        ; increase HL by 32
-  djnz LoopRows     ; decrease B and repeat the loop if nonzero
+Color_Text_Box_Loop_Rows:
+  add HL, DE                     ; increase HL by 32
+  djnz Color_Text_Box_Loop_Rows  ; decrease B and repeat the loop if nonzero
 
   ;---------------------------------------------------------------
   ; Now the HL holds the correct position of the screen attribute
@@ -455,7 +308,7 @@ LoopRows:
   ld C, A              ; store the color in C
   ld A, (text_height)  ; A stores height, will be the outer loop
 
-LoopHeight:  ; loop over A, outer loop
+Color_Text_Box_Loop_Height:  ; loop over A, outer loop
 
   ; Store HL at the first row position
   push HL
@@ -467,18 +320,18 @@ LoopHeight:  ; loop over A, outer loop
   ld B, A              ; B stores the lengt, will be inner loop
   pop AF               ; restore A
 
-LoopLength:          ; loop over B, inner loop
-  ld (HL), C         ; set the color at position pointed by HL registers
-  inc HL             ; go to the next horizontal position
-  djnz LoopLength
+Color_Text_Box_Loop_Length:  ; loop over B, inner loop
+  ld (HL), C                 ; set the color at position pointed by HL registers
+  inc HL                     ; go to the next horizontal position
+  djnz Color_Text_Box_Loop_Length
 
   pop HL             ; retreive the first positin in the row
   add HL, DE         ; go to the next row
 
-  dec A              ; decrease A, outer loop counter
-  jr nz, LoopHeight  ; repeat if A is nonzero
+  dec A                              ; decrease A, outer loop counter
+  jr nz, Color_Text_Box_Loop_Height  ; repeat if A is nonzero
 
-  ret  ; end of subroutine
+  ret
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -526,15 +379,29 @@ all_key_ports:          ; this is like first array I created!
   defw KEYS_CAPSZXCV
   defw KEYS_BNMSYMSPC
 
+;-----------------------------------------------
+; All characters you can get from Spectrum keys
+; (Some had to be replaced by UDGs, of course)
+;-----------------------------------------------
 all_characters:
+; Ordered by their bit positions in keyboard ports
   defb CHAR_1,     CHAR_2,     CHAR_3,     CHAR_4,     CHAR_5
-  defb CHAR_6,     CHAR_7,     CHAR_8,     CHAR_9,     CHAR_0
+  defb CHAR_0,     CHAR_9,     CHAR_8,     CHAR_7,     CHAR_6      ; reversed
   defb CHAR_Q_UPP, CHAR_W_UPP, CHAR_E_UPP, CHAR_R_UPP, CHAR_T_UPP
-  defb CHAR_Y_UPP, CHAR_U_UPP, CHAR_I_UPP, CHAR_O_UPP, CHAR_P_UPP
+  defb CHAR_P_UPP, CHAR_O_UPP, CHAR_I_UPP, CHAR_U_UPP, CHAR_Y_UPP  ; reversed
   defb CHAR_A_UPP, CHAR_S_UPP, CHAR_D_UPP, CHAR_F_UPP, CHAR_G_UPP
-  defb CHAR_H_UPP, CHAR_J_UPP, CHAR_K_UPP, CHAR_L_UPP, $90
+  defb $90,        CHAR_L_UPP, CHAR_K_UPP, CHAR_J_UPP, CHAR_H_UPP  ; reversed
   defb $91,        CHAR_Z_UPP, CHAR_X_UPP, CHAR_C_UPP, CHAR_V_UPP
-  defb CHAR_B_UPP, CHAR_N_UPP, CHAR_M_UPP, $92,        $93
+  defb $93,        $92,        CHAR_M_UPP, CHAR_N_UPP, CHAR_B_UPP  ; reversed
+; Ordered naively, as they appear on the keyboard
+; defb CHAR_1,     CHAR_2,     CHAR_3,     CHAR_4,     CHAR_5
+; defb CHAR_6,     CHAR_7,     CHAR_8,     CHAR_9,     CHAR_0
+; defb CHAR_Q_UPP, CHAR_W_UPP, CHAR_E_UPP, CHAR_R_UPP, CHAR_T_UPP
+; defb CHAR_Y_UPP, CHAR_U_UPP, CHAR_I_UPP, CHAR_O_UPP, CHAR_P_UPP
+; defb CHAR_A_UPP, CHAR_S_UPP, CHAR_D_UPP, CHAR_F_UPP, CHAR_G_UPP
+; defb CHAR_H_UPP, CHAR_J_UPP, CHAR_K_UPP, CHAR_L_UPP, $90
+; defb $91,        CHAR_Z_UPP, CHAR_X_UPP, CHAR_C_UPP, CHAR_V_UPP
+; defb CHAR_B_UPP, CHAR_N_UPP, CHAR_M_UPP, $92,        $93
 
 number: defw  9999  ; defw = define word  <---=
 
@@ -549,6 +416,6 @@ symbol_shift:  defb $00, $7E, $4E, $4E, $72, $72, $7E, $00  ; $92
 space:         defb $00, $00, $00, $00, $00, $42, $7E, $00  ; $93
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main
+; Save a snapshot that starts execution at the address marked with Main_Sub
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
+  savesna "bojan.sna", Main_Sub
