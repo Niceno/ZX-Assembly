@@ -12,7 +12,7 @@
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-;   CODE
+;   MAIN SUBROUTINE
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -24,8 +24,19 @@ Main_Sub:
   ;----------------------------------
   ; Open the channel to upper screen
   ;----------------------------------
-  ld A, 2             ; upper screen is 2
-  call ROM_CHAN_OPEN  ; open channel
+  call Open_Upper_Screen_Sub
+
+  ld A, 0
+  ld (text_column), A       ; store column coordinate
+  ld A, 0
+  ld (text_row), A          ; store row coordinate
+  call Set_Text_Coords_Sub  ; set up up our row/col coords.
+
+  ;---------------------------------------
+  ; Address of the null-terminated string
+  ;---------------------------------------
+  ld HL, bojan_string
+  ld (text_to_print), HL
 
   ;-------------------------
   ; Initialize loop counter
@@ -33,18 +44,33 @@ Main_Sub:
   ld A, (loop_count)  ; you can't do: ld b, (address)
   ld B, A
 
-  ;-------------------------------------------------
-  ; Print ten times using ROM routine ROM_PR_STRING
-  ;-------------------------------------------------
+  ;-------------------------------------------------------------------
+  ; Print ten times using subroutine Print_Null_Terminated_String_Sub
+  ;-------------------------------------------------------------------
 Main_Loop:
-  push BC
-  ld DE, bojan_string                     ; address of string
-  ld BC, bojan_string_end - bojan_string  ; length of string to print
-  call ROM_PR_STRING                      ; print the string
-  pop BC
-  djnz Main_Loop                          ; decrease B and jump if non zero
+
+  ; Set text coordinates for the new value of B (loop counter)
+  ld A, 0
+  ld (text_column), A       ; store column coordinate
+  ld A, B
+  dec A                     ; go from 9 to 0 instead of 10 to 1
+  ld (text_row), A          ; store row coordinate
+  call Set_Text_Coords_Sub  ; set up up our row/col coords.
+
+  call Print_Null_Terminated_String_Sub
+
+  djnz Main_Loop            ; decrease B and run the loop again
 
   ret
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Subs/Open_Upper_Screen_Sub.asm"
+  include "Subs/Set_Text_Coords_Sub.asm"
+  include "Subs/Print_Null_Terminated_String_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -58,13 +84,23 @@ Main_Loop:
 loop_count:
   defb 10
 
-;-----------------
-; String to print
-;-----------------
+;---------------------------------
+; Null-terminated string to print
+;---------------------------------
 bojan_string:
-  defb "Bojan is cool!"  ; the string data
-  defb CHAR_ENTER        ; new line
-bojan_string_end equ $
+  defb "Bojan is cool!", 0
+
+;--------------------------------
+; Address od the string to print
+;--------------------------------
+text_to_print:
+  defw bojan_string    ; store the address of the string
+
+text_row:
+  defb 0
+
+text_column:
+  defb 15
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub
