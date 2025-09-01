@@ -24,8 +24,7 @@ Main_Sub:
   ;----------------------------------
   ; Open the channel to upper screen
   ;----------------------------------
-  ld A, 2             ; upper screen is 2
-  call ROM_CHAN_OPEN  ; open channel
+  call Open_Upper_Screen_Sub
 
   ;------------------------------------------------------------
   ; Set coordinates to 5, 5, length to 1 and print an asterisk
@@ -139,6 +138,7 @@ Main_Sub:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Print_Five_Digit_Number_Sub.asm"

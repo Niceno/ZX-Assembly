@@ -24,8 +24,7 @@ Main_Sub:
   ;----------------------------------
   ; Open the channel to upper screen
   ;----------------------------------
-  ld A, 2             ; upper screen is 2
-  call ROM_CHAN_OPEN  ; open channel
+  call Open_Upper_Screen_Sub
 
   ;------------------------------
   ; Specify the beginning of UDG
@@ -77,6 +76,7 @@ Main_Loop:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Delay_Sub.asm"
   include "Subs/Set_Text_Coords_Sub.asm"
 
