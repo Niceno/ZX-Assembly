@@ -35,20 +35,21 @@ Main_Sub:
   ;--------------------------------------------
   ; Print text "Press a key for" at 3, 3
   ;--------------------------------------------
-  ld A, 3                                        ; row
-  ld (text_row), A                               ; store row coordinate
-  ld A, 3                                        ; column
-  ld (text_column), A                            ; store column coordinate
-  ld A, text_press_a_key_end - text_press_a_key  ; length of the string
-  ld (text_length), A                            ; store the length of the string
-  ld A,  1                                       ; height
-  ld (text_height), A                            ; store the height
-  call Set_Text_Coords_Sub                       ; set up our row/col coords.
+  ld A, 3                   ; row
+  ld (text_row), A          ; store row coordinate
+  ld A, 3                   ; column
+  ld (text_column), A       ; store column coordinate
+  ld A, 16                  ; length of the string
+  ld (text_length), A       ; store the length of the string
+  ld A,  1                  ; height
+  ld (text_height), A       ; store the height
+  call Set_Text_Coords_Sub  ; set up our row/col coords.
 
   ; Use ROM routine to print (this too over-rides the colors)
-  ld DE, text_press_a_key                         ; address of the string
-  ld BC, text_press_a_key_end - text_press_a_key  ; length of string to print
-  call ROM_PR_STRING                              ; print the string
+  ld HL, text_press_a_key
+  ld (text_to_print), HL
+  call Print_Null_Terminated_String_Sub
+
 
   ; Color the text box
   ld A, BLUE_INK + WHITE_PAPER  ; color of the string
@@ -182,19 +183,19 @@ Main_Print_One:
   ;----------------------------------------------------------
   ; End the program with a message that all keys are defined
   ;----------------------------------------------------------
-  ld A, 21                                         ; row
-  ld (text_row), A                                 ; store row coordinate
-  ld A,  3                                         ; column
-  ld (text_column), A                              ; store column coordinate
-  ld A, text_keys_defined_end - text_keys_defined  ; length of the string
-  ld (text_length), A                              ; store length of the string
-  ld A,  1                                         ; height
-  ld (text_height), A                              ; store the height
-  call Set_Text_Coords_Sub                         ; set up our row/col coords.
+  ld A, 21                  ; row
+  ld (text_row), A          ; store row coordinate
+  ld A,  3                  ; column
+  ld (text_column), A       ; store column coordinate
+  ld A, 16                  ; length of the string
+  ld (text_length), A       ; store length of the string
+  ld A,  1                  ; height
+  ld (text_height), A       ; store the height
+  call Set_Text_Coords_Sub  ; set up our row/col coords.
 
-  ld DE, text_keys_defined                          ; address of the string
-  ld BC, text_keys_defined_end - text_keys_defined  ; length of string
-  call ROM_PR_STRING                                ; print the string
+  ld HL, text_keys_defined
+  ld (text_to_print), HL
+  call Print_Null_Terminated_String_Sub
 
   ret  ; end of the main program
 
@@ -207,6 +208,7 @@ Main_Print_One:
   include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Unpress.asm"
+  include "Subs/Print_Null_Terminated_String_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -217,29 +219,23 @@ Main_Print_One:
 ;-----------------------------------
 ; Variables which define text boxes
 ;-----------------------------------
-text_row:      defb  0  ; defb = define byte
-text_column:   defb 15
-text_length:   defb  1
-text_height:   defb 10
-text_color:    defb  0
+text_row:       defb  0  ; defb = define byte
+text_column:    defb 15
+text_length:    defb  1
+text_height:    defb 10
+text_color:     defb  0
+text_to_print:  defw  0
 
 ;---------------------
 ; Texts to be written
 ;---------------------
-text_press_a_key:      defb "Press a key for "
-text_press_a_key_end   equ $
-text_keys_defined:     defb "All keys defined"
-text_keys_defined_end  equ $
-text_up:               defb "up"
-text_up_end            equ $
-text_down:             defb "down"
-text_down_end          equ $
-text_left:             defb "left"
-text_left_end          equ $
-text_right:            defb "down"
-text_right_end         equ $
-text_fire:             defb "fire"
-text_fire_end          equ $
+text_press_a_key:      defb "Press a key for ", 0
+text_keys_defined:     defb "All keys defined", 0
+text_up:               defb "up",               0
+text_down:             defb "down",             0
+text_left:             defb "left",             0
+text_right:            defb "down",             0
+text_fire:             defb "fire",             0
 
 ;---------------------------------------------------------------------------
 ; All key ports; used only in Unpressed now, maybe it can be defined there?

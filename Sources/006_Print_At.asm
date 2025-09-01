@@ -52,19 +52,19 @@ Main_Sub:
   ;--------------------------------------------
   ; Set coordinates to 9, 9 and print a string
   ;--------------------------------------------
-  ld A, 9                                ; row
-  ld (text_row), A                       ; store row coordinate
-  ld A, 9                                ; column
-  ld (text_column), A                    ; store column coordinate
-  ld A, bojan_string_end - bojan_string  ; length of the string
-  ld (text_length), A                    ; store the length of the string
-  ld A,  1                               ; height
-  ld (text_height), A                    ; store the height
-  call Set_Text_Coords_Sub               ; set up our row/col coords
+  ld A, 9                   ; row
+  ld (text_row), A          ; store row coordinate
+  ld A, 9                   ; column
+  ld (text_column), A       ; store column coordinate
+  ld A, 14                  ; length of the string
+  ld (text_length), A       ; store the length of the string
+  ld A,  1                  ; height
+  ld (text_height), A       ; store the height
+  call Set_Text_Coords_Sub  ; set up our row/col coords
 
-  ld DE, bojan_string                     ; address of string
-  ld BC, bojan_string_end - bojan_string  ; length of string to print
-  call ROM_PR_STRING                      ; print the string
+  ld HL, bojan_string
+  ld (text_to_print), HL
+  call Print_Null_Terminated_String_Sub
 
   ;-------------------------
   ; Color that line of text
@@ -103,15 +103,15 @@ Main_Sub:
   ; Make a column
   ;---------------
   ld A,  8
-  ld (text_row), A      ; store row
+  ld (text_row), A             ; store row
   ld A, 24
-  ld (text_column), A   ; store column coordinate
+  ld (text_column), A          ; store column coordinate
   ld A,  1
-  ld (text_length), A   ; store box length
+  ld (text_length), A          ; store box length
   ld A, 10
-  ld (text_height), A   ; store box height
+  ld (text_height), A          ; store box height
   ld A, WHITE_INK + RED_PAPER
-  ld (text_color), A    ; store color
+  ld (text_color), A           ; store color
 
   call Color_Text_Box_Sub
 
@@ -119,15 +119,15 @@ Main_Sub:
   ; Make a box
   ;------------
   ld A, 10
-  ld (text_row), A      ; store row
+  ld (text_row), A              ; store row
   ld A, 26
-  ld (text_column), A   ; store column coordinate
+  ld (text_column), A           ; store column coordinate
   ld A, 3
-  ld (text_length), A   ; store box length
+  ld (text_length), A           ; store box length
   ld A, 3
-  ld (text_height), A   ; store box height
+  ld (text_height), A           ; store box height
   ld A, WHITE_INK + BLUE_PAPER
-  ld (text_color), A    ; store color
+  ld (text_color), A            ; store color
 
   call Color_Text_Box_Sub
 
@@ -142,6 +142,7 @@ Main_Sub:
   include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Print_Five_Digit_Number_Sub.asm"
+  include "Subs/Print_Null_Terminated_String_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -149,26 +150,31 @@ Main_Sub:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 text_row:
-  defb 0                 ; defb = define byte
+  defb 0
 
 text_column:
-  defb 15                ; defb = define byte
+  defb 15
 
 text_length:
-  defb  1                ; defb = define byte
+  defb  1
 
 text_height:
-  defb  10               ; defb = define byte
+  defb  10
 
 text_color:
-  defb  0                ; defb = define byte
+  defb  0
 
 bojan_string:
-  defb "Bojan is cool!"  ; defb = define byte
-bojan_string_end equ $
+  defb "Bojan is cool!", 0
+
+;--------------------------------
+; Address od the string to print
+;--------------------------------
+text_to_print:
+  defw bojan_string  ; store the address of the string
 
 number:
-  defw  9999             ; defw = define word  <---=
+  defw  9999         ; defw = define word  <---=
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub
