@@ -24,14 +24,15 @@ ROM_PRINT_FP      equ  11747  ; print the number on the calculator stack
 ; $FF58 – $FFFF  (168  B)  Reserved
 ;-------------------------------------------------------------------------------
 MEM_ROM_START              equ  $0000
-MEM_SCREEN_PIXELS          equ  $4000
-MEM_SCREEN_COLORS          equ  $5800
+MEM_FONT_START             equ  $3D00  ; 15616
+MEM_SCREEN_PIXELS          equ  $4000  ; 16384
+MEM_SCREEN_COLORS          equ  $5800  ; 22528
 MEM_PRINTER_BUFFER         equ  $5B00
 MEM_SYSTEM_VARS            equ  $5C00
 MEM_USER_DEFINED_GRAPHICS  equ  $5C7B  ; holds the address where UDG starts
 MEM_STORE_SCREEN_COLOR     equ  $5C8D  ; holds the screen color
 MEM_AVAILABLE_RAM_START    equ  $5CCB
-MEM_PROGRAM_START          equ  $8000
+MEM_PROGRAM_START          equ  $8000  ; 32768
 
 ;-------------------------------------------------------------------------------
 ; ZX Spectrum colors
