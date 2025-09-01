@@ -12,7 +12,7 @@
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-;   CODE
+;   MAIN PROGRAM
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -59,38 +59,13 @@ Main_Loop:
 
   ret  ; end of the main program
 
-;===============================================================================
-; Delay subroutine
-;-------------------------------------------------------------------------------
-Delay_Sub:
-  ei         ; enable interrupts, otherwise it gets stuck
-             ; Speccy creates ~ 50 interruts per second, or each 0.02 seconds
-  ld B, 10   ; length of delay; translates to roughly 0.2 s
-
-Delay_Loop:
-  halt             ; wait for an interrupt
-  djnz Delay_Loop  ; loop
-
-  ret
-
-;===============================================================================
-; Set coordinates subroutine
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-; Uses "variables" text_row and text_column to set printing position
-;-------------------------------------------------------------------------------
-Set_Text_Coords_Sub:
-
-  ld A, CHAR_AT_CONTROL  ; ASCII control code for "at"
-                         ; should be followed by row and column entries
-  rst ROM_PRINT_A_1      ; "print" it
-
-  ld A, (text_row)       ; row
-  rst ROM_PRINT_A_1      ; "print" it
-
-  ld A, (text_column)    ; column
-  rst ROM_PRINT_A_1      ; "print" it
-
-  ret
+;   SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Subs/Delay_Sub.asm"
+  include "Subs/Set_Text_Coords_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
