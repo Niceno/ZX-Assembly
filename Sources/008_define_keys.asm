@@ -105,327 +105,209 @@ AskAgain:
   ;--------------------------------------------------------------------
 ReadNextKey:
 
+  ; Character array
+  ld HL, all_characters
+  dec HL                 ; make sure first inc points to all_characters
+
   ; Keyboard row
   ld BC, KEYS_12345
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "1"
-  jp z, Print1
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "2"
-  jp z, Print2
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "3"
-  jp z, Print3
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "4"
-  jp z, Print4
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "5"
-  jp z, Print5
+  inc HL
+  jp z, PrintOne
 
   ; Keyboard row
   ld BC, KEYS_67890
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "6"
-  jp z, Print6
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "7"
-  jp z, Print7
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "8"
-  jp z, Print8
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "9"
-  jp z, Print9
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "0"
-  jp z, Print0
+  inc HL
+  jp z, PrintOne
 
   ; Keyboard row
   ld BC, KEYS_QWERT
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "Q"
-  jp z, PrintQ
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "W"
-  jp z, PrintW
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "E"
-  jp z, PrintE
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "R"
-  jp z, PrintR
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "T"
-  jp z, PrintT
+  inc HL
+  jp z, PrintOne
 
   ; Keyboard row
   ld BC, KEYS_YUIOP
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "Y"
-  jp z, PrintY
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "U"
-  jp z, PrintU
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "I"
-  jp z, PrintI
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "O"
-  jp z, PrintO
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "P"
-  jp z, PrintP
+  inc HL
+  jp z, PrintOne
 
   ; Keyboard row
   ld BC, KEYS_ASDFG
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "A"
-  jp z, PrintA
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "S"
-  jp z, PrintS
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "D"
-  jp z, PrintD
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "F"
-  jp z, PrintF
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "G"
-  jp z, PrintG
+  inc HL
+  jp z, PrintOne
 
   ; Keyboard row
   ld BC, KEYS_HJKLENTER
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "H"
-  jp z, PrintH
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "J"
-  jp z, PrintJ
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "K"
-  jp z, PrintK
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "L"
-  jp z, PrintL
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "ENTER"
-  jp z, PrintEnter
+  inc HL
+  jp z, PrintOne
 
   ; Keyboard row
   ld BC, KEYS_CAPSZXCV
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "CAPS SHIFT"
-  jp z, PrintCaps
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "Z"
-  jp z, PrintZ
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "X"
-  jp z, PrintX
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "C"
-  jp z, PrintC
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "V"
-  jp z, PrintV
+  inc HL
+  jp z, PrintOne
 
   ; Keyboard row
   ld BC, KEYS_BNMSYMSPC
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "B"
-  jp z, PrintB
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "N"
-  jp z, PrintN
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "M"
-  jp z, PrintM
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "SYMBOL SHIFT"
-  jp z, PrintSymb
+  inc HL
+  jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "SPACE"
-  jp z, PrintSpace
+  inc HL
+  jp z, PrintOne
 
   jp ReadNextKey    ; if not pressed, repeat loop
 
-  ;--------------------------
-  ; Set the proper character
-  ;--------------------------
-Print1:
-  ld A, CHAR_1
-  jp DoneSetting
-
-Print2:
-  ld A, CHAR_2
-  jp DoneSetting
-
-Print3:
-  ld A, CHAR_3
-  jp DoneSetting
-
-Print4:
-  ld A, CHAR_4
-  jp DoneSetting
-
-Print5:
-  ld A, CHAR_5
-  jp DoneSetting
-
-Print6:
-  ld A, CHAR_6
-  jp DoneSetting
-
-Print7:
-  ld A, CHAR_7
-  jp DoneSetting
-
-Print8:
-  ld A, CHAR_8
-  jp DoneSetting
-
-Print9:
-  ld A, CHAR_9
-  jp DoneSetting
-
-Print0:
-  ld A, CHAR_0
-  jp DoneSetting
-
-PrintQ:
-  ld A, CHAR_Q_UPP
-  jp DoneSetting
-
-PrintW:
-  ld A, CHAR_W_UPP
-  jp DoneSetting
-
-PrintE:
-  ld A, CHAR_E_UPP
-  jp DoneSetting
-
-PrintR:
-  ld A, CHAR_R_UPP
-  jp DoneSetting
-
-PrintT:
-  ld A, CHAR_T_UPP
-  jp DoneSetting
-
-PrintY:
-  ld A, CHAR_Y_UPP
-  jp DoneSetting
-
-PrintU:
-  ld A, CHAR_U_UPP
-  jp DoneSetting
-
-PrintI:
-  ld A, CHAR_I_UPP
-  jp DoneSetting
-
-PrintO:
-  ld A, CHAR_O_UPP
-  jp DoneSetting
-
-PrintP:
-  ld A, CHAR_P_UPP
-  jp DoneSetting
-
-PrintA:
-  ld A, CHAR_A_UPP
-  jp DoneSetting
-
-PrintS:
-  ld A, CHAR_S_UPP
-  jp DoneSetting
-
-PrintD:
-  ld A, CHAR_D_UPP
-  jp DoneSetting
-
-PrintF:
-  ld A, CHAR_F_UPP
-  jp DoneSetting
-
-PrintG:
-  ld A, CHAR_G_UPP
-  jp DoneSetting
-
-PrintH:
-  ld A, CHAR_H_UPP
-  jp DoneSetting
-
-PrintJ:
-  ld A, CHAR_J_UPP
-  jp DoneSetting
-
-PrintK:
-  ld A, CHAR_K_UPP
-  jp DoneSetting
-
-PrintL:
-  ld A, CHAR_L_UPP
-  jp DoneSetting
-
-PrintEnter:
-  ld A, $90
-  jp DoneSetting
-
-PrintCaps:
-  ld A, $91
-  jp DoneSetting
-
-PrintZ:
-  ld A, CHAR_Z_UPP
-  jp DoneSetting
-
-PrintX:
-  ld A, CHAR_X_UPP
-  jp DoneSetting
-
-PrintC:
-  ld A, CHAR_C_UPP
-  jp DoneSetting
-
-PrintV:
-  ld A, CHAR_V_UPP
-  jp DoneSetting
-
-PrintB:
-  ld A, CHAR_B_UPP
-  jp DoneSetting
-
-PrintN:
-  ld A, CHAR_N_UPP
-  jp DoneSetting
-
-PrintM:
-  ld A, CHAR_M_UPP
-  jp DoneSetting
-
-PrintSymb:
-  ld A, $92
-  jp DoneSetting
-
-PrintSpace:
-  ld A, $93
-  jp DoneSetting
-
-  ;---------------------------------------------------------------------
-  ; Done setting the character, you can print it now, and stop flashing
-  ;---------------------------------------------------------------------
-DoneSetting:
+  ;----------------------------
+  ; Print the proper character
+  ;----------------------------
+PrintOne:
+  ld A, (HL)
   rst ROM_PRINT_A_1     ; display it
 
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
@@ -643,6 +525,16 @@ all_key_ports:          ; this is like first array I created!
   defw KEYS_HJKLENTER
   defw KEYS_CAPSZXCV
   defw KEYS_BNMSYMSPC
+
+all_characters:
+  defb CHAR_1,     CHAR_2,     CHAR_3,     CHAR_4,     CHAR_5
+  defb CHAR_6,     CHAR_7,     CHAR_8,     CHAR_9,     CHAR_0
+  defb CHAR_Q_UPP, CHAR_W_UPP, CHAR_E_UPP, CHAR_R_UPP, CHAR_T_UPP
+  defb CHAR_Y_UPP, CHAR_U_UPP, CHAR_I_UPP, CHAR_O_UPP, CHAR_P_UPP
+  defb CHAR_A_UPP, CHAR_S_UPP, CHAR_D_UPP, CHAR_F_UPP, CHAR_G_UPP
+  defb CHAR_H_UPP, CHAR_J_UPP, CHAR_K_UPP, CHAR_L_UPP, $90
+  defb $91,        CHAR_Z_UPP, CHAR_X_UPP, CHAR_C_UPP, CHAR_V_UPP
+  defb CHAR_B_UPP, CHAR_N_UPP, CHAR_M_UPP, $92,        $93
 
 number: defw  9999  ; defw = define word  <---=
 
