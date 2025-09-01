@@ -19,7 +19,7 @@
 ;===============================================================================
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-Main:
+Main_Sub:
 
   ;----------------------------------
   ; Open the channel to upper screen
@@ -40,7 +40,7 @@ Main:
   ld (text_height), A           ; store the height
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
   ld (text_color), A            ; store the color
-  call Set_Text_Coords          ; set up our row/column coords
+  call Set_Text_Coords_Sub      ; set up our row/column coords
 
   ld A, CHAR_ASTERISK   ; print an asterisk
   rst ROM_PRINT_A_1     ; display it
@@ -48,7 +48,7 @@ Main:
   ;---------------------
   ; Color that asterisk
   ;---------------------
-  call Color_Text_Box
+  call Color_Text_Box_Sub
 
   ;--------------------------------------------
   ; Set coordinates to 9, 9 and print a string
@@ -61,7 +61,7 @@ Main:
   ld (text_length), A                    ; store the length of the string
   ld A,  1                               ; height
   ld (text_height), A                    ; store the height
-  call Set_Text_Coords                   ; set up our row/col coords
+  call Set_Text_Coords_Sub               ; set up our row/col coords
 
   ld DE, bojan_string                     ; address of string
   ld BC, bojan_string_end - bojan_string  ; length of string to print
@@ -70,25 +70,25 @@ Main:
   ;-------------------------
   ; Color that line of text
   ;-------------------------
-  call Color_Text_Box
+  call Color_Text_Box_Sub
 
   ;---------------------------------------------------------
   ; Set coordinates to 13, 13 and print a five digit number
   ;---------------------------------------------------------
-  ld A, 13              ; row
-  ld (text_row), A      ; store row coordinate
-  ld A, 13              ; column
-  ld (text_column), A   ; store column coordinate
-  ld A,  5              ; length of the string
-  ld (text_length), A   ; store the length
-  ld A,  1              ; height
-  ld (text_height), A   ; store the height
-  call Set_Text_Coords  ; set up our row/column coords
+  ld A, 13                  ; row
+  ld (text_row), A          ; store row coordinate
+  ld A, 13                  ; column
+  ld (text_column), A       ; store column coordinate
+  ld A,  5                  ; length of the string
+  ld (text_length), A       ; store the length
+  ld A,  1                  ; height
+  ld (text_height), A       ; store the height
+  call Set_Text_Coords_Sub  ; set up our row/column coords
 
   ;-----------------------------
   ; Print the five digit number
   ;-----------------------------
-  call Print_Five_Digit_Number
+  call Print_Five_Digit_Number_Sub
 
   ;-------------------
   ; Color that number
@@ -98,7 +98,7 @@ Main:
   ld A, RED_INK + CYAN_PAPER  ; color of the string
   ld (text_color), A          ; store the text color
 
-  call Color_Text_Box
+  call Color_Text_Box_Sub
 
   ;---------------
   ; Make a column
@@ -114,7 +114,7 @@ Main:
   ld A, WHITE_INK + RED_PAPER
   ld (text_color), A    ; store color
 
-  call Color_Text_Box
+  call Color_Text_Box_Sub
 
   ;------------
   ; Make a box
@@ -130,12 +130,12 @@ Main:
   ld A, WHITE_INK + BLUE_PAPER
   ld (text_color), A    ; store color
 
-  call Color_Text_Box
+  call Color_Text_Box_Sub
 
   ret  ; end of the main program
 
 ;===============================================================================
-; Print_Five_Digit_Number
+; Print_Five_Digit_Number_Sub
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Prints right-aligned, five digit number
@@ -144,7 +144,7 @@ Main:
 ; - text_row
 ; - text_column
 ;-------------------------------------------------------------------------------
-Print_Five_Digit_Number:
+Print_Five_Digit_Number_Sub:
 
   ; Check if it has 5 digits
   ld  HL, (number)        ; store number in HL
@@ -187,10 +187,10 @@ NoMorePadding:
   call ROM_STACK_BC  ; transform the number in BC register to floating point
   call ROM_PRINT_FP  ; print the floating point number in the calculator stack
 
-  ret  ; end of subroutine
+  ret
 
 ;===============================================================================
-; Set_Text_Coords
+; Set_Text_Coords_Sub
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Set coordinates for printing text
@@ -199,21 +199,22 @@ NoMorePadding:
 ; - text_row
 ; - text_column
 ;-------------------------------------------------------------------------------
-Set_Text_Coords:
+Set_Text_Coords_Sub:
 
- ld A, CHAR_AT_CONTROL  ; ASCII control code for AT.
- rst ROM_PRINT_A_1      ; print it.
+  ld A, CHAR_AT_CONTROL  ; ASCII control code for "at"
+                         ; should be followed by row and column entries
+  rst ROM_PRINT_A_1      ; "print" it
 
- ld A, (text_row)       ; vertical position.
- rst ROM_PRINT_A_1      ; print it.
+  ld A, (text_row)       ; row
+  rst ROM_PRINT_A_1      ; "print" it
 
- ld A, (text_column)    ; y coordinate.
- rst ROM_PRINT_A_1      ; print it.
+  ld A, (text_column)    ; column
+  rst ROM_PRINT_A_1      ; "print" it
 
- ret  ; end of subroutine
+  ret
 
 ;===============================================================================
-; Color_Text_Box
+; Color_Text_Box_Sub
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Colors a box of text with specified length and height
@@ -224,7 +225,7 @@ Set_Text_Coords:
 ; - text_length
 ; - text_height
 ;-------------------------------------------------------------------------------
-Color_Text_Box:
+Color_Text_Box_Sub:
 
   ;------------------------------------------------------------------------
   ; Set initial value of HL to point to the beginning of screen attributes
@@ -236,9 +237,9 @@ Color_Text_Box:
   ;------------------------------------------------------------------
   ld A, (text_column)  ; prepare B as loop counter
   ld B, A              ; ld B, (text_column) wouldn't work
-LoopColumns:
-  inc HL               ; increase HL text_row times
-  djnz LoopColumns     ; decrease B and jump if nonzero
+Color_Text_Box_Loop_Columns:
+  inc HL                            ; increase HL text_row times
+  djnz Color_Text_Box_Loop_Columns  ; decrease B and jump if nonzero
 
   ;-----------------------------------------------------------------
   ; Increase HL text_row * 32 times, to shift it to the desired row
@@ -246,9 +247,9 @@ LoopColumns:
   ld A, (text_row)  ; prepare B as loop counter
   ld B, A           ; ld B, (text_column) wouldn't work
   ld DE, 32         ; there are 32 columns, this is not space character
-LoopRows:
-  add HL, DE        ; increase HL by 32
-  djnz LoopRows     ; decrease B and repeat the loop if nonzero
+Color_Text_Box_Loop_Rows:
+  add HL, DE                     ; increase HL by 32
+  djnz Color_Text_Box_Loop_Rows  ; decrease B and repeat the loop if nonzero
 
   ;---------------------------------------------------------------
   ; Now the HL holds the correct position of the screen attribute
@@ -258,7 +259,7 @@ LoopRows:
   ld C, A              ; store the color in C
   ld A, (text_height)  ; A stores height, will be the outer loop
 
-LoopHeight:  ; loop over A, outer loop
+Color_Text_Box_Loop_Height:  ; loop over A, outer loop
 
   ; Store HL at the first row position
   push HL
@@ -270,18 +271,18 @@ LoopHeight:  ; loop over A, outer loop
   ld B, A              ; B stores the lengt, will be inner loop
   pop AF               ; restore A
 
-LoopLength:          ; loop over B, inner loop
-  ld (HL), C         ; set the color at position pointed by HL registers
-  inc HL             ; go to the next horizontal position
-  djnz LoopLength
+Color_Text_Box_Loop_Length:  ; loop over B, inner loop
+  ld (HL), C                 ; set the color at position pointed by HL registers
+  inc HL                     ; go to the next horizontal position
+  djnz Color_Text_Box_Loop_Length
 
   pop HL             ; retreive the first positin in the row
   add HL, DE         ; go to the next row
 
-  dec A              ; decrease A, outer loop counter
-  jr nz, LoopHeight  ; repeat if A is nonzero
+  dec A                              ; decrease A, outer loop counter
+  jr nz, Color_Text_Box_Loop_Height  ; repeat if A is nonzero
 
-  ret  ; end of subroutine
+  ret
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -311,6 +312,6 @@ number:
   defw  9999             ; defw = define word  <---=
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main
+; Save a snapshot that starts execution at the address marked with Main_Sub
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
+  savesna "bojan.sna", Main_Sub

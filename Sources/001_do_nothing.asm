@@ -10,14 +10,14 @@
 ;-----------------------------------------------
   org MEM_PROGRAM_START
 
+;===============================================================================
+; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-; Mark the address where the program will start the execution
-;-------------------------------------------------------------------------------
-Main:
+Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
   ret
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main
-; (Without the label "Main", you could have written: SAVESNA "bojan.sna", $8000)
+; Save a snapshot that starts execution at the address marked with Main_Sub
+; (Without label "Main_Sub", you could have written: SAVESNA "bojan.sna", $8000)
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
+  savesna "bojan.sna", Main_Sub

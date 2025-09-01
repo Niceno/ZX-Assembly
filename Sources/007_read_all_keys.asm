@@ -19,7 +19,7 @@
 ;===============================================================================
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-Main:
+Main_Sub:
 
   ;----------------------------------
   ; Open the channel to upper screen
@@ -46,12 +46,12 @@ Main:
   ld (text_height), A           ; store the height
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
   ld (text_color), A            ; store the color
-  call Set_Text_Coords          ; set up our row/column coords
+  call Set_Text_Coords_Sub      ; set up our row/column coords
 
   ;---------------------
   ; Color that asterisk
   ;---------------------
-  call Color_Text_Box
+  call Color_Text_Box_Sub
 
   ;--------------------------------------------------------------------
   ; Wait until a key is pressed
@@ -70,339 +70,339 @@ Main:
   ; (It would be better to use "jr z, Address" here, but there
   ;  are simply too many keys now.  When it gets smaller again.)
   ;--------------------------------------------------------------------
-ReadNextKey:
+Main_Read_Next_Key:
 
   ; Keyboard row
   ld BC, KEYS_12345
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "1"
-  jp z, Print1
+  jp z, Main_Print_1
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "2"
-  jp z, Print2
+  jp z, Main_Print_2
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "3"
-  jp z, Print3
+  jp z, Main_Print_3
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "4"
-  jp z, Print4
+  jp z, Main_Print_4
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "5"
-  jp z, Print5
+  jp z, Main_Print_5
 
   ; Keyboard row
   ld BC, KEYS_67890
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "6"
-  jp z, Print6
+  jp z, Main_Print_6
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "7"
-  jp z, Print7
+  jp z, Main_Print_7
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "8"
-  jp z, Print8
+  jp z, Main_Print_8
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "9"
-  jp z, Print9
+  jp z, Main_Print_9
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "0"
-  jp z, Print0
+  jp z, Main_Print_0
 
   ; Keyboard row
   ld BC, KEYS_QWERT
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "Q"
-  jp z, PrintQ
+  jp z, Main_Print_Q
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "W"
-  jp z, PrintW
+  jp z, Main_Print_W
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "E"
-  jp z, PrintE
+  jp z, Main_Print_E
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "R"
-  jp z, PrintR
+  jp z, Main_Print_R
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "T"
-  jp z, PrintT
+  jp z, Main_Print_T
 
   ; Keyboard row
   ld BC, KEYS_YUIOP
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "Y"
-  jp z, PrintY
+  jp z, Main_Print_Y
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "U"
-  jp z, PrintU
+  jp z, Main_Print_U
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "I"
-  jp z, PrintI
+  jp z, Main_Print_I
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "O"
-  jp z, PrintO
+  jp z, Main_Print_O
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "P"
-  jp z, PrintP
+  jp z, Main_Print_P
 
   ; Keyboard row
   ld BC, KEYS_ASDFG
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "A"
-  jp z, PrintA
+  jp z, Main_Print_A
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "S"
-  jp z, PrintS
+  jp z, Main_Print_S
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "D"
-  jp z, PrintD
+  jp z, Main_Print_D
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "F"
-  jp z, PrintF
+  jp z, Main_Print_F
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "G"
-  jp z, PrintG
+  jp z, Main_Print_G
 
   ; Keyboard row
   ld BC, KEYS_HJKLENTER
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "H"
-  jp z, PrintH
+  jp z, Main_Print_H
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "J"
-  jp z, PrintJ
+  jp z, Main_Print_J
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "K"
-  jp z, PrintK
+  jp z, Main_Print_K
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "L"
-  jp z, PrintL
+  jp z, Main_Print_L
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "ENTER"
-  jp z, PrintEnter
+  jp z, Main_Print_Enter
 
   ; Keyboard row
   ld BC, KEYS_CAPSZXCV
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "CAPS SHIFT"
-  jp z, PrintCaps
+  jp z, Main_Print_Caps
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "Z"
-  jp z, PrintZ
+  jp z, Main_Print_Z
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "X"
-  jp z, PrintX
+  jp z, Main_Print_X
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "C"
-  jp z, PrintC
+  jp z, Main_Print_C
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "V"
-  jp z, PrintV
+  jp z, Main_Print_V
 
   ; Keyboard row
   ld BC, KEYS_BNMSYMSPC
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "B"
-  jp z, PrintB
+  jp z, Main_Print_B
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "N"
-  jp z, PrintN
+  jp z, Main_Print_N
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "M"
-  jp z, PrintM
+  jp z, Main_Print_M
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "SYMBOL SHIFT"
-  jp z, PrintSymb
+  jp z, Main_Print_Symb
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "SPACE"
-  jp z, PrintSpace
+  jp z, Main_Print_Space
 
-  jp ReadNextKey    ; if not pressed, repeat loop
+  jp Main_Read_Next_Key    ; if not pressed, repeat loop
 
   ;--------------------------
   ; Set the proper character
   ;--------------------------
-Print1:
+Main_Print_1:
   ld A, CHAR_1
-  jp DoneSetting
+  jp Main_Done_Setting
 
-Print2:
+Main_Print_2:
   ld A, CHAR_2
-  jp DoneSetting
+  jp Main_Done_Setting
 
-Print3:
+Main_Print_3:
   ld A, CHAR_3
-  jp DoneSetting
+  jp Main_Done_Setting
 
-Print4:
+Main_Print_4:
   ld A, CHAR_4
-  jp DoneSetting
+  jp Main_Done_Setting
 
-Print5:
+Main_Print_5:
   ld A, CHAR_5
-  jp DoneSetting
+  jp Main_Done_Setting
 
-Print6:
+Main_Print_6:
   ld A, CHAR_6
-  jp DoneSetting
+  jp Main_Done_Setting
 
-Print7:
+Main_Print_7:
   ld A, CHAR_7
-  jp DoneSetting
+  jp Main_Done_Setting
 
-Print8:
+Main_Print_8:
   ld A, CHAR_8
-  jp DoneSetting
+  jp Main_Done_Setting
 
-Print9:
+Main_Print_9:
   ld A, CHAR_9
-  jp DoneSetting
+  jp Main_Done_Setting
 
-Print0:
+Main_Print_0:
   ld A, CHAR_0
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintQ:
+Main_Print_Q:
   ld A, CHAR_Q_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintW:
+Main_Print_W:
   ld A, CHAR_W_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintE:
+Main_Print_E:
   ld A, CHAR_E_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintR:
+Main_Print_R:
   ld A, CHAR_R_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintT:
+Main_Print_T:
   ld A, CHAR_T_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintY:
+Main_Print_Y:
   ld A, CHAR_Y_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintU:
+Main_Print_U:
   ld A, CHAR_U_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintI:
+Main_Print_I:
   ld A, CHAR_I_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintO:
+Main_Print_O:
   ld A, CHAR_O_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintP:
+Main_Print_P:
   ld A, CHAR_P_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintA:
+Main_Print_A:
   ld A, CHAR_A_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintS:
+Main_Print_S:
   ld A, CHAR_S_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintD:
+Main_Print_D:
   ld A, CHAR_D_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintF:
+Main_Print_F:
   ld A, CHAR_F_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintG:
+Main_Print_G:
   ld A, CHAR_G_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintH:
+Main_Print_H:
   ld A, CHAR_H_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintJ:
+Main_Print_J:
   ld A, CHAR_J_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintK:
+Main_Print_K:
   ld A, CHAR_K_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintL:
+Main_Print_L:
   ld A, CHAR_L_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintEnter:
+Main_Print_Enter:
   ld A, $90
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintCaps:
+Main_Print_Caps:
   ld A, $91
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintZ:
+Main_Print_Z:
   ld A, CHAR_Z_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintX:
+Main_Print_X:
   ld A, CHAR_X_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintC:
+Main_Print_C:
   ld A, CHAR_C_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintV:
+Main_Print_V:
   ld A, CHAR_V_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintB:
+Main_Print_B:
   ld A, CHAR_B_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintN:
+Main_Print_N:
   ld A, CHAR_N_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintM:
+Main_Print_M:
   ld A, CHAR_M_UPP
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintSymb:
+Main_Print_Symb:
   ld A, $92
-  jp DoneSetting
+  jp Main_Done_Setting
 
-PrintSpace:
+Main_Print_Space:
   ld A, $93
-  jp DoneSetting
+  jp Main_Done_Setting
 
   ;--------------------------------------------------
   ; Done setting the character, you can print it now
   ;--------------------------------------------------
-DoneSetting:
-  rst ROM_PRINT_A_1     ; display it
-  call Color_Text_Box   ; this seems to be needed every time
-  call Set_Text_Coords  ; set up our row/column coords
+Main_Done_Setting:
+  rst ROM_PRINT_A_1         ; display it
+  call Color_Text_Box_Sub   ; this seems to be needed every time
+  call Set_Text_Coords_Sub  ; set up our row/column coords
 
-  jp ReadNextKey
+  jp Main_Read_Next_Key
 
-  ret  ; end of the main program
+  ret
 
 ;===============================================================================
-; Set_Text_Coords
+; Set_Text_Coords_Sub
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Set coordinates for printing text
@@ -411,21 +411,22 @@ DoneSetting:
 ; - text_row
 ; - text_column
 ;-------------------------------------------------------------------------------
-Set_Text_Coords:
+Set_Text_Coords_Sub:
 
- ld A, CHAR_AT_CONTROL  ; ASCII control code for AT.
- rst ROM_PRINT_A_1      ; print it.
+  ld A, CHAR_AT_CONTROL  ; ASCII control code for "at"
+                         ; should be followed by row and column entries
+  rst ROM_PRINT_A_1      ; "print" it
 
- ld A, (text_row)       ; vertical position.
- rst ROM_PRINT_A_1      ; print it.
+  ld A, (text_row)       ; row
+  rst ROM_PRINT_A_1      ; "print" it
 
- ld A, (text_column)    ; y coordinate.
- rst ROM_PRINT_A_1      ; print it.
+  ld A, (text_column)    ; column
+  rst ROM_PRINT_A_1      ; "print" it
 
- ret  ; end of subroutine
+  ret
 
 ;===============================================================================
-; Color_Text_Box
+; Color_Text_Box_Sub
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Colors a box of text with specified length and height
@@ -436,7 +437,7 @@ Set_Text_Coords:
 ; - text_length
 ; - text_height
 ;-------------------------------------------------------------------------------
-Color_Text_Box:
+Color_Text_Box_Sub:
 
   ;------------------------------------------------------------------------
   ; Set initial value of HL to point to the beginning of screen attributes
@@ -448,9 +449,9 @@ Color_Text_Box:
   ;------------------------------------------------------------------
   ld A, (text_column)  ; prepare B as loop counter
   ld B, A              ; ld B, (text_column) wouldn't work
-LoopColumns:
-  inc HL               ; increase HL text_row times
-  djnz LoopColumns     ; decrease B and jump if nonzero
+Color_Text_Box_Loop_Columns:
+  inc HL                            ; increase HL text_row times
+  djnz Color_Text_Box_Loop_Columns  ; decrease B and jump if nonzero
 
   ;-----------------------------------------------------------------
   ; Increase HL text_row * 32 times, to shift it to the desired row
@@ -458,9 +459,9 @@ LoopColumns:
   ld A, (text_row)  ; prepare B as loop counter
   ld B, A           ; ld B, (text_column) wouldn't work
   ld DE, 32         ; there are 32 columns, this is not space character
-LoopRows:
-  add HL, DE        ; increase HL by 32
-  djnz LoopRows     ; decrease B and repeat the loop if nonzero
+Color_Text_Box_Loop_Rows:
+  add HL, DE                     ; increase HL by 32
+  djnz Color_Text_Box_Loop_Rows  ; decrease B and repeat the loop if nonzero
 
   ;---------------------------------------------------------------
   ; Now the HL holds the correct position of the screen attribute
@@ -470,7 +471,7 @@ LoopRows:
   ld C, A              ; store the color in C
   ld A, (text_height)  ; A stores height, will be the outer loop
 
-LoopHeight:  ; loop over A, outer loop
+Color_Text_Box_Loop_Height:  ; loop over A, outer loop
 
   ; Store HL at the first row position
   push HL
@@ -482,18 +483,18 @@ LoopHeight:  ; loop over A, outer loop
   ld B, A              ; B stores the lengt, will be inner loop
   pop AF               ; restore A
 
-LoopLength:          ; loop over B, inner loop
-  ld (HL), C         ; set the color at position pointed by HL registers
-  inc HL             ; go to the next horizontal position
-  djnz LoopLength
+Color_Text_Box_Loop_Length:  ; loop over B, inner loop
+  ld (HL), C                 ; set the color at position pointed by HL registers
+  inc HL                     ; go to the next horizontal position
+  djnz Color_Text_Box_Loop_Length
 
   pop HL             ; retreive the first positin in the row
   add HL, DE         ; go to the next row
 
-  dec A              ; decrease A, outer loop counter
-  jr nz, LoopHeight  ; repeat if A is nonzero
+  dec A                              ; decrease A, outer loop counter
+  jr nz, Color_Text_Box_Loop_Height  ; repeat if A is nonzero
 
-  ret  ; end of subroutine
+  ret
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -537,6 +538,6 @@ space: ; symbol for space starts at $93
   defb $00, $00, $00, $00, $00, $42, $7E, $00
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main
+; Save a snapshot that starts execution at the address marked with Main_Sub
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
+  savesna "bojan.sna", Main_Sub

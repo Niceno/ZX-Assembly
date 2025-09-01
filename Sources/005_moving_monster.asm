@@ -19,7 +19,7 @@
 ;===============================================================================
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-Main:
+Main_Sub:
 
   ;----------------------------------
   ; Open the channel to upper screen
@@ -49,49 +49,49 @@ Main:
   ;---------------------
   ; Move the monster up
   ;---------------------
-Loop:
-  call Set_Text_Coords     ; set up our row/column coords
+Main_Loop:
+  call Set_Text_Coords_Sub  ; set up our row/column coords
 
   ; Print monster
-  ld A, $99          ; want a monster (UDG) here
+  ld A, $90          ; want a monster (UDG) here
   rst ROM_PRINT_A_1  ; display it
 
-  call Delay         ; want a delay
+  call Delay_Sub     ; want a delay
 
   ; Delete the monster (print space over it)
-  call Set_Text_Coords  ; set up our row/column coords
-  ld A, 32              ; ASCII code for space
-  rst ROM_PRINT_A_1     ; delete old monster
+  call Set_Text_Coords_Sub  ; set up our row/column coords
+  ld A, CHAR_SPACE          ; ASCII code for space
+  rst ROM_PRINT_A_1         ; delete old monster
 
   ; Decrease text row -> move monster position up
-  ld HL, text_row  ; vertical position
-  dec (HL)         ; move it up one line
-  ld A, (HL)       ; where is it now?
-  cp 255           ; past top of screen yet?
-  jr nz, Loop      ; no, carry on
+  ld HL, text_row   ; vertical position
+  dec (HL)          ; move it up one line
+  ld A, (HL)        ; where is it now?
+  cp 255            ; past top of screen yet?
+  jr nz, Main_Loop  ; no, carry on
 
   ret  ; end of the main program
 
 ;===============================================================================
 ; Delay subroutine
 ;-------------------------------------------------------------------------------
-Delay:
+Delay_Sub:
   ei         ; enable interrupts, otherwise it gets stuck
              ; Speccy creates ~ 50 interruts per second, or each 0.02 seconds
   ld B, 10   ; length of delay; translates to roughly 0.2 s
 
-Delay0:
-  halt         ; wait for an interrupt
-  djnz Delay0  ; loop
+Delay_Loop:
+  halt             ; wait for an interrupt
+  djnz Delay_Loop  ; loop
 
-  ret        ; return
+  ret
 
 ;===============================================================================
 ; Set coordinates subroutine
 ;
 ; Uses "variables" text_row and text_column to set printing position
 ;-------------------------------------------------------------------------------
-Set_Text_Coords:
+Set_Text_Coords_Sub:
 
   ld A, CHAR_AT_CONTROL  ; ASCII control code for "at"
                          ; should be followed by row and column entries
@@ -151,6 +151,6 @@ arrow_right: ; starts at $99
   defb $08, $0C, $F2, $81, $81, $F2, $0C, $08
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main
+; Save a snapshot that starts execution at the address marked with Main_Sub
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
+  savesna "bojan.sna", Main_Sub

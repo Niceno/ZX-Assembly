@@ -19,7 +19,7 @@
 ;===============================================================================
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-Main:
+Main_Sub:
 
   ;----------------------------------
   ; Open the channel to upper screen
@@ -35,13 +35,13 @@ Main:
   ;-------------------------------------------------
   ; Print ten times using ROM routine ROM_PR_STRING
   ;-------------------------------------------------
-Loop:
+Main_Loop: ; OK, loop inside a subrouinte begins with subroutine's name
   push BC
   ld DE, bojan_string                     ; address of string
   ld BC, bojan_string_end - bojan_string  ; length of string to print
   call ROM_PR_STRING                      ; print the string
   pop BC
-  djnz Loop                               ; decrease B and jump if non zero
+  djnz Main_Loop                          ; decrease B and jump if non zero
 
   ret
 
@@ -60,7 +60,7 @@ bojan_string:
 bojan_string_end equ $
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main
-; (Without the label "Main", you could have written: SAVESNA "bojan.sna", $8000)
+; Save a snapshot that starts execution at the address marked with Main_Sub
+; (Without label "Main_Sub", you could have written: SAVESNA "bojan.sna", $8000)
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
+  savesna "bojan.sna", Main_Sub
