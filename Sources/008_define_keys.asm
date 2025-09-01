@@ -106,31 +106,31 @@ AskAgain:
 ReadNextKey:
 
   ; Character array
-  ld HL, all_characters
-  dec HL                 ; make sure first inc points to all_characters
+  ld IX, all_characters
+  dec IX                 ; make sure first inc points to all_characters
 
   ; Keyboard row
   ld BC, KEYS_12345
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "1"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "2"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "3"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "4"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "5"
-  inc HL
+  inc IX
   jp z, PrintOne
 
   ; Keyboard row
@@ -138,23 +138,23 @@ ReadNextKey:
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "6"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "7"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "8"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "9"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "0"
-  inc HL
+  inc IX
   jp z, PrintOne
 
   ; Keyboard row
@@ -162,23 +162,23 @@ ReadNextKey:
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "Q"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "W"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "E"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "R"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "T"
-  inc HL
+  inc IX
   jp z, PrintOne
 
   ; Keyboard row
@@ -186,23 +186,23 @@ ReadNextKey:
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "Y"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "U"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "I"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "O"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "P"
-  inc HL
+  inc IX
   jp z, PrintOne
 
   ; Keyboard row
@@ -210,23 +210,23 @@ ReadNextKey:
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "A"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "S"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "D"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "F"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "G"
-  inc HL
+  inc IX
   jp z, PrintOne
 
   ; Keyboard row
@@ -234,23 +234,23 @@ ReadNextKey:
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "H"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "J"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "K"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "L"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "ENTER"
-  inc HL
+  inc IX
   jp z, PrintOne
 
   ; Keyboard row
@@ -258,23 +258,23 @@ ReadNextKey:
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "CAPS SHIFT"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "Z"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "X"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "C"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "V"
-  inc HL
+  inc IX
   jp z, PrintOne
 
   ; Keyboard row
@@ -282,23 +282,23 @@ ReadNextKey:
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4 = key "B"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3 = key "N"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2 = key "M"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1 = key "SYMBOL SHIFT"
-  inc HL
+  inc IX
   jp z, PrintOne
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0 = key "SPACE"
-  inc HL
+  inc IX
   jp z, PrintOne
 
   jp ReadNextKey    ; if not pressed, repeat loop
@@ -307,7 +307,7 @@ ReadNextKey:
   ; Print the proper character
   ;----------------------------
 PrintOne:
-  ld A, (HL)
+  ld A, (IX)
   rst ROM_PRINT_A_1     ; display it
 
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
