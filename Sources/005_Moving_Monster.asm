@@ -49,18 +49,19 @@ Main_Sub:
   ; Move the monster up
   ;---------------------
 Main_Loop:
-  call Set_Text_Coords_Sub  ; set up our row/column coords
 
   ; Print monster
-  ld A, $90          ; want a monster (UDG) here
-  rst ROM_PRINT_A_1  ; display it
+  ld HL, monster_01  ;  ghost_01
+  ld (udgs_address), HL
+  call Print_Udgs_Character_Sub
 
   call Delay_Sub     ; want a delay
 
-  ; Delete the monster (print space over it)
-  call Set_Text_Coords_Sub  ; set up our row/column coords
-  ld A, CHAR_SPACE          ; ASCII code for space
-  rst ROM_PRINT_A_1         ; delete old monster
+  ; Delete the monster
+  ; (print space over it)
+  ld HL, empty
+  ld (udgs_address), HL
+  call Print_Udgs_Character_Sub
 
   ; Decrease text row -> move monster position up
   ld HL, text_row   ; vertical position
@@ -78,52 +79,87 @@ Main_Loop:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Delay_Sub.asm"
-  include "Subs/Set_Text_Coords_Sub.asm"
+  include "Subs/Print_Udgs_Character_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-text_row:
-  defb 0
+text_row:     defb  0
+text_column:  defb 15
 
-text_column:
-  defb 15
+char_to_print:  defb  CHAR_SPACE
+
+;--------------------------------
+; Address od the string to print
+;--------------------------------
+text_to_print_addr: defw char_to_print   ; store the address of the string
+
+screen_row_offset:  ; 24 words or 48 bytes
+  defw     0  ; row  0
+  defw    32  ; row  1
+  defw    64  ; row  2
+  defw    96  ; row  3
+  defw   128  ; row  4
+  defw   160  ; row  5
+  defw   192  ; row  6
+  defw   224  ; row  7
+  defw  2048  ; row  8 = 32 * 8 * 8
+  defw  2080  ; row  9
+  defw  2112  ; row 10
+  defw  2144  ; row 11
+  defw  2176  ; row 12
+  defw  2208  ; row 13
+  defw  2240  ; row 14
+  defw  2272  ; row 15
+  defw  4096  ; row 16 = 32 * 8 * 8 * 2
+  defw  4128  ; row 17
+  defw  4160  ; row 18
+  defw  4192  ; row 19
+  defw  4224  ; row 20
+  defw  4256  ; row 21
+  defw  4288  ; row 22
+  defw  4320  ; row 23
 
 udgs:
 
 ; The 8x8 sprites which follow, were created with the command:
 ; python.exe .\convert_sprite_8x8.py .\[name].8x8 in the directory Figures
-ghost_01: ; starts at $90
+ghost_01:
   defb $3C, $7E, $DB, $99, $FF, $FF, $DB, $DB
 
-human_01: ; starts at $91
+human_01:
   defb $18, $3C, $18, $FF, $18, $3C, $24, $66
 
-monster_01: ; starts at $92
+monster_01:
   defb $99, $BD, $5A, $7E, $42, $3C, $DB, $81
 
-monster_02: ; starts at $93
+monster_02:
   defb $24, $3C, $3C, $5A, $BD, $3C, $66, $42
 
-monster_03: ; starts at $94
+monster_03:
   defb $24, $7E, $FF, $DB, $7E, $42, $BD, $81
 
-monster_04: ; starts at $95
+monster_04:
   defb $42, $81, $BD, $5A, $66, $3C, $66, $A5
 
-arrow_up: ; starts at $96
+arrow_up:
   defb $18, $24, $42, $C3, $24, $24, $24, $3C
 
-arrow_down: ; starts at $97
+arrow_down:
   defb $3C, $24, $24, $24, $C3, $42, $24, $18
 
-arrow_left: ; starts at $98
+arrow_left:
   defb $10, $30, $4F, $81, $81, $4F, $30, $10
 
-arrow_right: ; starts at $99
+arrow_right:
   defb $08, $0C, $F2, $81, $81, $F2, $0C, $08
+
+empty:
+  defb $00, $00, $00, $00, $00, $00, $00, $00
+
+udgs_address: defw ghost_01
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub
