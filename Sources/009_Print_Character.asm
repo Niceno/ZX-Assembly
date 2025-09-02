@@ -26,6 +26,11 @@ Main_Sub:
   ;----------------------------------
   call Open_Upper_Screen_Sub
 
+  ld A, 0
+  ld (text_column), A       ; store column coordinate
+  ld A, 0
+  ld (text_row), A          ; store row coordinate
+
   ;---------------------------------------
   ; Address of the null-terminated string
   ;---------------------------------------
@@ -60,35 +65,9 @@ bojan_string: defb "Bojan is cool!", 0
 ;------------------------------
 ; Variables used as parameters
 ;------------------------------
-text_to_print: defw 0
-text_row:      defb 0
+text_to_print: defw  0
+text_row:      defb  4
 text_column:   defb 15
-
-screen_row_address:
-  defw 16384  ; row  0
-  defw 16416  ; row  1
-  defw 16448  ; row  2
-  defw 16480  ; row  3
-  defw 16512  ; row  4
-  defw 16544  ; row  5
-  defw 16576  ; row  6
-  defw 16608  ; row  7
-  defw 18432  ; row  8 = 16384 + 32 * 8 * 8
-  defw 18464  ; row  9
-  defw 18496  ; row 10
-  defw 18528  ; row 11
-  defw 18560  ; row 12
-  defw 18592  ; row 13
-  defw 18624  ; row 14
-  defw 18656  ; row 15
-  defw 20480  ; row 16 = 16384 + 32 * 8 * 8 * 2
-  defw 20512  ; row 17
-  defw 20544  ; row 18
-  defw 20576  ; row 19
-  defw 20608  ; row 20
-  defw 20640  ; row 21
-  defw 20672  ; row 22
-  defw 20704  ; row 23
 
 screen_row_offset:  ; 24 words or 48 bytes
   defw     0  ; row  0

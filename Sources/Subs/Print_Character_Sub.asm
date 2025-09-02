@@ -28,12 +28,29 @@ Print_Character_Sub:
   ld IX, MEM_FONT_START
   add IX, DE              ; point to the memory where the character is defined
 
-  ld HL, MEM_SCREEN_PIXELS  ; upper left corner of the screen
+  ; Calculate screen address from row and column
+  ld A, (text_row)        ; get row number (0-23)
+  add A, A                ; multiply by 2 (each offset is 2 bytes)
+  ld E, A
+  ld D, 0
+  ld HL, screen_row_offset
+  add HL, DE              ; HL points to the offset for this row
 
+  ; Load offset into BC
+  ld C, (HL)              ; get low byte of offset
+  inc HL
+  ld B, (HL)              ; get high byte of offset
+  ; Now BC = row offset
+
+  ld HL, MEM_SCREEN_PIXELS
+  add HL, BC              ; HL = screen start + row offset
+
+  ; Now add column offset
   ld A, (text_column)
-  ld D, 0     ; hight byte
-  ld E, A     ; low byte
-  add HL, DE  ; move to proper column
+  ld C, A
+  ld B, 0
+  add HL, BC              ; HL now points to correct screen position
+
 
   ld B, 8              ; characters are eight lines high
 Print_Character_Loop:
