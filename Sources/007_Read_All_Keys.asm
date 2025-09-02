@@ -216,15 +216,6 @@ all_characters:
   defb $90,        CHAR_L_UPP, CHAR_K_UPP, CHAR_J_UPP, CHAR_H_UPP  ; reversed
   defb $91,        CHAR_Z_UPP, CHAR_X_UPP, CHAR_C_UPP, CHAR_V_UPP
   defb $93,        $92,        CHAR_M_UPP, CHAR_N_UPP, CHAR_B_UPP  ; reversed
-; Ordered naively, as they appear on the keyboard
-; defb CHAR_1,     CHAR_2,     CHAR_3,     CHAR_4,     CHAR_5
-; defb CHAR_6,     CHAR_7,     CHAR_8,     CHAR_9,     CHAR_0
-; defb CHAR_Q_UPP, CHAR_W_UPP, CHAR_E_UPP, CHAR_R_UPP, CHAR_T_UPP
-; defb CHAR_Y_UPP, CHAR_U_UPP, CHAR_I_UPP, CHAR_O_UPP, CHAR_P_UPP
-; defb CHAR_A_UPP, CHAR_S_UPP, CHAR_D_UPP, CHAR_F_UPP, CHAR_G_UPP
-; defb CHAR_H_UPP, CHAR_J_UPP, CHAR_K_UPP, CHAR_L_UPP, $90
-; defb $91,        CHAR_Z_UPP, CHAR_X_UPP, CHAR_C_UPP, CHAR_V_UPP
-; defb CHAR_B_UPP, CHAR_N_UPP, CHAR_M_UPP, $92,        $93
 
 ;-----------------------------------------------------------
 ; User defined graphics (start at $90, then go $91, $92 ...
