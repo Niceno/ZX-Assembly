@@ -35,11 +35,11 @@ Main_Sub:
   ;--------------------------------------------
   ; Print text "Press a key for" at 3, 3
   ;--------------------------------------------
-  ld A, 3                   ; row
+  ld A,  3                  ; row
   ld (text_row), A          ; store row coordinate
-  ld A, 3                   ; column
+  ld A,  3                  ; column
   ld (text_column), A       ; store column coordinate
-  ld A, 16                  ; length of the string
+  ld A, 24                  ; length of the string
   ld (text_length), A       ; store the length of the string
   ld A,  1                  ; height
   ld (text_height), A       ; store the height
@@ -66,9 +66,38 @@ Main_Sub:
 Main_Ask_Again:
   push BC  ; store the counter
 
-  ;--------------------------------------------------
-  ; Print a little yellow flashing box for the entry
-  ;--------------------------------------------------
+  ;----------------------------------------------------
+  ; Print a little yellow flashing arrow for the entry
+  ;----------------------------------------------------
+  ld A, B
+  cp 5
+  jr z, Main_Up
+  cp 4
+  jr z, Main_Down
+  cp 3
+  jr z, Main_Left
+  cp 2
+  jr z, Main_Right
+  cp 1
+  jr z, Main_Fire
+Main_Up:
+  ld HL, arrow_up
+  jr Main_Done
+Main_Down:
+  ld HL, arrow_down
+  jr Main_Done
+Main_Left:
+  ld HL, arrow_left
+  jr Main_Done
+Main_Right:
+  ld HL, arrow_right
+  jr Main_Done
+Main_Fire:
+  ld HL, fire
+
+Main_Done:
+  ld (udgs_address), HL
+
   ld A, (text_row)                      ; current row
   inc A                                 ; icrease it ...
   inc A                                 ; .. by two
@@ -85,6 +114,8 @@ Main_Ask_Again:
 
   ; Color that little box
   call Color_Text_Box_Sub
+
+  call Print_Udgs_Character_Sub
 
   ;--------------------------------------------------------------------
   ; Wait until a key is pressed
@@ -210,6 +241,7 @@ Main_Print_One:
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Unpress.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
+  include "Subs/Print_Udgs_Character_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -229,7 +261,7 @@ text_color:   defb  0
 ;---------------------
 ; Texts to be written
 ;---------------------
-text_press_a_key:   defb "Press a key for ", 0
+text_press_a_key:   defb "Press keys for ", $94, 32, $95, 32, $96, 32, $97, 32, $98, 0
 text_keys_defined:  defb "All keys defined", 0
 text_up:            defb "up",               0
 text_down:          defb "down",             0
@@ -270,6 +302,32 @@ all_characters:
   defb $91,        CHAR_Z_UPP, CHAR_X_UPP, CHAR_C_UPP, CHAR_V_UPP
   defb $93,        $92,        CHAR_M_UPP, CHAR_N_UPP, CHAR_B_UPP  ; reversed
 
+screen_row_offset:  ; 24 words or 48 bytes
+  defw     0  ; row  0
+  defw    32  ; row  1
+  defw    64  ; row  2
+  defw    96  ; row  3
+  defw   128  ; row  4
+  defw   160  ; row  5
+  defw   192  ; row  6
+  defw   224  ; row  7
+  defw  2048  ; row  8 = 32 * 8 * 8
+  defw  2080  ; row  9
+  defw  2112  ; row 10
+  defw  2144  ; row 11
+  defw  2176  ; row 12
+  defw  2208  ; row 13
+  defw  2240  ; row 14
+  defw  2272  ; row 15
+  defw  4096  ; row 16 = 32 * 8 * 8 * 2
+  defw  4128  ; row 17
+  defw  4160  ; row 18
+  defw  4192  ; row 19
+  defw  4224  ; row 20
+  defw  4256  ; row 21
+  defw  4288  ; row 22
+  defw  4320  ; row 23
+
 ;-----------------------------------------------------------
 ; User defined graphics (start at $90, then go $91, $92 ...
 ;-----------------------------------------------------------
@@ -279,6 +337,13 @@ enter:         defb $00, $02, $12, $32, $7E, $30, $10, $00  ; $90
 caps_shift:    defb $00, $10, $38, $7C, $10, $10, $10, $00  ; $91
 symbol_shift:  defb $00, $7E, $4E, $4E, $72, $72, $7E, $00  ; $92
 space:         defb $00, $00, $00, $00, $00, $42, $7E, $00  ; $93
+arrow_up:      defb $18, $24, $42, $C3, $24, $24, $24, $3C  ; $94
+arrow_down:    defb $3C, $24, $24, $24, $C3, $42, $24, $18  ; $95
+arrow_left:    defb $10, $30, $4F, $81, $81, $4F, $30, $10  ; $96
+arrow_right:   defb $08, $0C, $F2, $81, $81, $F2, $0C, $08  ; $97
+fire:          defb $99, $00, $3C, $A5, $A5, $3C, $00, $99  ; $98
+
+udgs_address: defw arrow_up
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub
