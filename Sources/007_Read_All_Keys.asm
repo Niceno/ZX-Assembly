@@ -45,7 +45,6 @@ Main_Sub:
   ld (text_height), A           ; store the height
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
   ld (text_color), A            ; store the color
-  call Set_Text_Coords_Sub      ; set up our row/column coords
 
   ;---------------------
   ; Color that asterisk
@@ -126,17 +125,8 @@ Main_Browse_Key_Rows:
   ;----------------------------
 Main_Print_One:
   ld A, (IX)
-  rst ROM_PRINT_A_1     ; display it
-
-  ;--------------------------------------------------
-  ; Done setting the character, you can print it now
-  ;--------------------------------------------------
-  call Color_Text_Box_Sub   ; this seems to be needed every time
-
-  ;------------------------------------------
-  ; Once printed, bring the coordinates back
-  ;------------------------------------------
-  call Set_Text_Coords_Sub  ; set up our row/column coords
+  ld (char_to_print), A
+  call Print_Character_Sub
 
   jp Main_Read_Next_Key
 
@@ -148,8 +138,8 @@ Main_Print_One:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
-  include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
+  include "Subs/Print_Character_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -165,6 +155,39 @@ text_column:    defb  0
 text_length:    defb  1
 text_height:    defb 10
 text_color:     defb  0
+
+char_to_print:  defb  CHAR_SPACE
+
+;--------------------------------
+; Address od the string to print
+;--------------------------------
+text_to_print_addr: defw char_to_print   ; store the address of the string
+
+screen_row_offset:  ; 24 words or 48 bytes
+  defw     0  ; row  0
+  defw    32  ; row  1
+  defw    64  ; row  2
+  defw    96  ; row  3
+  defw   128  ; row  4
+  defw   160  ; row  5
+  defw   192  ; row  6
+  defw   224  ; row  7
+  defw  2048  ; row  8 = 32 * 8 * 8
+  defw  2080  ; row  9
+  defw  2112  ; row 10
+  defw  2144  ; row 11
+  defw  2176  ; row 12
+  defw  2208  ; row 13
+  defw  2240  ; row 14
+  defw  2272  ; row 15
+  defw  4096  ; row 16 = 32 * 8 * 8 * 2
+  defw  4128  ; row 17
+  defw  4160  ; row 18
+  defw  4192  ; row 19
+  defw  4224  ; row 20
+  defw  4256  ; row 21
+  defw  4288  ; row 22
+  defw  4320  ; row 23
 
 ;---------------------------------------------------------------------------
 ; All key ports; used only in Unpressed now, maybe it can be defined there?
