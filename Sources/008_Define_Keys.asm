@@ -45,9 +45,9 @@ Main_Sub:
   ld (text_height), A       ; store the height
   call Set_Text_Coords_Sub  ; set up our row/col coords.
 
-  ; Use ROM routine to print (this too over-rides the colors)
+  ; Store the address of the text to print in text_to_print_addr, using HL
   ld HL, text_press_a_key
-  ld (text_to_print), HL
+  ld (text_to_print_addr), HL
   call Print_Null_Terminated_String_Sub
 
 
@@ -193,8 +193,9 @@ Main_Print_One:
   ld (text_height), A       ; store the height
   call Set_Text_Coords_Sub  ; set up our row/col coords.
 
+  ; Store the address of the text to print in text_to_print_addr, using HL
   ld HL, text_keys_defined
-  ld (text_to_print), HL
+  ld (text_to_print_addr), HL
   call Print_Null_Terminated_String_Sub
 
   ret  ; end of the main program
@@ -219,23 +220,27 @@ Main_Print_One:
 ;-----------------------------------
 ; Variables which define text boxes
 ;-----------------------------------
-text_row:       defb  0  ; defb = define byte
-text_column:    defb 15
-text_length:    defb  1
-text_height:    defb 10
-text_color:     defb  0
-text_to_print:  defw  0
+text_row:     defb  0  ; defb = define byte
+text_column:  defb 15
+text_length:  defb  1
+text_height:  defb 10
+text_color:   defb  0
 
 ;---------------------
 ; Texts to be written
 ;---------------------
-text_press_a_key:      defb "Press a key for ", 0
-text_keys_defined:     defb "All keys defined", 0
-text_up:               defb "up",               0
-text_down:             defb "down",             0
-text_left:             defb "left",             0
-text_right:            defb "down",             0
-text_fire:             defb "fire",             0
+text_press_a_key:   defb "Press a key for ", 0
+text_keys_defined:  defb "All keys defined", 0
+text_up:            defb "up",               0
+text_down:          defb "down",             0
+text_left:          defb "left",             0
+text_right:         defb "down",             0
+text_fire:          defb "fire",             0
+
+;----------------------------------------
+; Holds the address of the text to print
+;----------------------------------------
+text_to_print_addr:  defw  0
 
 ;---------------------------------------------------------------------------
 ; All key ports; used only in Unpressed now, maybe it can be defined there?

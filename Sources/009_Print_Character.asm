@@ -35,7 +35,7 @@ Main_Sub:
   ; Address of the null-terminated string
   ;---------------------------------------
   ld HL, bojan_string
-  ld (text_to_print), HL
+  ld (text_to_print_addr), HL
 
   call Print_Character_Sub
 
@@ -65,9 +65,13 @@ bojan_string: defb "Bojan is cool!", 0
 ;------------------------------
 ; Variables used as parameters
 ;------------------------------
-text_to_print: defw  0
 text_row:      defb  4
 text_column:   defb 15
+
+;---------------------------------------
+; Holds the memory of the text to print
+;---------------------------------------
+text_to_print_addr: defw  0
 
 screen_row_offset:  ; 24 words or 48 bytes
   defw     0  ; row  0

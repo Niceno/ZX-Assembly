@@ -63,7 +63,7 @@ Main_Sub:
   call Set_Text_Coords_Sub  ; set up our row/col coords
 
   ld HL, bojan_string
-  ld (text_to_print), HL
+  ld (text_to_print_addr), HL
   call Print_Null_Terminated_String_Sub
 
   ;-------------------------
@@ -149,32 +149,19 @@ Main_Sub:
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-text_row:
-  defb 0
+text_row:     defb  0
+text_column:  defb 15
+text_length:  defb  1
+text_height:  defb 10
+text_color:   defb  0
 
-text_column:
-  defb 15
-
-text_length:
-  defb  1
-
-text_height:
-  defb  10
-
-text_color:
-  defb  0
-
-bojan_string:
-  defb "Bojan is cool!", 0
+bojan_string: defb "Bojan is cool!", 0
+number:       defw  9999         ; defw = define word  <---=
 
 ;--------------------------------
 ; Address od the string to print
 ;--------------------------------
-text_to_print:
-  defw bojan_string  ; store the address of the string
-
-number:
-  defw  9999         ; defw = define word  <---=
+text_to_print_addr:  defw bojan_string  ; store the address of the string
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub

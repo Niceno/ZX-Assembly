@@ -9,7 +9,7 @@
 ;-------------------------------------------------------------------------------
 Print_Null_Terminated_String_Sub:
 
-  ld HL, (text_to_print)  ; address of the text to print
+  ld HL, (text_to_print_addr)  ; address of the text to print
 
 Print_Null_Terminated_String_Loop:
 

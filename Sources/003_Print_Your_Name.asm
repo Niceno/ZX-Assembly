@@ -36,7 +36,7 @@ Main_Sub:
   ; Address of the null-terminated string
   ;---------------------------------------
   ld HL, bojan_string
-  ld (text_to_print), HL
+  ld (text_to_print_addr), HL
 
   ;-------------------------
   ; Initialize loop counter
@@ -78,29 +78,23 @@ Main_Loop:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-;--------------
-; Loop counter
-;--------------
-loop_count:
-  defb 10
+;-----------------------------------
+; Loop counter, text row and column
+;-----------------------------------
+loop_count:  defb 10
+text_row:    defb  0
+text_column: defb 15
 
 ;---------------------------------
 ; Null-terminated string to print
 ;---------------------------------
-bojan_string:
-  defb "Bojan is cool!", 0
+bojan_string:  defb "Bojan is cool!", 0
 
 ;--------------------------------
 ; Address od the string to print
 ;--------------------------------
-text_to_print:
-  defw bojan_string    ; store the address of the string
+text_to_print_addr:  defw bojan_string    ; store the address of the string
 
-text_row:
-  defb 0
-
-text_column:
-  defb 15
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub

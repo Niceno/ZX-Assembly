@@ -32,11 +32,11 @@ Main_Sub:
   ld (text_row), A          ; store row coordinate
   call Set_Text_Coords_Sub  ; set up up our row/col coords.
 
-  ;---------------------------------------
-  ; Address of the null-terminated string
-  ;---------------------------------------
+  ;----------------------------------------------------------
+  ; Store the address of the null-terminated string using HL
+  ;----------------------------------------------------------
   ld HL, bojan_string
-  ld (text_to_print), HL
+  ld (text_to_print_addr), HL
 
   ;-------------------------
   ; Initialize loop counter
@@ -80,20 +80,15 @@ Main_Loop:
 ;---------------------------------
 ; Null-terminated string to print
 ;---------------------------------
-bojan_string:
-  defb "Bojan is cool!", 0
+bojan_string: defb "Bojan is cool!", 0
 
 ;--------------------------------
 ; Address od the string to print
 ;--------------------------------
-text_to_print:
-  defw bojan_string    ; store the address of the string
+text_to_print_addr: defw bojan_string    ; store the address of the string
 
-text_row:
-  defb 0
-
-text_column:
-  defb 15
+text_row:     defb  0
+text_column:  defb 15
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub

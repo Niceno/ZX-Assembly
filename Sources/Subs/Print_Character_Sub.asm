@@ -6,7 +6,7 @@
 ;
 ; Parameters (passed via memory locations):
 ; - text_column
-; - text_to_print
+; - text_to_print_addr
 ;
 ; Constant array
 ; - screen_row_address
@@ -14,15 +14,15 @@
 ;-------------------------------------------------------------------------------
 Print_Character_Sub:
 
-  ld HL, (text_to_print)  ; point to the beginning of the string
-  ld A, (HL)              ; store the character into A
-  sub CHAR_SPACE          ; subtract the first character (space)
-  ld H, 0                 ; copy A to HL ...
+  ld HL, (text_to_print_addr)  ; point to the beginning of the string
+  ld A, (HL)                   ; store the character into A
+  sub CHAR_SPACE               ; subtract the first character (space)
+  ld H, 0                      ; copy A to HL ...
   ld L, A
-  add HL, HL              ; ... and multiply it with 8
+  add HL, HL                   ; ... and multiply it with 8
   add HL, HL
   add HL, HL
-  ld D, H                 ; copy HL to DE
+  ld D, H                      ; copy HL to DE
   ld E, L
 
   ld IX, MEM_FONT_START
