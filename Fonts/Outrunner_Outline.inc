@@ -1,17 +1,3 @@
-  include "../Sources/Spectrum_Constants.inc"
-
-;--------------------------------------
-; Set the architecture you'll be using
-;--------------------------------------
-  device zxspectrum48
-
-;-----------------------------------------------
-; Memory address at which the program will load
-;-----------------------------------------------
-  org MEM_CUSTOM_FONT_START
-
-; Outrunner Outline font from https://damieng.com/zx-origins
-Custom_Font:
   defb $00,$00,$00,$00,$00,$00,$00,$00 ;  
   defb $18,$24,$24,$24,$28,$30,$48,$30 ; !
   defb $ff,$99,$99,$dd,$7f,$00,$00,$00 ; "
@@ -108,8 +94,3 @@ Custom_Font:
   defb $fc,$84,$e7,$31,$27,$e4,$84,$fc ; }
   defb $7b,$cd,$a5,$b3,$de,$00,$00,$00 ; ~
   defb $00,$3c,$66,$5e,$5e,$66,$3c,$00 ; ©
-
-;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Custom_Font
-;-------------------------------------------------------------------------------
-  savebin "custom_font.bin", Custom_Font, $ - Custom_Font

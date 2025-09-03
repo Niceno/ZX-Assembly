@@ -10,18 +10,15 @@
 ;-----------------------------------------------
   org MEM_CUSTOM_FONT_START
 
-; [Name of the font] font
 Custom_Font:
-  ...
-  ...
-  96 lines come here, looking more or less like this:
-  ...
-  defb $7e,$4e,$0e,$3c,$0e,$4e,$7e,$00 ; 3
-  defb $fc,$9c,$9c,$9c,$9c,$fe,$1c,$00 ; 4
-  defb $7e,$4e,$40,$7e,$0e,$4e,$7e,$00 ; 5
-  defb $7e,$4e,$40,$7e,$4e,$4e,$7e,$00 ; 6
-  ...
-  ...
+; include "Bubblegum.inc"
+; include "Computing_60s.inc"
+; include "Fusion_Drive.inc"
+; include "Mild_West.inc"
+; include "Orbiter.inc"
+  include "Outrunner_Inline.inc"
+; include "Outrunner_Outline.inc"
+; include "Standstill.inc"
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Custom_Font

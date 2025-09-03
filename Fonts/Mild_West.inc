@@ -1,17 +1,3 @@
-  include "../Sources/Spectrum_Constants.inc"
-
-;--------------------------------------
-; Set the architecture you'll be using
-;--------------------------------------
-  device zxspectrum48
-
-;-----------------------------------------------
-; Memory address at which the program will load
-;-----------------------------------------------
-  org MEM_CUSTOM_FONT_START
-
-; Mild West font from https://damieng.com/zx-origins
-Custom_Font:
   defb $00,$00,$00,$00,$00,$00,$00,$00 ;  
   defb $10,$10,$10,$10,$00,$38,$38,$00 ; !
   defb $77,$33,$ee,$00,$00,$00,$00,$00 ; "
@@ -108,8 +94,3 @@ Custom_Font:
   defb $e0,$f0,$10,$0e,$0e,$10,$f0,$e0 ; }
   defb $00,$76,$6e,$00,$00,$00,$00,$00 ; ~
   defb $3c,$42,$9d,$bd,$a1,$bd,$9d,$42 ; ©
-
-;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Custom_Font
-;-------------------------------------------------------------------------------
-  savebin "custom_font.bin", Custom_Font, $ - Custom_Font

@@ -1,17 +1,3 @@
-  include "../Sources/Spectrum_Constants.inc"
-
-;--------------------------------------
-; Set the architecture you'll be using
-;--------------------------------------
-  device zxspectrum48
-
-;-----------------------------------------------
-; Memory address at which the program will load
-;-----------------------------------------------
-  org MEM_CUSTOM_FONT_START
-
-; Orbiter font https://damieng.com/zx-origins
-Custom_Font:
   defb $00,$00,$00,$00,$00,$00,$00,$00 ;  
   defb $10,$10,$10,$10,$00,$10,$10,$00 ; !
   defb $24,$24,$24,$00,$00,$00,$00,$00 ; "
@@ -108,8 +94,3 @@ Custom_Font:
   defb $20,$20,$10,$0c,$10,$20,$20,$00 ; }
   defb $62,$92,$8c,$00,$00,$00,$00,$00 ; ~
   defb $3c,$42,$9d,$a1,$a1,$9d,$42,$3c ; ©
-
-;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Custom_Font
-;-------------------------------------------------------------------------------
-  savebin "custom_font.bin", Custom_Font, $ - Custom_Font

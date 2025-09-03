@@ -1,17 +1,3 @@
-  include "../Sources/Spectrum_Constants.inc"
-
-;--------------------------------------
-; Set the architecture you'll be using
-;--------------------------------------
-  device zxspectrum48
-
-;-----------------------------------------------
-; Memory address at which the program will load
-;-----------------------------------------------
-  org MEM_CUSTOM_FONT_START
-
-; Fusion Drive font from https://damieng.com/zx-origins
-Custom_Font:
   defb $00,$00,$00,$00,$00,$00,$00,$00 ;  
   defb $00,$08,$08,$10,$00,$30,$00,$00 ; !
   defb $00,$12,$24,$48,$00,$00,$00,$00 ; "
@@ -108,8 +94,3 @@ Custom_Font:
   defb $78,$08,$08,$0e,$08,$10,$60,$00 ; }
   defb $00,$60,$54,$0c,$00,$00,$00,$00 ; ~
   defb $1f,$21,$4d,$95,$a1,$bd,$81,$ff ; ©
-
-;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Custom_Font
-;-------------------------------------------------------------------------------
-  savebin "custom_font.bin", Custom_Font, $ - Custom_Font

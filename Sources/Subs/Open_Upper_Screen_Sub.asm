@@ -4,8 +4,11 @@
 ; Purpose:
 ; - Opens the output to the upper screen
 ;
-; Parameters (passed via memory locations):
+; Parameters:
 ; - none
+;
+; Clobbers:
+; - A
 ;-------------------------------------------------------------------------------
 Open_Upper_Screen_Sub:
 

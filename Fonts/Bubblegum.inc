@@ -1,17 +1,3 @@
-  include "../Sources/Spectrum_Constants.inc"
-
-;--------------------------------------
-; Set the architecture you'll be using
-;--------------------------------------
-  device zxspectrum48
-
-;-----------------------------------------------
-; Memory address at which the program will load
-;-----------------------------------------------
-  org MEM_CUSTOM_FONT_START
-
-; Bubblegum font from https://damieng.com/zx-origins
-Custom_Font:
   defb $00,$00,$00,$00,$00,$00,$00,$00 ;  
   defb $18,$24,$24,$24,$18,$24,$18,$00 ; !
   defb $44,$aa,$cc,$00,$00,$00,$00,$00 ; "
@@ -108,8 +94,3 @@ Custom_Font:
   defb $f0,$88,$8c,$42,$8c,$88,$f0,$00 ; }
   defb $00,$6e,$ba,$ec,$00,$00,$00,$00 ; ~
   defb $3c,$42,$99,$a1,$a1,$99,$42,$3c ; ©
-
-;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Custom_Font
-;-------------------------------------------------------------------------------
-  savebin "custom_font.bin", Custom_Font, $ - Custom_Font

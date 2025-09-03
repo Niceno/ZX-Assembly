@@ -26,15 +26,20 @@ Main_Sub:
   ;----------------------------------
   call Open_Upper_Screen_Sub
 
+  ;-----------------
+  ; Set custom font
+  ;-----------------
+  call Set_Custom_Font_Sub
+
   ld A, 0
   ld (text_column), A       ; store column coordinate
   ld A, 0
   ld (text_row), A          ; store row coordinate
   call Set_Text_Coords_Sub  ; set up up our row/col coords.
 
-  ;---------------------------------------
-  ; Address of the null-terminated string
-  ;---------------------------------------
+  ;----------------------------------------------------------
+  ; Store the address of the null-terminated string using HL
+  ;----------------------------------------------------------
   ld HL, bojan_string
   ld (text_to_print_addr), HL
 
@@ -71,6 +76,7 @@ Main_Loop:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
+  include "Subs/Set_Custom_Font_Sub.asm"
   include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
 
@@ -97,6 +103,12 @@ bojan_string:  defb "Bojan is cool!", 0
 ;--------------------------------
 text_to_print_addr:  defw bojan_string    ; store the address of the string
 
+;---------------------------------------------
+; Custom font will end up at a custom address
+;---------------------------------------------
+  org MEM_CUSTOM_FONT_START
+custom_font:
+  include "../Fonts/Outrunner_Inline.inc"
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub
