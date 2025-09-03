@@ -74,11 +74,6 @@ Main_Loop:
 char_to_print:   defb  CHAR_ASTERISK
 space_to_print:  defb  CHAR_SPACE
 
-;--------------------------------
-; Address od the string to print
-;--------------------------------
-text_to_print_addr: defw char_to_print   ; store the address of the string
-
 screen_row_offset:  ; 24 words or 48 bytes
   defw     0  ; row  0
   defw    32  ; row  1
