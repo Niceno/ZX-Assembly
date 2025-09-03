@@ -32,20 +32,6 @@ Main_Sub:
   ld hl, udgs                         ; user defined graphics (UDGs)
   ld (MEM_USER_DEFINED_GRAPHICS), hl  ; set up UDG system variable.
 
-  ;-------------------------------------------------
-  ; Set coordinates to 5, 5, length and height to 1
-  ;-------------------------------------------------
-  ld A, 12                      ; row
-  ld (text_row), A              ; store row coordinate
-  ld A, 16                      ; column
-  ld (text_column), A           ; store column coordinate
-  ld A,  1                      ; length of the string
-  ld (text_length), A           ; store the length
-  ld A,  1                      ; height
-  ld (text_height), A           ; store the height
-  ld A, RED_INK + YELLOW_PAPER  ; color of the string
-  ld (text_color), A            ; store the color
-
   ;---------------------
   ; Color that asterisk
   ;---------------------
@@ -127,9 +113,9 @@ Main_Browse_Key_Rows:
   ; Print the proper character
   ;----------------------------
 Main_Print_One:
-  ld A, (IX)
-  ld (char_to_print), A
-  call Print_Character_Sub
+  ld HL, IX     ; address of the character to print
+  ld BC, $0C10  ; row (B) and column (C)
+  call Print_Character_Reg_Sub
 
   jp Main_Read_Next_Key
 
@@ -142,29 +128,13 @@ Main_Print_One:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Color_Text_Box_Reg_Sub.asm"
-  include "Subs/Print_Character_Sub.asm"
+  include "Subs/Print_Character_Reg_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-;-----------------------------------
-; Variables which define text boxes
-;-----------------------------------
-text_row:       defb  0  ; defb = define byte
-text_column:    defb  0
-text_length:    defb  1
-text_height:    defb 10
-text_color:     defb  0
-
-char_to_print:  defb  CHAR_SPACE
-
-;--------------------------------
-; Address od the string to print
-;--------------------------------
-text_to_print_addr: defw char_to_print   ; store the address of the string
 
 screen_row_offset:  ; 24 words or 48 bytes
   defw     0  ; row  0
