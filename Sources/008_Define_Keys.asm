@@ -66,9 +66,10 @@ Main_Sub:
 Main_Ask_Again:
   push BC  ; store the counter
 
-  ;----------------------------------------------------
+  ;----------------------------------------------------------
   ; Print a little yellow flashing arrow for the entry
-  ;----------------------------------------------------
+  ; and set the "pointers" curr_port_addr and curr_mask_addr
+  ;----------------------------------------------------------
   ld A, B
   cp 5
   jr z, Main_Up
@@ -82,21 +83,45 @@ Main_Ask_Again:
   jr z, Main_Fire
 Main_Up:
   ld HL, arrow_up
+  ld (udgs_address), HL
+  ld HL, port_for_up
+  ld (curr_port_addr), HL
+  ld HL, mask_for_up
+  ld (curr_mask_addr), HL
   jr Main_Done
 Main_Down:
   ld HL, arrow_down
+  ld (udgs_address), HL
+  ld HL, port_for_down
+  ld (curr_port_addr), HL
+  ld HL, mask_for_down
+  ld (curr_mask_addr), HL
   jr Main_Done
 Main_Left:
   ld HL, arrow_left
+  ld (udgs_address), HL
+  ld HL, port_for_left
+  ld (curr_port_addr), HL
+  ld HL, mask_for_left
+  ld (curr_mask_addr), HL
   jr Main_Done
 Main_Right:
   ld HL, arrow_right
+  ld (udgs_address), HL
+  ld HL, port_for_right
+  ld (curr_port_addr), HL
+  ld HL, mask_for_right
+  ld (curr_mask_addr), HL
   jr Main_Done
 Main_Fire:
   ld HL, fire
+  ld (udgs_address), HL
+  ld HL, port_for_fire
+  ld (curr_port_addr), HL
+  ld HL, mask_for_fire
+  ld (curr_mask_addr), HL
 
 Main_Done:
-  ld (udgs_address), HL
 
   ld A, (text_row)                      ; current row
   inc A                                 ; icrease it ...
@@ -161,22 +186,27 @@ Main_Browse_Key_Rows:
 
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 0, A        ; bit 0
+  ld A, 0         ; store 0
   inc IX
   jp z, Main_Print_One
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1
+  ld A, 1         ; store 1
   inc IX
   jp z, Main_Print_One
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2
+  ld A, 2         ; store 2
   inc IX
   jp z, Main_Print_One
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3
+  ld A, 3         ; store 3
   inc IX
   jp z, Main_Print_One
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4
+  ld A, 4         ; store 4
   inc IX
   jp z, Main_Print_One
 
@@ -190,6 +220,17 @@ Main_Browse_Key_Rows:
   ; Print the proper character
   ;----------------------------
 Main_Print_One:
+
+  ; Save port (BC already contains the port)
+  ld HL, (curr_port_addr)
+  ld (HL), C  ; low byte
+  inc HL
+  ld (HL), B  ; high byte
+
+  ; Determine mask
+  ld HL, (curr_mask_addr)
+  ld (HL), A
+
   ld A, (IX)
   rst ROM_PRINT_A_1     ; display it
 
@@ -261,7 +302,7 @@ text_color:   defb  0
 ;---------------------
 ; Texts to be written
 ;---------------------
-text_press_a_key:   defb "Press keys for ", $94, 32, $95, 32, $96, 32, $97, 32, $98, 0
+text_press_a_key:   defb "Press keys for ", $94,32,$95,32,$96,32,$97,32,$98, 0
 text_keys_defined:  defb "All keys defined", 0
 text_up:            defb "up",               0
 text_down:          defb "down",             0
@@ -345,7 +386,26 @@ fire:          defb $99, $00, $3C, $A5, $A5, $3C, $00, $99  ; $98
 
 udgs_address: defw arrow_up
 
+; User refined keys will be stored here
+debug_begin: defb ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
+port_for_up:    defw  0
+mask_for_up:    defb  0
+port_for_down:  defw  0
+mask_for_down:  defb  0
+port_for_left:  defw  0
+mask_for_left:  defb  0
+port_for_right: defw  0
+mask_for_right: defb  0
+port_for_fire:  defw  0
+mask_for_fire:  defb  0
+debug_end: defb "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+
+; Current port and mask addresses
+curr_port_addr: defw 0
+curr_mask_addr: defw 0
+
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub
 ;-------------------------------------------------------------------------------
   savesna "bojan.sna", Main_Sub
+  savebin "bojan.bin", Main_Sub, $ - Main_Sub
