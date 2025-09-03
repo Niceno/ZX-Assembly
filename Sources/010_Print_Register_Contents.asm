@@ -37,7 +37,7 @@ Main_Sub:
   ;---------------------
   ld A, 25
   ld (text_column), A       ; store column coordinate
-  ld A,  1
+  ld A,  0
   ld (text_row), A          ; store row coordinate
   call Set_Text_Coords_Sub  ; set up up row/col coords.
 
@@ -68,9 +68,9 @@ Main_Sub:
   ;---------------------
   ; Print the DE string
   ;---------------------
-  ld A, 25
+  ld A, $19  ; 25
   ld (text_column), A       ; store column coordinate
-  ld A,  2
+  ld A,  1
   ld (text_row), A          ; store row coordinate
   call Set_Text_Coords_Sub  ; set up up row/col coords.
 
@@ -101,9 +101,9 @@ Main_Sub:
   ;---------------------
   ; Print the HL string
   ;---------------------
-  ld A, 25
+  ld A, $19  ; 25
   ld (text_column), A       ; store column coordinate
-  ld A,  3                  ; row 2
+  ld A,  2                  ; row 2
   ld (text_row), A          ; store row coordinate
   call Set_Text_Coords_Sub  ; set up up row/col coords.
 
