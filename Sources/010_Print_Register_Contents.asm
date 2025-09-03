@@ -28,6 +28,53 @@ Main_Sub:
 
   ;--------------
   ;
+  ; AF registers
+  ;
+  ;--------------
+
+  ;---------------------
+  ; Print the AF string
+  ;---------------------
+  ld A, $19  ; 25
+  ld (text_column), A       ; store column coordinate
+  ld A,  0
+  ld (text_row), A          ; store row coordinate
+  call Set_Text_Coords_Sub  ; set up up row/col coords.
+
+  ld HL, af_string          ; set the text_to_print_addr to string to print
+  ld (text_to_print_addr), HL
+  call Print_Null_Terminated_String_Sub
+
+  ;----------------------------------
+  ; Now print AF register in hex
+  ;----------------------------------
+  call Print_Hex_Byte_Sub  ; just print A as it is
+
+  ; Print F register
+  push HL                  ; save HL because we're going to use it
+  push AF                  ; push AF onto the stack (AF is now on top of stack)
+  pop  HL                  ; pop the word into HL (now L = F, H = A)
+  ld   A, L                ; now A contains the F register value
+  call Print_Hex_Byte_Sub  ; print the flags byte
+  pop  HL                  ; restore the original HL value
+
+  ;------------------------
+  ; Color the AF registers
+  ;------------------------
+  ld A,  0
+  ld (text_row), A             ; store row
+  ld A, $19  ; 25
+  ld (text_column), A          ; store column coordinate
+  ld A,  7
+  ld (text_length), A          ; store box length
+  ld A,  1
+  ld (text_height), A          ; store box height
+  ld A, WHITE_INK + BLACK_PAPER
+  ld (text_color), A           ; store color
+  call Color_Text_Box_Sub
+
+  ;--------------
+  ;
   ; BC registers
   ;
   ;--------------
@@ -37,7 +84,7 @@ Main_Sub:
   ;---------------------
   ld A, $19  ; 25
   ld (text_column), A       ; store column coordinate
-  ld A,  0
+  ld A,  1
   ld (text_row), A          ; store row coordinate
   call Set_Text_Coords_Sub  ; set up up row/col coords.
 
@@ -62,7 +109,7 @@ Main_Sub:
   ;------------------------
   ; Color the BC registers
   ;------------------------
-  ld A,  0
+  ld A,  1
   ld (text_row), A             ; store row
   ld A, $19  ; 25
   ld (text_column), A          ; store column coordinate
@@ -85,7 +132,7 @@ Main_Sub:
   ;---------------------
   ld A, $19  ; 25
   ld (text_column), A       ; store column coordinate
-  ld A,  1
+  ld A,  2
   ld (text_row), A          ; store row coordinate
   call Set_Text_Coords_Sub  ; set up up row/col coords.
 
@@ -110,7 +157,7 @@ Main_Sub:
   ;------------------------
   ; Color the DE registers
   ;------------------------
-  ld A,  1
+  ld A,  2
   ld (text_row), A             ; store row
   ld A, $19  ; 25
   ld (text_column), A          ; store column coordinate
@@ -133,7 +180,7 @@ Main_Sub:
   ;---------------------
   ld A, $19  ; 25
   ld (text_column), A       ; store column coordinate
-  ld A,  2                  ; row 2
+  ld A,  3                  ; row 2
   ld (text_row), A          ; store row coordinate
   call Set_Text_Coords_Sub  ; set up up row/col coords.
 
@@ -158,7 +205,7 @@ Main_Sub:
   ;------------------------
   ; Color the HL registers
   ;------------------------
-  ld A,  2
+  ld A,  3
   ld (text_row), A             ; store row
   ld A, $19  ; 25
   ld (text_column), A          ; store column coordinate
@@ -258,6 +305,7 @@ Print_Hex_Digit_Sub:
 ;---------------------------------
 ; Null-terminated string to print
 ;---------------------------------
+af_string: defb "AF:", 0
 bc_string: defb "BC:", 0
 de_string: defb "DE:", 0
 hl_string: defb "HL:", 0
