@@ -59,6 +59,21 @@ Main_Sub:
   ld A, C                   ; A = low byte ($FE)
   call Print_Hex_Byte_Sub
 
+  ;------------------------
+  ; Color the BC registers
+  ;------------------------
+  ld A,  0
+  ld (text_row), A             ; store row
+  ld A, $19  ; 25
+  ld (text_column), A          ; store column coordinate
+  ld A,  7
+  ld (text_length), A          ; store box length
+  ld A,  1
+  ld (text_height), A          ; store box height
+  ld A, WHITE_INK + BLUE_PAPER
+  ld (text_color), A           ; store color
+  call Color_Text_Box_Sub
+
   ;--------------
   ;
   ; DE registers
@@ -91,6 +106,21 @@ Main_Sub:
   ; Print E register (low byte)
   ld A, E                   ; A = low byte
   call Print_Hex_Byte_Sub
+
+  ;------------------------
+  ; Color the DE registers
+  ;------------------------
+  ld A,  1
+  ld (text_row), A             ; store row
+  ld A, $19  ; 25
+  ld (text_column), A          ; store column coordinate
+  ld A,  7
+  ld (text_length), A          ; store box length
+  ld A,  1
+  ld (text_height), A          ; store box height
+  ld A, WHITE_INK + MAGENTA_PAPER
+  ld (text_color), A           ; store color
+  call Color_Text_Box_Sub
 
   ;--------------
   ;
@@ -125,20 +155,19 @@ Main_Sub:
   ld A, L                   ; A = low byte
   call Print_Hex_Byte_Sub
 
-  ;---------------
-  ; Make a column
-  ;---------------
-  ld A,  0
+  ;------------------------
+  ; Color the HL registers
+  ;------------------------
+  ld A,  2
   ld (text_row), A             ; store row
   ld A, $19  ; 25
   ld (text_column), A          ; store column coordinate
   ld A,  7
   ld (text_length), A          ; store box length
-  ld A,  3
+  ld A,  1
   ld (text_height), A          ; store box height
-  ld A, WHITE_INK + BLUE_PAPER
+  ld A, WHITE_INK + RED_PAPER
   ld (text_color), A           ; store color
-
   call Color_Text_Box_Sub
 
   ret
