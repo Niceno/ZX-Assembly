@@ -32,18 +32,18 @@ Main_Sub:
   ld hl, udgs                         ; user defined graphics (UDGs)
   ld (MEM_USER_DEFINED_GRAPHICS), hl  ; set up UDG system variable.
 
+  ;---------------
+  ; Set the color
+  ;---------------
+  ld A, RED_INK + CYAN_PAPER      ; load A with desired color
+  ld (MEM_STORE_SCREEN_COLOR), A  ; set the screen colors
+  call ROM_CLEAR_SCREEN           ; clear the screen
+
   ;---------------------------------------------
   ; Initialize text row in which you will start
   ;---------------------------------------------
   ld A, 21          ; row 21 = bottom of screen.
   ld (text_row), A  ; set initial text row
-
-  ; --------------
-  ; Set the color
-  ; --------------
-  ld A, RED_INK + CYAN_PAPER      ; load A with desired color
-  ld (MEM_STORE_SCREEN_COLOR), A  ; set the screen colors
-  call ROM_CLEAR_SCREEN           ; clear the screen
 
   ;---------------------
   ; Move the monster up
