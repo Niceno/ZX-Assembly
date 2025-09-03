@@ -42,8 +42,8 @@ Main_Sub:
   ;---------------------------------------------
   ; Initialize text row in which you will start
   ;---------------------------------------------
-  ld A, 21          ; row 21 = bottom of screen.
-  ld (text_row), A  ; set initial text row
+  ld B, 21
+  ld C, 15
 
   ;---------------------
   ; Move the monster up
@@ -51,22 +51,22 @@ Main_Sub:
 Main_Loop:
 
   ; Print monster
-  ld HL, monster_01  ;  ghost_01
-  call Print_Udgs_Character_Sub
+  ld HL, monster_01                  ; ghost_01
+  push BC                            ; save the row count
+  call Print_Udgs_Character_Reg_Sub  ; this clobbers B
 
-  call Delay_Sub     ; want a delay
+  call Delay_Sub  ; want a delay, also clobbers B
+  pop BC          ; get back the row count
 
   ; Delete the monster
   ; (print space over it)
-  ld HL, empty
-  call Print_Udgs_Character_Sub
+  ld HL, space_to_print
+  push BC                            ; save the row count
+  call Print_Udgs_Character_Reg_Sub
+  pop BC                             ; get back proper row count
 
   ; Decrease text row -> move monster position up
-  ld HL, text_row   ; vertical position
-  dec (HL)          ; move it up one line
-  ld A, (HL)        ; where is it now?
-  cp 255            ; past top of screen yet?
-  jr nz, Main_Loop  ; no, carry on
+  djnz Main_Loop  ; no, carry on
 
   ret  ; end of the main program
 
@@ -77,22 +77,13 @@ Main_Loop:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Delay_Sub.asm"
-  include "Subs/Print_Udgs_Character_Sub.asm"
+  include "Subs/Print_Udgs_Character_Reg_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-text_row:     defb  0
-text_column:  defb 15
-
-char_to_print:  defb  CHAR_SPACE
-
-;--------------------------------
-; Address od the string to print
-;--------------------------------
-text_to_print_addr: defw char_to_print   ; store the address of the string
 
 screen_row_offset:  ; 24 words or 48 bytes
   defw     0  ; row  0
@@ -154,7 +145,7 @@ arrow_left:
 arrow_right:
   defb $08, $0C, $F2, $81, $81, $F2, $0C, $08
 
-empty:
+space_to_print:
   defb $00, $00, $00, $00, $00, $00, $00, $00
 
 ;-------------------------------------------------------------------------------
