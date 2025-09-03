@@ -4,7 +4,7 @@
 ; Purpose:
 ; - Prints a single character by directly addressing screen memory
 ;
-; Parameters (passed via memory locations):
+; Parameters (passed via registers)
 ; - HL: address of the character
 ; - BC: row and column
 ;
