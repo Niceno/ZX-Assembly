@@ -4,7 +4,7 @@
 ; Purpose:
 ; - Colors a box of text with specified length and height
 ;
-; Parameters (passed via memory locations):
+; Parameters (passed via registers)
 ; - A:  color
 ; - BC: text box row and column
 ; - DE: text box length and height
