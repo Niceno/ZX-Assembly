@@ -13,7 +13,7 @@
 ;-------------------------------------------------------------------------------
 Print_Udgs_Character_Sub:
 
-  ld IX, HL
+  ld IX, (udgs_address)
 
   ; Calculate screen address from row and column
   ld A, (text_row)        ; get row number (0-23)
@@ -23,20 +23,21 @@ Print_Udgs_Character_Sub:
   ld HL, screen_row_offset
   add HL, DE              ; HL points to the offset for this row
 
-  ; Load offset into DE
-  ld E, (HL)              ; get low byte of offset
+  ; Load offset into BC
+  ld C, (HL)              ; get low byte of offset
   inc HL
-  ld D, (HL)              ; get high byte of offset
-  ; Now DE = row offset
+  ld B, (HL)              ; get high byte of offset
+  ; Now BC = row offset
 
   ld HL, MEM_SCREEN_PIXELS
-  add HL, DE              ; HL = screen start + row offset
+  add HL, BC              ; HL = screen start + row offset
 
   ; Now add column offset
   ld A, (text_column)
-  ld E, A
-  ld D, 0
-  add HL, DE              ; HL now points to correct screen position
+  ld C, A
+  ld B, 0
+  add HL, BC              ; HL now points to correct screen position
+
 
   ld B, 8              ; characters are eight lines high
 Print_Udgs_Character_Loop:
