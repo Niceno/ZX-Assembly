@@ -61,17 +61,10 @@ Main_Sub:
   ;------------------------
   ; Color the AF registers
   ;------------------------
-  ld A,  0
-  ld (text_row), A             ; store row
-  ld A, $19  ; 25
-  ld (text_column), A          ; store column coordinate
-  ld A,  7
-  ld (text_length), A          ; store box length
-  ld A,  1
-  ld (text_height), A          ; store box height
-  ld A, WHITE_INK + BLACK_PAPER
-  ld (text_color), A           ; store color
-  call Color_Text_Box_Sub
+  ld A, WHITE_INK + BLACK_PAPER  ; color
+  ld BC, $0019                   ; row and column
+  ld DE, $0701                   ; length and height
+  call Color_Text_Box_Reg_Sub
 
   ;--------------
   ;
@@ -109,17 +102,10 @@ Main_Sub:
   ;------------------------
   ; Color the BC registers
   ;------------------------
-  ld A,  1
-  ld (text_row), A             ; store row
-  ld A, $19  ; 25
-  ld (text_column), A          ; store column coordinate
-  ld A,  7
-  ld (text_length), A          ; store box length
-  ld A,  1
-  ld (text_height), A          ; store box height
-  ld A, WHITE_INK + BLUE_PAPER
-  ld (text_color), A           ; store color
-  call Color_Text_Box_Sub
+  ld A, WHITE_INK + BLUE_PAPER  ; color
+  ld BC, $0119                  ; row and column
+  ld DE, $0701                  ; length and height
+  call Color_Text_Box_Reg_Sub
 
   ;--------------
   ;
@@ -157,17 +143,10 @@ Main_Sub:
   ;------------------------
   ; Color the DE registers
   ;------------------------
-  ld A,  2
-  ld (text_row), A             ; store row
-  ld A, $19  ; 25
-  ld (text_column), A          ; store column coordinate
-  ld A,  7
-  ld (text_length), A          ; store box length
-  ld A,  1
-  ld (text_height), A          ; store box height
-  ld A, WHITE_INK + MAGENTA_PAPER
-  ld (text_color), A           ; store color
-  call Color_Text_Box_Sub
+  ld A, WHITE_INK + MAGENTA_PAPER  ; color
+  ld BC, $0219                     ; row and column
+  ld DE, $0701                     ; length and height
+  call Color_Text_Box_Reg_Sub
 
   ;--------------
   ;
@@ -205,17 +184,10 @@ Main_Sub:
   ;------------------------
   ; Color the HL registers
   ;------------------------
-  ld A,  3
-  ld (text_row), A             ; store row
-  ld A, $19  ; 25
-  ld (text_column), A          ; store column coordinate
-  ld A,  7
-  ld (text_length), A          ; store box length
-  ld A,  1
-  ld (text_height), A          ; store box height
-  ld A, WHITE_INK + RED_PAPER
-  ld (text_color), A           ; store color
-  call Color_Text_Box_Sub
+  ld A, WHITE_INK + RED_PAPER  ; color
+  ld BC, $0319                 ; row and column
+  ld DE, $0701                 ; length and height
+  call Color_Text_Box_Reg_Sub
 
   ret
 
@@ -293,7 +265,7 @@ Print_Hex_Digit_Sub:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Text_Coords_Sub.asm"
-  include "Subs/Color_Text_Box_Sub.asm"
+  include "Subs/Color_Text_Box_Reg_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

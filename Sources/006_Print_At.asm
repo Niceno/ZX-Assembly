@@ -37,8 +37,6 @@ Main_Sub:
   ld (text_length), A           ; store the length
   ld A,  1                      ; height
   ld (text_height), A           ; store the height
-  ld A, RED_INK + YELLOW_PAPER  ; color of the string
-  ld (text_color), A            ; store the color
   call Set_Text_Coords_Sub      ; set up our row/column coords
 
   ld A, CHAR_ASTERISK   ; print an asterisk
@@ -47,7 +45,10 @@ Main_Sub:
   ;---------------------
   ; Color that asterisk
   ;---------------------
-  call Color_Text_Box_Sub
+  ld A, RED_INK + YELLOW_PAPER  ; color of the string
+  ld BC, $0F05                   ; row and column
+  ld DE, $0101                   ; length and height
+  call Color_Text_Box_Reg_Sub
 
   ;--------------------------------------------
   ; Set coordinates to 9, 9 and print a string
@@ -69,7 +70,10 @@ Main_Sub:
   ;-------------------------
   ; Color that line of text
   ;-------------------------
-  call Color_Text_Box_Sub
+  ld A, RED_INK + YELLOW_PAPER  ; color of the string
+  ld BC, $0909                   ; row and column
+  ld DE, $0E01                   ; length and height
+  call Color_Text_Box_Reg_Sub
 
   ;---------------------------------------------------------
   ; Set coordinates to 13, 13 and print a five digit number
@@ -92,44 +96,26 @@ Main_Sub:
   ;-------------------
   ; Color that number
   ;-------------------
-  ld A, 5                     ; number is five digits long
-  ld (text_length), A         ; store the length of the string
   ld A, RED_INK + CYAN_PAPER  ; color of the string
-  ld (text_color), A          ; store the text color
+  ld BC, $0D0D                   ; row and column
+  ld DE, $0501                   ; length and height
+  call Color_Text_Box_Reg_Sub
 
-  call Color_Text_Box_Sub
-
-  ;---------------
-  ; Make a column
-  ;---------------
-  ld A,  8
-  ld (text_row), A             ; store row
-  ld A, 24
-  ld (text_column), A          ; store column coordinate
-  ld A,  1
-  ld (text_length), A          ; store box length
-  ld A, 10
-  ld (text_height), A          ; store box height
+  ;----------------
+  ; Color a column
+  ;----------------
   ld A, WHITE_INK + RED_PAPER
-  ld (text_color), A           ; store color
+  ld BC, $0818                   ; row and column
+  ld DE, $010A                   ; length and height
+  call Color_Text_Box_Reg_Sub
 
-  call Color_Text_Box_Sub
-
-  ;------------
-  ; Make a box
-  ;------------
-  ld A, 10
-  ld (text_row), A              ; store row
-  ld A, 26
-  ld (text_column), A           ; store column coordinate
-  ld A, 3
-  ld (text_length), A           ; store box length
-  ld A, 3
-  ld (text_height), A           ; store box height
+  ;-------------
+  ; Color a box
+  ;-------------
   ld A, WHITE_INK + BLUE_PAPER
-  ld (text_color), A            ; store color
-
-  call Color_Text_Box_Sub
+  ld BC, $0A1A                   ; row and column
+  ld DE, $0303                   ; length and height
+  call Color_Text_Box_Reg_Sub
 
   ret
 
@@ -140,7 +126,7 @@ Main_Sub:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Text_Coords_Sub.asm"
-  include "Subs/Color_Text_Box_Sub.asm"
+  include "Subs/Color_Text_Box_Reg_Sub.asm"
   include "Subs/Print_Five_Digit_Number_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
 
