@@ -21,24 +21,27 @@ Color_Text_Box_Sub:
   ;------------------------------------------------------------------
   ; Increase HL text_column times, to shift it to the desired column
   ;------------------------------------------------------------------
-  ld A, (text_column)  ; prepare B as loop counter
+  ld A, (text_column)
+  cp 0                                    ; is A equal to zero?
+  jr z, Color_Text_Box_Skip_Zero_Columns  ; if so, skip this loop
   ld B, A              ; ld B, (text_column) wouldn't work
 Color_Text_Box_Loop_Columns:
   inc HL                            ; increase HL text_row times
   djnz Color_Text_Box_Loop_Columns  ; decrease B and jump if nonzero
+Color_Text_Box_Skip_Zero_Columns:   ; get here if column count is zero
 
   ;-----------------------------------------------------------------
   ; Increase HL text_row * 32 times, to shift it to the desired row
   ;-----------------------------------------------------------------
-  ld DE, 32                              ; 32 columns, this is not a space!!!
-  ld A, (text_row)                       ; fetch the row
-  cp 0                                   ; is A equal to zero?
-  jr z,  Color_Text_Box_Skip_Zero_Rows   ; if so, skip this loop
+  ld DE, 32                            ; 32 columns, this is not a space!!!
+  ld A, (text_row)                     ; fetch the row
+  cp 0                                 ; is A equal to zero?
+  jr z, Color_Text_Box_Skip_Zero_Rows  ; if so, skip this loop
   ld B, A           ; ld B, (text_column) wouldn't work
 Color_Text_Box_Loop_Rows:
   add HL, DE                     ; increase HL by 32
   djnz Color_Text_Box_Loop_Rows  ; decrease B and repeat the loop if nonzero
- Color_Text_Box_Skip_Zero_Rows:
+Color_Text_Box_Skip_Zero_Rows:   ; get here if row count is zero
 
   ;---------------------------------------------------------------
   ; Now the HL holds the correct position of the screen attribute

@@ -35,7 +35,7 @@ Main_Sub:
   ;---------------------
   ; Print the BC string
   ;---------------------
-  ld A, 25
+  ld A, $19  ; 25
   ld (text_column), A       ; store column coordinate
   ld A,  0
   ld (text_row), A          ; store row coordinate
@@ -130,7 +130,7 @@ Main_Sub:
   ;---------------
   ld A,  0
   ld (text_row), A             ; store row
-  ld A, 25
+  ld A, $19  ; 25
   ld (text_column), A          ; store column coordinate
   ld A,  7
   ld (text_length), A          ; store box length
