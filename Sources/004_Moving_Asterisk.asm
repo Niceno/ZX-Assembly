@@ -29,8 +29,8 @@ Main_Sub:
   ;---------------------------------------------
   ; Initialize text row in which you will start
   ;---------------------------------------------
-  ld A, 21          ; row 21 = bottom of screen.
-  ld (text_row), A  ; set initial text row
+  ld B, 21
+  ld C, 15
 
   ;----------------------
   ; Move the asterisk up
@@ -38,24 +38,22 @@ Main_Sub:
 Main_Loop:
 
   ; Print asterisk
-  ld A, CHAR_ASTERISK    ; want an asterisk here
-  ld (char_to_print), A
-  call Print_Character_Sub
+  ld HL, char_to_print
+  push BC                       ; save the row count
+  call Print_Character_Reg_Sub  ; this clobbers B
 
-  call Delay_Sub        ; want a delay
+  call Delay_Sub  ; want a delay, also clobbers B
+  pop BC          ; get back the row count
 
   ; Delete the asterisk
   ; (print space over it)
-  ld A, CHAR_SPACE          ; ASCII code for space
-  ld (char_to_print), A
-  call Print_Character_Sub
+  ld HL, space_to_print
+  push BC                       ; save the row count
+  call Print_Character_Reg_Sub  ; clobbers B
+  pop BC                        ; get back proper row count
 
   ; Decrease text row -> move asterisk position up
-  ld HL, text_row   ; vertical position
-  dec (HL)          ; move it up one line
-  ld A, (HL)        ; where is it now?
-  cp 255            ; past top of screen yet?
-  jr nz, Main_Loop  ; no, carry on
+  djnz Main_Loop  ; no, carry on
 
   ret  ; end of the main program
 
@@ -66,17 +64,15 @@ Main_Loop:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Delay_Sub.asm"
-  include "Subs/Print_Character_Sub.asm"
+  include "Subs/Print_Character_Reg_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-text_row:     defb  0
-text_column:  defb 15
-
-char_to_print:  defb  CHAR_SPACE
+char_to_print:   defb  CHAR_ASTERISK
+space_to_print:  defb  CHAR_SPACE
 
 ;--------------------------------
 ; Address od the string to print
