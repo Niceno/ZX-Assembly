@@ -29,10 +29,12 @@ MEM_SCREEN_PIXELS          equ  $4000  ; 16384
 MEM_SCREEN_COLORS          equ  $5800  ; 22528
 MEM_PRINTER_BUFFER         equ  $5B00
 MEM_SYSTEM_VARS            equ  $5C00
+MEM_CHARS                  equ  $5C37  ; 23607  higher byte of custom font def.
 MEM_USER_DEFINED_GRAPHICS  equ  $5C7B  ; holds the address where UDG starts
 MEM_STORE_SCREEN_COLOR     equ  $5C8D  ; holds the screen color
 MEM_AVAILABLE_RAM_START    equ  $5CCB
 MEM_PROGRAM_START          equ  $8000  ; 32768
+MEM_CUSTOM_FONT_START      equ  $FA00  ; 64000
 
 ;-------------------------------------------------------------------------------
 ; ZX Spectrum colors
