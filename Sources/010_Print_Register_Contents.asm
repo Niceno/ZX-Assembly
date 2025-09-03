@@ -35,11 +35,8 @@ Main_Sub:
   ;---------------------
   ; Print the AF string
   ;---------------------
-  ld A, $19  ; 25
-  ld (text_column), A       ; store column coordinate
-  ld A,  0
-  ld (text_row), A          ; store row coordinate
-  call Set_Text_Coords_Sub  ; set up up row/col coords.
+  ld BC, $0019                  ; row and column
+  call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
 
   ld HL, af_string          ; set the text_to_print_addr to string to print
   ld (text_to_print_addr), HL
@@ -75,11 +72,8 @@ Main_Sub:
   ;---------------------
   ; Print the BC string
   ;---------------------
-  ld A, $19  ; 25
-  ld (text_column), A       ; store column coordinate
-  ld A,  1
-  ld (text_row), A          ; store row coordinate
-  call Set_Text_Coords_Sub  ; set up up row/col coords.
+  ld BC, $0119                  ; row and column
+  call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
 
   ld HL, bc_string          ; set the text_to_print_addr to string to print
   ld (text_to_print_addr), HL
@@ -116,11 +110,8 @@ Main_Sub:
   ;---------------------
   ; Print the DE string
   ;---------------------
-  ld A, $19  ; 25
-  ld (text_column), A       ; store column coordinate
-  ld A,  2
-  ld (text_row), A          ; store row coordinate
-  call Set_Text_Coords_Sub  ; set up up row/col coords.
+  ld BC, $0219                  ; row and column
+  call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
 
   ld HL, de_string          ; set the text_to_print_addr to string to print
   ld (text_to_print_addr), HL
@@ -157,11 +148,8 @@ Main_Sub:
   ;---------------------
   ; Print the HL string
   ;---------------------
-  ld A, $19  ; 25
-  ld (text_column), A       ; store column coordinate
-  ld A,  3                  ; row 2
-  ld (text_row), A          ; store row coordinate
-  call Set_Text_Coords_Sub  ; set up up row/col coords.
+  ld BC, $0319                  ; row and column
+  call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
 
   ld HL, hl_string          ; set the text_to_print_addr to string to print
   ld (text_to_print_addr), HL
@@ -266,7 +254,7 @@ Print_Hex_Digit_Sub:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
-  include "Subs/Set_Text_Coords_Sub.asm"
+  include "Subs/Set_Text_Coords_Reg_Sub.asm"
   include "Subs/Color_Text_Box_Reg_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
 
@@ -318,8 +306,6 @@ text_column:  defb  0
 text_length:  defb  0
 text_height:  defb  0
 text_color:   defb  0
-
-end_of_my_data: defb $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub
