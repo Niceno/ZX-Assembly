@@ -12,7 +12,7 @@
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-;   MAIN PROGRAMAIN PROGRAM
+;   MAIN SUBROUTINE
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -25,6 +25,11 @@ Main_Sub:
   ; Open the channel to upper screen
   ;----------------------------------
   call Open_Upper_Screen_Sub
+
+  ;-----------------
+  ; Set custom font
+  ;-----------------
+  call Set_Custom_Font_Sub
 
   ;------------------------------------------------------------
   ; Set coordinates to 5, 5, length to 1 and print an asterisk
@@ -46,8 +51,8 @@ Main_Sub:
   ; Color that asterisk
   ;---------------------
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
-  ld BC, $0F05                   ; row and column
-  ld DE, $0101                   ; length and height
+  ld BC, $0F05                  ; row and column
+  ld DE, $0101                  ; length and height
   call Color_Text_Box_Reg_Sub
 
   ;--------------------------------------------
@@ -127,6 +132,7 @@ Main_Sub:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
+  include "Subs/Set_Custom_Font_Sub.asm"
   include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Reg_Sub.asm"
   include "Subs/Print_Five_Digit_Number_Sub.asm"
@@ -150,6 +156,13 @@ number:       defw  9999         ; defw = define word  <---=
 ; Address od the string to print
 ;--------------------------------
 text_to_print_addr:  defw bojan_string  ; store the address of the string
+
+;---------------------------------------------
+; Custom font will end up at a custom address
+;---------------------------------------------
+  org MEM_CUSTOM_FONT_START
+custom_font:
+  include "../Fonts/Bubblegum.inc"
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub
