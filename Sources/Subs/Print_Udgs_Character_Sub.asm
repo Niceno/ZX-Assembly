@@ -13,7 +13,7 @@
 ;-------------------------------------------------------------------------------
 Print_Udgs_Character_Sub:
 
-  ld IX, (udgs_address)
+  ld IX, HL
 
   ; Calculate screen address from row and column
   ld A, (text_row)        ; get row number (0-23)

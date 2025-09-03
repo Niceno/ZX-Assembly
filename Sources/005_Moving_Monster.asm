@@ -52,7 +52,6 @@ Main_Loop:
 
   ; Print monster
   ld HL, monster_01  ;  ghost_01
-  ld (udgs_address), HL
   call Print_Udgs_Character_Sub
 
   call Delay_Sub     ; want a delay
@@ -60,7 +59,6 @@ Main_Loop:
   ; Delete the monster
   ; (print space over it)
   ld HL, empty
-  ld (udgs_address), HL
   call Print_Udgs_Character_Sub
 
   ; Decrease text row -> move monster position up
@@ -158,8 +156,6 @@ arrow_right:
 
 empty:
   defb $00, $00, $00, $00, $00, $00, $00, $00
-
-udgs_address: defw ghost_01
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub
