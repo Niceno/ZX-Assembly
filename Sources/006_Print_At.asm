@@ -31,18 +31,11 @@ Main_Sub:
   ;-----------------
   call Set_Custom_Font_Sub
 
-  ;------------------------------------------------------------
-  ; Set coordinates to 5, 5, length to 1 and print an asterisk
-  ;------------------------------------------------------------
-  ld A, 15                      ; row
-  ld (text_row), A              ; store row coordinate
-  ld A,  5                      ; column
-  ld (text_column), A           ; store column coordinate
-  ld A,  1                      ; length of the string
-  ld (text_length), A           ; store the length
-  ld A,  1                      ; height
-  ld (text_height), A           ; store the height
-  call Set_Text_Coords_Sub      ; set up our row/column coords
+  ;--------------------------
+  ; Set coordinates to 15, 5
+  ;--------------------------
+  ld BC, $0F05                  ; row and column
+  call Set_Text_Coords_Reg_Sub  ; set up our row/column coords
 
   ld A, CHAR_ASTERISK   ; print an asterisk
   rst ROM_PRINT_A_1     ; display it
@@ -58,15 +51,12 @@ Main_Sub:
   ;--------------------------------------------
   ; Set coordinates to 9, 9 and print a string
   ;--------------------------------------------
-  ld A, 9                   ; row
-  ld (text_row), A          ; store row coordinate
-  ld A, 9                   ; column
-  ld (text_column), A       ; store column coordinate
-  ld A, 14                  ; length of the string
-  ld (text_length), A       ; store the length of the string
-  ld A,  1                  ; height
-  ld (text_height), A       ; store the height
-  call Set_Text_Coords_Sub  ; set up our row/col coords
+  ld BC, $0909                  ; row and column
+  push BC
+  call Set_Text_Coords_Reg_Sub  ; set up our row/col coords
+  pop BC                        ; get row and column back
+  ld DE, $0E01                  ; length and height
+  call Color_Text_Box_Reg_Sub
 
   ld HL, bojan_string
   ld (text_to_print_addr), HL
@@ -83,15 +73,11 @@ Main_Sub:
   ;---------------------------------------------------------
   ; Set coordinates to 13, 13 and print a five digit number
   ;---------------------------------------------------------
-  ld A, 13                  ; row
-  ld (text_row), A          ; store row coordinate
-  ld A, 13                  ; column
-  ld (text_column), A       ; store column coordinate
-  ld A,  5                  ; length of the string
-  ld (text_length), A       ; store the length
-  ld A,  1                  ; height
-  ld (text_height), A       ; store the height
-  call Set_Text_Coords_Sub  ; set up our row/column coords
+  ld BC, $0D0D                  ; row and column
+  ld DE, $0501                  ; length and height
+  push BC
+  push DE
+  call Set_Text_Coords_Reg_Sub  ; set up our row/column coords
 
   ;-----------------------------
   ; Print the five digit number
@@ -102,8 +88,8 @@ Main_Sub:
   ; Color that number
   ;-------------------
   ld A, RED_INK + CYAN_PAPER  ; color of the string
-  ld BC, $0D0D                   ; row and column
-  ld DE, $0501                   ; length and height
+  pop DE
+  pop BC
   call Color_Text_Box_Reg_Sub
 
   ;----------------
@@ -133,7 +119,7 @@ Main_Sub:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Custom_Font_Sub.asm"
-  include "Subs/Set_Text_Coords_Sub.asm"
+  include "Subs/Set_Text_Coords_Reg_Sub.asm"
   include "Subs/Color_Text_Box_Reg_Sub.asm"
   include "Subs/Print_Five_Digit_Number_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
@@ -143,12 +129,6 @@ Main_Sub:
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-text_row:     defb  0
-text_column:  defb 15
-text_length:  defb  1
-text_height:  defb 10
-text_color:   defb  0
-
 bojan_string: defb "Bojan is cool!", 0
 number:       defw  9999         ; defw = define word  <---=
 

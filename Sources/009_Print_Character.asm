@@ -49,7 +49,6 @@ Main_Sub:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
-  include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
   include "Subs/Print_Character_Sub.asm"
 

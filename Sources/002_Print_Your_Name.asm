@@ -26,11 +26,12 @@ Main_Sub:
   ;----------------------------------
   call Open_Upper_Screen_Sub
 
-  ld A, 0
-  ld (text_column), A       ; store column coordinate
-  ld A, 0
-  ld (text_row), A          ; store row coordinate
-  call Set_Text_Coords_Sub  ; set up up our row/col coords.
+  ld BC, $0000                  ; row and column
+  ld A, B
+  ld (text_row), A              ; store row coordinate
+  ld A, C
+  ld (text_column), A           ; store column coordinate
+  call Set_Text_Coords_Reg_Sub  ; set up up our row/col coords.
 
   ;----------------------------------------------------------
   ; Store the address of the null-terminated string using HL
@@ -49,16 +50,15 @@ Main_Sub:
 Main_Loop:
 
   ; Set text coordinates for the new value of B (loop counter)
-  ld A, 0
-  ld (text_column), A       ; store column coordinate
   ld A, B
-  dec A                     ; go from 9 to 0 instead of 10 to 1
-  ld (text_row), A          ; store row coordinate
-  call Set_Text_Coords_Sub  ; set up up our row/col coords.
+  ld (text_row), A              ; store row coordinate
+  ld A, C
+  ld (text_column), A           ; store column coordinate
+  call Set_Text_Coords_Reg_Sub  ; set up up our row/col coords.
 
   call Print_Null_Terminated_String_Sub
 
-  djnz Main_Loop            ; decrease B and run the loop again
+  djnz Main_Loop                ; decrease B and run the loop again
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -70,7 +70,7 @@ Main_Loop:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
-  include "Subs/Set_Text_Coords_Sub.asm"
+  include "Subs/Set_Text_Coords_Reg_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
