@@ -51,7 +51,6 @@ Print_Character_Sub:
   ld B, 0
   add HL, BC              ; HL now points to correct screen position
 
-
   ld B, 8              ; characters are eight lines high
 Print_Character_Loop:
   ld A, (IX)
