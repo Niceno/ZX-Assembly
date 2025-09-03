@@ -79,22 +79,24 @@ Main_Loop:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+;---------------------
+; Text row and column
+;---------------------
+text_row:     defb  0
+text_column:  defb 15
+
 ;---------------------------------
 ; Null-terminated string to print
 ;---------------------------------
-bojan_string: defb "Bojan is cool!", 0
+bojan_string:  defb "Bojan is cool!", 0
 
 ;--------------------------------
 ; Address od the string to print
 ;--------------------------------
-text_to_print_addr: defw bojan_string    ; store the address of the string
-
-text_row:     defb  0
-text_column:  defb 15
+text_to_print_addr:  defw bojan_string    ; store the address of the string
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub
-; (Without label "Main_Sub", you could have written: SAVESNA "bojan.sna", $8000)
 ;-------------------------------------------------------------------------------
   savesna "bojan.sna", Main_Sub
   savebin "bojan.bin", Main_Sub, $ - Main_Sub
