@@ -61,6 +61,8 @@ Main_Loop:
 
   djnz Main_Loop            ; decrease B and run the loop again
 
+  ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
+
   ret
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

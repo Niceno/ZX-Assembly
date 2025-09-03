@@ -189,6 +189,8 @@ Main_Sub:
   ld DE, $0701                 ; length and height
   call Color_Text_Box_Reg_Sub
 
+  ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
+
   ret
 
 ;===============================================================================

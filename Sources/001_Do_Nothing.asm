@@ -14,6 +14,7 @@
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
 Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
+  ei       ; <--= (re)enable interrupts if you want to return to OS/BASIC
   ret
 
 ;-------------------------------------------------------------------------------

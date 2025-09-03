@@ -270,6 +270,8 @@ Main_Print_One:
   ld (text_to_print_addr), HL
   call Print_Null_Terminated_String_Sub
 
+  ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
+
   ret  ; end of the main program
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

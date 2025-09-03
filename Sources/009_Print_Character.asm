@@ -39,6 +39,8 @@ Main_Sub:
 
   call Print_Character_Sub
 
+  ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
+
   ret
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
