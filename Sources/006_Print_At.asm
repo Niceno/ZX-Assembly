@@ -153,3 +153,4 @@ text_to_print_addr:  defw bojan_string  ; store the address of the string
 ; Save a snapshot that starts execution at the address marked with Main_Sub
 ;-------------------------------------------------------------------------------
   savesna "bojan.sna", Main_Sub
+  savebin "bojan.bin", Main_Sub, $ - Main_Sub

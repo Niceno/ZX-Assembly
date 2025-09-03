@@ -104,3 +104,4 @@ screen_row_offset:  ; 24 words or 48 bytes
 ; (Without label "Main_Sub", you could have written: SAVESNA "bojan.sna", $8000)
 ;-------------------------------------------------------------------------------
   savesna "bojan.sna", Main_Sub
+  savebin "bojan.bin", Main_Sub, $ - Main_Sub

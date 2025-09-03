@@ -204,3 +204,4 @@ space:         defb $00, $00, $00, $00, $00, $42, $7E, $00  ; $93
 ; Save a snapshot that starts execution at the address marked with Main_Sub
 ;-------------------------------------------------------------------------------
   savesna "bojan.sna", Main_Sub
+  savebin "bojan.bin", Main_Sub, $ - Main_Sub

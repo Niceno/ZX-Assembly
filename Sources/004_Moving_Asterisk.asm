@@ -104,3 +104,4 @@ screen_row_offset:  ; 24 words or 48 bytes
 ; Save a snapshot that starts execution at the address marked with Main_Sub
 ;-------------------------------------------------------------------------------
   savesna "bojan.sna", Main_Sub
+  savebin "bojan.bin", Main_Sub, $ - Main_Sub
