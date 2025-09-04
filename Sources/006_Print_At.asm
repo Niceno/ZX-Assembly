@@ -59,8 +59,7 @@ Main_Sub:
   call Color_Text_Box_Reg_Sub
 
   ld HL, bojan_string
-  ld (text_to_print_addr), HL
-  call Print_Null_Terminated_String_Sub
+  call Print_Null_Terminated_String_Reg_Sub
 
   ;-------------------------
   ; Color that line of text
@@ -122,7 +121,7 @@ Main_Sub:
   include "Subs/Set_Text_Coords_Reg_Sub.asm"
   include "Subs/Color_Text_Box_Reg_Sub.asm"
   include "Subs/Print_Five_Digit_Number_Sub.asm"
-  include "Subs/Print_Null_Terminated_String_Sub.asm"
+  include "Subs/Print_Null_Terminated_String_Reg_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -131,11 +130,6 @@ Main_Sub:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 bojan_string: defb "Bojan is cool!", 0
 number:       defw  9999         ; defw = define word  <---=
-
-;--------------------------------
-; Address od the string to print
-;--------------------------------
-text_to_print_addr:  defw bojan_string  ; store the address of the string
 
 ;---------------------------------------------
 ; Custom font will end up at a custom address

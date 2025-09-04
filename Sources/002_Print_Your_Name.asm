@@ -26,19 +26,11 @@ Main_Sub:
   ;----------------------------------
   call Open_Upper_Screen_Sub
 
-  ld BC, $0000                  ; row and column
-  call Set_Text_Coords_Reg_Sub  ; set up up our row/col coords.
-
-  ;----------------------------------------------------------
-  ; Store the address of the null-terminated string using HL
-  ;----------------------------------------------------------
-  ld HL, bojan_string
-  ld (text_to_print_addr), HL
-
   ;-------------------------
   ; Initialize loop counter
   ;-------------------------
   ld B, 10
+  ld C,  0
 
   ;-------------------------------------------------------------------
   ; Print ten times using subroutine Print_Null_Terminated_String_Sub
@@ -48,8 +40,9 @@ Main_Loop:
   ; Set text coordinates for the new value of B (loop counter)
   call Set_Text_Coords_Reg_Sub  ; set up up our row/col coords.
 
-  push BC
-  call Print_Null_Terminated_String_Sub
+  ld HL, bojan_string  ; HL holds the address of the text to print
+  push BC              ; Print_Null_Term... clobbers the registers
+  call Print_Null_Terminated_String_Reg_Sub
   pop BC
 
   djnz Main_Loop                ; decrease B and run the loop again
@@ -65,7 +58,7 @@ Main_Loop:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Text_Coords_Reg_Sub.asm"
-  include "Subs/Print_Null_Terminated_String_Sub.asm"
+  include "Subs/Print_Null_Terminated_String_Reg_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -77,11 +70,6 @@ Main_Loop:
 ; Null-terminated string to print
 ;---------------------------------
 bojan_string:  defb "Bojan is cool!", 0
-
-;--------------------------------
-; Address od the string to print
-;--------------------------------
-text_to_print_addr:  defw bojan_string    ; store the address of the string
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub

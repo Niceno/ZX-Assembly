@@ -38,9 +38,8 @@ Main_Sub:
   ld BC, $0019                  ; row and column
   call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
 
-  ld HL, af_string          ; set the text_to_print_addr to string to print
-  ld (text_to_print_addr), HL
-  call Print_Null_Terminated_String_Sub
+  ld HL, af_string
+  call Print_Null_Terminated_String_Reg_Sub
 
   ;----------------------------------
   ; Now print AF register in hex
@@ -75,9 +74,8 @@ Main_Sub:
   ld BC, $0119                  ; row and column
   call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
 
-  ld HL, bc_string          ; set the text_to_print_addr to string to print
-  ld (text_to_print_addr), HL
-  call Print_Null_Terminated_String_Sub
+  ld HL, bc_string
+  call Print_Null_Terminated_String_Reg_Sub
 
   ;----------------------------------
   ; Now print BC register in hex
@@ -113,9 +111,8 @@ Main_Sub:
   ld BC, $0219                  ; row and column
   call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
 
-  ld HL, de_string          ; set the text_to_print_addr to string to print
-  ld (text_to_print_addr), HL
-  call Print_Null_Terminated_String_Sub
+  ld HL, de_string
+  call Print_Null_Terminated_String_Reg_Sub
 
   ;----------------------------------
   ; Now print DE register in hex
@@ -151,9 +148,8 @@ Main_Sub:
   ld BC, $0319                  ; row and column
   call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
 
-  ld HL, hl_string          ; set the text_to_print_addr to string to print
-  ld (text_to_print_addr), HL
-  call Print_Null_Terminated_String_Sub
+  ld HL, hl_string
+  call Print_Null_Terminated_String_Reg_Sub
 
   ;----------------------------------
   ; Now print HL register in hex
@@ -239,8 +235,8 @@ Print_Hex_Digit_Sub:
   ld D, (HL)                ; DE = address of the string (e.g., string_A)
 
   ; Print the string
-  ld (text_to_print_addr), DE
-  call Print_Null_Terminated_String_Sub
+  ld HL, DE
+  call Print_Null_Terminated_String_Reg_Sub
 
   pop BC
   pop DE
@@ -256,7 +252,7 @@ Print_Hex_Digit_Sub:
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Text_Coords_Reg_Sub.asm"
   include "Subs/Color_Text_Box_Reg_Sub.asm"
-  include "Subs/Print_Null_Terminated_String_Sub.asm"
+  include "Subs/Print_Null_Terminated_String_Reg_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -295,17 +291,6 @@ hex_string_table:
   defw string_4, string_5, string_6, string_7  
   defw string_8, string_9, string_A, string_B
   defw string_C, string_D, string_E, string_F
-
-;--------------------------------
-; Address of the string to print
-;--------------------------------
-text_to_print_addr: defw bc_string    ; store the address of the string
-
-text_row:     defb  0
-text_column:  defb  0
-text_length:  defb  0
-text_height:  defb  0
-text_color:   defb  0
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub

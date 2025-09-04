@@ -45,11 +45,9 @@ Main_Sub:
   ld (text_height), A       ; store the height
   call Set_Text_Coords_Sub  ; set up our row/col coords.
 
-  ; Store the address of the text to print in text_to_print_addr, using HL
+  ; Store the address of the text to print in HL
   ld HL, text_press_a_key
-  ld (text_to_print_addr), HL
-  call Print_Null_Terminated_String_Sub
-
+  call Print_Null_Terminated_String_Reg_Sub
 
   ; Color the text box
   ld A, BLUE_INK + WHITE_PAPER  ; color of the string
@@ -265,10 +263,9 @@ Main_Print_One:
   ld (text_height), A       ; store the height
   call Set_Text_Coords_Sub  ; set up our row/col coords.
 
-  ; Store the address of the text to print in text_to_print_addr, using HL
+  ; Store the address of the text to print in HL
   ld HL, text_keys_defined
-  ld (text_to_print_addr), HL
-  call Print_Null_Terminated_String_Sub
+  call Print_Null_Terminated_String_Reg_Sub
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -283,7 +280,7 @@ Main_Print_One:
   include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Unpress.asm"
-  include "Subs/Print_Null_Terminated_String_Sub.asm"
+  include "Subs/Print_Null_Terminated_String_Reg_Sub.asm"
   include "Subs/Print_Udgs_Character_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -311,11 +308,6 @@ text_down:          defb "down",             0
 text_left:          defb "left",             0
 text_right:         defb "down",             0
 text_fire:          defb "fire",             0
-
-;----------------------------------------
-; Holds the address of the text to print
-;----------------------------------------
-text_to_print_addr:  defw  0
 
 ;---------------------------------------------------------------------------
 ; All key ports; used only in Unpressed now, maybe it can be defined there?
