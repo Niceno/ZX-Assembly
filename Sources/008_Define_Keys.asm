@@ -137,7 +137,7 @@ Main_Done:
   pop BC
 
   ld HL, (udgs_address)
-  call Print_Udgs_Character_Reg_Sub
+  call Print_Udgs_Character_Sub
 
   ;--------------------------------------------------------------------
   ; Wait until a key is pressed
@@ -276,7 +276,7 @@ Main_Print_One:
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Unpress.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
-  include "Subs/Print_Udgs_Character_Reg_Sub.asm"
+  include "Subs/Print_Udgs_Character_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

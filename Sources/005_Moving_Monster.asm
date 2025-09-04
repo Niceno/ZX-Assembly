@@ -51,9 +51,9 @@ Main_Sub:
 Main_Loop:
 
   ; Print monster
-  ld HL, monster_01                  ; ghost_01
-  push BC                            ; save the row count
-  call Print_Udgs_Character_Reg_Sub  ; this clobbers B
+  ld HL, monster_01              ; ghost_01
+  push BC                        ; save the row count
+  call Print_Udgs_Character_Sub  ; this clobbers B
 
   call Delay_Sub  ; want a delay, also clobbers B
   pop BC          ; get back the row count
@@ -61,9 +61,9 @@ Main_Loop:
   ; Delete the monster
   ; (print space over it)
   ld HL, space_to_print
-  push BC                            ; save the row count
-  call Print_Udgs_Character_Reg_Sub
-  pop BC                             ; get back proper row count
+  push BC                        ; save the row count
+  call Print_Udgs_Character_Sub
+  pop BC                         ; get back proper row count
 
   ; Decrease text row -> move monster position up
   djnz Main_Loop  ; no, carry on
@@ -77,7 +77,7 @@ Main_Loop:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Delay_Sub.asm"
-  include "Subs/Print_Udgs_Character_Reg_Sub.asm"
+  include "Subs/Print_Udgs_Character_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -115,38 +115,17 @@ udgs:
 
 ; The 8x8 sprites which follow, were created with the command:
 ; python.exe .\convert_sprite_8x8.py .\[name].8x8 in the directory Figures
-ghost_01:
-  defb $3C, $7E, $DB, $99, $FF, $FF, $DB, $DB
-
-human_01:
-  defb $18, $3C, $18, $FF, $18, $3C, $24, $66
-
-monster_01:
-  defb $99, $BD, $5A, $7E, $42, $3C, $DB, $81
-
-monster_02:
-  defb $24, $3C, $3C, $5A, $BD, $3C, $66, $42
-
-monster_03:
-  defb $24, $7E, $FF, $DB, $7E, $42, $BD, $81
-
-monster_04:
-  defb $42, $81, $BD, $5A, $66, $3C, $66, $A5
-
-arrow_up:
-  defb $18, $24, $42, $C3, $24, $24, $24, $3C
-
-arrow_down:
-  defb $3C, $24, $24, $24, $C3, $42, $24, $18
-
-arrow_left:
-  defb $10, $30, $4F, $81, $81, $4F, $30, $10
-
-arrow_right:
-  defb $08, $0C, $F2, $81, $81, $F2, $0C, $08
-
-space_to_print:
-  defb $00, $00, $00, $00, $00, $00, $00, $00
+ghost_01:        defb $3C, $7E, $DB, $99, $FF, $FF, $DB, $DB
+human_01:        defb $18, $3C, $18, $FF, $18, $3C, $24, $66
+monster_01:      defb $99, $BD, $5A, $7E, $42, $3C, $DB, $81
+monster_02:      defb $24, $3C, $3C, $5A, $BD, $3C, $66, $42
+monster_03:      defb $24, $7E, $FF, $DB, $7E, $42, $BD, $81
+monster_04:      defb $42, $81, $BD, $5A, $66, $3C, $66, $A5
+arrow_up:        defb $18, $24, $42, $C3, $24, $24, $24, $3C
+arrow_down:      defb $3C, $24, $24, $24, $C3, $42, $24, $18
+arrow_left:      defb $10, $30, $4F, $81, $81, $4F, $30, $10
+arrow_right:     defb $08, $0C, $F2, $81, $81, $F2, $0C, $08
+space_to_print:  defb $00, $00, $00, $00, $00, $00, $00, $00
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub
