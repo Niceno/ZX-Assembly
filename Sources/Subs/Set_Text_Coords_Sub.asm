@@ -4,9 +4,8 @@
 ; Purpose:
 ; - Set coordinates for printing text
 ;
-; Parameters (passed via memory locations):
-; - text_row
-; - text_column
+; Parameters (passed via registers):
+; - BC: row and column
 ;-------------------------------------------------------------------------------
 Set_Text_Coords_Sub:
 
@@ -14,10 +13,10 @@ Set_Text_Coords_Sub:
                          ; should be followed by row and column entries
   rst ROM_PRINT_A_1      ; "print" it
 
-  ld A, (text_row)       ; row
+  ld A, B                ; row
   rst ROM_PRINT_A_1      ; "print" it
 
-  ld A, (text_column)    ; column
+  ld A, C                ; column
   rst ROM_PRINT_A_1      ; "print" it
 
   ret

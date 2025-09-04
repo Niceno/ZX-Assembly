@@ -35,8 +35,8 @@ Main_Sub:
   ;---------------------
   ; Print the AF string
   ;---------------------
-  ld BC, $0019                  ; row and column
-  call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
+  ld BC, $0019              ; row and column
+  call Set_Text_Coords_Sub  ; set up up row/col coords.
 
   ld HL, af_string
   call Print_Null_Terminated_String_Sub
@@ -71,8 +71,8 @@ Main_Sub:
   ;---------------------
   ; Print the BC string
   ;---------------------
-  ld BC, $0119                  ; row and column
-  call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
+  ld BC, $0119              ; row and column
+  call Set_Text_Coords_Sub  ; set up up row/col coords.
 
   ld HL, bc_string
   call Print_Null_Terminated_String_Sub
@@ -108,8 +108,8 @@ Main_Sub:
   ;---------------------
   ; Print the DE string
   ;---------------------
-  ld BC, $0219                  ; row and column
-  call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
+  ld BC, $0219              ; row and column
+  call Set_Text_Coords_Sub  ; set up up row/col coords.
 
   ld HL, de_string
   call Print_Null_Terminated_String_Sub
@@ -145,8 +145,8 @@ Main_Sub:
   ;---------------------
   ; Print the HL string
   ;---------------------
-  ld BC, $0319                  ; row and column
-  call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
+  ld BC, $0319              ; row and column
+  call Set_Text_Coords_Sub  ; set up up row/col coords.
 
   ld HL, hl_string
   call Print_Null_Terminated_String_Sub
@@ -250,7 +250,7 @@ Print_Hex_Digit_Sub:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
-  include "Subs/Set_Text_Coords_Reg_Sub.asm"
+  include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
 

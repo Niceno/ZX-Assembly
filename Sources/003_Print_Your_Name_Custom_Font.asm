@@ -44,7 +44,7 @@ Main_Sub:
 Main_Loop:
 
   ; Set text coordinates for the new value of B (loop counter)
-  call Set_Text_Coords_Reg_Sub  ; set up up our row/col coords.
+  call Set_Text_Coords_Sub  ; set up up our row/col coords.
 
   ld HL, bojan_string  ; HL holds the address of the text to print
   push BC              ; Print_Null_Term... clobbers the registers
@@ -64,7 +64,7 @@ Main_Loop:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Custom_Font_Sub.asm"
-  include "Subs/Set_Text_Coords_Reg_Sub.asm"
+  include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

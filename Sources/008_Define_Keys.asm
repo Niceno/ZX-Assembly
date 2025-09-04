@@ -39,7 +39,7 @@ Main_Sub:
   ld (text_row), A  ; store row coordinate
   ld B, A           ; put row in B
   ld C, 3           ; set column too
-  call Set_Text_Coords_Reg_Sub  ; set up our row/col coords.
+  call Set_Text_Coords_Sub  ; set up our row/col coords.
 
   ; Store the address of the text to print in HL
   ld HL, text_press_a_key
@@ -118,14 +118,14 @@ Main_Fire:
 
 Main_Done:
 
-  ld A, (text_row)                      ; get current row
-  inc A                                 ; icrease it ...
-  inc A                                 ; ... by two ...
-  ld (text_row), A                      ; ... and store it back
-  ld B, A                               ; store it in B too
+  ld A, (text_row)          ; get current row
+  inc A                     ; icrease it ...
+  inc A                     ; ... by two ...
+  ld (text_row), A          ; ... and store it back
+  ld B, A                   ; store it in B too
   ld C,  5
   push BC
-  call Set_Text_Coords_Reg_Sub          ; set up our row/column coords
+  call Set_Text_Coords_Sub  ; set up our row/column coords
   pop BC
 
   ; Color that little box
@@ -255,8 +255,8 @@ Main_Print_One:
   ;----------------------------------------------------------
   ; End the program with a message that all keys are defined
   ;----------------------------------------------------------
-  ld BC, $1503                  ; set row (D) to 15 and column (E) to 3
-  call Set_Text_Coords_Reg_Sub  ; set up the row/col coords.
+  ld BC, $1503              ; set row (D) to 15 and column (E) to 3
+  call Set_Text_Coords_Sub  ; set up the row/col coords.
 
   ; Store the address of the text to print in HL
   ld HL, text_keys_defined
@@ -272,7 +272,7 @@ Main_Print_One:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
-  include "Subs/Set_Text_Coords_Reg_Sub.asm"
+  include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Unpress.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"

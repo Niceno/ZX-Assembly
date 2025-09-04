@@ -34,8 +34,8 @@ Main_Sub:
   ;--------------------------
   ; Set coordinates to 15, 5
   ;--------------------------
-  ld BC, $0F05                  ; row and column
-  call Set_Text_Coords_Reg_Sub  ; set up our row/column coords
+  ld BC, $0F05              ; row and column
+  call Set_Text_Coords_Sub  ; set up our row/column coords
 
   ld A, CHAR_ASTERISK   ; print an asterisk
   rst ROM_PRINT_A_1     ; display it
@@ -51,11 +51,11 @@ Main_Sub:
   ;--------------------------------------------
   ; Set coordinates to 9, 9 and print a string
   ;--------------------------------------------
-  ld BC, $0909                  ; row and column
+  ld BC, $0909              ; row and column
   push BC
-  call Set_Text_Coords_Reg_Sub  ; set up our row/col coords
-  pop BC                        ; get row and column back
-  ld DE, $0E01                  ; length and height
+  call Set_Text_Coords_Sub  ; set up our row/col coords
+  pop BC                    ; get row and column back
+  ld DE, $0E01              ; length and height
   call Color_Text_Box_Sub
 
   ld HL, bojan_string
@@ -72,11 +72,11 @@ Main_Sub:
   ;---------------------------------------------------------
   ; Set coordinates to 13, 13 and print a five digit number
   ;---------------------------------------------------------
-  ld BC, $0D0D                  ; row and column
-  ld DE, $0501                  ; length and height
+  ld BC, $0D0D              ; row and column
+  ld DE, $0501              ; length and height
   push BC
   push DE
-  call Set_Text_Coords_Reg_Sub  ; set up our row/column coords
+  call Set_Text_Coords_Sub  ; set up our row/column coords
 
   ;-----------------------------
   ; Print the five digit number
@@ -118,7 +118,7 @@ Main_Sub:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Custom_Font_Sub.asm"
-  include "Subs/Set_Text_Coords_Reg_Sub.asm"
+  include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Print_Five_Digit_Number_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
