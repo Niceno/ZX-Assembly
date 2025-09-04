@@ -35,24 +35,21 @@ Main_Sub:
   ;--------------------------------------------
   ; Print text "Press a key for" at 3, 3
   ;--------------------------------------------
-  ld A,  3                  ; row
-  ld (text_row), A          ; store row coordinate
-  ld A,  3                  ; column
-  ld (text_column), A       ; store column coordinate
-  ld A, 24                  ; length of the string
-  ld (text_length), A       ; store the length of the string
-  ld A,  1                  ; height
-  ld (text_height), A       ; store the height
-  call Set_Text_Coords_Sub  ; set up our row/col coords.
+  ld A, 3           ; row
+  ld (text_row), A  ; store row coordinate
+  ld B, A           ; put row in B
+  ld C, 3           ; set column too
+  call Set_Text_Coords_Reg_Sub  ; set up our row/col coords.
 
   ; Store the address of the text to print in HL
   ld HL, text_press_a_key
   call Print_Null_Terminated_String_Sub
 
   ; Color the text box
-  ld A, BLUE_INK + WHITE_PAPER  ; color of the string
-  ld (text_color), A            ; store the color
-  call Color_Text_Box_Sub
+  ld A,  BLUE_INK + WHITE_PAPER  ; color of the string
+  ld BC, $0303
+  ld DE, $1801                   ; length (D) is 24, height (E) is 1
+  call Color_Text_Box_Reg_Sub
 
   ;--------------------------
   ;
@@ -121,24 +118,26 @@ Main_Fire:
 
 Main_Done:
 
-  ld A, (text_row)                      ; current row
+  ld A, (text_row)                      ; get current row
   inc A                                 ; icrease it ...
-  inc A                                 ; .. by two
-  ld (text_row), A                      ; store row coordinate
-  ld A,  5                              ; column
-  ld (text_column), A                   ; store column coordinate
-  ld A,  1                              ; length of the string
-  ld (text_length), A                   ; store the length
-  ld A,  1                              ; height
-  ld (text_height), A                   ; store the height
-  ld A, RED_INK + YELLOW_PAPER + FLASH  ; color of the string
-  ld (text_color), A                    ; store the color
-  call Set_Text_Coords_Sub              ; set up our row/column coords
+  inc A                                 ; ... by two ...
+  ld (text_row), A                      ; ... and store it back
+  ld B, A                               ; store it in B too
+  ld C,  5
+  push BC
+  call Set_Text_Coords_Reg_Sub          ; set up our row/column coords
+  pop BC
 
   ; Color that little box
-  call Color_Text_Box_Sub
+  ld A,  RED_INK + YELLOW_PAPER + FLASH  ; color of the string
+  ld C,  5                               ; B should hold the row
+  ld DE, $0101                           ; length (D) and height (E) are 1
+  push BC
+  call Color_Text_Box_Reg_Sub
+  pop BC
 
-  call Print_Udgs_Character_Sub
+  ld HL, (udgs_address)
+  call Print_Udgs_Character_Reg_Sub
 
   ;--------------------------------------------------------------------
   ; Wait until a key is pressed
@@ -232,9 +231,12 @@ Main_Print_One:
   ld A, (IX)
   rst ROM_PRINT_A_1     ; display it
 
+  ld A, (text_row)  ; retreive the last row
+  ld B, A
+  ld C, 5
+  ld DE, $0101
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
-  ld (text_color), A            ; store the color
-  call Color_Text_Box_Sub       ; this seems to be needed
+  call Color_Text_Box_Reg_Sub   ; this seems to be needed
                                 ; after calling ROM routines
 
   ;--------------------------------------
@@ -253,15 +255,8 @@ Main_Print_One:
   ;----------------------------------------------------------
   ; End the program with a message that all keys are defined
   ;----------------------------------------------------------
-  ld A, 21                  ; row
-  ld (text_row), A          ; store row coordinate
-  ld A,  3                  ; column
-  ld (text_column), A       ; store column coordinate
-  ld A, 16                  ; length of the string
-  ld (text_length), A       ; store length of the string
-  ld A,  1                  ; height
-  ld (text_height), A       ; store the height
-  call Set_Text_Coords_Sub  ; set up our row/col coords.
+  ld BC, $1503                  ; set row (D) to 15 and column (E) to 3
+  call Set_Text_Coords_Reg_Sub  ; set up the row/col coords.
 
   ; Store the address of the text to print in HL
   ld HL, text_keys_defined
@@ -277,11 +272,11 @@ Main_Print_One:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
-  include "Subs/Set_Text_Coords_Sub.asm"
-  include "Subs/Color_Text_Box_Sub.asm"
+  include "Subs/Set_Text_Coords_Reg_Sub.asm"
+  include "Subs/Color_Text_Box_Reg_Sub.asm"
   include "Subs/Unpress.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
-  include "Subs/Print_Udgs_Character_Sub.asm"
+  include "Subs/Print_Udgs_Character_Reg_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -293,10 +288,7 @@ Main_Print_One:
 ; Variables which define text boxes
 ;-----------------------------------
 text_row:     defb  0  ; defb = define byte
-text_column:  defb 15
-text_length:  defb  1
 text_height:  defb 10
-text_color:   defb  0
 
 ;---------------------
 ; Texts to be written
