@@ -115,7 +115,7 @@ Main_Browse_Key_Rows:
 Main_Print_One:
   ld HL, IX     ; address of the character to print
   ld BC, $0C10  ; row (B) and column (C)
-  call Print_Character_Reg_Sub
+  call Print_Character_Sub
 
   jp Main_Read_Next_Key
 
@@ -128,7 +128,7 @@ Main_Print_One:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
-  include "Subs/Print_Character_Reg_Sub.asm"
+  include "Subs/Print_Character_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

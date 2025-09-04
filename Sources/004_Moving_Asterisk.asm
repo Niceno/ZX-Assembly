@@ -39,8 +39,8 @@ Main_Loop:
 
   ; Print asterisk
   ld HL, char_to_print
-  push BC                       ; save the row count
-  call Print_Character_Reg_Sub  ; this clobbers B
+  push BC                   ; save the row count
+  call Print_Character_Sub  ; this clobbers B
 
   call Delay_Sub  ; want a delay, also clobbers B
   pop BC          ; get back the row count
@@ -48,9 +48,9 @@ Main_Loop:
   ; Delete the asterisk
   ; (print space over it)
   ld HL, space_to_print
-  push BC                       ; save the row count
-  call Print_Character_Reg_Sub  ; clobbers B
-  pop BC                        ; get back proper row count
+  push BC                   ; save the row count
+  call Print_Character_Sub  ; clobbers B
+  pop BC                    ; get back proper row count
 
   ; Decrease text row -> move asterisk position up
   djnz Main_Loop  ; no, carry on
@@ -64,7 +64,7 @@ Main_Loop:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Delay_Sub.asm"
-  include "Subs/Print_Character_Reg_Sub.asm"
+  include "Subs/Print_Character_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

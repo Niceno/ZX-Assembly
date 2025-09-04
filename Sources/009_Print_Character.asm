@@ -26,17 +26,11 @@ Main_Sub:
   ;----------------------------------
   call Open_Upper_Screen_Sub
 
-  ld A, 0
-  ld (text_column), A       ; store column coordinate
-  ld A, 0
-  ld (text_row), A          ; store row coordinate
-
   ;---------------------------------------
   ; Address of the null-terminated string
   ;---------------------------------------
-  ld HL, bojan_string
-  ld (text_to_print_addr), HL
-
+  ld HL, bojan_string  ; address where the string is stored
+  ld BC, $0000         ; row and column
   call Print_Character_Sub
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
@@ -61,17 +55,6 @@ Main_Sub:
 ; Null-terminated string to print
 ;---------------------------------
 bojan_string: defb "Bojan is cool!", 0
-
-;------------------------------
-; Variables used as parameters
-;------------------------------
-text_row:      defb  4
-text_column:   defb 15
-
-;---------------------------------------
-; Holds the memory of the text to print
-;---------------------------------------
-text_to_print_addr: defw  0
 
 screen_row_offset:  ; 24 words or 48 bytes
   defw     0  ; row  0
