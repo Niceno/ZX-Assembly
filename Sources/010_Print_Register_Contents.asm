@@ -39,7 +39,7 @@ Main_Sub:
   call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
 
   ld HL, af_string
-  call Print_Null_Terminated_String_Reg_Sub
+  call Print_Null_Terminated_String_Sub
 
   ;----------------------------------
   ; Now print AF register in hex
@@ -75,7 +75,7 @@ Main_Sub:
   call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
 
   ld HL, bc_string
-  call Print_Null_Terminated_String_Reg_Sub
+  call Print_Null_Terminated_String_Sub
 
   ;----------------------------------
   ; Now print BC register in hex
@@ -112,7 +112,7 @@ Main_Sub:
   call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
 
   ld HL, de_string
-  call Print_Null_Terminated_String_Reg_Sub
+  call Print_Null_Terminated_String_Sub
 
   ;----------------------------------
   ; Now print DE register in hex
@@ -149,7 +149,7 @@ Main_Sub:
   call Set_Text_Coords_Reg_Sub  ; set up up row/col coords.
 
   ld HL, hl_string
-  call Print_Null_Terminated_String_Reg_Sub
+  call Print_Null_Terminated_String_Sub
 
   ;----------------------------------
   ; Now print HL register in hex
@@ -236,7 +236,7 @@ Print_Hex_Digit_Sub:
 
   ; Print the string
   ld HL, DE
-  call Print_Null_Terminated_String_Reg_Sub
+  call Print_Null_Terminated_String_Sub
 
   pop BC
   pop DE
@@ -252,7 +252,7 @@ Print_Hex_Digit_Sub:
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Text_Coords_Reg_Sub.asm"
   include "Subs/Color_Text_Box_Reg_Sub.asm"
-  include "Subs/Print_Null_Terminated_String_Reg_Sub.asm"
+  include "Subs/Print_Null_Terminated_String_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

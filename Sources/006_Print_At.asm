@@ -59,7 +59,7 @@ Main_Sub:
   call Color_Text_Box_Reg_Sub
 
   ld HL, bojan_string
-  call Print_Null_Terminated_String_Reg_Sub
+  call Print_Null_Terminated_String_Sub
 
   ;-------------------------
   ; Color that line of text
@@ -121,7 +121,7 @@ Main_Sub:
   include "Subs/Set_Text_Coords_Reg_Sub.asm"
   include "Subs/Color_Text_Box_Reg_Sub.asm"
   include "Subs/Print_Five_Digit_Number_Sub.asm"
-  include "Subs/Print_Null_Terminated_String_Reg_Sub.asm"
+  include "Subs/Print_Null_Terminated_String_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

@@ -47,7 +47,7 @@ Main_Sub:
 
   ; Store the address of the text to print in HL
   ld HL, text_press_a_key
-  call Print_Null_Terminated_String_Reg_Sub
+  call Print_Null_Terminated_String_Sub
 
   ; Color the text box
   ld A, BLUE_INK + WHITE_PAPER  ; color of the string
@@ -265,7 +265,7 @@ Main_Print_One:
 
   ; Store the address of the text to print in HL
   ld HL, text_keys_defined
-  call Print_Null_Terminated_String_Reg_Sub
+  call Print_Null_Terminated_String_Sub
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -280,7 +280,7 @@ Main_Print_One:
   include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Unpress.asm"
-  include "Subs/Print_Null_Terminated_String_Reg_Sub.asm"
+  include "Subs/Print_Null_Terminated_String_Sub.asm"
   include "Subs/Print_Udgs_Character_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

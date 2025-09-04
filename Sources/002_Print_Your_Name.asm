@@ -42,7 +42,7 @@ Main_Loop:
 
   ld HL, bojan_string  ; HL holds the address of the text to print
   push BC              ; Print_Null_Term... clobbers the registers
-  call Print_Null_Terminated_String_Reg_Sub
+  call Print_Null_Terminated_String_Sub
   pop BC
 
   djnz Main_Loop                ; decrease B and run the loop again
@@ -58,7 +58,7 @@ Main_Loop:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Text_Coords_Reg_Sub.asm"
-  include "Subs/Print_Null_Terminated_String_Reg_Sub.asm"
+  include "Subs/Print_Null_Terminated_String_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

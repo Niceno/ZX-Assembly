@@ -4,12 +4,10 @@
 ; Purpose:
 ; - Prints a string terminated with a null
 ;
-; Parameters (passed via memory locations):
-; - text_to_print
+; Parameters (passed via registers):
+; - HL: holds the address of text to print
 ;-------------------------------------------------------------------------------
 Print_Null_Terminated_String_Sub:
-
-  ld HL, (text_to_print_addr)  ; address of the text to print
 
 Print_Null_Terminated_String_Loop:
 
