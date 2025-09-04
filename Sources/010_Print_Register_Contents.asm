@@ -60,7 +60,7 @@ Main_Sub:
   ld A, WHITE_INK + BLACK_PAPER  ; color
   ld BC, $0019                   ; row and column
   ld DE, $0701                   ; length and height
-  call Color_Text_Box_Reg_Sub
+  call Color_Text_Box_Sub
 
   ;--------------
   ;
@@ -97,7 +97,7 @@ Main_Sub:
   ld A, WHITE_INK + BLUE_PAPER  ; color
   ld BC, $0119                  ; row and column
   ld DE, $0701                  ; length and height
-  call Color_Text_Box_Reg_Sub
+  call Color_Text_Box_Sub
 
   ;--------------
   ;
@@ -134,7 +134,7 @@ Main_Sub:
   ld A, WHITE_INK + MAGENTA_PAPER  ; color
   ld BC, $0219                     ; row and column
   ld DE, $0701                     ; length and height
-  call Color_Text_Box_Reg_Sub
+  call Color_Text_Box_Sub
 
   ;--------------
   ;
@@ -171,7 +171,7 @@ Main_Sub:
   ld A, WHITE_INK + RED_PAPER  ; color
   ld BC, $0319                 ; row and column
   ld DE, $0701                 ; length and height
-  call Color_Text_Box_Reg_Sub
+  call Color_Text_Box_Sub
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -251,7 +251,7 @@ Print_Hex_Digit_Sub:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Text_Coords_Reg_Sub.asm"
-  include "Subs/Color_Text_Box_Reg_Sub.asm"
+  include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

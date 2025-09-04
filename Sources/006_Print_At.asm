@@ -46,7 +46,7 @@ Main_Sub:
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
   ld BC, $0F05                  ; row and column
   ld DE, $0101                  ; length and height
-  call Color_Text_Box_Reg_Sub
+  call Color_Text_Box_Sub
 
   ;--------------------------------------------
   ; Set coordinates to 9, 9 and print a string
@@ -56,7 +56,7 @@ Main_Sub:
   call Set_Text_Coords_Reg_Sub  ; set up our row/col coords
   pop BC                        ; get row and column back
   ld DE, $0E01                  ; length and height
-  call Color_Text_Box_Reg_Sub
+  call Color_Text_Box_Sub
 
   ld HL, bojan_string
   call Print_Null_Terminated_String_Sub
@@ -65,9 +65,9 @@ Main_Sub:
   ; Color that line of text
   ;-------------------------
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
-  ld BC, $0909                   ; row and column
-  ld DE, $0E01                   ; length and height
-  call Color_Text_Box_Reg_Sub
+  ld BC, $0909                  ; row and column
+  ld DE, $0E01                  ; length and height
+  call Color_Text_Box_Sub
 
   ;---------------------------------------------------------
   ; Set coordinates to 13, 13 and print a five digit number
@@ -89,23 +89,23 @@ Main_Sub:
   ld A, RED_INK + CYAN_PAPER  ; color of the string
   pop DE
   pop BC
-  call Color_Text_Box_Reg_Sub
+  call Color_Text_Box_Sub
 
   ;----------------
   ; Color a column
   ;----------------
   ld A, WHITE_INK + RED_PAPER
-  ld BC, $0818                   ; row and column
-  ld DE, $010A                   ; length and height
-  call Color_Text_Box_Reg_Sub
+  ld BC, $0818                 ; row and column
+  ld DE, $010A                 ; length and height
+  call Color_Text_Box_Sub
 
   ;-------------
   ; Color a box
   ;-------------
   ld A, WHITE_INK + BLUE_PAPER
-  ld BC, $0A1A                   ; row and column
-  ld DE, $0303                   ; length and height
-  call Color_Text_Box_Reg_Sub
+  ld BC, $0A1A                  ; row and column
+  ld DE, $0303                  ; length and height
+  call Color_Text_Box_Sub
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -119,7 +119,7 @@ Main_Sub:
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Custom_Font_Sub.asm"
   include "Subs/Set_Text_Coords_Reg_Sub.asm"
-  include "Subs/Color_Text_Box_Reg_Sub.asm"
+  include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Print_Five_Digit_Number_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
 

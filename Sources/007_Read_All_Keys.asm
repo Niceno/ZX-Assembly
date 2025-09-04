@@ -38,7 +38,7 @@ Main_Sub:
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
   ld BC, $0C10                  ; row and column
   ld DE, $0101                  ; length and height
-  call Color_Text_Box_Reg_Sub
+  call Color_Text_Box_Sub
 
   ;--------------------------------------------------------------------
   ; Wait until a key is pressed
@@ -127,7 +127,7 @@ Main_Print_One:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
-  include "Subs/Color_Text_Box_Reg_Sub.asm"
+  include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Print_Character_Reg_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

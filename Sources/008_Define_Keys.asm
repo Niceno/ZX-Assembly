@@ -49,7 +49,7 @@ Main_Sub:
   ld A,  BLUE_INK + WHITE_PAPER  ; color of the string
   ld BC, $0303
   ld DE, $1801                   ; length (D) is 24, height (E) is 1
-  call Color_Text_Box_Reg_Sub
+  call Color_Text_Box_Sub
 
   ;--------------------------
   ;
@@ -133,7 +133,7 @@ Main_Done:
   ld C,  5                               ; B should hold the row
   ld DE, $0101                           ; length (D) and height (E) are 1
   push BC
-  call Color_Text_Box_Reg_Sub
+  call Color_Text_Box_Sub
   pop BC
 
   ld HL, (udgs_address)
@@ -236,7 +236,7 @@ Main_Print_One:
   ld C, 5
   ld DE, $0101
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
-  call Color_Text_Box_Reg_Sub   ; this seems to be needed
+  call Color_Text_Box_Sub       ; this seems to be needed
                                 ; after calling ROM routines
 
   ;--------------------------------------
@@ -273,7 +273,7 @@ Main_Print_One:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Text_Coords_Reg_Sub.asm"
-  include "Subs/Color_Text_Box_Reg_Sub.asm"
+  include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Unpress.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
   include "Subs/Print_Udgs_Character_Reg_Sub.asm"
