@@ -27,10 +27,6 @@ Main_Sub:
   call Open_Upper_Screen_Sub
 
   ld BC, $0000                  ; row and column
-  ld A, B
-  ld (text_row), A              ; store row coordinate
-  ld A, C
-  ld (text_column), A           ; store column coordinate
   call Set_Text_Coords_Reg_Sub  ; set up up our row/col coords.
 
   ;----------------------------------------------------------
@@ -50,13 +46,11 @@ Main_Sub:
 Main_Loop:
 
   ; Set text coordinates for the new value of B (loop counter)
-  ld A, B
-  ld (text_row), A              ; store row coordinate
-  ld A, C
-  ld (text_column), A           ; store column coordinate
   call Set_Text_Coords_Reg_Sub  ; set up up our row/col coords.
 
+  push BC
   call Print_Null_Terminated_String_Sub
+  pop BC
 
   djnz Main_Loop                ; decrease B and run the loop again
 
@@ -78,12 +72,6 @@ Main_Loop:
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-;---------------------
-; Text row and column
-;---------------------
-text_row:     defb  0
-text_column:  defb 15
 
 ;---------------------------------
 ; Null-terminated string to print
