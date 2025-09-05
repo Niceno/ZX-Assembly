@@ -271,6 +271,42 @@ Main_Print_One:
   ld HL, text_press_fire
   call Print_Null_Terminated_String_Sub
 
+  ;--------------------------------
+  ;
+  ;
+  ; Press any key to continue loop
+  ;
+  ;
+  ;--------------------------------
+  call Press_Any_Key_Sub
+
+  ;--------------------------------------
+  ; Loop until all the keys are released
+  ;--------------------------------------
+  call Unpress_Sub
+
+  ;------------------
+  ; Clear the screen
+  ;------------------
+  call ROM_CLEAR_SCREEN           ; clear the screen
+
+
+  ;------------------------------
+  ;
+  ; Try to set initial character
+  ;
+  ;------------------------------
+
+  ; This selects a character; just an arrow up for the time being
+  ld HL, arrow_up
+  ld (udgs_address), HL
+
+  ld BC, $0909
+  call Set_Text_Coords_Sub  ; set up our row/column coords
+
+  ld HL, (udgs_address)
+  call Print_Udgs_Character_Sub
+
   ;----------------
   ;
   ;
@@ -330,6 +366,7 @@ Main_Game_Over
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
+  include "Subs/Press_Any_Key_Sub.asm"
   include "Subs/Unpress.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
   include "Subs/Print_Udgs_Character_Sub.asm"
@@ -351,7 +388,7 @@ text_height:  defb 10
 ;---------------------
 text_press_a_key:   defb "Press keys for ", $94,32,$95,32,$96,32,$97,32,$98, 0
 text_keys_defined:  defb "All keys defined", 0
-text_press_fire:    defb "Press fire to continue", 0
+text_press_fire:    defb "Press any key to continue", 0
 text_up:            defb "up",               0
 text_down:          defb "down",             0
 text_left:          defb "left",             0
