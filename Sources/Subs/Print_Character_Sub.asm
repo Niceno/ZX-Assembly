@@ -10,6 +10,9 @@
 ;
 ; Constant array
 ; - screen_row_offset
+;
+; Clobber:
+; - AF, BC, DE and HL
 ;-------------------------------------------------------------------------------
 Print_Character_Sub:
 
@@ -23,8 +26,9 @@ Print_Character_Sub:
   ld D, H         ; copy HL to DE
   ld E, L
 
-  ld IX, MEM_FONT_START
-  add IX, DE              ; point to the memory where the character is defined
+  ld HL, MEM_FONT_START
+  add HL, DE  ; point to the memory where the character is defined
+  push HL     ; store this memory address on stack (will pop as DE later)
 
   ; Calculate screen address from row and column
   ld A, B                 ; get row number (0-23)
@@ -50,11 +54,12 @@ Print_Character_Sub:
   add HL, DE  ; HL now points to correct screen position
 
   ld B, 8              ; characters are eight lines high
+  pop DE               ; this was pushed as HL with memory font start
 Print_Character_Loop:
-  ld A, (IX)  ; is IX the optimal choice here?  Ask your AI assistant
+  ld A, (DE)
   ld(HL), A
   inc H       ; increase position at the screen (HL = HL + 256)
-  inc IX      ; increase position in the memory
+  inc DE      ; increase position in the memory
   djnz Print_Character_Loop
 
   ret
