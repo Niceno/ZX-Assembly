@@ -178,34 +178,34 @@ Main_Read_Next_Key:
 Main_Browse_Key_Rows:
 
   ; Keyboard row; load the port number into BC indirectly through HL
-  ld C, (HL)      ; low byte into C
+  ld C, (HL)       ; low byte into C
   inc HL
-  ld B, (HL)      ; high byte into B
+  ld B, (HL)       ; high byte into B
   inc HL
 
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 0, A        ; bit 0
-  ld A, 0         ; store 0
+  in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
+  bit 0, A         ; bit 0
+  ld A, %00000001  ; store bit 0
   inc IX
   jr z, Main_Print_One
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 1, A        ; bit 1
-  ld A, 1         ; store 1
+  in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
+  bit 1, A         ; bit 1
+  ld A, %00000010  ; store bit 1
   inc IX
   jr z, Main_Print_One
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 2, A        ; bit 2
-  ld A, 2         ; store 2
+  in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
+  bit 2, A         ; bit 2
+  ld A, %00000100  ; store bit 2
   inc IX
   jr z, Main_Print_One
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 3, A        ; bit 3
-  ld A, 3         ; store 3
+  in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
+  bit 3, A         ; bit 3
+  ld A, %00001000  ; store bit 3
   inc IX
   jr z, Main_Print_One
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 4, A        ; bit 4
-  ld A, 4         ; store 4
+  in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
+  bit 4, A         ; bit 4
+  ld A, %00010000  ; store bit 4
   inc IX
   jr z, Main_Print_One
 
@@ -283,7 +283,7 @@ Main_Game_Loop:
   ;-----------------------------------------------------------
   ; Set the HL to point to the beginning of array of keys 6-0
   ;-----------------------------------------------------------
-  ld HL, KEYS_67890
+  ld HL, port_for_fire  ; select the row where fire is
 
   ;---------------------------------------------------------------
   ; There are eight rows of keys, but you care about one only now
@@ -298,10 +298,18 @@ Main_Browse_Keys_In_Game:
   ld B, (HL)      ; high byte into B
   inc HL
 
-  ; You care about one key only, 0
+  ; You care about one key only, the one you defined for fire
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 0, A        ; bit 0
-  ld A, 0         ; store 0
+
+  ; Load the mask for fire into B through HL ...
+  push HL
+  ld HL, mask_for_fire
+  ld B, (HL)
+  pop HL
+
+  ; ... and compare that mask (in B) with A
+  and B
+
   jr z, Main_Game_Over
 
   dec D
@@ -345,7 +353,7 @@ text_height:  defb 10
 ;---------------------
 text_press_a_key:   defb "Press keys for ", $94,32,$95,32,$96,32,$97,32,$98, 0
 text_keys_defined:  defb "All keys defined", 0
-text_press_fire:    defb "Press 0 to continue", 0
+text_press_fire:    defb "Press fire to continue", 0
 text_up:            defb "up",               0
 text_down:          defb "down",             0
 text_left:          defb "left",             0
