@@ -280,15 +280,15 @@ Main_Print_One:
   ;----------------
 Main_Game_Loop:
 
-  ;-----------------------------------------------------------
-  ; Set the HL to point to the beginning of array of keys 6-0
-  ;-----------------------------------------------------------
-  ld HL, port_for_fire  ; select the row where fire is
+  ;-------------------------------------------------------------------------
+  ; Set the HL to point to the beginning of array of user defind keys (UDK)
+  ;-------------------------------------------------------------------------
+  ld HL, port_for_up  ; must be the first of ports for user defined keys
 
   ;---------------------------------------------------------------
   ; There are eight rows of keys, but you care about one only now
   ;---------------------------------------------------------------
-  ld D, 1              ; you want one row only
+  ld D, 5  ; you want five rows for five UDKs
 
 Main_Browse_Keys_In_Game:
 
@@ -301,11 +301,9 @@ Main_Browse_Keys_In_Game:
   ; You care about one key only, the one you defined for fire
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
 
-  ; Load the mask for fire into B through HL ...
-  push HL
-  ld HL, mask_for_fire
+  ; Load the mask for this UDK
   ld B, (HL)
-  pop HL
+  inc HL
 
   ; ... and compare that mask (in B) with A
   and B
