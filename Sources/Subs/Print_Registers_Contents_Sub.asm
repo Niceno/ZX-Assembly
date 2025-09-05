@@ -1,5 +1,5 @@
 ;===============================================================================
-; Print_Registers_Contents_Sub
+; Print_Registers_Sub
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Prints the contents of the registers
@@ -14,7 +14,7 @@
 ; - This source includes three other routines which are only called from here
 ;   I am not sure this is the best practice, but ... seems OK at the moment.
 ;-------------------------------------------------------------------------------
-Print_Registers_Contents_Sub:
+Print_Registers_Sub:
 
   ;--------------------------
   ;
@@ -59,121 +59,60 @@ Print_Registers_Contents_Sub:
   pop HL
   ld (new_iy), HL
 
-  ;--------------
+  ;------------------------------
   ;
-  ; AF registers
+  ; Browse through all registers
   ;
-  ;--------------
+  ;------------------------------
+  ld IX, reg_table
+  ld B, REG_ENTRIES
 
-  ; Print the AF string
-  ld BC, $0019                    ; row and column
-  call Increase_Row_For_2nd_Call  ; increase B for the 2nd call
-  call Set_Text_Coords_Sub        ; set up up row/col coords.
-  ld HL, af_string
+Print_Registers_Loop:
+  push bc
+
+  ;------------------
+  ; Text coordinates
+  ;------------------
+  ld B, (ix+0)  ; B holds row
+  ld C, (ix+1)  ; C holds column
+  call Increase_Row_For_2nd_Call
+  call Set_Text_Coords_Sub
+
+  ;----------------
+  ; Register labes
+  ;----------------
+  ld L, (ix+2)  ; notice little endian, lower byte first
+  ld H, (ix+3)  ; higher byte second
   call Print_Null_Terminated_String_Sub
 
-  ; Print AF register
-  ld HL, new_af
-  inc HL
-  ld A, (HL)
+  ;-------------------------------------------------------------
+  ; Print hex number from new_ptr (which is always the current)
+  ;-------------------------------------------------------------
+  ld   L, (ix+4)  ; little ...
+  ld   H, (ix+5)  ; ... endian
+  inc  HL
+  ld   A, (HL)
   call Print_Hex_Byte_Sub
-  dec HL
-  ld A, (HL)
+  dec  HL
+  ld   A, (HL)
   call Print_Hex_Byte_Sub
 
-  ; Color the AF registers
-  ld A, WHITE_INK + BLACK_PAPER  ; color
-  ld DE, old_af
+  ;---------------------------------
+  ; Colour (maybe flash) vs old_ptr
+  ;---------------------------------
+  ld A, (ix+8)  ; color
+  ld E, (ix+6)
+  ld D, (ix+7)  ; old_ptr
   call Compare_Registers
-  ld DE, $0701                   ; length and height
+  ld   DE, $0801
   call Color_Text_Box_Sub
 
-  ;--------------
-  ;
-  ; BC registers
-  ;
-  ;--------------
+  ld DE, REG_ROW_SIZE
+  add ix, DE
 
-  ; Print the BC string
-  ld BC, $0119                    ; row and column
-  call Increase_Row_For_2nd_Call  ; increase B for the 2nd call
-  call Set_Text_Coords_Sub        ; set up up row/col coords.
-  ld HL, bc_string
-  call Print_Null_Terminated_String_Sub
+  pop BC
 
-  ; Print BC register
-  ld HL, new_bc
-  inc HL
-  ld A, (HL)
-  call Print_Hex_Byte_Sub
-  dec HL
-  ld A, (HL)
-  call Print_Hex_Byte_Sub
-
-  ; Color the BC registers
-  ld A, WHITE_INK + BLUE_PAPER  ; color
-  ld DE, old_bc
-  call Compare_Registers
-  ld DE, $0701                  ; length and height
-  call Color_Text_Box_Sub
-
-  ;--------------
-  ;
-  ; DE registers
-  ;
-  ;--------------
-
-  ; Print the DE string
-  ld BC, $0219                    ; row and column
-  call Increase_Row_For_2nd_Call  ; increase B for the 2nd call
-  call Set_Text_Coords_Sub        ; set up up row/col coords.
-  ld HL, de_string
-  call Print_Null_Terminated_String_Sub
-
-  ; Print DE register
-  ld HL, new_de
-  inc HL
-  ld A, (HL)
-  call Print_Hex_Byte_Sub
-  dec HL
-  ld A, (HL)
-  call Print_Hex_Byte_Sub
-
-  ; Color the DE registers
-  ld A, WHITE_INK + MAGENTA_PAPER  ; color
-  ld DE, old_de
-  call Compare_Registers
-  ld DE, $0701                     ; length and height
-  call Color_Text_Box_Sub
-
-  ;--------------
-  ;
-  ; HL registers
-  ;
-  ;--------------
-
-  ; Print the HL string
-  ld BC, $0319                    ; row and column
-  call Increase_Row_For_2nd_Call  ; increase B for the 2nd call
-  call Set_Text_Coords_Sub        ; set up up row/col coords.
-  ld HL, hl_string
-  call Print_Null_Terminated_String_Sub
-
-  ; Now print HL register in hex
-  ld HL, new_hl
-  inc HL
-  ld A, (HL)
-  call Print_Hex_Byte_Sub
-  dec HL
-  ld A, (HL)
-  call Print_Hex_Byte_Sub
-
-  ; Color the HL registers
-  ld A, WHITE_INK + RED_PAPER  ; color
-  ld DE, old_hl
-  call Compare_Registers
-  ld DE, $0701                 ; length and height
-  call Color_Text_Box_Sub
+  djnz Print_Registers_Loop
 
   ;----------------------------------
   ; On first call, copy the register
@@ -182,17 +121,17 @@ Print_Registers_Contents_Sub:
   push AF
   ld A, (call_count)
 
-  cp 1
-  jr z, First_Call  ; if A is 1, the first call, jump to First_Call
-  jr End            ; if A is not 1, go to the End
+  cp 1     ; if A is 1, the first call, jump to Print_Registers_First_Call
+  jr z, Print_Registers_First_Call
+  jr Print_Registers_End   ; if A is not 1, go to the Print_Registers_End
 
-First_Call:
+Print_Registers_First_Call:
   ld HL, new_af
   ld DE, old_af
   ld BC, 12
   ldir
 
-End:
+Print_Registers_End:
   pop AF
 
   ;----------------------------
@@ -244,7 +183,7 @@ Increase_Row_For_2nd_Call_Increase:
 ; - AF: results in increased A and (possibly) clobbered F
 ;
 ; Note:
-; - This is a "local function", called only from Print_Registers_Contents_Sub,
+; - This is a "local function", called only from Print_Registers_Sub,
 ;   that's why it is not in a separate file
 ;-------------------------------------------------------------------------------
 Compare_Registers:
@@ -306,7 +245,7 @@ Add_Flashing:
 ; - nothing
 ;
 ; Note:
-; - This is a "local function", called only from Print_Registers_Contents_Sub,
+; - This is a "local function", called only from Print_Registers_Sub,
 ;   that's why it is not in a separate file
 ;-------------------------------------------------------------------------------
 Print_Hex_Byte_Sub:
@@ -349,7 +288,7 @@ Print_Hex_Byte_Sub:
 ; - nothing
 ;
 ; Note:
-; - This is a "local function", called only from Print_Registers_Contents_Sub,
+; - This is a "local function", called only from Print_Registers_Sub,
 ;   that's why it is not in a separate file
 ;-------------------------------------------------------------------------------
 Print_Hex_Digit_Sub:
@@ -405,10 +344,25 @@ old_ix:  defw  $00
 old_iy:  defw  $00
 
 ; Null-terminated register names to print
-af_string: defb "AF:", 0
-bc_string: defb "BC:", 0
-de_string: defb "DE:", 0
-hl_string: defb "HL:", 0
+af_string: defb "AF :", 0
+bc_string: defb "BC :", 0
+de_string: defb "DE :", 0
+hl_string: defb "HL :", 0
+ix_string: defb "IX :", 0
+iy_string: defb "IY :", 0
+
+;    row,col,    str_ptr,    new_ptr,  old_ptr,   color
+;    0   1       2-3         4-5       6-7        8
+reg_table:
+  db 0,  24 : dw af_string,  new_af,   old_af   : db WHITE_INK + BLACK_PAPER
+  db 1,  24 : dw bc_string,  new_bc,   old_bc   : db WHITE_INK + BLUE_PAPER
+  db 2,  24 : dw de_string,  new_de,   old_de   : db WHITE_INK + MAGENTA_PAPER
+  db 3,  24 : dw hl_string,  new_hl,   old_hl   : db WHITE_INK + RED_PAPER
+  db 4,  24 : dw ix_string,  new_ix,   old_ix   : db BLACK_INK + GREEN_PAPER
+  db 5,  24 : dw iy_string,  new_iy,   old_iy   : db BLACK_INK + YELLOW_PAPER
+reg_table_end:
+REG_ROW_SIZE  equ  9
+REG_ENTRIES   equ  6
 
 ; Null-terminated hex digits
 string_0: defb "0", 0
