@@ -185,33 +185,33 @@ Main_Browse_Key_Rows:
   bit 0, A        ; bit 0
   ld A, 0         ; store 0
   inc IX
-  jp z, Main_Print_One
+  jr z, Main_Print_One
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 1, A        ; bit 1
   ld A, 1         ; store 1
   inc IX
-  jp z, Main_Print_One
+  jr z, Main_Print_One
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 2, A        ; bit 2
   ld A, 2         ; store 2
   inc IX
-  jp z, Main_Print_One
+  jr z, Main_Print_One
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 3, A        ; bit 3
   ld A, 3         ; store 3
   inc IX
-  jp z, Main_Print_One
+  jr z, Main_Print_One
   in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
   bit 4, A        ; bit 4
   ld A, 4         ; store 4
   inc IX
-  jp z, Main_Print_One
+  jr z, Main_Print_One
 
   dec D
 
   jr nz, Main_Browse_Key_Rows
 
-  jp Main_Read_Next_Key    ; if not pressed, repeat loop
+  jr Main_Read_Next_Key    ; if not pressed, repeat loop
 
   ;----------------------------
   ; Print the proper character
