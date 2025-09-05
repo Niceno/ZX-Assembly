@@ -53,7 +53,9 @@ Main_Sub:
 
   ;--------------------------
   ;
+  ;
   ; Loop to define five keys
+  ;
   ;
   ;--------------------------
   ld B, 5  ; you will define five keys
@@ -252,15 +254,63 @@ Main_Print_One:
   dec B
   jp nz, Main_Ask_Again
 
-  ;----------------------------------------------------------
-  ; End the program with a message that all keys are defined
-  ;----------------------------------------------------------
-  ld BC, $1503              ; set row (D) to 15 and column (E) to 3
+  ;-----------------------------------------------------------------------
+  ; End the key definition stage with a message that all keys are defined
+  ;-----------------------------------------------------------------------
+  ld BC, $1303              ; set row (D) to 15 and column (E) to 3
   call Set_Text_Coords_Sub  ; set up the row/col coords.
 
   ; Store the address of the text to print in HL
   ld HL, text_keys_defined
   call Print_Null_Terminated_String_Sub
+
+  ld BC, $1503              ; set row (D) to 15 and column (E) to 3
+  call Set_Text_Coords_Sub  ; set up the row/col coords.
+
+  ; Store the address of the text to print in HL
+  ld HL, text_press_fire
+  call Print_Null_Terminated_String_Sub
+
+  ;----------------
+  ;
+  ;
+  ; Main game loop
+  ;
+  ;
+  ;----------------
+Main_Game_Loop:
+
+  ;-----------------------------------------------------------
+  ; Set the HL to point to the beginning of array of keys 6-0
+  ;-----------------------------------------------------------
+  ld HL, KEYS_67890
+
+  ;---------------------------------------------------------------
+  ; There are eight rows of keys, but you care about one only now
+  ;---------------------------------------------------------------
+  ld D, 1              ; you want one row only
+
+Main_Browse_Keys_In_Game:
+
+  ; Keyboard row; load the port number into BC indirectly through HL
+  ld C, (HL)      ; low byte into C
+  inc HL
+  ld B, (HL)      ; high byte into B
+  inc HL
+
+  ; You care about one key only, 0
+  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+  bit 0, A        ; bit 0
+  ld A, 0         ; store 0
+  jr z, Main_Game_Over
+
+  dec D
+
+  jr nz, Main_Browse_Keys_In_Game
+
+  jr Main_Game_Loop  ; continue the main game loop, through key rows
+
+Main_Game_Over
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -295,6 +345,7 @@ text_height:  defb 10
 ;---------------------
 text_press_a_key:   defb "Press keys for ", $94,32,$95,32,$96,32,$97,32,$98, 0
 text_keys_defined:  defb "All keys defined", 0
+text_press_fire:    defb "Press 0 to continue", 0
 text_up:            defb "up",               0
 text_down:          defb "down",             0
 text_left:          defb "left",             0
