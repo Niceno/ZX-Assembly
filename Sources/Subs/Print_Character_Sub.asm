@@ -13,14 +13,14 @@
 ;-------------------------------------------------------------------------------
 Print_Character_Sub:
 
-  ld A, (HL)                   ; store the character into A
-  sub CHAR_SPACE               ; subtract the first character (space)
-  ld H, 0                      ; copy A to HL ...
+  ld A, (HL)      ; store the character into A
+  sub CHAR_SPACE  ; subtract the first character (space)
+  ld H, 0         ; copy A to HL ...
   ld L, A
-  add HL, HL                   ; ... and multiply it with 8
+  add HL, HL      ; ... and multiply it with 8
   add HL, HL
   add HL, HL
-  ld D, H                      ; copy HL to DE
+  ld D, H         ; copy HL to DE
   ld E, L
 
   ld IX, MEM_FONT_START
@@ -51,10 +51,10 @@ Print_Character_Sub:
 
   ld B, 8              ; characters are eight lines high
 Print_Character_Loop:
-  ld A, (IX)
+  ld A, (IX)  ; is IX the optimal choice here?  Ask your AI assistant
   ld(HL), A
-  inc H                ; increase position at the screen (HL = HL + 256)
-  inc IX               ; increase position in the memory
+  inc H       ; increase position at the screen (HL = HL + 256)
+  inc IX      ; increase position in the memory
   djnz Print_Character_Loop
 
   ret
