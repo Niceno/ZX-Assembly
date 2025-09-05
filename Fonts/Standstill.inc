@@ -1,3 +1,4 @@
+; Standstill font by DamienG https://damieng.com
   defb $00,$00,$00,$00,$00,$00,$00,$00 ;  
   defb $18,$3c,$3c,$18,$00,$18,$18,$00 ; !
   defb $6c,$6c,$6c,$00,$00,$00,$00,$00 ; "
