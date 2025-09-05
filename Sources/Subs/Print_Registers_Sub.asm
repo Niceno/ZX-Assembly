@@ -76,11 +76,11 @@ Print_Registers_Loop:
   ld B, (ix+0)  ; B holds row
   ld C, (ix+1)  ; C holds column
   call Increase_Row_For_2nd_Call
-  call Set_Text_Coords_Sub
+  call Set_Text_Coords_Sub  ; uses BC to set coordinates in ROM
 
-  ;----------------
-  ; Register labes
-  ;----------------
+  ;-----------------
+  ; Register labels
+  ;-----------------
   ld L, (ix+2)  ; notice little endian, lower byte first
   ld H, (ix+3)  ; higher byte second
   call Print_Null_Terminated_String_Sub

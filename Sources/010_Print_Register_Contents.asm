@@ -34,9 +34,17 @@ Main_Sub:
 
   ; Real life example - see which registers get
   ; clobbered with a call to Print_Character_Sub
-  call Print_Registers_Contents_Sub
+  call Print_Registers_Sub
+  push AF
+  push BC
+  push DE
+  push HL
   call Print_Character_Sub
-  call Print_Registers_Contents_Sub
+  pop HL
+  pop DE
+  pop BC
+  pop AF
+  call Print_Registers_Sub
 
 ; Academic example  ;--------------------------------------------
 ; Academic example  ; Set registers to some test value and print
@@ -46,7 +54,7 @@ Main_Sub:
 ; Academic example  ld DE, $3344  ; example value
 ; Academic example  ld HL, $ABCD  ; example value
 ; Academic example
-; Academic example  call Print_Registers_Contents_Sub
+; Academic example  call Print_Registers_Sub
 ; Academic example
 ; Academic example  ;--------------------------------------------
 ; Academic example  ; Set registers to some test value and print
@@ -56,7 +64,7 @@ Main_Sub:
 ; Academic example  ld DE, $3344  ; example value
 ; Academic example  ld HL, $ABCD  ; example value
 ; Academic example
-; Academic example  call Print_Registers_Contents_Sub
+; Academic example  call Print_Registers_Sub
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -72,7 +80,7 @@ Main_Sub:
   include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
-  include "Subs/Print_Registers_Contents_Sub.asm"
+  include "Subs/Print_Registers_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
