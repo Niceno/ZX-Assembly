@@ -344,11 +344,66 @@ Main_Browse_Keys_In_Game:
   ; ... and compare that mask (in B) with A
   and B
 
-  jr z, Main_Game_Over
+  jr z, Main_Game_Action_Key_Pressed
 
   dec D
 
   jr nz, Main_Browse_Keys_In_Game
+
+  jr Main_Game_Loop
+
+Main_Game_Action_Key_Pressed:
+
+  ; Pick which action to take depending on which key was pressed
+  ld A, D
+  cp 5     ; upp is pressed
+  jr z, Main_Game_Up_Pressed
+  cp 4     ; down is pressed
+  jr z, Main_Game_Down_Pressed
+  cp 3     ; left is pressed
+  jr z, Main_Game_Left_Pressed
+  cp 2     ; right is pressed
+  jr z, Main_Game_Right_Pressed
+  cp 1
+  jr z, Main_Game_Over
+
+Main_Game_Up_Pressed:
+
+  ; Set up the character for up
+  ld HL, arrow_up
+  ld BC, $0909
+  call Set_Text_Coords_Sub  ; set up our row/column coords
+  call Print_Udgs_Character_Sub
+
+  jr Main_Game_Loop  ; continue the main game loop, through key rows
+
+Main_Game_Down_Pressed:
+
+  ; Set up the character for down
+  ld HL, arrow_down
+  ld BC, $0909
+  call Set_Text_Coords_Sub  ; set up our row/column coords
+  call Print_Udgs_Character_Sub
+
+  jr Main_Game_Loop  ; continue the main game loop, through key rows
+
+Main_Game_Left_Pressed:
+
+  ; Set up the character for left
+  ld HL, arrow_left
+  ld BC, $0909
+  call Set_Text_Coords_Sub  ; set up our row/column coords
+  call Print_Udgs_Character_Sub
+
+  jr Main_Game_Loop  ; continue the main game loop, through key rows
+
+Main_Game_Right_Pressed:
+
+  ; Set up the character for right
+  ld HL, arrow_right
+  ld BC, $0909
+  call Set_Text_Coords_Sub  ; set up our row/column coords
+  call Print_Udgs_Character_Sub
 
   jr Main_Game_Loop  ; continue the main game loop, through key rows
 
