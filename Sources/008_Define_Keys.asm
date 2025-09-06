@@ -80,7 +80,7 @@ Main_Ask_Again:
   jr z, Main_Fire
 Main_Up:
   ld HL, arrow_up
-  ld (udgs_address), HL
+  ld (udgs_arrows), HL
   ld HL, port_for_up
   ld (curr_port_addr), HL
   ld HL, mask_for_up
@@ -88,7 +88,7 @@ Main_Up:
   jr Main_Done
 Main_Down:
   ld HL, arrow_down
-  ld (udgs_address), HL
+  ld (udgs_arrows), HL
   ld HL, port_for_down
   ld (curr_port_addr), HL
   ld HL, mask_for_down
@@ -96,7 +96,7 @@ Main_Down:
   jr Main_Done
 Main_Left:
   ld HL, arrow_left
-  ld (udgs_address), HL
+  ld (udgs_arrows), HL
   ld HL, port_for_left
   ld (curr_port_addr), HL
   ld HL, mask_for_left
@@ -104,7 +104,7 @@ Main_Left:
   jr Main_Done
 Main_Right:
   ld HL, arrow_right
-  ld (udgs_address), HL
+  ld (udgs_arrows), HL
   ld HL, port_for_right
   ld (curr_port_addr), HL
   ld HL, mask_for_right
@@ -112,7 +112,7 @@ Main_Right:
   jr Main_Done
 Main_Fire:
   ld HL, fire
-  ld (udgs_address), HL
+  ld (udgs_arrows), HL
   ld HL, port_for_fire
   ld (curr_port_addr), HL
   ld HL, mask_for_fire
@@ -138,7 +138,7 @@ Main_Done:
   call Color_Text_Box_Sub
   pop BC
 
-  ld HL, (udgs_address)
+  ld HL, (udgs_arrows)
   call Print_Udgs_Character_Sub
 
   ;--------------------------------------------------------------------
@@ -299,12 +299,12 @@ Main_Print_One:
 
   ; This selects a character; just an arrow up for the time being
   ld HL, arrow_up
-  ld (udgs_address), HL
+  ld (udgs_arrows), HL
 
   ld BC, $0909
   call Set_Text_Coords_Sub  ; set up our row/column coords
 
-  ld HL, (udgs_address)
+  ld HL, (udgs_arrows)
   call Print_Udgs_Character_Sub
 
   ;----------------
@@ -524,7 +524,7 @@ arrow_left:    defb $00, $10, $30, $7E, $7E, $30, $10, $00 ; $96
 arrow_right:   defb $00, $08, $0C, $7E, $7E, $0C, $08, $00 ; $97
 fire:          defb $08, $04, $0C, $2A, $3A, $7A, $66, $3C ; $98
 
-udgs_address: defw arrow_up
+udgs_arrows:  defw arrow_up
 
 ; User refined keys will be stored here
 debug_begin: defb ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
