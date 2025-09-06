@@ -92,11 +92,11 @@ Print_Registers_Loop:
   ld   H, (IX+5)  ; ... endian
   inc  HL
   ld   A, (HL)
-  ld   E, 4
+  ld   E, 2
   call Print_Hex_Byte_Sub
   dec  HL
   ld   A, (HL)
-  ld   E, 6
+  ld   E, 4
   call Print_Hex_Byte_Sub
 
   ;---------------------------------
@@ -106,7 +106,7 @@ Print_Registers_Loop:
   ld E, (IX+6)
   ld D, (IX+7)  ; old_ptr
   call Compare_Registers
-  ld   DE, $0801
+  ld   DE, $0601
   call Color_Text_Box_Sub
 
   ld DE, REG_ROW_SIZE
@@ -245,6 +245,7 @@ Add_Flashing:
 ;-------------------------------------------------------------------------------
 ; Parameters:
 ; - A: byte to print as two hexadecimal digits (from $00 to $FF)
+; - E: holds the horizontal offset to print the byte
 ;
 ; Clobbers:
 ; - nothing
@@ -320,7 +321,6 @@ Print_Hex_Digit_Sub:
   ld D, 0
   ld E, A                ; DE = digit value (0-15)
   add HL, DE             ; now point to the right character in the table
-; ld A, (HL)             ; A holds the character code to print
 
   ; Print the string
   call Print_Character_Sub
@@ -355,25 +355,36 @@ old_ix:  defw  $00
 old_iy:  defw  $00
 
 ; Null-terminated register names to print
-af_string: defb "AF :", 0
-bc_string: defb "BC :", 0
-de_string: defb "DE :", 0
-hl_string: defb "HL :", 0
-ix_string: defb "IX :", 0
-iy_string: defb "IY :", 0
+af_string: defb $90, $96, 0
+bc_string: defb $91, $96, 0
+de_string: defb $92, $96, 0
+hl_string: defb $93, $96, 0
+ix_string: defb $94, $96, 0
+iy_string: defb $95, $96, 0
 
 ;    row,col,    str_ptr,    new_ptr,  old_ptr,   color
 ;    0   1       2-3         4-5       6-7        8
 reg_table:
-  db 0,  24 : dw af_string,  new_af,   old_af   : db WHITE_INK + BLACK_PAPER
-  db 1,  24 : dw bc_string,  new_bc,   old_bc   : db WHITE_INK + BLUE_PAPER
-  db 2,  24 : dw de_string,  new_de,   old_de   : db WHITE_INK + MAGENTA_PAPER
-  db 3,  24 : dw hl_string,  new_hl,   old_hl   : db WHITE_INK + RED_PAPER
-  db 4,  24 : dw ix_string,  new_ix,   old_ix   : db BLACK_INK + GREEN_PAPER
-  db 5,  24 : dw iy_string,  new_iy,   old_iy   : db BLACK_INK + YELLOW_PAPER
+  db 0,  26 : dw af_string,  new_af,   old_af   : db WHITE_INK + BLACK_PAPER
+  db 1,  26 : dw bc_string,  new_bc,   old_bc   : db WHITE_INK + BLUE_PAPER
+  db 2,  26 : dw de_string,  new_de,   old_de   : db WHITE_INK + MAGENTA_PAPER
+  db 3,  26 : dw hl_string,  new_hl,   old_hl   : db WHITE_INK + RED_PAPER
+  db 4,  26 : dw ix_string,  new_ix,   old_ix   : db BLACK_INK + GREEN_PAPER
+  db 5,  26 : dw iy_string,  new_iy,   old_iy   : db BLACK_INK + YELLOW_PAPER
 reg_table_end:
 REG_ROW_SIZE  equ  9
 REG_ENTRIES   equ  6
 
 hex_char_table:
   defb "01234567890ABCDEF"
+
+udgs:
+reg_af:   defb $00, $27, $54, $56, $74, $54, $54, $00 ; $90  AF
+reg_bc:   defb $00, $62, $55, $64, $54, $55, $62, $00 ; $91  BC
+reg_de:   defb $00, $67, $54, $56, $54, $54, $67, $00 ; $92  DE
+reg_hl:   defb $00, $54, $54, $74, $54, $54, $57, $00 ; $93  HL
+reg_ix:   defb $00, $2A, $2A, $24, $24, $2A, $2A, $00 ; $94  IX
+reg_iy:   defb $00, $2A, $2A, $2A, $24, $24, $24, $00 ; $95  IY
+reg_eq:   defb $00, $00, $00, $1E, $00, $1E, $00, $00 ; $96   =
+reg_p_eq: defb $00, $40, $40, $1E, $00, $1E, $00, $00 ; $97  '=
+

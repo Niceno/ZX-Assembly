@@ -26,6 +26,12 @@ Main_Sub:
   ;----------------------------------
   call Open_Upper_Screen_Sub
 
+  ;------------------------------
+  ; Specify the beginning of UDG
+  ;------------------------------
+  ld hl, udgs                         ; user defined graphics (UDGs)
+  ld (MEM_USER_DEFINED_GRAPHICS), hl  ; set up UDG system variable.
+
   ;---------------------------------------
   ; Address of the null-terminated string
   ;---------------------------------------
