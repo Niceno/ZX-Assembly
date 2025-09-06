@@ -96,7 +96,7 @@ Print_Registers_Loop:
   call Print_Hex_Byte_Sub
   dec  HL
   ld   A, (HL)
-  ld   E, 4
+  ld   E, 3
   call Print_Hex_Byte_Sub
 
   ;---------------------------------
@@ -106,7 +106,7 @@ Print_Registers_Loop:
   ld E, (IX+6)
   ld D, (IX+7)  ; old_ptr
   call Compare_Registers
-  ld   DE, $0601
+  ld   DE, $0401
   call Color_Text_Box_Sub
 
   ld DE, REG_ROW_SIZE
@@ -257,13 +257,15 @@ Add_Flashing:
 Print_Hex_Byte_Sub:
 
   push AF
-; push DE
+  push DE
   push HL
   push BC
 
   ld D, A  ; save original byte
 
+  ;------------------------------------------
   ; Work out the coordinates of the hex byte
+  ;------------------------------------------
   ld B, (IX+0)  ; B holds row
   ld C, (IX+1)  ; C holds column
   call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
@@ -271,60 +273,72 @@ Print_Hex_Byte_Sub:
   add C    ; add shift to the column
   ld C, A  ; put the result back in C
 
+  ;-------------------------
   ; Print high nibble first
+  ;-------------------------
   ld A, D                   ; restore the original byte
   rra                       ; shift right 4 bits
   rra
   rra
   rra
   and $0F                   ; mask lower 4 bits
-  call Print_Hex_Digit_Sub
+  ld HL, hex_0_high         ; point to the start of character table
+  call Merge_Narrow_Hex_Digit
 
-  inc C
-  ; Print low nibble
+  ;--------------------------
+  ; Merge low nibble over it
+  ;--------------------------
   ld A, D                   ; restore original byte
   and $0F                   ; mask lower 4 bits
-  call Print_Hex_Digit_Sub
+  ld HL, hex_0_low          ; point to the start of character table
+  call Merge_Narrow_Hex_Digit
 
   pop BC
   pop HL
-; pop DE
+  pop DE
   pop AF
 
   ret
 
 ;===============================================================================
-; Print_Hex_Digit_Sub
+; Merge_Narrow_Hex_Digit
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Prints a digit as a hexadecial number (from 0 to F)
+; - Merges a "low" (right aligned) or a "high" (left aligned) digit as a
+;   hexadecial number (from 0 to F)
 ;
 ; Parameters:
-; - A: digit (0-15) to print as hexadecimal
-; - Uses predefined strings in hex_string_table
+; - A:  digit (0-15) to print as hexadecimal
+; - HL: beginning of the memory where characters are defined
 ;
 ; Clobbers:
 ; - nothing
 ;
 ; Note:
-; - This is a "local function", called only from Print_Registers_Sub,
+; - This is a "local function", called only from Print_Hex_Byte_Sub
 ;   that's why it is not in a separate file
 ;-------------------------------------------------------------------------------
-Print_Hex_Digit_Sub:
+Merge_Narrow_Hex_Digit:
 
   push HL
   push DE
   push BC
+  push AF
+
+  ; A is now the digit, multiply it with eight so that it becomes memory offset
+  add A, A
+  add A, A
+  add A, A
 
   ; Calculate address of the string (string_0 to string_F)
-  ld HL, hex_char_table  ; point to the start of character table
   ld D, 0
   ld E, A                ; DE = digit value (0-15)
   add HL, DE             ; now point to the right character in the table
 
   ; Print the string
-  call Print_Character_Sub
+  call Merge_Udgs_Character_Sub
 
+  pop AF
   pop BC
   pop DE
   pop HL
@@ -394,8 +408,8 @@ reg_p_eq:   defb $00, $40, $40, $1E, $00, $1E, $00, $00 ; $97  '=
 hex_0_low:  defb $00, $02, $05, $05, $05, $05, $02, $00 ;
 hex_1_low:  defb $00, $02, $06, $02, $02, $02, $07, $00 ;
 hex_2_low:  defb $00, $06, $01, $01, $02, $04, $07, $00 ;
-hex_3_low:  defb $00, $06, $01, $02, $01, $05, $02, $00 ;
-hex_4_low:  defb $00, $04, $04, $05, $07, $02, $02, $00 ;
+hex_3_low:  defb $00, $06, $01, $02, $01, $01, $06, $00 ;
+hex_4_low:  defb $00, $01, $03, $05, $07, $01, $01, $00 ;
 hex_5_low:  defb $00, $07, $04, $06, $01, $01, $06, $00 ;
 hex_6_low:  defb $00, $03, $04, $06, $05, $05, $02, $00 ;
 hex_7_low:  defb $00, $07, $01, $01, $02, $02, $02, $00 ;
@@ -410,8 +424,8 @@ hex_f_low:  defb $00, $07, $04, $06, $04, $04, $04, $00 ;
 hex_0_high: defb $00, $20, $50, $50, $50, $50, $20, $00 ;
 hex_1_high: defb $00, $20, $60, $20, $20, $20, $70, $00 ;
 hex_2_high: defb $00, $60, $10, $10, $20, $40, $70, $00 ;
-hex_3_high: defb $00, $60, $10, $20, $10, $50, $20, $00 ;
-hex_4_high: defb $00, $40, $40, $50, $70, $20, $20, $00 ;
+hex_3_high: defb $00, $60, $10, $20, $10, $10, $60, $00 ;
+hex_4_high: defb $00, $10, $30, $50, $70, $10, $10, $00 ;
 hex_5_high: defb $00, $70, $40, $60, $10, $10, $60, $00 ;
 hex_6_high: defb $00, $30, $40, $60, $50, $50, $20, $00 ;
 hex_7_high: defb $00, $70, $10, $10, $20, $20, $20, $00 ;
