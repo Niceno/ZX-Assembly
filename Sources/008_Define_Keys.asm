@@ -316,6 +316,55 @@ Main_Print_One:
   ;----------------
 Main_Game_Loop:
 
+  ;------------------------------
+  ;
+  ; Show the position on the map
+  ;
+  ;------------------------------
+
+  ;----------------------------
+  ; Only print when hero moves
+  ;----------------------------
+  ld A, (hero_moved)
+  cp 0
+  jr z, Hero_Not_Moved
+
+  ; Print Hero Row
+  ; 1. Set coordinates for the first number (e.g., row 0, column 0)
+  ld B, 0          ; B = row 0
+  ld C, 0          ; C = column 0
+  call Set_Text_Coords_Sub
+
+  ld A, (hero_row) ; get the row value from memory
+  ld C, A          ; put it in C
+  ld B, 0          ; set B to 0, you need the BC pair
+  call Print_Three_Digit_Number_Sub
+
+  ; Print Hero Column on the next line
+  ld B, 1          ; B = row 1 (the next line down)
+  ld C, 0          ; C = column 0
+  call Set_Text_Coords_Sub
+
+  ld A, (hero_column) ; get the column value from memory
+  ld C, A             ; put it in C
+  ld B, 0             ; set B to zero, you need the BC pair
+  call Print_Three_Digit_Number_Sub
+
+  ld A,  CYAN_PAPER
+  ld BC, $00
+  ld DE, $0302
+  call Color_Text_Box_Sub
+
+Hero_Not_Moved:
+  ld A, 0
+  ld (hero_moved), A
+
+  ;-------------------
+  ;
+  ; Read the UDKs now
+  ;
+  ;-------------------
+
   ;-------------------------------------------------------------------------
   ; Set the HL to point to the beginning of array of user defind keys (UDK)
   ;-------------------------------------------------------------------------
@@ -375,6 +424,13 @@ Main_Game_Up_Pressed:
   call Set_Text_Coords_Sub  ; set up our row/column coords
   call Print_Udgs_Character_Sub
 
+  ; Decrease hero's row position on the map
+  ld A, (hero_row)
+  dec A
+  ld (hero_row), A
+  ld A, 1
+  ld (hero_moved), A
+
   jr Main_Game_Loop  ; continue the main game loop, through key rows
 
 Main_Game_Down_Pressed:
@@ -385,7 +441,14 @@ Main_Game_Down_Pressed:
   call Set_Text_Coords_Sub  ; set up our row/column coords
   call Print_Udgs_Character_Sub
 
-  jr Main_Game_Loop  ; continue the main game loop, through key rows
+  ; Increase hero's row position on the map
+  ld A, (hero_row)
+  inc A
+  ld (hero_row), A
+  ld A, 1
+  ld (hero_moved), A
+
+  jp Main_Game_Loop  ; continue the main game loop, through key rows
 
 Main_Game_Left_Pressed:
 
@@ -395,7 +458,14 @@ Main_Game_Left_Pressed:
   call Set_Text_Coords_Sub  ; set up our row/column coords
   call Print_Udgs_Character_Sub
 
-  jr Main_Game_Loop  ; continue the main game loop, through key rows
+  ; Decrease hero's column position on the map
+  ld A, (hero_column)
+  dec A
+  ld (hero_column), A
+  ld A, 1
+  ld (hero_moved), A
+
+  jp Main_Game_Loop  ; continue the main game loop, through key rows
 
 Main_Game_Right_Pressed:
 
@@ -405,7 +475,14 @@ Main_Game_Right_Pressed:
   call Set_Text_Coords_Sub  ; set up our row/column coords
   call Print_Udgs_Character_Sub
 
-  jr Main_Game_Loop  ; continue the main game loop, through key rows
+  ; Increase hero's column position on the map
+  ld A, (hero_column)
+  inc A
+  ld (hero_column), A
+  ld A, 1
+  ld (hero_moved), A
+
+  jp Main_Game_Loop  ; continue the main game loop, through key rows
 
 Main_Game_Over
 
@@ -425,6 +502,7 @@ Main_Game_Over
   include "Subs/Unpress.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
   include "Subs/Print_Udgs_Character_Sub.asm"
+  include "Subs/Print_Three_Digit_Number_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -436,7 +514,11 @@ Main_Game_Over
 ; Variables which define text boxes
 ;-----------------------------------
 text_row:     defb  0  ; defb = define byte
-text_height:  defb 10
+
+; Hero's position
+hero_row:    defb 100
+hero_column: defb 200
+hero_moved:  defb   0
 
 ;---------------------
 ; Texts to be written

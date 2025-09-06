@@ -1,11 +1,12 @@
 ;-------------------------------------------------------------------------------
 ; ZX Spectrum ROM Routines
 ;
-; (https://skoolkid.github.io/rom/dec/maps/routines.html
+; https://skoolkid.github.io/rom/dec/maps/routines.html
 ;-------------------------------------------------------------------------------
 ROM_PRINT_A_1     equ     16  ; print a character in A
 ROM_CLEAR_SCREEN  equ   3503  ; clear screen
 ROM_CHAN_OPEN     equ   5633  ; channel (1 or 2) in A
+ROM_OUT_NUM_1     equ   6683  ; prints the integer in BC
 ROM_STACK_BC      equ  11563  ; store the floating-point form for the absolute
                               ; binary value currently held in the BC registers
                               ; in the calculator stack
