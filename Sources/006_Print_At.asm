@@ -81,6 +81,7 @@ Main_Sub:
   ;-----------------------------
   ; Print the five digit number
   ;-----------------------------
+  ld BC, (number)
   call Print_Five_Digit_Number_Sub
 
   ;-------------------
