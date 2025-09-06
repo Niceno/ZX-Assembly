@@ -73,42 +73,44 @@ Print_Registers_Loop:
   ;------------------
   ; Text coordinates
   ;------------------
-  ld B, (ix+0)  ; B holds row
-  ld C, (ix+1)  ; C holds column
-  call Increase_Row_For_2nd_Call
-  call Set_Text_Coords_Sub  ; uses BC to set coordinates in ROM
+  ld B, (IX+0)  ; B holds row
+  ld C, (IX+1)  ; C holds column
+  call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
+  call Set_Text_Coords_Sub        ; uses BC to set coordinates in ROM
 
   ;-----------------
   ; Register labels
   ;-----------------
-  ld L, (ix+2)  ; notice little endian, lower byte first
-  ld H, (ix+3)  ; higher byte second
-  call Print_Null_Terminated_String_Sub
+  ld L, (IX+2)  ; notice little endian: lower byte first ...
+  ld H, (IX+3)  ; ... higher byte second
+  call Print_Null_Terminated_String_Sub  ; uses ROM routine to print
 
   ;-------------------------------------------------------------
   ; Print hex number from new_ptr (which is always the current)
   ;-------------------------------------------------------------
-  ld   L, (ix+4)  ; little ...
-  ld   H, (ix+5)  ; ... endian
+  ld   L, (IX+4)  ; little ...
+  ld   H, (IX+5)  ; ... endian
   inc  HL
   ld   A, (HL)
+  ld   E, 4
   call Print_Hex_Byte_Sub
   dec  HL
   ld   A, (HL)
+  ld   E, 6
   call Print_Hex_Byte_Sub
 
   ;---------------------------------
   ; Colour (maybe flash) vs old_ptr
   ;---------------------------------
-  ld A, (ix+8)  ; color
-  ld E, (ix+6)
-  ld D, (ix+7)  ; old_ptr
+  ld A, (IX+8)  ; color
+  ld E, (IX+6)
+  ld D, (IX+7)  ; old_ptr
   call Compare_Registers
   ld   DE, $0801
   call Color_Text_Box_Sub
 
   ld DE, REG_ROW_SIZE
-  add ix, DE
+  add IX, DE
 
   pop BC
 
@@ -149,7 +151,10 @@ Print_Registers_End:
   ret
 
 ;===============================================================================
-; This is sort of a local function, called only from
+; Increase_Row_For_2nd_Call:
+;-------------------------------------------------------------------------------
+; Purpose:
+; - Increases B by 10 for the 2nd call
 ;
 ;
 ;-------------------------------------------------------------------------------
@@ -251,11 +256,22 @@ Add_Flashing:
 Print_Hex_Byte_Sub:
 
   push AF
-  push BC
+; push DE
   push HL
+  push BC
+
+  ld D, A  ; save original byte
+
+  ; Work out the coordinates of the hex byte
+  ld B, (IX+0)  ; B holds row
+  ld C, (IX+1)  ; C holds column
+  call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
+  ld A, E  ; load the shift
+  add C    ; add shift to the column
+  ld C, A  ; put the result back in C
 
   ; Print high nibble first
-  ld B, A                   ; save original byte
+  ld A, D                   ; restore the original byte
   rra                       ; shift right 4 bits
   rra
   rra
@@ -263,13 +279,15 @@ Print_Hex_Byte_Sub:
   and $0F                   ; mask lower 4 bits
   call Print_Hex_Digit_Sub
 
+  inc C
   ; Print low nibble
-  ld A, B                   ; restore original byte
+  ld A, D                   ; restore original byte
   and $0F                   ; mask lower 4 bits
   call Print_Hex_Digit_Sub
 
-  pop HL
   pop BC
+  pop HL
+; pop DE
   pop AF
 
   ret
@@ -298,21 +316,14 @@ Print_Hex_Digit_Sub:
   push BC
 
   ; Calculate address of the string (string_0 to string_F)
-  ld H, 0
-  ld L, A                   ; HL = digit (0-15)
-  add HL, HL                ; HL = digit * 2 (each string pointer is 2 bytes)
-
-  ld DE, hex_string_table   ; DE = start of string pointer table
-  add HL, DE                ; HL = address of string pointer
-
-  ; Load the string address
-  ld E, (HL)
-  inc HL
-  ld D, (HL)                ; DE = address of the string (e.g., string_A)
+  ld HL, hex_char_table  ; point to the start of character table
+  ld D, 0
+  ld E, A                ; DE = digit value (0-15)
+  add HL, DE             ; now point to the right character in the table
+; ld A, (HL)             ; A holds the character code to print
 
   ; Print the string
-  ld HL, DE
-  call Print_Null_Terminated_String_Sub
+  call Print_Character_Sub
 
   pop BC
   pop DE
@@ -364,28 +375,5 @@ reg_table_end:
 REG_ROW_SIZE  equ  9
 REG_ENTRIES   equ  6
 
-; Null-terminated hex digits
-string_0: defb "0", 0
-string_1: defb "1", 0
-string_2: defb "2", 0
-string_3: defb "3", 0
-string_4: defb "4", 0
-string_5: defb "5", 0
-string_6: defb "6", 0
-string_7: defb "7", 0
-string_8: defb "8", 0
-string_9: defb "9", 0
-string_A: defb "A", 0
-string_B: defb "B", 0
-string_C: defb "C", 0
-string_D: defb "D", 0
-string_E: defb "E", 0
-string_F: defb "F", 0
-
-; Table of pointers to hex digit strings
-hex_string_table:
-  defw string_0, string_1, string_2, string_3
-  defw string_4, string_5, string_6, string_7
-  defw string_8, string_9, string_A, string_B
-  defw string_C, string_D, string_E, string_F
-
+hex_char_table:
+  defb "01234567890ABCDEF"
