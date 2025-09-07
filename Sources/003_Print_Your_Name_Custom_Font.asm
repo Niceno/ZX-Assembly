@@ -38,17 +38,17 @@ Main_Sub:
   ld B, A
   ld C, 0
 
-  ;-------------------------------------------------------------------
-  ; Print ten times using subroutine Print_Null_Terminated_String_Sub
-  ;-------------------------------------------------------------------
+  ;----------------------------------------------------------
+  ; Print ten times using subroutine Print_Custom_String_Sub
+  ;----------------------------------------------------------
 Main_Loop:
 
   ; Set text coordinates for the new value of B (loop counter)
   call Set_Text_Coords_Sub  ; set up up our row/col coords.
 
   ld HL, bojan_string  ; HL holds the address of the text to print
-  push BC              ; Print_Null_Term... clobbers the registers
-  call Print_Null_Terminated_String_Sub
+  push BC              ; Print_String_SUb might clobbers the registers
+  call Print_Custom_String_Sub
   pop BC
 
   djnz Main_Loop                ; decrease B and run the loop again
@@ -65,13 +65,15 @@ Main_Loop:
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Custom_Font_Sub.asm"
   include "Subs/Set_Text_Coords_Sub.asm"
-  include "Subs/Print_Null_Terminated_String_Sub.asm"
+  include "Subs/Print_Custom_Character_Sub.asm"
+  include "Subs/Print_Custom_String_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Global_Data.inc"
 
 ;--------------
 ; Loop counter

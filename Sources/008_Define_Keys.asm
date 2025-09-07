@@ -43,7 +43,7 @@ Main_Sub:
 
   ; Store the address of the text to print in HL
   ld HL, text_press_a_key
-  call Print_Null_Terminated_String_Sub
+  call Print_String_Sub
 
   ; Color the text box
   ld A,  BLUE_INK + WHITE_PAPER  ; color of the string
@@ -262,14 +262,14 @@ Main_Print_One:
 
   ; Store the address of the text to print in HL
   ld HL, text_keys_defined
-  call Print_Null_Terminated_String_Sub
+  call Print_String_Sub
 
   ld BC, $1503              ; set row (D) to 15 and column (E) to 3
   call Set_Text_Coords_Sub  ; set up the row/col coords.
 
   ; Store the address of the text to print in HL
   ld HL, text_press_fire
-  call Print_Null_Terminated_String_Sub
+  call Print_String_Sub
 
   ;--------------------------------
   ;
@@ -502,7 +502,8 @@ Main_Game_Over
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Press_Any_Key_Sub.asm"
   include "Subs/Unpress_Sub.asm"
-  include "Subs/Print_Null_Terminated_String_Sub.asm"
+  include "Subs/Print_Character_Sub.asm"
+  include "Subs/Print_String_Sub.asm"
   include "Subs/Print_Udgs_Character_Sub.asm"
   include "Subs/Print_Three_Digit_Number_Sub.asm"
   include "Subs/Delay_Sub.asm"
@@ -512,6 +513,7 @@ Main_Game_Over
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Global_Data.inc"
 
 ;-----------------------------------
 ; Variables which define text boxes
@@ -562,32 +564,6 @@ all_characters:
   defb $90,        CHAR_L_UPP, CHAR_K_UPP, CHAR_J_UPP, CHAR_H_UPP  ; reversed
   defb $91,        CHAR_Z_UPP, CHAR_X_UPP, CHAR_C_UPP, CHAR_V_UPP
   defb $93,        $92,        CHAR_M_UPP, CHAR_N_UPP, CHAR_B_UPP  ; reversed
-
-screen_row_offset:  ; 24 words or 48 bytes
-  defw     0  ; row  0
-  defw    32  ; row  1
-  defw    64  ; row  2
-  defw    96  ; row  3
-  defw   128  ; row  4
-  defw   160  ; row  5
-  defw   192  ; row  6
-  defw   224  ; row  7
-  defw  2048  ; row  8 = 32 * 8 * 8
-  defw  2080  ; row  9
-  defw  2112  ; row 10
-  defw  2144  ; row 11
-  defw  2176  ; row 12
-  defw  2208  ; row 13
-  defw  2240  ; row 14
-  defw  2272  ; row 15
-  defw  4096  ; row 16 = 32 * 8 * 8 * 2
-  defw  4128  ; row 17
-  defw  4160  ; row 18
-  defw  4192  ; row 19
-  defw  4224  ; row 20
-  defw  4256  ; row 21
-  defw  4288  ; row 22
-  defw  4320  ; row 23
 
 ;-----------------------------------------------------------
 ; User defined graphics (start at $90, then go $91, $92 ...

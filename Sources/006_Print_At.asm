@@ -35,10 +35,8 @@ Main_Sub:
   ; Set coordinates to 15, 5
   ;--------------------------
   ld BC, $0F05              ; row and column
-  call Set_Text_Coords_Sub  ; set up our row/column coords
-
-  ld A, CHAR_ASTERISK   ; print an asterisk
-  rst ROM_PRINT_A_1     ; display it
+  ld HL, asterisk           ; address of the asterisk
+  call Print_Custom_Character_Sub
 
   ;---------------------
   ; Color that asterisk
@@ -52,14 +50,12 @@ Main_Sub:
   ; Set coordinates to 9, 9 and print a string
   ;--------------------------------------------
   ld BC, $0909              ; row and column
-  push BC
-  call Set_Text_Coords_Sub  ; set up our row/col coords
-  pop BC                    ; get row and column back
   ld DE, $0E01              ; length and height
   call Color_Text_Box_Sub
 
+  ld BC, $0909              ; row and column
   ld HL, bojan_string
-  call Print_Null_Terminated_String_Sub
+  call Print_Custom_String_Sub
 
   ;-------------------------
   ; Color that line of text
@@ -122,13 +118,17 @@ Main_Sub:
   include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Print_Five_Digit_Number_Sub.asm"
-  include "Subs/Print_Null_Terminated_String_Sub.asm"
+  include "Subs/Print_Custom_Character_Sub.asm"
+  include "Subs/Print_Custom_String_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Global_Data.inc"
+
+asterisk:     defb "*"
 bojan_string: defb "Bojan is cool!", 0
 number:       defw  9999         ; defw = define word  <---=
 
