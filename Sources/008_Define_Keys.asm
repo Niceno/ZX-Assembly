@@ -316,6 +316,8 @@ Main_Print_One:
   ;----------------
 Main_Game_Loop:
 
+  call Delay_Sub
+
   ;------------------------------
   ;
   ; Show the position on the map
@@ -499,10 +501,11 @@ Main_Game_Over
   include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Press_Any_Key_Sub.asm"
-  include "Subs/Unpress.asm"
+  include "Subs/Unpress_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
   include "Subs/Print_Udgs_Character_Sub.asm"
   include "Subs/Print_Three_Digit_Number_Sub.asm"
+  include "Subs/Delay_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
