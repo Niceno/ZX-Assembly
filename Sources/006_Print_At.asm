@@ -65,20 +65,16 @@ Main_Sub:
   ld DE, $0E01                  ; length and height
   call Color_Text_Box_Sub
 
-  ;---------------------------------------------------------
-  ; Set coordinates to 13, 13 and print a five digit number
-  ;---------------------------------------------------------
-  ld BC, $0D0D              ; row and column
-  ld DE, $0501              ; length and height
-  push BC
-  push DE
-  call Set_Text_Coords_Sub  ; set up our row/column coords
-
   ;-----------------------------
   ; Print the five digit number
   ;-----------------------------
-  ld BC, (number)
-  call Print_Five_Digit_Number_Sub
+  ld HL, 9999                     ; set the number
+  ld DE, number_16_ascii_storage  ; specify where you want to save it
+  call Turn_16_Bit_Number_To_Ascii_Sub
+
+  ld HL, number_16_ascii_storage
+  ld BC, $0D0D              ; row and column
+  call Print_Custom_String_Sub
 
   ;-------------------
   ; Color that number
@@ -115,11 +111,10 @@ Main_Sub:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Custom_Font_Sub.asm"
-  include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
-  include "Subs/Print_Five_Digit_Number_Sub.asm"
   include "Subs/Print_Custom_Character_Sub.asm"
   include "Subs/Print_Custom_String_Sub.asm"
+  include "Subs/Turn_16_Bit_Number_To_Ascii_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -131,6 +126,9 @@ Main_Sub:
 asterisk:     defb "*"
 bojan_string: defb "Bojan is cool!", 0
 number:       defw  9999         ; defw = define word  <---=
+
+number_16_ascii_storage:  ; leave space for five digits, plus a trailing zero
+  defb "00000", 0
 
 ;---------------------------------------------
 ; Custom font will end up at a custom address
