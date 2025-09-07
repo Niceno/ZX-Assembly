@@ -80,8 +80,8 @@ Main_Sub:
   ; Color that number
   ;-------------------
   ld A, RED_INK + CYAN_PAPER  ; color of the string
-  pop DE
-  pop BC
+  ld BC, $0D0D                 ; row and column
+  ld DE, $0501                 ; length and height
   call Color_Text_Box_Sub
 
   ;----------------
