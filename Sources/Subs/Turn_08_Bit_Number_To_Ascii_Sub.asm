@@ -66,7 +66,7 @@ Turn_08_Bit_Number_To_Ascii_Done_Decimal_Place:
   ; With all place values calculate, form an ASCII string
   ;-------------------------------------------------------
   ld IX, two_place_values
-  ld B, 3  ; again, five digits
+  ld B, 3  ; three digits
 
 Turn_08_Bit_Number_To_Ascii_Fill_Ascii_Loop:
   ld A, (IX+4)   ; this is where extracted digits start
@@ -77,6 +77,29 @@ Turn_08_Bit_Number_To_Ascii_Fill_Ascii_Loop:
   inc DE
 
   djnz Turn_08_Bit_Number_To_Ascii_Fill_Ascii_Loop
+
+  ;-----------------------
+  ; Remove leading zeroes
+  ;-----------------------
+
+  ; Revert DE back to the beginning of the target memory place
+  ld B, 3
+Turn_08_Bit_Number_To_Ascii_Revert:
+  dec DE
+  djnz Turn_08_Bit_Number_To_Ascii_Revert
+
+  ; Remove leading zeroes
+  ld B, 2  ; check only two leading digits
+Turn_08_Bit_Number_To_Ascii_Leading_Zeroes:
+  ld A, (DE)
+  cp CHAR_0
+  jr nz, Turn_08_Bit_Number_To_Ascii_Leading_Zeroes_Done
+  ld A, CHAR_SPACE
+  ld (DE), A
+  inc DE
+  djnz Turn_08_Bit_Number_To_Ascii_Leading_Zeroes
+
+Turn_08_Bit_Number_To_Ascii_Leading_Zeroes_Done:
 
   ret
 
