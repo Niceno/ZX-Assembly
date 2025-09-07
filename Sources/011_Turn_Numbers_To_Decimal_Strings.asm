@@ -20,12 +20,6 @@ Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
   ;----------------------------------
   call Open_Upper_Screen_Sub
 
-  ;------------------------------
-  ; Specify the beginning of UDG
-  ;------------------------------
-  ld HL, udgs                         ; user defined graphics (UDGs)
-  ld (MEM_USER_DEFINED_GRAPHICS), HL  ; set up UDG system variable.
-
   ;--------------------------------
   ;
   ; Turn a 16-bit number to string
@@ -36,7 +30,6 @@ Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
   call Turn_16_Bit_Number_To_Ascii_Sub
 
   ld BC, $0909              ; row and column
-  call Set_Text_Coords_Sub  ; set up our row/col coords
   ld HL, number_16_ascii
   call Print_String_Sub
 
@@ -55,7 +48,6 @@ Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
   call Turn_08_Bit_Number_To_Ascii_Sub
 
   ld BC, $0B0B              ; row and column
-  call Set_Text_Coords_Sub  ; set up our row/col coords
   ld HL, number_08_ascii
   call Print_String_Sub
 
@@ -75,12 +67,10 @@ Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Merge_Udgs_Character_Sub.asm"
-  include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Print_Character_Sub.asm"
   include "Subs/Print_String_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
-  include "Subs/Print_Registers_Sub.asm"
   include "Subs/Turn_08_Bit_Number_To_Ascii_Sub.asm"
   include "Subs/Turn_16_Bit_Number_To_Ascii_Sub.asm"
 
