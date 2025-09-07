@@ -6,8 +6,17 @@
 ;
 ; Parameters (passed via registers):
 ; - HL: holds the address of text to print
+;
+; Clobbers:
+; - What not?  Calls ROM routines
+;
+; Note:
+; - I am trying to save BC here because it is often used for storing rows and
+;   column in caller subroutines
 ;-------------------------------------------------------------------------------
 Print_Null_Terminated_String_Sub:
+
+  push BC
 
 Print_Null_Terminated_String_Loop:
 
@@ -19,5 +28,7 @@ Print_Null_Terminated_String_Loop:
   jr Print_Null_Terminated_String_Loop    ; ... and repeat
 
 Print_Null_Terminated_String_Done:
+
+  pop BC
 
   ret
