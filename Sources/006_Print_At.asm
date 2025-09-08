@@ -34,9 +34,9 @@ Main_Sub:
   ;--------------------------
   ; Set coordinates to 15, 5
   ;--------------------------
-  ld BC, $0F05              ; row and column
-  ld HL, asterisk           ; address of the asterisk
-  call Print_Custom_Character_Sub
+  ld BC, $0F05                     ; row and column
+  ld HL, asterisk                  ; address of the asterisk
+  call Print_Custom_Character_Sub  ; HL & BC are the parameter
 
   ;---------------------
   ; Color that asterisk
@@ -44,14 +44,14 @@ Main_Sub:
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
   ld BC, $0F05                  ; row and column
   ld DE, $0101                  ; length and height
-  call Color_Text_Box_Sub
+  call Color_Text_Box_Sub       ; A, BC & DE are parameters
 
   ;--------------------------------------------
   ; Set coordinates to 9, 9 and print a string
   ;--------------------------------------------
   ld BC, $0909              ; row and column
   ld DE, $0E01              ; length and height
-  call Color_Text_Box_Sub
+  call Color_Text_Box_Sub   ; A, BC & DE are parameters
 
   ld BC, $0909              ; row and column
   ld HL, bojan_string
