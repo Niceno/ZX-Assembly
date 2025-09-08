@@ -68,9 +68,9 @@ Main_Sub:
   ;-----------------------------
   ; Print the five digit number
   ;-----------------------------
-  ld BC, $0D0D                    ; row and column
-  ld HL, 9999                     ; set the number
-  call Turn_16_Bit_Number_To_Ascii_Sub
+  ld BC, $0D0D                  ; row and column
+  ld HL, 9999                   ; set the number
+  call Print_16_Bit_Number_Sub
 
   ;-------------------
   ; Color that number
@@ -110,7 +110,7 @@ Main_Sub:
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Print_Character_Sub.asm"
   include "Subs/Print_String_Sub.asm"
-  include "Subs/Turn_16_Bit_Number_To_Ascii_Sub.asm"
+  include "Subs/Print_16_Bit_Number_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

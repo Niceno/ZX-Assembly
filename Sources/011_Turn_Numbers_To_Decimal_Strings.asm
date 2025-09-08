@@ -27,7 +27,7 @@ Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
   ;-----------------------
   ld BC, $0909                  ; row and column
   ld HL, $3039                  ; number to print
-  call Turn_16_Bit_Number_To_Ascii_Sub
+  call Print_16_Bit_Number_Sub
 
   ld A, WHITE_INK + BLUE_PAPER  ; color of the string
   ld BC, $0909                  ; row and column
@@ -39,9 +39,9 @@ Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
   ; Print an 8-bit number
   ;
   ;-----------------------
-  ld BC, $0B0B              ; row and column
-  ld HL, $0039              ; number to print
-  call Turn_08_Bit_Number_To_Ascii_Sub
+  ld BC, $0B0B                  ; row and column
+  ld HL, $0039                  ; number to print
+  call Print_08_Bit_Number_Sub
 
   ld A, WHITE_INK + RED_PAPER  ; color of the string
   ld BC, $0B0B                 ; row and column
@@ -63,8 +63,8 @@ Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
   include "Subs/Print_Character_Sub.asm"
   include "Subs/Print_String_Sub.asm"
   include "Subs/Print_Null_Terminated_String_Sub.asm"
-  include "Subs/Turn_08_Bit_Number_To_Ascii_Sub.asm"
-  include "Subs/Turn_16_Bit_Number_To_Ascii_Sub.asm"
+  include "Subs/Print_08_Bit_Number_Sub.asm"
+  include "Subs/Print_16_Bit_Number_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
