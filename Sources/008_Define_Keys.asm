@@ -481,7 +481,6 @@ Main_Game_Over
   include "Subs/Print_Character_Sub.asm"
   include "Subs/Print_String_Sub.asm"
   include "Subs/Print_Udgs_Character_Sub.asm"
-  include "Subs/Print_Three_Digit_Number_Sub.asm"
   include "Subs/Delay_Sub.asm"
   include "Subs/Print_08_Bit_Number_Sub.asm"
 

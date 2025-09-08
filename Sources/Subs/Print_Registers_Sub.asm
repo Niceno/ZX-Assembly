@@ -76,20 +76,34 @@ Print_Registers_Loop:
   ld B, (IX+0)  ; B holds row
   ld C, (IX+1)  ; C holds column
   call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
-  call Set_Text_Coords_Sub        ; uses BC to set coordinates in ROM
+
+  ;---------------------------------------
+  ; Register labels ("AF", "BC", ... "IY"
+  ;---------------------------------------
+  ld L, (IX+2)  ; notice little endian: lower byte first ...
+  ld H, (IX+3)  ; ... higher byte second
+  call Print_Udgs_Character_Sub
+
+  ;------------------------------------------------------------------------
+  ; Text coordinates again (they got clobbered in Print_Udgs_Character_Sub
+  ;------------------------------------------------------------------------
+  ld B, (IX+0)  ; B holds row
+  ld C, (IX+1)  ; C holds column
+  inc C         ; increase column for the equal sign
+  call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
 
   ;-----------------
   ; Register labels
   ;-----------------
-  ld L, (IX+2)  ; notice little endian: lower byte first ...
-  ld H, (IX+3)  ; ... higher byte second
-  call Print_Null_Terminated_String_Sub  ; uses ROM routine to print
+  ld L, (IX+4)  ; notice little endian: lower byte first ...
+  ld H, (IX+5)  ; ... higher byte second
+  call Print_Udgs_Character_Sub
 
   ;-------------------------------------------------------------
   ; Print hex number from new_ptr (which is always the current)
   ;-------------------------------------------------------------
-  ld   L, (IX+4)  ; little ...
-  ld   H, (IX+5)  ; ... endian
+  ld   L, (IX+6)  ; little ...
+  ld   H, (IX+7)  ; ... endian
   inc  HL
   ld   A, (HL)
   ld   E, 2
@@ -102,9 +116,12 @@ Print_Registers_Loop:
   ;---------------------------------
   ; Colour (maybe flash) vs old_ptr
   ;---------------------------------
-  ld A, (IX+8)  ; color
-  ld E, (IX+6)
-  ld D, (IX+7)  ; old_ptr
+  ld B, (IX +0)  ; B holds row
+  ld C, (IX +1)  ; C holds column
+  call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
+  ld E, (IX+ 8)
+  ld D, (IX+ 9)  ; old_ptr
+  ld A, (IX+10)  ; color
   call Compare_Registers
   ld   DE, $0401
   call Color_Text_Box_Sub
@@ -376,18 +393,18 @@ hl_string: defb $93, $96, 0
 ix_string: defb $94, $96, 0
 iy_string: defb $95, $96, 0
 
-;    row,col,    str_ptr,    new_ptr,  old_ptr,   color
-;    0   1       2-3         4-5       6-7        8
+;    row,col,    str_ptr,    unused,   new_ptr,  old_ptr,     color
+;    0   1       2-3         4-5       6-7       8-9          10
 reg_table:
-  db 0,  26 : dw af_string,  new_af,   old_af   : db WHITE_INK + BLACK_PAPER
-  db 1,  26 : dw bc_string,  new_bc,   old_bc   : db WHITE_INK + BLUE_PAPER
-  db 2,  26 : dw de_string,  new_de,   old_de   : db WHITE_INK + MAGENTA_PAPER
-  db 3,  26 : dw hl_string,  new_hl,   old_hl   : db WHITE_INK + RED_PAPER
-  db 4,  26 : dw ix_string,  new_ix,   old_ix   : db BLACK_INK + GREEN_PAPER
-  db 5,  26 : dw iy_string,  new_iy,   old_iy   : db BLACK_INK + YELLOW_PAPER
+  db 0,  26 : dw reg_af,     reg_eq,   new_af,   old_af :  db WHITE_INK + BLACK_PAPER
+  db 1,  26 : dw reg_bc,     reg_eq,   new_bc,   old_bc :  db WHITE_INK + BLUE_PAPER
+  db 2,  26 : dw reg_de,     reg_eq,   new_de,   old_de :  db WHITE_INK + MAGENTA_PAPER
+  db 3,  26 : dw reg_hl,     reg_eq,   new_hl,   old_hl :  db WHITE_INK + RED_PAPER
+  db 4,  26 : dw reg_ix,     reg_eq,   new_ix,   old_ix :  db BLACK_INK + GREEN_PAPER
+  db 5,  26 : dw reg_iy,     reg_eq,   new_iy,   old_iy :  db BLACK_INK + YELLOW_PAPER
 reg_table_end:
-REG_ROW_SIZE  equ  9
-REG_ENTRIES   equ  6
+REG_ROW_SIZE  equ  11
+REG_ENTRIES   equ   6
 
 hex_char_table:
   defb "01234567890ABCDEF"

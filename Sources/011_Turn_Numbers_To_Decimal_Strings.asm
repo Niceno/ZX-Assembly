@@ -62,7 +62,6 @@ Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Print_Character_Sub.asm"
   include "Subs/Print_String_Sub.asm"
-  include "Subs/Print_Null_Terminated_String_Sub.asm"
   include "Subs/Print_08_Bit_Number_Sub.asm"
   include "Subs/Print_16_Bit_Number_Sub.asm"
 
