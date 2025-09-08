@@ -35,14 +35,11 @@ Main_Sub:
   ;--------------------------------------------
   ; Print text "Press a key for" at 3, 3
   ;--------------------------------------------
-  ld A, 3           ; row
-  ld (text_row), A  ; store row coordinate
-  ld B, A           ; put row in B
-  ld C, 3           ; set column too
-  call Set_Text_Coords_Sub  ; set up our row/col coords.
-
-  ; Store the address of the text to print in HL
-  ld HL, text_press_a_key
+  ld A, 3                  ; row
+  ld (text_row), A         ; store row coordinate
+  ld B, A                  ; put row in B
+  ld C, 3                  ; set column too
+  ld HL, text_press_a_key  ; the address of the text to print in HL
   call Print_String_Sub
 
   ; Color the text box
@@ -126,9 +123,6 @@ Main_Done:
   ld (text_row), A          ; ... and store it back
   ld B, A                   ; store it in B too
   ld C,  5
-  push BC
-  call Set_Text_Coords_Sub  ; set up our row/column coords
-  pop BC
 
   ; Color that little box
   ld A,  RED_INK + YELLOW_PAPER + FLASH  ; color of the string
@@ -139,7 +133,7 @@ Main_Done:
   pop BC
 
   ld HL, (udgs_arrows)
-  call Print_Udgs_Character_Sub
+  call Print_Udgs_Character_Sub  ; at this point, prints arrow
 
   ;--------------------------------------------------------------------
   ; Wait until a key is pressed
@@ -230,16 +224,19 @@ Main_Print_One:
   ld HL, (curr_mask_addr)
   ld (HL), A
 
-  ld A, (IX)
-  rst ROM_PRINT_A_1     ; display it
+  push IX                   ; copy IX ...
+  pop HL                    ; ... to HL
+  ld A, (text_row)          ; get current row
+  ld B, A                   ; store it in B
+  ld C, 5                   ; column is hard-coded
+  call Print_Character_Sub
 
   ld A, (text_row)  ; retreive the last row
   ld B, A
   ld C, 5
   ld DE, $0101
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
-  call Color_Text_Box_Sub       ; this seems to be needed
-                                ; after calling ROM routines
+  call Color_Text_Box_Sub
 
   ;--------------------------------------
   ; Loop until all the keys are released
@@ -258,17 +255,11 @@ Main_Print_One:
   ; End the key definition stage with a message that all keys are defined
   ;-----------------------------------------------------------------------
   ld BC, $1303              ; set row (D) to 15 and column (E) to 3
-  call Set_Text_Coords_Sub  ; set up the row/col coords.
-
-  ; Store the address of the text to print in HL
-  ld HL, text_keys_defined
+  ld HL, text_keys_defined  ; the address of the text to print in HL
   call Print_String_Sub
 
   ld BC, $1503              ; set row (D) to 15 and column (E) to 3
-  call Set_Text_Coords_Sub  ; set up the row/col coords.
-
-  ; Store the address of the text to print in HL
-  ld HL, text_press_fire
+  ld HL, text_press_fire    ; the address of the text to print in HL
   call Print_String_Sub
 
   ;--------------------------------
@@ -302,8 +293,6 @@ Main_Print_One:
   ld (udgs_arrows), HL
 
   ld BC, $0909
-  call Set_Text_Coords_Sub  ; set up our row/column coords
-
   ld HL, (udgs_arrows)
   call Print_Udgs_Character_Sub
 
@@ -486,7 +475,6 @@ Main_Game_Over
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
-  include "Subs/Set_Text_Coords_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
   include "Subs/Press_Any_Key_Sub.asm"
   include "Subs/Unpress_Sub.asm"
