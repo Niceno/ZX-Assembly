@@ -38,14 +38,14 @@ Main_Sub:
   ld B, A
   ld C, 0
 
-  ;----------------------------------------------------------
-  ; Print ten times using subroutine Print_Custom_String_Sub
-  ;----------------------------------------------------------
+  ;---------------------------------------------------
+  ; Print ten times using subroutine Print_String_Sub
+  ;---------------------------------------------------
 Main_Loop:
 
   ld HL, bojan_string  ; HL holds the address of the text to print
   push BC              ; Print_String_SUb might clobbers the registers
-  call Print_Custom_String_Sub
+  call Print_String_Sub
   pop BC
 
   djnz Main_Loop                ; decrease B and run the loop again
@@ -61,8 +61,8 @@ Main_Loop:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Custom_Font_Sub.asm"
-  include "Subs/Print_Custom_Character_Sub.asm"
-  include "Subs/Print_Custom_String_Sub.asm"
+  include "Subs/Print_Character_Sub.asm"
+  include "Subs/Print_String_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

@@ -34,9 +34,9 @@ Main_Sub:
   ;--------------------------
   ; Set coordinates to 15, 5
   ;--------------------------
-  ld BC, $0F05                     ; row and column
-  ld HL, asterisk                  ; address of the asterisk
-  call Print_Custom_Character_Sub  ; HL & BC are the parameter
+  ld BC, $0F05              ; row and column
+  ld HL, asterisk           ; address of the asterisk
+  call Print_Character_Sub  ; HL & BC are the parameter
 
   ;---------------------
   ; Color that asterisk
@@ -49,13 +49,13 @@ Main_Sub:
   ;--------------------------------------------
   ; Set coordinates to 9, 9 and print a string
   ;--------------------------------------------
-  ld BC, $0909              ; row and column
-  ld DE, $0E01              ; length and height
-  call Color_Text_Box_Sub   ; A, BC & DE are parameters
+  ld BC, $0909             ; row and column
+  ld DE, $0E01             ; length and height
+  call Color_Text_Box_Sub  ; A, BC & DE are parameters
 
-  ld BC, $0909              ; row and column
+  ld BC, $0909             ; row and column
   ld HL, bojan_string
-  call Print_Custom_String_Sub
+  call Print_String_Sub
 
   ;-------------------------
   ; Color that line of text
@@ -68,13 +68,9 @@ Main_Sub:
   ;-----------------------------
   ; Print the five digit number
   ;-----------------------------
+  ld BC, $0D0D                    ; row and column
   ld HL, 9999                     ; set the number
-  ld DE, number_16_ascii_storage  ; specify where you want to save it
   call Turn_16_Bit_Number_To_Ascii_Sub
-
-  ld HL, number_16_ascii_storage
-  ld BC, $0D0D              ; row and column
-  call Print_Custom_String_Sub
 
   ;-------------------
   ; Color that number
@@ -112,8 +108,8 @@ Main_Sub:
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Set_Custom_Font_Sub.asm"
   include "Subs/Color_Text_Box_Sub.asm"
-  include "Subs/Print_Custom_Character_Sub.asm"
-  include "Subs/Print_Custom_String_Sub.asm"
+  include "Subs/Print_Character_Sub.asm"
+  include "Subs/Print_String_Sub.asm"
   include "Subs/Turn_16_Bit_Number_To_Ascii_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

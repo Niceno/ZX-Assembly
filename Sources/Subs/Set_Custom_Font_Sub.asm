@@ -22,4 +22,7 @@ Set_Custom_Font_Sub:
   dec A                         ; ... and the subtract 1 ...
   ld (MEM_CHARS), A             ; ... to get the value needed at MEM_CHARS
 
+  ld HL, MEM_CUSTOM_FONT_START  ; this is where custom font starts
+  ld (current_font_base), HL
+
   ret

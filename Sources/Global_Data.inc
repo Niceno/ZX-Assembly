@@ -4,6 +4,9 @@
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+current_font_base:
+  defw MEM_FONT_START  ; or MEM_CUSTOM_FONT_START
+
 ;-------------------------------------
 ; Used by character printing routines
 ;-------------------------------------

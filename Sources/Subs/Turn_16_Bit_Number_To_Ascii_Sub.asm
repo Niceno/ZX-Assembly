@@ -11,7 +11,7 @@
 ;-------------------------------------------------------------------------------
 Turn_16_Bit_Number_To_Ascii_Sub:
 
-  push DE  ; preserve the string location
+  push BC  ; preserve row and column
 
   ld IX, four_place_values
 
@@ -60,7 +60,7 @@ Turn_16_Bit_Number_To_Ascii_Done_Decimal_Place:
   ld A, L  ; what remaind from HL
   ld (IX+8), A
 
-  pop DE  ; point to the string again
+  ld DE, number_16_ascii  ; point to the string again
 
   ;-------------------------------------------------------
   ; With all place values calculate, form an ASCII string
@@ -101,6 +101,10 @@ Turn_16_Bit_Number_To_Ascii_Leading_Zeroes:
 
 Turn_16_Bit_Number_To_Ascii_Leading_Zeroes_Done:
 
+  pop BC                    ; row and column
+  ld HL, number_16_ascii
+  call Print_String_Sub
+
   ret
 
 ; Place values followed by some extra places to store decimal digits
@@ -110,4 +114,7 @@ Turn_16_Bit_Number_To_Ascii_Leading_Zeroes_Done:
 four_place_values:
   defw 10000, 1000, 100, 10     ; four_place_values
   defb 0,0, 0,0, 0,0, 0,0, 0,0  ; storage for decimal digits
+
+number_16_ascii:  ; leave space for five digits, plus a trailing zero
+  defb "00000", 0
 

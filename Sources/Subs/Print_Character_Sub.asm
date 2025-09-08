@@ -26,7 +26,11 @@ Print_Character_Sub:
   ld D, H         ; copy HL to DE
   ld E, L
 
-  ld HL, MEM_FONT_START
+print_character_memory_patch_start:  ; if I decide to hack it later
+  ld HL, (current_font_base)  ; load the address of the font definition ...
+                              ; ... stored at memory location called ...
+                              ; "current_fotn_base"
+print_character_memory_patch_end:
   add HL, DE  ; point to the memory where the character is defined
   push HL     ; store this memory address on stack (will pop as DE later)
 
