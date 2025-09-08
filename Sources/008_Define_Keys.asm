@@ -415,7 +415,6 @@ Main_Game_Up_Pressed:
   ; Set up the character for up
   ld HL, arrow_up
   ld BC, $0909
-  call Set_Text_Coords_Sub  ; set up our row/column coords
   call Print_Udgs_Character_Sub
 
   ; Decrease hero's row position on the map
@@ -432,7 +431,6 @@ Main_Game_Down_Pressed:
   ; Set up the character for down
   ld HL, arrow_down
   ld BC, $0909
-  call Set_Text_Coords_Sub  ; set up our row/column coords
   call Print_Udgs_Character_Sub
 
   ; Increase hero's row position on the map
@@ -449,7 +447,6 @@ Main_Game_Left_Pressed:
   ; Set up the character for left
   ld HL, arrow_left
   ld BC, $0909
-  call Set_Text_Coords_Sub  ; set up our row/column coords
   call Print_Udgs_Character_Sub
 
   ; Decrease hero's column position on the map
@@ -466,7 +463,6 @@ Main_Game_Right_Pressed:
   ; Set up the character for right
   ld HL, arrow_right
   ld BC, $0909
-  call Set_Text_Coords_Sub  ; set up our row/column coords
   call Print_Udgs_Character_Sub
 
   ; Increase hero's column position on the map
