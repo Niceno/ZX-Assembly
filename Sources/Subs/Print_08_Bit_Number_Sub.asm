@@ -2,12 +2,11 @@
 ; Print_08_Bit_Number_Sub
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Turns a 16 bit number, stored in memory, to a five digit, decimal base,
-;   ASCII sequence (string) stored in another memory address
+; - Prints an 8 bit number, right-aligned
 ;
 ; Parameters:
 ; - HL: operand, the number we want to turn to ASCII
-; - DE: the address where the string will be stored.
+; - BC: row and column
 ;-------------------------------------------------------------------------------
 Print_08_Bit_Number_Sub:
 
