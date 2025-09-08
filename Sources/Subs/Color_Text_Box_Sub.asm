@@ -10,9 +10,7 @@
 ; - DE: text box length and height
 ;
 ; Clobbers:
-; - AF
-; - BC
-; - DE
+; - AF, BC, DE
 ;-------------------------------------------------------------------------------
 Color_Text_Box_Sub:
 
