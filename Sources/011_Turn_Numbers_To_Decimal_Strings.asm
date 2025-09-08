@@ -22,20 +22,6 @@ Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
 
   ;-----------------------
   ;
-  ; Print a 16-bit number
-  ;
-  ;-----------------------
-  ld BC, $0909                  ; row and column
-  ld HL, $3039                  ; number to print
-  call Print_16_Bit_Number_Sub
-
-  ld A, WHITE_INK + BLUE_PAPER  ; color of the string
-  ld BC, $0909                  ; row and column
-  ld DE, $0501                  ; length and height
-  call Color_Text_Box_Sub
-
-  ;-----------------------
-  ;
   ; Print an 8-bit number
   ;
   ;-----------------------
@@ -46,6 +32,20 @@ Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
   ld A, WHITE_INK + RED_PAPER  ; color of the string
   ld BC, $0B0B                 ; row and column
   ld DE, $0301                 ; length and height
+  call Color_Text_Box_Sub
+
+  ;-----------------------
+  ;
+  ; Print a 16-bit number
+  ;
+  ;-----------------------
+  ld BC, $0909                  ; row and column
+  ld HL, $3039                  ; number to print
+  call Print_16_Bit_Number_Sub
+
+  ld A, WHITE_INK + BLUE_PAPER  ; color of the string
+  ld BC, $0909                  ; row and column
+  ld DE, $0501                  ; length and height
   call Color_Text_Box_Sub
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
