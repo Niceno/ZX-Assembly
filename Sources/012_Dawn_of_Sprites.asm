@@ -45,15 +45,15 @@ Main_Sub:
   ld BC, $0101
   ld DE, $0406
   ld HL, monster_01
-  call Print_Udgs_Character_Box_Sub
+  call Print_Udgs_Tile_Box_Sub
 
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
   ld BC, $010A
   ld DE, $0202
-  ld HL, ghost_01
-  call Print_Udgs_Character_Box_Sub
+  ld HL, circle_q1
+  call Print_Udgs_Sprite_Box_Sub
 
   ret
 
@@ -65,7 +65,8 @@ Main_Sub:
   include "Subs/Open_Upper_Screen_Sub.asm"
   include "Subs/Delay_Sub.asm"
   include "Subs/Print_Udgs_Character_Sub.asm"
-  include "Subs/Print_Udgs_Character_Box_Sub.asm"
+  include "Subs/Print_Udgs_Tile_Box_Sub.asm"
+  include "Subs/Print_Udgs_Sprite_Box_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -89,6 +90,13 @@ arrow_down:      defb $3C, $24, $24, $24, $C3, $42, $24, $18
 arrow_left:      defb $10, $30, $4F, $81, $81, $4F, $30, $10
 arrow_right:     defb $08, $0C, $F2, $81, $81, $F2, $0C, $08
 space_to_print:  defb $00, $00, $00, $00, $00, $00, $00, $00
+
+circle_q1: defb $03, $0C, $10, $20, $40, $40, $80, $80
+circle_q2: defb $C0, $30, $08, $04, $02, $02, $01, $01
+circle_q3: defb $80, $80, $40, $40, $20, $10, $0C, $03
+circle_q4: defb $01, $01, $02, $02, $04, $08, $30, $C0
+
+
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main_Sub

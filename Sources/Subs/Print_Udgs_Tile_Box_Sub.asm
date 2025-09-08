@@ -1,5 +1,5 @@
 ;===============================================================================
-; Print_Udgs_Character_Box_Sub
+; Print_Udgs_Tile_Box_Sub
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Prints a box filled up with single UDGs character
@@ -12,13 +12,13 @@
 ; Clobbers:
 ; - AF, BC, DE, HL ... but should be double checked
 ;-------------------------------------------------------------------------------
-Print_Udgs_Character_Box_Sub:
+Print_Udgs_Tile_Box_Sub:
 
   ;--------------------------
   ; Outer loop; through rows
   ;--------------------------
   ld A, D
-.loop_outer
+Print_Udgs_Tile_Box_Outer:
 
     push AF  ; save the outer counter
     push BC  ; save the initial column (you also save the row along the way)
@@ -29,7 +29,7 @@ Print_Udgs_Character_Box_Sub:
     ld A, E
     push DE  ; save length and height
 
-.loop_inner:
+Print_Udgs_Tile_Box_Inner:
       push AF
 
       push BC
@@ -42,7 +42,7 @@ Print_Udgs_Character_Box_Sub:
 
       pop AF
       dec A
-    jr nz, .loop_inner
+    jr nz, Print_Udgs_Tile_Box_Inner
 
     pop DE  ; restore length (D) and height (E)
 
@@ -53,7 +53,7 @@ Print_Udgs_Character_Box_Sub:
     pop AF  ; restore the outer counter
     dec A
 
-  jr nz, .loop_outer
+  jr nz, Print_Udgs_Tile_Box_Outer
 
   ret
 
