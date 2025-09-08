@@ -331,29 +331,21 @@ Main_Game_Loop:
   cp 0
   jr z, Hero_Not_Moved
 
-  ; Print Hero Row
-  ; 1. Set coordinates for the first number (e.g., row 0, column 0)
-  ld B, 0          ; B = row 0
-  ld C, 0          ; C = column 0
-  call Set_Text_Coords_Sub
-
-  ld A, (hero_row) ; get the row value from memory
-  ld C, A          ; put it in C
-  ld B, 0          ; set B to 0, you need the BC pair
-  call Print_Three_Digit_Number_Sub
-
-  ; Print Hero Column on the next line
-  ld B, 1          ; B = row 1 (the next line down)
-  ld C, 0          ; C = column 0
-  call Set_Text_Coords_Sub
-
-  ld A, (hero_column) ; get the column value from memory
-  ld C, A             ; put it in C
-  ld B, 0             ; set B to zero, you need the BC pair
-  call Print_Three_Digit_Number_Sub
-
+  ;--------------------
+  ; Now print for real
+  ;--------------------
+  ld BC, $0000         ; row and column
+  ld H, 0              ; zero out H, so HL = 0x00XX
+  ld A, (hero_row)     ; read the single byte into A
+  ld L, A              ; put the value into L
+  call Print_08_Bit_Number_Sub
+  ld BC, $0100         ; row and column
+  ld H, 0              ; zero out H, so HL = 0x00XX
+  ld A, (hero_column)  ; read the single byte into A
+  ld L, A              ; put the value into L
+  call Print_08_Bit_Number_Sub
   ld A,  CYAN_PAPER
-  ld BC, $00
+  ld BC, $0000
   ld DE, $0302
   call Color_Text_Box_Sub
 
@@ -433,7 +425,7 @@ Main_Game_Up_Pressed:
   ld A, 1
   ld (hero_moved), A
 
-  jr Main_Game_Loop  ; continue the main game loop, through key rows
+  jp Main_Game_Loop  ; continue the main game loop, through key rows
 
 Main_Game_Down_Pressed:
 
@@ -507,6 +499,7 @@ Main_Game_Over
   include "Subs/Print_Udgs_Character_Sub.asm"
   include "Subs/Print_Three_Digit_Number_Sub.asm"
   include "Subs/Delay_Sub.asm"
+  include "Subs/Print_08_Bit_Number_Sub.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
