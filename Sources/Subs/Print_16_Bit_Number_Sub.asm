@@ -71,6 +71,8 @@ Print_16_Bit_Number_Fill_Ascii_Loop:
   ld A, (IX+8)   ; this is where extracted digits start
   add A, CHAR_0  ; turn them into ASCII
   ld (DE), A     ; fill the target memory place
+  ld A, 0        ; reset the used extracted digit ...
+  ld (IX+8), A   ; ... using the A register
   inc IX
   inc IX
   inc DE
