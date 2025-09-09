@@ -29,8 +29,14 @@ Main_Sub:
   ;------------------------------
   ; Specify the beginning of UDG
   ;------------------------------
-  ld hl, udgs                         ; user defined graphics (UDGs)
-  ld (MEM_USER_DEFINED_GRAPHICS), hl  ; set up UDG system variable.
+  ld HL, udgs                         ; user defined graphics (UDGs)
+  ld (MEM_USER_DEFINED_GRAPHICS), HL  ; set up UDG system variable.
+
+  ;----------------------
+  ; Set the border color
+  ;----------------------
+  ld A, CYAN_INK              ; load A with desired color
+  call ROM_SET_BORDER_COLOR
 
   ;--------------------------------------------
   ; Print text "Press a key for" at 3, 3
@@ -281,7 +287,6 @@ Main_Print_One:
   ;------------------
   call ROM_CLEAR_SCREEN           ; clear the screen
 
-
   ;------------------------------
   ;
   ; Try to set initial character
@@ -406,7 +411,7 @@ Main_Game_Action_Key_Pressed:
   cp 2     ; right is pressed
   jp z, Main_Game_Right_Pressed
   cp 1
-  jp z, Main_Game_Over
+  jp z, Main_Game_Loop
 
 Main_Game_Up_Pressed:
 
@@ -422,6 +427,8 @@ Main_Game_Up_Pressed:
   ld A, (hero_row)
   dec A
   ld (hero_row), A
+  cp 0
+  jp z, Main_Game_Over
 
   ; Set up the character for up
   ld HL, arrow_up
@@ -450,6 +457,8 @@ Main_Game_Down_Pressed:
   ; Increase hero's row position on the map
   ld A, (hero_row)
   inc A
+  cp 24
+  jp z, Main_Game_Over
   ld (hero_row), A
 
   ; Set up the character for down
@@ -480,6 +489,8 @@ Main_Game_Left_Pressed:
   ld A, (hero_column)
   dec A
   ld (hero_column), A
+  cp 0
+  jp z, Main_Game_Over
 
   ; Set up the character for left
   ld HL, arrow_left
@@ -508,6 +519,8 @@ Main_Game_Right_Pressed:
   ; Increase hero's column position on the map
   ld A, (hero_column)
   inc A
+  cp 32
+  jp z, Main_Game_Over
   ld (hero_column), A
 
   ; Set up the character for right
@@ -526,7 +539,14 @@ Main_Game_Right_Pressed:
 
 Main_Game_Over
 
-  ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
+  ld HL, skull
+  ld A, (hero_row)
+  ld B, A
+  ld A, (hero_column)
+  ld C, A
+  call Print_Udgs_Character_Sub
+
+  di  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
   ret  ; end of the main program
 
@@ -621,7 +641,8 @@ arrow_down:    defb $00, $18, $18, $18, $7E, $3C, $18, $00 ; $95
 arrow_left:    defb $00, $10, $30, $7E, $7E, $30, $10, $00 ; $96
 arrow_right:   defb $00, $08, $0C, $7E, $7E, $0C, $08, $00 ; $97
 fire:          defb $08, $04, $0C, $2A, $3A, $7A, $66, $3C ; $98
-empty:         defb $00, $00, $00, $00, $00, $00, $00, $00 ; $99
+skull:         defb $3E, $6D, $6D, $7B, $7F, $3E, $2A, $00 ; $99
+empty:         defb $00, $00, $00, $00, $00, $00, $00, $00 ; $A0 ?
 
 udgs_arrows:  defw arrow_up
 
