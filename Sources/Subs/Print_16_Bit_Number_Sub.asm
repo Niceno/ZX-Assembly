@@ -32,6 +32,7 @@ Print_16_Bit_Number_Loop_Decimal_Place:
   ; We need to see if HL >= DE.  We can use a 16-bit compare by doing a
   ; dummy subtraction that doesn't change HL.
   push HL         ; save HL (our 16-bit number)
+  or A            ; clear the carry flag =--> IMPORTANT
   sbc HL, DE      ; this does HL = HL - DE, setting the flags.
   pop HL          ; immediately restore HL. We only care about the flags!
 
@@ -39,6 +40,7 @@ Print_16_Bit_Number_Loop_Decimal_Place:
   jr c, Print_16_Bit_Number_Done_Decimal_Place
 
   ; If we get here, HL >= DE, so we can safely subtract and count
+  or A            ; clear the carry flag =--> IMPORTANT
   sbc HL, DE      ; now we *actually* subtract DE from HL.
   ld A, (IX+8)    ; fetch the value for current decimal place ...
   inc A           ; ... increase it in the accumulator ... 
