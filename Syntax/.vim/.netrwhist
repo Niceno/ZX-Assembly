@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =6
+let g:netrw_dirhist_6='/home/niceno/Development/T-Flows-From-Francesco-7-User-Function-Is-Fpp/Tests/Laminar/LESTO/User_Mod'
+let g:netrw_dirhist_5='/home/niceno/Development/energija/sources/amg'
+let g:netrw_dirhist_4='/home/niceno/Development/T-Flows/Sources/Shared/Math_Mod'
+let g:netrw_dirhist_3='/home/niceno/Development/energija/sources/amg'
+let g:netrw_dirhist_2='/home/niceno/Tmp'
+let g:netrw_dirhist_1='/home/niceno/Development/Refactor_Gpu_Mod/T-Flows/Sources/Shared/Work_Mod/Gpu'

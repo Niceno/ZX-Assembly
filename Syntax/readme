@@ -1,0 +1,22 @@
+Here are the vim syntax files for sjasm
+
+Don't overlook the .vim sub-directory here!
+
+If you want sjasm syntax highlighting in vim, link the .vim subdirectory
+from here to your home directory with this:
+
+ln -i -s $PWD/.vim/ $HOME/
+
+or a similar command.  Important is that .vim from your $HOME points
+to the .vim subdirectory here.
+
+In order to fine-tune syntax with sjasm_syntax.vim
+place this lines in your .vimrc:
+
+"------------------
+" Fine tune syntax
+"------------------
+" For Sjasm
+source /home/niceno/sjasm_syntax.vim
+
+
