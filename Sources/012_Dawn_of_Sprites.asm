@@ -63,7 +63,6 @@ Main_Sub:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen_Sub.asm"
-  include "Subs/Delay_Sub.asm"
   include "Subs/Print_Udgs_Character_Sub.asm"
   include "Subs/Print_Udgs_Tile_Box_Sub.asm"
   include "Subs/Print_Udgs_Sprite_Box_Sub.asm"
