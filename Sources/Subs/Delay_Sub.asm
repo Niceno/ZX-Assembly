@@ -2,18 +2,17 @@
 ; Delay_Sub
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Creates a delay of roughly 0.2 s.
+; - Creates a delay for specified number of interrupts
 ;
 ; Parameters:
-; - none
+; - B: number of interrups for delay.  Each delay is 0.02 s.  So, five delays,
+;      for example, would be 0.1 s; ten delas 0.2 s, and so forth.
 ;
 ; Clobbers:
 ; - B
 ;-------------------------------------------------------------------------------
 Delay_Sub:
   ei         ; enable interrupts, otherwise it gets stuck
-             ; Speccy creates ~ 50 interruts per second, or each 0.02 seconds
-  ld B, 10   ; length of delay; translates to roughly 0.2 s
 
 Delay_Loop:
   halt             ; wait for an interrupt

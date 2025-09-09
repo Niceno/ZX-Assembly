@@ -292,9 +292,17 @@ Main_Print_One:
   ld HL, arrow_up
   ld (udgs_arrows), HL
 
-  ld BC, $0909
+  ld A, (hero_row)
+  ld B, A
+  ld A, (hero_column)
+  ld C, A
   ld HL, (udgs_arrows)
+  push BC
   call Print_Udgs_Character_Sub
+  pop BC
+  ld DE, $0101
+  ld A, WHITE_PAPER + BRIGHT
+  call Color_Text_Box_Sub
 
   ;----------------
   ;
@@ -305,6 +313,7 @@ Main_Print_One:
   ;----------------
 Main_Game_Loop:
 
+  ld B, 1
   call Delay_Sub
 
   ;------------------------------
@@ -389,27 +398,40 @@ Main_Game_Action_Key_Pressed:
   ; Pick which action to take depending on which key was pressed
   ld A, D
   cp 5     ; upp is pressed
-  jr z, Main_Game_Up_Pressed
+  jp z, Main_Game_Up_Pressed
   cp 4     ; down is pressed
-  jr z, Main_Game_Down_Pressed
+  jp z, Main_Game_Down_Pressed
   cp 3     ; left is pressed
-  jr z, Main_Game_Left_Pressed
+  jp z, Main_Game_Left_Pressed
   cp 2     ; right is pressed
-  jr z, Main_Game_Right_Pressed
+  jp z, Main_Game_Right_Pressed
   cp 1
-  jr z, Main_Game_Over
+  jp z, Main_Game_Over
 
 Main_Game_Up_Pressed:
 
-  ; Set up the character for up
-  ld HL, arrow_up
-  ld BC, $0909
+  ; Clear the character's position
+  ld HL, empty
+  ld A, (hero_row)
+  ld B, A
+  ld A, (hero_column)
+  ld C, A
   call Print_Udgs_Character_Sub
 
   ; Decrease hero's row position on the map
   ld A, (hero_row)
   dec A
   ld (hero_row), A
+
+  ; Set up the character for up
+  ld HL, arrow_up
+  ld A, (hero_row)
+  ld B, A
+  ld A, (hero_column)
+  ld C, A
+  call Print_Udgs_Character_Sub
+
+  ; Remember that hero moved
   ld A, 1
   ld (hero_moved), A
 
@@ -417,15 +439,28 @@ Main_Game_Up_Pressed:
 
 Main_Game_Down_Pressed:
 
-  ; Set up the character for down
-  ld HL, arrow_down
-  ld BC, $0909
+  ; Clear the character's position
+  ld HL, empty
+  ld A, (hero_row)
+  ld B, A
+  ld A, (hero_column)
+  ld C, A
   call Print_Udgs_Character_Sub
 
   ; Increase hero's row position on the map
   ld A, (hero_row)
   inc A
   ld (hero_row), A
+
+  ; Set up the character for down
+  ld HL, arrow_down
+  ld A, (hero_row)
+  ld B, A
+  ld A, (hero_column)
+  ld C, A
+  call Print_Udgs_Character_Sub
+
+  ; Remember that hero moved
   ld A, 1
   ld (hero_moved), A
 
@@ -433,15 +468,28 @@ Main_Game_Down_Pressed:
 
 Main_Game_Left_Pressed:
 
-  ; Set up the character for left
-  ld HL, arrow_left
-  ld BC, $0909
+  ; Clear the character's position
+  ld HL, empty
+  ld A, (hero_row)
+  ld B, A
+  ld A, (hero_column)
+  ld C, A
   call Print_Udgs_Character_Sub
 
   ; Decrease hero's column position on the map
   ld A, (hero_column)
   dec A
   ld (hero_column), A
+
+  ; Set up the character for left
+  ld HL, arrow_left
+  ld A, (hero_row)
+  ld B, A
+  ld A, (hero_column)
+  ld C, A
+  call Print_Udgs_Character_Sub
+
+  ; Remember that hero moved
   ld A, 1
   ld (hero_moved), A
 
@@ -449,15 +497,28 @@ Main_Game_Left_Pressed:
 
 Main_Game_Right_Pressed:
 
-  ; Set up the character for right
-  ld HL, arrow_right
-  ld BC, $0909
+  ; Clear the character's position
+  ld HL, empty
+  ld A, (hero_row)
+  ld B, A
+  ld A, (hero_column)
+  ld C, A
   call Print_Udgs_Character_Sub
 
   ; Increase hero's column position on the map
   ld A, (hero_column)
   inc A
   ld (hero_column), A
+
+  ; Set up the character for right
+  ld HL, arrow_right
+  ld A, (hero_row)
+  ld B, A
+  ld A, (hero_column)
+  ld C, A
+  call Print_Udgs_Character_Sub
+
+  ; Remember that hero moved
   ld A, 1
   ld (hero_moved), A
 
@@ -497,8 +558,8 @@ Main_Game_Over
 text_row:     defb  0  ; defb = define byte
 
 ; Hero's position
-hero_row:    defb 100
-hero_column: defb 200
+hero_row:    defb  10
+hero_column: defb  10
 hero_moved:  defb   0
 
 ;---------------------
@@ -560,6 +621,7 @@ arrow_down:    defb $00, $18, $18, $18, $7E, $3C, $18, $00 ; $95
 arrow_left:    defb $00, $10, $30, $7E, $7E, $30, $10, $00 ; $96
 arrow_right:   defb $00, $08, $0C, $7E, $7E, $0C, $08, $00 ; $97
 fire:          defb $08, $04, $0C, $2A, $3A, $7A, $66, $3C ; $98
+empty:         defb $00, $00, $00, $00, $00, $00, $00, $00 ; $99
 
 udgs_arrows:  defw arrow_up
 
