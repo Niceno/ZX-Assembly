@@ -37,7 +37,7 @@ hi link sjasmInstruction Statement
 
 " Sjasm-specific directives (I use small case on purpose)
 syn keyword sjasmDirective module endmodule org equ db dw ds defb defw defs
-syn keyword sjasmDirective include inc bin macro endm if else endif rept endr
+syn keyword sjasmDirective include bin macro endm if else endif rept endr
 syn keyword sjasmDirective align phase dephase disp ent disp end device
 syn keyword sjasmDirective savesna savebin
 hi link sjasmDirective Define
@@ -62,8 +62,7 @@ syn match sjasmNumber "\<%[01]\+\>"  " binary numbers (% prefix)
 hi link sjasmNumber Number
 
 " Some constants I have introduced
-syn keyword sjasmConstant ROM_PRINT_A_1  ROM_CLEAR_SCREEN  ROM_CHAN_OPEN
-syn keyword sjasmConstant ROM_OUT_NUM_1  ROM_STACK_BC      ROM_PRINT_FP
+syn keyword sjasmConstant ROM_CLEAR_SCREEN  ROM_CHAN_OPEN  ROM_SET_BORDER_COLOR
 
 syn keyword sjasmConstant MEM_ROM_START           MEM_FONT_START
 syn keyword sjasmConstant MEM_SCREEN_PIXELS       MEM_SCREEN_COLORS
