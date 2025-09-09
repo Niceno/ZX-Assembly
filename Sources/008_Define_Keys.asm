@@ -305,6 +305,7 @@ Main_Print_One:
   ;----------------
 Main_Game_Loop:
 
+  ld B, 1
   call Delay_Sub
 
   ;------------------------------

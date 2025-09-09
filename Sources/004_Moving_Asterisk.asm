@@ -42,6 +42,7 @@ Main_Loop:
   push BC                   ; save the row count
   call Print_Character_Sub  ; this clobbers B
 
+  ld B, 10        ; cycles for Delay_Sub.
   call Delay_Sub  ; want a delay, also clobbers B
   pop BC          ; get back the row count
 
