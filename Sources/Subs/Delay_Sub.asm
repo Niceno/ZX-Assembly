@@ -2,10 +2,13 @@
 ; Delay_Sub
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Creates a delay of roughly 0.02 s.
+; - Creates a delay of roughly 0.2 s.
 ;
-; Parameters (passed via memory locations):
+; Parameters:
 ; - none
+;
+; Clobbers:
+; - B
 ;-------------------------------------------------------------------------------
 Delay_Sub:
   ei         ; enable interrupts, otherwise it gets stuck
