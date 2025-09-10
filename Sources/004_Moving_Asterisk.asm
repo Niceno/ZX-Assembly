@@ -19,12 +19,12 @@
 ;===============================================================================
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-Main_Sub:
+Main:
 
   ;----------------------------------
   ; Open the channel to upper screen
   ;----------------------------------
-  call Open_Upper_Screen_Sub
+  call Open_Upper_Screen
 
   ;---------------------------------------------
   ; Initialize text row in which you will start
@@ -35,26 +35,26 @@ Main_Sub:
   ;----------------------
   ; Move the asterisk up
   ;----------------------
-Main_Loop:
+.loop:
 
-  ; Print asterisk
-  ld HL, char_to_print
-  push BC                   ; save the row count
-  call Print_Character_Sub  ; this clobbers B
+    ; Print asterisk
+    ld HL, char_to_print
+    push BC                   ; save the row count
+    call Print_Character  ; this clobbers B
 
-  ld B, 10        ; cycles for Delay_Sub.
-  call Delay_Sub  ; want a delay, also clobbers B
-  pop BC          ; get back the row count
+    ld B, 10        ; cycles for Delay.
+    call Delay  ; want a delay, also clobbers B
+    pop BC          ; get back the row count
 
-  ; Delete the asterisk
-  ; (print space over it)
-  ld HL, space_to_print
-  push BC                   ; save the row count
-  call Print_Character_Sub  ; clobbers B
-  pop BC                    ; get back proper row count
+    ; Delete the asterisk
+    ; (print space over it)
+    ld HL, space_to_print
+    push BC                   ; save the row count
+    call Print_Character  ; clobbers B
+    pop BC                    ; get back proper row count
 
   ; Decrease text row -> move asterisk position up
-  djnz Main_Loop  ; no, carry on
+  djnz .loop  ; no, carry on
 
   ret  ; end of the main program
 
@@ -78,7 +78,7 @@ char_to_print:   defb  CHAR_ASTERISK
 space_to_print:  defb  CHAR_SPACE
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main_Sub
+; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main_Sub
-  savebin "bojan.bin", Main_Sub, $ - Main_Sub
+  savesna "bojan.sna", Main
+  savebin "bojan.bin", Main, $ - Main

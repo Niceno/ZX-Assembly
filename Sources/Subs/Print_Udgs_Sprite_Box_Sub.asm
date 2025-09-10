@@ -1,5 +1,5 @@
 ;===============================================================================
-; Print_Udgs_Sprite_Box_Sub
+; Print_Udgs_Sprite_Box
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Prints a box filled up with an array of UDGs character
@@ -12,13 +12,13 @@
 ; Clobbers:
 ; - AF, BC, DE, HL ... but should be double checked
 ;-------------------------------------------------------------------------------
-Print_Udgs_Sprite_Box_Sub:
+Print_Udgs_Sprite_Box:
 
   ;--------------------------
   ; Outer loop; through rows
   ;--------------------------
   ld A, D
-Print_Udgs_Sprite_Box_Outer:
+.outer_loop:
 
     push AF  ; save the outer counter
     push BC  ; save the initial column (you also save the row along the way)
@@ -29,12 +29,12 @@ Print_Udgs_Sprite_Box_Outer:
     ld A, E
     push DE  ; save length and height
 
-Print_Udgs_Sprite_Box_Inner:
+.inner_loop:
       push AF
 
       push BC
       push HL
-      call Print_Udgs_Character_Sub  ; this clobbers B
+      call Print_Udgs_Character  ; this clobbers B
       pop HL
       pop BC
 
@@ -51,7 +51,7 @@ Print_Udgs_Sprite_Box_Inner:
 
       pop AF
       dec A
-    jr nz, Print_Udgs_Sprite_Box_Inner
+    jr nz, .inner_loop
 
     pop DE  ; restore length (D) and height (E)
 
@@ -62,7 +62,7 @@ Print_Udgs_Sprite_Box_Inner:
     pop AF  ; restore the outer counter
     dec A
 
-  jr nz, Print_Udgs_Sprite_Box_Outer
+  jr nz, .outer_loop
 
   ret
 

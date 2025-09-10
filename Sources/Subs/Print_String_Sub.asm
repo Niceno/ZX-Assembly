@@ -1,8 +1,8 @@
 ;===============================================================================
-; Print_String_Sub
+; Print_String
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Prints a character box by calling Print_Character_Sub for each char
+; - Prints a character box by calling Print_Character for each char
 ;
 ; Parameters (passed via registers)
 ; - HL: address of the null-terminated string
@@ -12,32 +12,25 @@
 ; Clobbers:
 ; - AF, BC, HL
 ;-------------------------------------------------------------------------------
-Print_String_Sub:
+Print_String:
 
-  ld A, (HL)        ; Get the next character from the string
-  or A              ; Check if it's the null terminator (0)
-  ret z             ; If it is, return.
+.character_loop
 
-  push HL           ; Save the string pointer
-  push BC           ; Save the current coordinates
+    ld A, (HL)  ; get the next character from the string
+    or A        ; check if it's the null terminator (0)
+    ret z       ; if it is, return.
 
-  ; Prepare parameters for Print_Character_Sub
-  ; HL is already the character address? Wait, no.
-  ; We need to point to the char definition. Our current A is the char code.
-  ; We might need a different approach.
+    push HL     ; save the string pointer
+    push BC     ; save the current coordinates
 
-  ; Let's assume we find a way to get char definition address in HL
-  ; For now, let's adjust: we need to convert char code in A to font address.
-  ; This might require a helper or we refactor Print_Character_Sub.
+    call Print_Character  ; print this character
 
-  call Print_Character_Sub  ; Print this character
+    pop BC      ; restore coordinates
+    pop HL      ; restore string pointer
 
-  pop BC            ; Restore coordinates
-  pop HL            ; Restore string pointer
+    inc HL      ; move to next character in the string
+    inc C       ; move to next column on the screen
 
-  inc HL            ; Move to next character in the string
-  inc C             ; Move to next column on the screen
-
-  jr Print_String_Sub ; Loop for next character
+  jr .character_loop  ; loop for next character
 
   ret

@@ -19,18 +19,18 @@
 ;===============================================================================
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-Main_Sub:
+Main:
 
   ;----------------------------------
   ; Open the channel to upper screen
   ;----------------------------------
-  call Open_Upper_Screen_Sub
+  call Open_Upper_Screen
 
   ;------------------------------
   ; Specify the beginning of UDG
   ;------------------------------
-  ld hl, udgs                         ; user defined graphics (UDGs)
-  ld (MEM_USER_DEFINED_GRAPHICS), hl  ; set up UDG system variable.
+  ld HL, udgs                         ; user defined graphics (UDGs)
+  ld (MEM_USER_DEFINED_GRAPHICS), HL  ; set up UDG system variable.
 
   ;---------------------
   ; Color that asterisk
@@ -38,7 +38,7 @@ Main_Sub:
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
   ld BC, $0C10                  ; row and column
   ld DE, $0101                  ; length and height
-  call Color_Text_Box_Sub
+  call Color_Text_Box
 
   ;--------------------------------------------------------------------
   ; Wait until a key is pressed
@@ -59,65 +59,73 @@ Main_Sub:
   ;--------------------------------------------------------------------
 Main_Read_Next_Key:
 
-  ;--------------------------------------
-  ; Let IX point to all characters array
-  ;--------------------------------------
-  ld IX, all_characters - 1  ; make sure first inc points to all_characters
+;--------------------------------
+;
+; Infinite loop for reading keys
+;
+;--------------------------------
+.outer_infinite_loop:
 
-  ;-------------------------------------------------------------
-  ; Set the HL to point to the beginning of array all_key_ports
-  ;-------------------------------------------------------------
-  ld HL, all_key_ports
+    ;--------------------------------------
+    ; Let IX point to all characters array
+    ;--------------------------------------
+    ld IX, all_characters - 1  ; make sure first inc points to all_characters
 
-  ;------------------------------
-  ; There are eight rows of keys
-  ;------------------------------
-  ld D, 8              ; there are eight rows of keys
+    ;-------------------------------------------------------------
+    ; Set the HL to point to the beginning of array all_key_ports
+    ;-------------------------------------------------------------
+    ld HL, all_key_ports
 
-Main_Browse_Key_Rows:
+    ;------------------------------
+    ; There are eight rows of keys
+    ;------------------------------
+    ld D, 8              ; there are eight rows of keys
 
-  ; Keyboard row; load the port number into BC indirectly through HL
-  ld C, (HL)      ; low byte into C
-  inc HL
-  ld B, (HL)      ; high byte into B
-  inc HL
+.browse_key_rows:
 
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 0, A        ; bit 0
-  inc IX
-  jp z, Main_Print_One
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 1, A        ; bit 1
-  inc IX
-  jp z, Main_Print_One
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 2, A        ; bit 2
-  inc IX
-  jp z, Main_Print_One
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 3, A        ; bit 3
-  inc IX
-  jp z, Main_Print_One
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-  bit 4, A        ; bit 4
-  inc IX
-  jp z, Main_Print_One
+      ; Keyboard row; load the port number into BC indirectly through HL
+      ld C, (HL)      ; low byte into C
+      inc HL
+      ld B, (HL)      ; high byte into B
+      inc HL
 
-  dec D
+      in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+      bit 0, A        ; bit 0
+      inc IX
+      jp z, .print_the_pressed_key
+      in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+      bit 1, A        ; bit 1
+      inc IX
+      jp z, .print_the_pressed_key
+      in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+      bit 2, A        ; bit 2
+      inc IX
+      jp z, .print_the_pressed_key
+      in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+      bit 3, A        ; bit 3
+      inc IX
+      jp z, .print_the_pressed_key
+      in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+      bit 4, A        ; bit 4
+      inc IX
+      jp z, .print_the_pressed_key
 
-  jr nz, Main_Browse_Key_Rows
+    dec D
 
-  jp Main_Read_Next_Key    ; if not pressed, repeat loop
+    jr nz, .browse_key_rows
+
+  jp .outer_infinite_loop    ; if not pressed, repeat loop
 
   ;----------------------------
   ; Print the proper character
   ;----------------------------
-Main_Print_One:
-  ld HL, IX     ; address of the character to print
-  ld BC, $0C10  ; row (B) and column (C)
-  call Print_Character_Sub
+.print_the_pressed_key:
 
-  jp Main_Read_Next_Key
+    ld HL, IX     ; address of the character to print
+    ld BC, $0C10  ; row (B) and column (C)
+    call Print_Character
+
+  jp .outer_infinite_loop
 
   ret
 
@@ -176,7 +184,7 @@ symbol_shift:  defb $00, $7E, $4E, $4E, $72, $72, $7E, $00  ; $92
 space:         defb $00, $00, $00, $00, $00, $42, $7E, $00  ; $93
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main_Sub
+; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main_Sub
-  savebin "bojan.bin", Main_Sub, $ - Main_Sub
+  savesna "bojan.sna", Main
+  savebin "bojan.bin", Main, $ - Main

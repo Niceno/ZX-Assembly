@@ -19,12 +19,12 @@
 ;===============================================================================
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-Main_Sub:
+Main:
 
   ;----------------------------------
   ; Open the channel to upper screen
   ;----------------------------------
-  call Open_Upper_Screen_Sub
+  call Open_Upper_Screen
 
   ;------------------------------
   ; Specify the beginning of UDG
@@ -45,7 +45,7 @@ Main_Sub:
   ld BC, $0101
   ld DE, $0406
   ld HL, monster_01
-  call Print_Udgs_Tile_Box_Sub
+  call Print_Udgs_Tile_Box
 
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
@@ -53,7 +53,7 @@ Main_Sub:
   ld BC, $010A
   ld DE, $0202
   ld HL, circle_q1
-  call Print_Udgs_Sprite_Box_Sub
+  call Print_Udgs_Sprite_Box
 
   ret
 
@@ -98,7 +98,7 @@ circle_q4: defb $01, $01, $02, $02, $04, $08, $30, $C0
 
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main_Sub
+; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main_Sub
-  savebin "bojan.bin", Main_Sub, $ - Main_Sub
+  savesna "bojan.sna", Main
+  savebin "bojan.bin", Main, $ - Main

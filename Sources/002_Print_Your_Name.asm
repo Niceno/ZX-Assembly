@@ -19,12 +19,12 @@
 ;===============================================================================
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-Main_Sub:
+Main:
 
   ;----------------------------------
   ; Open the channel to upper screen
   ;----------------------------------
-  call Open_Upper_Screen_Sub
+  call Open_Upper_Screen
 
   ;-------------------------
   ; Initialize loop counter
@@ -33,16 +33,16 @@ Main_Sub:
   ld C,  0
 
   ;---------------------------------------------------
-  ; Print ten times using subroutine Print_String_Sub
+  ; Print ten times using subroutine Print_String
   ;---------------------------------------------------
-Main_Loop:
+.loop:
 
-  ld HL, bojan_string  ; HL holds the address of the text to print
-  push BC              ; Print_String_SUb might clobbers the registers
-  call Print_String_Sub
-  pop BC
+    ld HL, bojan_string  ; HL holds the address of the text to print
+    push BC              ; Print_String_SUb might clobbers the registers
+    call Print_String
+    pop BC
 
-  djnz Main_Loop                ; decrease B and run the loop again
+  djnz .loop             ; decrease B and run the loop again
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -70,7 +70,7 @@ Main_Loop:
 bojan_string:  defb "Bojan is cool!", 0
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main_Sub
+; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main_Sub
-  savebin "bojan.bin", Main_Sub, $ - Main_Sub
+  savesna "bojan.sna", Main
+  savebin "bojan.bin", Main, $ - Main

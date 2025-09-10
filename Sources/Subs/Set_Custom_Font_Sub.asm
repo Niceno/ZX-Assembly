@@ -1,5 +1,5 @@
 ;===============================================================================
-; Set_Custom_Font_Sub
+; Set_Custom_Font
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Sets the custom font in assembled programs
@@ -15,7 +15,7 @@
 ; - Can work only when fonts are at memory addresses aligned to 256 bytes.
 ; - Was tested only for MEM_CUSTOM_FONT_START == 64000.
 ;-------------------------------------------------------------------------------
-Set_Custom_Font_Sub:
+Set_Custom_Font:
 
   ld HL, MEM_CUSTOM_FONT_START  ; this is where custom font starts
   ld A, H                       ; divide it by 256 ...

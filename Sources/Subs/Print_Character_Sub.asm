@@ -1,5 +1,5 @@
 ;===============================================================================
-; Print_Character_Sub
+; Print_Character
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Prints a single character by directly addressing screen memory
@@ -14,7 +14,7 @@
 ; Clobber:
 ; - AF, BC, DE and HL
 ;-------------------------------------------------------------------------------
-Print_Character_Sub:
+Print_Character:
 
   ld A, (HL)      ; store the character into A
   sub CHAR_SPACE  ; subtract the first character (space)
@@ -57,14 +57,15 @@ print_character_memory_patch_end:
   ld D, 0
   add HL, DE  ; HL now points to correct screen position
 
-  ld B, 8              ; characters are eight lines high
-  pop DE               ; this was pushed as HL with memory font start
-Print_Character_Loop:
-  ld A, (DE)
-  ld(HL), A
-  inc H       ; increase position at the screen (HL = HL + 256)
-  inc DE      ; increase position in the memory
-  djnz Print_Character_Loop
+  ld B, 8  ; characters are eight lines high
+  pop DE   ; this was pushed as HL with memory font start
+
+.loop_character_bytes:
+    ld A, (DE)
+    ld(HL), A
+    inc H       ; increase position at the screen (HL = HL + 256)
+    inc DE      ; increase position in the memory
+  djnz .loop_character_bytes
 
   ret
 

@@ -1,5 +1,5 @@
 ;===============================================================================
-; Print_Registers_Sub
+; Print_Registers
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Prints the contents of the registers
@@ -14,7 +14,7 @@
 ; - This source includes three other routines which are only called from here
 ;   I am not sure this is the best practice, but ... seems OK at the moment.
 ;-------------------------------------------------------------------------------
-Print_Registers_Sub:
+Print_Registers:
 
   ;--------------------------
   ;
@@ -67,71 +67,71 @@ Print_Registers_Sub:
   ld IX, reg_table
   ld B, REG_ENTRIES
 
-Print_Registers_Loop:
-  push bc
+.loop:
+    push bc
 
-  ;------------------
-  ; Text coordinates
-  ;------------------
-  ld B, (IX+0)  ; B holds row
-  ld C, (IX+1)  ; C holds column
-  call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
+    ;------------------
+    ; Text coordinates
+    ;------------------
+    ld B, (IX+0)  ; B holds row
+    ld C, (IX+1)  ; C holds column
+    call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
 
-  ;---------------------------------------
-  ; Register labels ("AF", "BC", ... "IY"
-  ;---------------------------------------
-  ld L, (IX+2)  ; notice little endian: lower byte first ...
-  ld H, (IX+3)  ; ... higher byte second
-  call Print_Udgs_Character_Sub
+    ;---------------------------------------
+    ; Register labels ("AF", "BC", ... "IY"
+    ;---------------------------------------
+    ld L, (IX+2)  ; notice little endian: lower byte first ...
+    ld H, (IX+3)  ; ... higher byte second
+    call Print_Udgs_Character
 
-  ;------------------------------------------------------------------------
-  ; Text coordinates again (they got clobbered in Print_Udgs_Character_Sub
-  ;------------------------------------------------------------------------
-  ld B, (IX+0)  ; B holds row
-  ld C, (IX+1)  ; C holds column
-  inc C         ; increase column for the equal sign
-  call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
+    ;------------------------------------------------------------------------
+    ; Text coordinates again (they got clobbered in Print_Udgs_Character
+    ;------------------------------------------------------------------------
+    ld B, (IX+0)  ; B holds row
+    ld C, (IX+1)  ; C holds column
+    inc C         ; increase column for the equal sign
+    call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
 
-  ;-----------------
-  ; Register labels
-  ;-----------------
-  ld L, (IX+4)  ; notice little endian: lower byte first ...
-  ld H, (IX+5)  ; ... higher byte second
-  call Print_Udgs_Character_Sub
+    ;-----------------
+    ; Register labels
+    ;-----------------
+    ld L, (IX+4)  ; notice little endian: lower byte first ...
+    ld H, (IX+5)  ; ... higher byte second
+    call Print_Udgs_Character
 
-  ;-------------------------------------------------------------
-  ; Print hex number from new_ptr (which is always the current)
-  ;-------------------------------------------------------------
-  ld   L, (IX+6)  ; little ...
-  ld   H, (IX+7)  ; ... endian
-  inc  HL
-  ld   A, (HL)
-  ld   E, 2
-  call Print_Hex_Byte_Sub
-  dec  HL
-  ld   A, (HL)
-  ld   E, 3
-  call Print_Hex_Byte_Sub
+    ;-------------------------------------------------------------
+    ; Print hex number from new_ptr (which is always the current)
+    ;-------------------------------------------------------------
+    ld   L, (IX+6)  ; little ...
+    ld   H, (IX+7)  ; ... endian
+    inc  HL
+    ld   A, (HL)
+    ld   E, 2
+    call Print_Hex_Byte
+    dec  HL
+    ld   A, (HL)
+    ld   E, 3
+    call Print_Hex_Byte
 
-  ;---------------------------------
-  ; Colour (maybe flash) vs old_ptr
-  ;---------------------------------
-  ld B, (IX +0)  ; B holds row
-  ld C, (IX +1)  ; C holds column
-  call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
-  ld E, (IX+ 8)
-  ld D, (IX+ 9)  ; old_ptr
-  ld A, (IX+10)  ; color
-  call Compare_Registers
-  ld   DE, $0401
-  call Color_Text_Box_Sub
+    ;---------------------------------
+    ; Colour (maybe flash) vs old_ptr
+    ;---------------------------------
+    ld B, (IX +0)  ; B holds row
+    ld C, (IX +1)  ; C holds column
+    call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
+    ld E, (IX+ 8)
+    ld D, (IX+ 9)  ; old_ptr
+    ld A, (IX+10)  ; color
+    call Compare_Registers
+    ld   DE, $0401
+    call Color_Text_Box
 
-  ld DE, REG_ROW_SIZE
-  add IX, DE
+    ld DE, REG_ROW_SIZE
+    add IX, DE
 
-  pop BC
+    pop BC
 
-  djnz Print_Registers_Loop
+  djnz .loop
 
   ;----------------------------------
   ; On first call, copy the register
@@ -140,17 +140,17 @@ Print_Registers_Loop:
   push AF
   ld A, (call_count)
 
-  cp 1     ; if A is 1, the first call, jump to Print_Registers_First_Call
-  jr z, Print_Registers_First_Call
-  jr Print_Registers_End   ; if A is not 1, go to the Print_Registers_End
+  cp 1     ; if A is 1, the first call, jump to .this_is_the_first_call
+  jr z, .this_is_the_first_call
+  jr .not_the_first_call   ; if A is not 1, go to the .not_the_first_call
 
-Print_Registers_First_Call:
+.this_is_the_first_call:
   ld HL, new_af
   ld DE, old_af
   ld BC, 12
   ldir
 
-Print_Registers_End:
+.not_the_first_call:
   pop AF
 
   ;----------------------------
@@ -181,13 +181,13 @@ Increase_Row_For_2nd_Call:
 
   ld A, (call_count)
   cp 2
-  jr z, Increase_Row_For_2nd_Call_Increase
+  jr z, .this_is_the_second_call
 
   pop AF
 
   ret
 
-Increase_Row_For_2nd_Call_Increase:
+.this_is_the_second_call:
   ld A, B
   add A, 10
   ld B, A
@@ -205,7 +205,7 @@ Increase_Row_For_2nd_Call_Increase:
 ; - AF: results in increased A and (possibly) clobbered F
 ;
 ; Note:
-; - This is a "local function", called only from Print_Registers_Sub,
+; - This is a "local function", called only from Print_Registers,
 ;   that's why it is not in a separate file
 ;-------------------------------------------------------------------------------
 Compare_Registers:
@@ -218,26 +218,26 @@ Compare_Registers:
   ;---------------------------------------------------------
   ld A, (call_count)
   cp 2
-  jr z, Compare_Registers_Jump
+  jr z, .this_is_the_second_call
 
   pop BC
   pop AF
 
   ret
 
-Compare_Registers_Jump:
+.this_is_the_second_call:
 
   push AF  ; push AF for comparison
 
   ; Compare all bytes (why only two?)
   ld A, (DE)
   cp (HL)
-  jr nz, Add_Flashing
+  jr nz, .add_flashing
   inc HL
   inc DE
   ld A, (DE)
   cp (HL)
-  jr nz, Add_Flashing
+  jr nz, .add_flashing
 
   pop AF  ; comparison done, restore AF
 
@@ -246,7 +246,7 @@ Compare_Registers_Jump:
 
   ret
 
-Add_Flashing:
+.add_flashing:
 
   pop AF  ; comparison done, restore AF
 
@@ -258,7 +258,7 @@ Add_Flashing:
   ret
 
 ;===============================================================================
-; Print_Hex_Byte_Sub
+; Print_Hex_Byte
 ;-------------------------------------------------------------------------------
 ; Parameters:
 ; - A: byte to print as two hexadecimal digits (from $00 to $FF)
@@ -268,10 +268,10 @@ Add_Flashing:
 ; - nothing
 ;
 ; Note:
-; - This is a "local function", called only from Print_Registers_Sub,
+; - This is a "local function", called only from Print_Registers,
 ;   that's why it is not in a separate file
 ;-------------------------------------------------------------------------------
-Print_Hex_Byte_Sub:
+Print_Hex_Byte:
 
   push AF
   push DE
@@ -332,7 +332,7 @@ Print_Hex_Byte_Sub:
 ; - nothing
 ;
 ; Note:
-; - This is a "local function", called only from Print_Hex_Byte_Sub
+; - This is a "local function", called only from Print_Hex_Byte
 ;   that's why it is not in a separate file
 ;-------------------------------------------------------------------------------
 Merge_Narrow_Hex_Digit:
@@ -353,7 +353,7 @@ Merge_Narrow_Hex_Digit:
   add HL, DE             ; now point to the right character in the table
 
   ; Print the string
-  call Merge_Udgs_Character_Sub
+  call Merge_Udgs_Character
 
   pop AF
   pop BC

@@ -1,5 +1,5 @@
 ;===============================================================================
-; Merge_Udgs_Character_Sub
+; Merge_Udgs_Character
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Prints a single user defined character by directly addressing screen memory
@@ -16,9 +16,9 @@
 ;   over-writing what's already on the screen.
 ; - These two sisters should differ by one line of code only
 ;-------------------------------------------------------------------------------
-Merge_Udgs_Character_Sub:
+Merge_Udgs_Character:
 
-  push HL     ; store this memory address on stack (will pop as DE later)
+  push HL  ; store this memory address on stack (will pop as DE later)
 
   ; Calculate screen address from row and column
   ld A, B                 ; get row number (0-23)
@@ -43,15 +43,16 @@ Merge_Udgs_Character_Sub:
   ld D, 0
   add HL, DE  ; HL now points to correct screen position
 
-  ld B, 8              ; characters are eight lines high
-  pop DE               ; this was pushed as HL with memory font start
-Merge_Udgs_Character_Loop:
-  ld A, (DE)
-  or (HL)
-  ld(HL), A
-  inc H       ; increase position at the screen (HL = HL + 256)
-  inc DE      ; increase position in the memory
-  djnz Merge_Udgs_Character_Loop
+  ld B, 8  ; characters are eight lines high
+  pop DE   ; this was pushed as HL with memory font start
+
+.loop_character_bytes:
+    ld A, (DE)
+    or (HL)
+    ld(HL), A
+    inc H       ; increase position at the screen (HL = HL + 256)
+    inc DE      ; increase position in the memory
+  djnz .loop_character_bytes
 
   ret
 

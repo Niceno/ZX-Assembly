@@ -19,18 +19,18 @@
 ;===============================================================================
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-Main_Sub:
+Main:
 
   ;----------------------------------
   ; Open the channel to upper screen
   ;----------------------------------
-  call Open_Upper_Screen_Sub
+  call Open_Upper_Screen
 
   ;------------------------------
   ; Specify the beginning of UDG
   ;------------------------------
-  ld hl, udgs                         ; user defined graphics (UDGs)
-  ld (MEM_USER_DEFINED_GRAPHICS), hl  ; set up UDG system variable.
+  ld HL, udgs                         ; user defined graphics (UDGs)
+  ld (MEM_USER_DEFINED_GRAPHICS), HL  ; set up UDG system variable.
 
   ;---------------
   ; Set the color
@@ -48,26 +48,26 @@ Main_Sub:
   ;---------------------
   ; Move the monster up
   ;---------------------
-Main_Loop:
+.loop:
 
-  ; Print monster
-  ld HL, monster_01              ; ghost_01
-  push BC                        ; save the row count
-  call Print_Udgs_Character_Sub  ; this clobbers B
+    ; Print monster
+    ld HL, monster_01              ; ghost_01
+    push BC                        ; save the row count
+    call Print_Udgs_Character  ; this clobbers B
 
-  ld B, 10        ; cycles for Delay_Sub.
-  call Delay_Sub  ; want a delay, also clobbers B
-  pop BC          ; get back the row count
+    ld B, 10        ; cycles for Delay.
+    call Delay  ; want a delay, also clobbers B
+    pop BC          ; get back the row count
 
-  ; Delete the monster
-  ; (print space over it)
-  ld HL, space_to_print
-  push BC                        ; save the row count
-  call Print_Udgs_Character_Sub
-  pop BC                         ; get back proper row count
+    ; Delete the monster
+    ; (print space over it)
+    ld HL, space_to_print
+    push BC                        ; save the row count
+    call Print_Udgs_Character
+    pop BC                         ; get back proper row count
 
   ; Decrease text row -> move monster position up
-  djnz Main_Loop  ; no, carry on
+  djnz .loop  ; no, carry on
 
   ret  ; end of the main program
 
@@ -104,7 +104,7 @@ arrow_right:     defb $08, $0C, $F2, $81, $81, $F2, $0C, $08
 space_to_print:  defb $00, $00, $00, $00, $00, $00, $00, $00
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main_Sub
+; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main_Sub
-  savebin "bojan.bin", Main_Sub, $ - Main_Sub
+  savesna "bojan.sna", Main
+  savebin "bojan.bin", Main, $ - Main

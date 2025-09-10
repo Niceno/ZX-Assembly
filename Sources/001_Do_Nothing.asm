@@ -13,7 +13,7 @@
 ;===============================================================================
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
+Main:
   ei       ; <--= (re)enable interrupts if you want to return to OS/BASIC
   ret
 
@@ -21,5 +21,5 @@ Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
 ; Save a snapshot that starts execution at the address marked with Main_Sub
 ; (Without label "Main_Sub", you could have written: SAVESNA "bojan.sna", $8000)
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main_Sub
-  savebin "bojan.bin", Main_Sub, $ - Main_Sub
+  savesna "bojan.sna", Main
+  savebin "bojan.bin", Main, $ - Main

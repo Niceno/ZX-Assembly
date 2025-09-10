@@ -13,12 +13,12 @@
 ;===============================================================================
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
+Main:  ; If the adress is that of a subroutine, end it up with  suffix
 
   ;----------------------------------
   ; Open the channel to upper screen
   ;----------------------------------
-  call Open_Upper_Screen_Sub
+  call Open_Upper_Screen
 
   ;-----------------------
   ;
@@ -27,12 +27,12 @@ Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
   ;-----------------------
   ld BC, $0B0B                  ; row and column
   ld HL, $0039                  ; number to print
-  call Print_08_Bit_Number_Sub
+  call Print_08_Bit_Number
 
   ld A, WHITE_INK + RED_PAPER  ; color of the string
   ld BC, $0B0B                 ; row and column
   ld DE, $0301                 ; length and height
-  call Color_Text_Box_Sub
+  call Color_Text_Box
 
   ;-----------------------
   ;
@@ -41,12 +41,12 @@ Main_Sub:  ; If the adress is that of a subroutine, end it up with _Sub suffix
   ;-----------------------
   ld BC, $0909                  ; row and column
   ld HL, $3039                  ; number to print
-  call Print_16_Bit_Number_Sub
+  call Print_16_Bit_Number
 
   ld A, WHITE_INK + BLUE_PAPER  ; color of the string
   ld BC, $0909                  ; row and column
   ld DE, $0501                  ; length and height
-  call Color_Text_Box_Sub
+  call Color_Text_Box
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -76,7 +76,7 @@ number_source:
   defw 12345    ; define word or two bytes, 16 bits, 2^16 = 65536
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main_Sub
+; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main_Sub
-  savebin "bojan.bin", Main_Sub, $ - Main_Sub
+  savesna "bojan.sna", Main
+  savebin "bojan.bin", Main, $ - Main

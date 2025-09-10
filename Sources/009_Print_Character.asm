@@ -19,28 +19,28 @@
 ;===============================================================================
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-Main_Sub:
+Main:
 
   ;----------------------------------
   ; Open the channel to upper screen
   ;----------------------------------
-  call Open_Upper_Screen_Sub
+  call Open_Upper_Screen
 
   ;---------------------------------------
   ; Address of the null-terminated string
   ;---------------------------------------
   ld HL, bojan_string  ; address where the string is stored
   ld BC, $0000         ; row and column
-  call Print_Character_Sub
+  call Print_Character
 
   ld A, CYAN_PAPER + BLUE_INK
   ld BC, $0200         ; row and column
   ld DE, $0E01         ; length and height
-  call Color_Text_Box_Sub
+  call Color_Text_Box
 
   ld HL, bojan_string  ; address where the string is stored
   ld BC, $0200         ; row and column
-  call Print_String_Sub
+  call Print_String
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -69,7 +69,7 @@ Main_Sub:
 bojan_string: defb "Bojan is cool!", 0
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main_Sub
+; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main_Sub
-  savebin "bojan.bin", Main_Sub, $ - Main_Sub
+  savesna "bojan.sna", Main
+  savebin "bojan.bin", Main, $ - Main

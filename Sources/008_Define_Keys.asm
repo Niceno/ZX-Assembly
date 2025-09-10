@@ -19,12 +19,12 @@
 ;===============================================================================
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
-Main_Sub:
+Main:
 
   ;----------------------------------
   ; Open the channel to upper screen
   ;----------------------------------
-  call Open_Upper_Screen_Sub
+  call Open_Upper_Screen
 
   ;------------------------------
   ; Specify the beginning of UDG
@@ -46,13 +46,13 @@ Main_Sub:
   ld B, A                  ; put row in B
   ld C, 3                  ; set column too
   ld HL, text_press_a_key  ; the address of the text to print in HL
-  call Print_String_Sub
+  call Print_String
 
   ; Color the text box
   ld A,  BLUE_INK + WHITE_PAPER  ; color of the string
   ld BC, $0303
   ld DE, $1801                   ; length (D) is 24, height (E) is 1
-  call Color_Text_Box_Sub
+  call Color_Text_Box
 
   ;--------------------------
   ;
@@ -63,210 +63,216 @@ Main_Sub:
   ;--------------------------
   ld B, 5  ; you will define five keys
 
-Main_Ask_Again:
-  push BC  ; store the counter
+.loop_to_define_keys:
+    push BC  ; store the counter
 
-  ;----------------------------------------------------------
-  ; Print a little yellow flashing arrow for the entry
-  ; and set the "pointers" curr_port_addr and curr_mask_addr
-  ;----------------------------------------------------------
-  ld A, B
-  cp 5
-  jr z, Main_Up
-  cp 4
-  jr z, Main_Down
-  cp 3
-  jr z, Main_Left
-  cp 2
-  jr z, Main_Right
-  cp 1
-  jr z, Main_Fire
-Main_Up:
-  ld HL, arrow_up
-  ld (udgs_arrows), HL
-  ld HL, port_for_up
-  ld (curr_port_addr), HL
-  ld HL, mask_for_up
-  ld (curr_mask_addr), HL
-  jr Main_Done
-Main_Down:
-  ld HL, arrow_down
-  ld (udgs_arrows), HL
-  ld HL, port_for_down
-  ld (curr_port_addr), HL
-  ld HL, mask_for_down
-  ld (curr_mask_addr), HL
-  jr Main_Done
-Main_Left:
-  ld HL, arrow_left
-  ld (udgs_arrows), HL
-  ld HL, port_for_left
-  ld (curr_port_addr), HL
-  ld HL, mask_for_left
-  ld (curr_mask_addr), HL
-  jr Main_Done
-Main_Right:
-  ld HL, arrow_right
-  ld (udgs_arrows), HL
-  ld HL, port_for_right
-  ld (curr_port_addr), HL
-  ld HL, mask_for_right
-  ld (curr_mask_addr), HL
-  jr Main_Done
-Main_Fire:
-  ld HL, fire
-  ld (udgs_arrows), HL
-  ld HL, port_for_fire
-  ld (curr_port_addr), HL
-  ld HL, mask_for_fire
-  ld (curr_mask_addr), HL
+    ;----------------------------------------------------------
+    ; Print a little yellow flashing arrow for the entry
+    ; and set the "pointers" curr_port_addr and curr_mask_addr
+    ;----------------------------------------------------------
+    ld A, B
+    cp 5
+    jr z, .pressed_the_key_for_up
+    cp 4
+    jr z, .pressed_the_key_for_down
+    cp 3
+    jr z, .pressed_the_key_for_left
+    cp 2
+    jr z, .pressed_the_key_for_right
+    cp 1
+    jr z, .pressed_the_key_for_fire
 
-Main_Done:
+.pressed_the_key_for_up:
+    ld HL, arrow_up
+    ld (udgs_arrows), HL
+    ld HL, port_for_up
+    ld (curr_port_addr), HL
+    ld HL, mask_for_up
+    ld (curr_mask_addr), HL
+    jr .now_print_the_symbol
 
-  ld A, (text_row)          ; get current row
-  inc A                     ; icrease it ...
-  inc A                     ; ... by two ...
-  ld (text_row), A          ; ... and store it back
-  ld B, A                   ; store it in B too
-  ld C,  5
+.pressed_the_key_for_down:
+    ld HL, arrow_down
+    ld (udgs_arrows), HL
+    ld HL, port_for_down
+    ld (curr_port_addr), HL
+    ld HL, mask_for_down
+    ld (curr_mask_addr), HL
+    jr .now_print_the_symbol
 
-  ; Color that little box
-  ld A,  RED_INK + YELLOW_PAPER + FLASH  ; color of the string
-  ld C,  5                               ; B should hold the row
-  ld DE, $0101                           ; length (D) and height (E) are 1
-  push BC
-  call Color_Text_Box_Sub
-  pop BC
+.pressed_the_key_for_left:
+    ld HL, arrow_left
+    ld (udgs_arrows), HL
+    ld HL, port_for_left
+    ld (curr_port_addr), HL
+    ld HL, mask_for_left
+    ld (curr_mask_addr), HL
+    jr .now_print_the_symbol
 
-  ld HL, (udgs_arrows)
-  call Print_Udgs_Character_Sub  ; at this point, prints arrow
+.pressed_the_key_for_right:
+    ld HL, arrow_right
+    ld (udgs_arrows), HL
+    ld HL, port_for_right
+    ld (curr_port_addr), HL
+    ld HL, mask_for_right
+    ld (curr_mask_addr), HL
+    jr .now_print_the_symbol
 
-  ;--------------------------------------------------------------------
-  ; Wait until a key is pressed
-  ;
-  ; Just to make sure these constructs are clear:
-  ; - We load the contents of a "KEYS_....." port into BC register
-  ; - Then we read from the port addressed by BC, and stores the
-  ;   result in A (this is what "in" command does.
-  ; - Then we compare a particular bit of A using the bit command
-  ;   (The bit command only modifies the Zero (Z) flag.
-  ;    > If the tested bit is 1, the Z flag is reset to 0.
-  ;    > If the tested bit is 0, the Z flag is set to 1.
-  ; - When the zero flag is zero (i.e., key is pressed), we jump to
-  ;   the label that handles printing that key.
-  ;
-  ; (It would be better to use "jr z, Address" here, but there
-  ;  are simply too many keys now.  When it gets smaller again.)
-  ;--------------------------------------------------------------------
-Main_Read_Next_Key:
+.pressed_the_key_for_fire:
+    ld HL, fire
+    ld (udgs_arrows), HL
+    ld HL, port_for_fire
+    ld (curr_port_addr), HL
+    ld HL, mask_for_fire
+    ld (curr_mask_addr), HL
 
-  ;--------------------------------------
-  ; Let IX point to all characters array
-  ;--------------------------------------
-  ld IX, all_characters - 1  ; make sure first inc points to all_characters
+.now_print_the_symbol:
 
-  ;-------------------------------------------------------------
-  ; Set the HL to point to the beginning of array all_key_ports
-  ;-------------------------------------------------------------
-  ld HL, all_key_ports
+    ld A, (text_row)          ; get current row
+    inc A                     ; icrease it ...
+    inc A                     ; ... by two ...
+    ld (text_row), A          ; ... and store it back
+    ld B, A                   ; store it in B too
+    ld C,  5
 
-  ;------------------------------
-  ; There are eight rows of keys
-  ;------------------------------
-  ld D, 8              ; there are eight rows of keys
+    ; Color that little box
+    ld A,  RED_INK + YELLOW_PAPER + FLASH  ; color of the string
+    ld C,  5                               ; B should hold the row
+    ld DE, $0101                           ; length (D) and height (E) are 1
+    push BC
+    call Color_Text_Box
+    pop BC
 
-Main_Browse_Key_Rows:
+    ; This is where it finally prints the symbol
+    ld HL, (udgs_arrows)
+    call Print_Udgs_Character  ; at this point, prints arrow
 
-  ; Keyboard row; load the port number into BC indirectly through HL
-  ld C, (HL)       ; low byte into C
-  inc HL
-  ld B, (HL)       ; high byte into B
-  inc HL
+    ;--------------------------------------------------------------------
+    ; Wait until a key is pressed
+    ;
+    ; Just to make sure these constructs are clear:
+    ; - We load the contents of a "KEYS_....." port into BC register
+    ; - Then we read from the port addressed by BC, and stores the
+    ;   result in A (this is what "in" command does.
+    ; - Then we compare a particular bit of A using the bit command
+    ;   (The bit command only modifies the Zero (Z) flag.
+    ;    > If the tested bit is 1, the Z flag is reset to 0.
+    ;    > If the tested bit is 0, the Z flag is set to 1.
+    ; - When the zero flag is zero (i.e., key is pressed), we jump to
+    ;   the label that handles printing that key.
+    ;
+    ; (It would be better to use "jr z, Address" here, but there
+    ;  are simply too many keys now.  When it gets smaller again.)
+    ;--------------------------------------------------------------------
+.read_next_key:
 
-  in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
-  bit 0, A         ; bit 0
-  ld A, %00000001  ; store bit 0
-  inc IX
-  jr z, Main_Print_One
-  in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
-  bit 1, A         ; bit 1
-  ld A, %00000010  ; store bit 1
-  inc IX
-  jr z, Main_Print_One
-  in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
-  bit 2, A         ; bit 2
-  ld A, %00000100  ; store bit 2
-  inc IX
-  jr z, Main_Print_One
-  in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
-  bit 3, A         ; bit 3
-  ld A, %00001000  ; store bit 3
-  inc IX
-  jr z, Main_Print_One
-  in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
-  bit 4, A         ; bit 4
-  ld A, %00010000  ; store bit 4
-  inc IX
-  jr z, Main_Print_One
+      ;--------------------------------------
+      ; Let IX point to all characters array
+      ;--------------------------------------
+      ld IX, all_characters - 1  ; make sure first inc points to all_characters
 
-  dec D
+      ;-------------------------------------------------------------
+      ; Set the HL to point to the beginning of array all_key_ports
+      ;-------------------------------------------------------------
+      ld HL, all_key_ports
 
-  jr nz, Main_Browse_Key_Rows
+      ;------------------------------
+      ; There are eight rows of keys
+      ;------------------------------
+      ld D, 8              ; there are eight rows of keys
 
-  jr Main_Read_Next_Key    ; if not pressed, repeat loop
+.browse_key_rows:
 
-  ;----------------------------
-  ; Print the proper character
-  ;----------------------------
-Main_Print_One:
+        ; Keyboard row; load the port number into BC indirectly through HL
+        ld C, (HL)       ; low byte into C
+        inc HL
+        ld B, (HL)       ; high byte into B
+        inc HL
 
-  ; Save port (BC already contains the port)
-  ld HL, (curr_port_addr)
-  ld (HL), C  ; low byte
-  inc HL
-  ld (HL), B  ; high byte
+        in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
+        bit 0, A         ; bit 0
+        ld A, %00000001  ; store bit 0
+        inc IX
+        jr z, .print_the_selected_key
+        in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
+        bit 1, A         ; bit 1
+        ld A, %00000010  ; store bit 1
+        inc IX
+        jr z, .print_the_selected_key
+        in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
+        bit 2, A         ; bit 2
+        ld A, %00000100  ; store bit 2
+        inc IX
+        jr z, .print_the_selected_key
+        in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
+        bit 3, A         ; bit 3
+        ld A, %00001000  ; store bit 3
+        inc IX
+        jr z, .print_the_selected_key
+        in A, (C)        ; read key states (1 = not pressed, 0 = pressed)
+        bit 4, A         ; bit 4
+        ld A, %00010000  ; store bit 4
+        inc IX
+        jr z, .print_the_selected_key
 
-  ; Determine mask
-  ld HL, (curr_mask_addr)
-  ld (HL), A
+        dec D
 
-  push IX                   ; copy IX ...
-  pop HL                    ; ... to HL
-  ld A, (text_row)          ; get current row
-  ld B, A                   ; store it in B
-  ld C, 5                   ; column is hard-coded
-  call Print_Character_Sub
+      jr nz, .browse_key_rows
 
-  ld A, (text_row)  ; retreive the last row
-  ld B, A
-  ld C, 5
-  ld DE, $0101
-  ld A, RED_INK + YELLOW_PAPER  ; color of the string
-  call Color_Text_Box_Sub
+    jr .read_next_key    ; if not pressed, repeat loop
 
-  ;--------------------------------------
-  ; Loop until all the keys are released
-  ;--------------------------------------
-  call Unpress_Sub
+    ;------------------------
+    ; Print the selected key
+    ;------------------------
+.print_the_selected_key:
 
-  ;--------------------------
-  ; Retreive the key counter
-  ;--------------------------
-  pop BC
+    ; Save port (BC already contains the port)
+    ld HL, (curr_port_addr)
+    ld (HL), C  ; low byte
+    inc HL
+    ld (HL), B  ; high byte
 
-  dec B
-  jp nz, Main_Ask_Again
+    ; Determine mask
+    ld HL, (curr_mask_addr)
+    ld (HL), A
+
+    push IX                   ; copy IX ...
+    pop HL                    ; ... to HL
+    ld A, (text_row)          ; get current row
+    ld B, A                   ; store it in B
+    ld C, 5                   ; column is hard-coded
+    call Print_Character
+
+    ld A, (text_row)  ; retreive the last row
+    ld B, A
+    ld C, 5
+    ld DE, $0101
+    ld A, RED_INK + YELLOW_PAPER  ; color of the string
+    call Color_Text_Box
+
+    ;--------------------------------------
+    ; Loop until all the keys are released
+    ;--------------------------------------
+    call Unpress
+
+    ;--------------------------
+    ; Retreive the key counter
+    ;--------------------------
+    pop BC
+
+    dec B
+  jp nz, .loop_to_define_keys
 
   ;-----------------------------------------------------------------------
   ; End the key definition stage with a message that all keys are defined
   ;-----------------------------------------------------------------------
   ld BC, $1303              ; set row (D) to 15 and column (E) to 3
   ld HL, text_keys_defined  ; the address of the text to print in HL
-  call Print_String_Sub
+  call Print_String
 
   ld BC, $1503              ; set row (D) to 15 and column (E) to 3
   ld HL, text_press_fire    ; the address of the text to print in HL
-  call Print_String_Sub
+  call Print_String
 
   ;--------------------------------
   ;
@@ -275,12 +281,12 @@ Main_Print_One:
   ;
   ;
   ;--------------------------------
-  call Press_Any_Key_Sub
+  call Press_Any_Key
 
   ;--------------------------------------
   ; Loop until all the keys are released
   ;--------------------------------------
-  call Unpress_Sub
+  call Unpress
 
   ;------------------
   ; Clear the screen
@@ -303,11 +309,11 @@ Main_Print_One:
   ld C, A
   ld HL, (udgs_arrows)
   push BC
-  call Print_Udgs_Character_Sub
+  call Print_Udgs_Character
   pop BC
   ld DE, $0101
   ld A, WHITE_PAPER + BRIGHT
-  call Color_Text_Box_Sub
+  call Color_Text_Box
 
   ;----------------
   ;
@@ -316,10 +322,10 @@ Main_Print_One:
   ;
   ;
   ;----------------
-Main_Game_Loop:
+.main_game_loop:
 
   ld B, 1
-  call Delay_Sub
+  call Delay
 
   ;------------------------------
   ;
@@ -332,7 +338,7 @@ Main_Game_Loop:
   ;----------------------------
   ld A, (hero_moved)
   cp 0
-  jr z, Hero_Not_Moved
+  jr z, .hero_not_moved
 
   ;--------------------
   ; Now print for real
@@ -341,18 +347,18 @@ Main_Game_Loop:
   ld H, 0              ; zero out H, so HL = 0x00XX
   ld A, (hero_row)     ; read the single byte into A
   ld L, A              ; put the value into L
-  call Print_08_Bit_Number_Sub
+  call Print_08_Bit_Number
   ld BC, $0100         ; row and column
   ld H, 0              ; zero out H, so HL = 0x00XX
   ld A, (hero_column)  ; read the single byte into A
   ld L, A              ; put the value into L
-  call Print_08_Bit_Number_Sub
+  call Print_08_Bit_Number
   ld A,  CYAN_PAPER
   ld BC, $0000
   ld DE, $0302
-  call Color_Text_Box_Sub
+  call Color_Text_Box
 
-Hero_Not_Moved:
+.hero_not_moved:
   ld A, 0
   ld (hero_moved), A
 
@@ -370,50 +376,53 @@ Hero_Not_Moved:
   ;---------------------------------------------------------------
   ; There are eight rows of keys, but you care about one only now
   ;---------------------------------------------------------------
+
   ld D, 5  ; you want five rows for five UDKs
+.browse_keys_in_game:
 
-Main_Browse_Keys_In_Game:
+    ; Keyboard row; load the port number into BC indirectly through HL
+    ld C, (HL)      ; low byte into C
+    inc HL
+    ld B, (HL)      ; high byte into B
+    inc HL
 
-  ; Keyboard row; load the port number into BC indirectly through HL
-  ld C, (HL)      ; low byte into C
-  inc HL
-  ld B, (HL)      ; high byte into B
-  inc HL
+    ; You care about one key only, the one you defined for fire
+    in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
 
-  ; You care about one key only, the one you defined for fire
-  in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
+    ; Load the mask for this UDK
+    ld B, (HL)
+    inc HL
 
-  ; Load the mask for this UDK
-  ld B, (HL)
-  inc HL
+    ; ... and compare that mask (in B) with A
+    and B
 
-  ; ... and compare that mask (in B) with A
-  and B
+    jr z, .a_control_key_was_pressed
 
-  jr z, Main_Game_Action_Key_Pressed
+    dec D
+  jr nz, .browse_keys_in_game  ; if D is not zero, browse keys again
 
-  dec D
+  ; No control keys are pressed, go back to the main loop
+  jr .main_game_loop
 
-  jr nz, Main_Browse_Keys_In_Game
-
-  jr Main_Game_Loop
-
-Main_Game_Action_Key_Pressed:
+;------------------------------------------------------
+; One of control keys was pressed, perform some action
+;------------------------------------------------------
+.a_control_key_was_pressed:
 
   ; Pick which action to take depending on which key was pressed
   ld A, D
   cp 5     ; upp is pressed
-  jp z, Main_Game_Up_Pressed
+  jp z, .key_for_up_was_pressed_in_game
   cp 4     ; down is pressed
-  jp z, Main_Game_Down_Pressed
+  jp z, .key_for_down_was_pressed_in_game
   cp 3     ; left is pressed
-  jp z, Main_Game_Left_Pressed
+  jp z, .key_for_left_was_pressed_in_game
   cp 2     ; right is pressed
-  jp z, Main_Game_Right_Pressed
+  jp z, .key_for_right_was_pressed_in_game
   cp 1
-  jp z, Main_Game_Loop
+  jp z, .main_game_loop
 
-Main_Game_Up_Pressed:
+.key_for_up_was_pressed_in_game:
 
   ; Clear the character's position
   ld HL, empty
@@ -421,14 +430,14 @@ Main_Game_Up_Pressed:
   ld B, A
   ld A, (hero_column)
   ld C, A
-  call Print_Udgs_Character_Sub
+  call Print_Udgs_Character
 
   ; Decrease hero's row position on the map
   ld A, (hero_row)
   dec A
   ld (hero_row), A
   cp 0
-  jp z, Main_Game_Over
+  jp z, .main_game_over
 
   ; Set up the character for up
   ld HL, arrow_up
@@ -436,15 +445,15 @@ Main_Game_Up_Pressed:
   ld B, A
   ld A, (hero_column)
   ld C, A
-  call Print_Udgs_Character_Sub
+  call Print_Udgs_Character
 
   ; Remember that hero moved
   ld A, 1
   ld (hero_moved), A
 
-  jp Main_Game_Loop  ; continue the main game loop, through key rows
+  jp .main_game_loop  ; continue the main game loop, through key rows
 
-Main_Game_Down_Pressed:
+.key_for_down_was_pressed_in_game:
 
   ; Clear the character's position
   ld HL, empty
@@ -452,13 +461,13 @@ Main_Game_Down_Pressed:
   ld B, A
   ld A, (hero_column)
   ld C, A
-  call Print_Udgs_Character_Sub
+  call Print_Udgs_Character
 
   ; Increase hero's row position on the map
   ld A, (hero_row)
   inc A
   cp 24
-  jp z, Main_Game_Over
+  jp z, .main_game_over
   ld (hero_row), A
 
   ; Set up the character for down
@@ -467,15 +476,15 @@ Main_Game_Down_Pressed:
   ld B, A
   ld A, (hero_column)
   ld C, A
-  call Print_Udgs_Character_Sub
+  call Print_Udgs_Character
 
   ; Remember that hero moved
   ld A, 1
   ld (hero_moved), A
 
-  jp Main_Game_Loop  ; continue the main game loop, through key rows
+  jp .main_game_loop  ; continue the main game loop, through key rows
 
-Main_Game_Left_Pressed:
+.key_for_left_was_pressed_in_game:
 
   ; Clear the character's position
   ld HL, empty
@@ -483,14 +492,14 @@ Main_Game_Left_Pressed:
   ld B, A
   ld A, (hero_column)
   ld C, A
-  call Print_Udgs_Character_Sub
+  call Print_Udgs_Character
 
   ; Decrease hero's column position on the map
   ld A, (hero_column)
   dec A
   ld (hero_column), A
   cp 0
-  jp z, Main_Game_Over
+  jp z, .main_game_over
 
   ; Set up the character for left
   ld HL, arrow_left
@@ -498,15 +507,15 @@ Main_Game_Left_Pressed:
   ld B, A
   ld A, (hero_column)
   ld C, A
-  call Print_Udgs_Character_Sub
+  call Print_Udgs_Character
 
   ; Remember that hero moved
   ld A, 1
   ld (hero_moved), A
 
-  jp Main_Game_Loop  ; continue the main game loop, through key rows
+  jp .main_game_loop  ; continue the main game loop, through key rows
 
-Main_Game_Right_Pressed:
+.key_for_right_was_pressed_in_game:
 
   ; Clear the character's position
   ld HL, empty
@@ -514,13 +523,13 @@ Main_Game_Right_Pressed:
   ld B, A
   ld A, (hero_column)
   ld C, A
-  call Print_Udgs_Character_Sub
+  call Print_Udgs_Character
 
   ; Increase hero's column position on the map
   ld A, (hero_column)
   inc A
   cp 32
-  jp z, Main_Game_Over
+  jp z, .main_game_over
   ld (hero_column), A
 
   ; Set up the character for right
@@ -529,22 +538,27 @@ Main_Game_Right_Pressed:
   ld B, A
   ld A, (hero_column)
   ld C, A
-  call Print_Udgs_Character_Sub
+  call Print_Udgs_Character
 
   ; Remember that hero moved
   ld A, 1
   ld (hero_moved), A
 
-  jp Main_Game_Loop  ; continue the main game loop, through key rows
+  jp .main_game_loop  ; continue the main game loop, through key rows
 
-Main_Game_Over
+;-----------
+;
+; Game over
+;
+;-----------
+.main_game_over
 
   ld HL, skull
   ld A, (hero_row)
   ld B, A
   ld A, (hero_column)
   ld C, A
-  call Print_Udgs_Character_Sub
+  call Print_Udgs_Character
 
   di  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -665,7 +679,7 @@ curr_port_addr: defw 0
 curr_mask_addr: defw 0
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main_Sub
+; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main_Sub
-  savebin "bojan.bin", Main_Sub, $ - Main_Sub
+  savesna "bojan.sna", Main
+  savebin "bojan.bin", Main, $ - Main
