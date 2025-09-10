@@ -18,8 +18,8 @@ Main:
   ret
 
 ;-------------------------------------------------------------------------------
-; Save a snapshot that starts execution at the address marked with Main_Sub
-; (Without label "Main_Sub", you could have written: SAVESNA "bojan.sna", $8000)
+; Save a snapshot that starts execution at the address marked with Main
+; (Without label "Main", you could have written: SAVESNA "bojan.sna", $8000)
 ;-------------------------------------------------------------------------------
   savesna "bojan.sna", Main
   savebin "bojan.bin", Main, $ - Main

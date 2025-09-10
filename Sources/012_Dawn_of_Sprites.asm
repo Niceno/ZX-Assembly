@@ -62,10 +62,10 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Open_Upper_Screen_Sub.asm"
-  include "Subs/Print_Udgs_Character_Sub.asm"
-  include "Subs/Print_Udgs_Tile_Box_Sub.asm"
-  include "Subs/Print_Udgs_Sprite_Box_Sub.asm"
+  include "Subs/Open_Upper_Screen.asm"
+  include "Subs/Print_Udgs_Character.asm"
+  include "Subs/Print_Udgs_Tile_Box.asm"
+  include "Subs/Print_Udgs_Sprite_Box.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

@@ -53,9 +53,9 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Open_Upper_Screen_Sub.asm"
-  include "Subs/Print_Character_Sub.asm"
-  include "Subs/Print_String_Sub.asm"
+  include "Subs/Open_Upper_Screen.asm"
+  include "Subs/Print_Character.asm"
+  include "Subs/Print_String.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

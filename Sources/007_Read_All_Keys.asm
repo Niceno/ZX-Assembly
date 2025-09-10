@@ -134,9 +134,9 @@ Main_Read_Next_Key:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Open_Upper_Screen_Sub.asm"
-  include "Subs/Color_Text_Box_Sub.asm"
-  include "Subs/Print_Character_Sub.asm"
+  include "Subs/Open_Upper_Screen.asm"
+  include "Subs/Color_Text_Box.asm"
+  include "Subs/Print_Character.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
