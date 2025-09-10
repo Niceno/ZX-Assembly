@@ -466,7 +466,7 @@ Main:
   ; Increase hero's row position on the map
   ld A, (hero_row)
   inc A
-  cp 24
+  cp CELL_ROWS
   jp z, .main_game_over
   ld (hero_row), A
 
@@ -528,7 +528,7 @@ Main:
   ; Increase hero's column position on the map
   ld A, (hero_column)
   inc A
-  cp 32
+  cp CELL_COLS
   jp z, .main_game_over
   ld (hero_column), A
 

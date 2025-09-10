@@ -71,6 +71,9 @@ syn keyword sjasmConstant MEM_CHARS               MEM_USER_DEFINED_GRAPHICS
 syn keyword sjasmConstant MEM_STORE_SCREEN_COLOR  MEM_AVAILABLE_RAM_START
 syn keyword sjasmConstant MEM_PROGRAM_START       MEM_CUSTOM_FONT_START
 
+syn keyword sjasmConstant CELL_ROWS     CELL_COLS
+syn keyword sjasmConstant CELL_ROW_MIN  CELL_COL_MIN  CELL_ROW_MAX  CELL_COL_MAX
+
 syn keyword sjasmConstant BLACK_INK      BLUE_INK     RED_INK
 syn keyword sjasmConstant MAGENTA_INK    GREEN_INK    CYAN_INK
 syn keyword sjasmConstant YELLOW_INK     WHITE_INK

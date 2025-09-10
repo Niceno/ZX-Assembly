@@ -33,6 +33,16 @@ MEM_PROGRAM_START          equ  $8000  ; 32768
 MEM_CUSTOM_FONT_START      equ  $FA00  ; 64000
 
 ;-------------------------------------------------------------------------------
+; Screen attributes (for the 8x8 cell grid)
+;-------------------------------------------------------------------------------
+CELL_ROWS     equ  24              ; cell rows
+CELL_COLS     equ  32              ; cell columns
+CELL_ROW_MIN  equ   0              ; though I might think of a confined window
+CELL_COL_MIN  equ   0              ; though I might think of a confined window
+CELL_ROW_MAX  equ   CELL_ROWS - 1  ; though I might think of a confined window
+CELL_COL_MAX  equ   CELL_COLS - 1  ; though I might think of a confined window
+
+;-------------------------------------------------------------------------------
 ; ZX Spectrum colors
 ;
 ; To get the color you want, add codes for ink, paper color, bright and flash

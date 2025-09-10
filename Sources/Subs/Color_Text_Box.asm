@@ -38,16 +38,16 @@ Color_Text_Box:
 .skip_if_column_is_zero:  ; get here if column number is zero
   pop BC                  ; retreive (refresh) row and column
 
-  ;------------------------------------------------------------
-  ; Increase HL row * 32 times, to shift it to the desired row
-  ;------------------------------------------------------------
-  ld DE, 32                   ; 32 columns, this is not a space!!!
+  ;-------------------------------------------------------------------
+  ; Increase HL row * CELL_COLS times, to shift it to the desired row
+  ;-------------------------------------------------------------------
+  ld DE, CELL_COLS
   ld A, B                     ; fetch the row
   cp 0                        ; is A (now row) equal to zero?
   jr z, .skip_if_row_is_zero  ; if so, skip this loop
 
 .loop_rows:
-    add HL, DE     ; increase HL by 32 (to reach the next row)
+    add HL, DE     ; increase HL by CELL_COLS (to reach the next row)
   djnz .loop_rows  ; decrease B and repeat the loop if nonzero
 
 .skip_if_row_is_zero:   ; get here if row count is zero
@@ -66,8 +66,8 @@ Color_Text_Box:
     push DE  ; store DE which holds length (D) and height
     push HL  ; store HL at the first row position
 
-    ld B, D    ; B stores the lengt, will be inner loop
-    ld DE, 32  ; number of columns now, to be added to HL
+    ld B, D           ; B stores the lengt, will be inner loop
+    ld DE, CELL_COLS  ; number of columns now, to be added to HL
 
 .loop_length:     ; loop over B, inner loop
       ld (HL), C  ; set color at position pointed by HL registers
