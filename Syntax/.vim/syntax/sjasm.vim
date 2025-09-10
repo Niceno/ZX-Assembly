@@ -58,7 +58,7 @@ hi link sjasmComment Comment
 " Numbers (add this near your constants section)
 syn match sjasmNumber "\$[0-9A-F]\+" " hex numbers ($ prefix)
 syn match sjasmNumber "\<\d\+\>"     " decimal numbers
-syn match sjasmNumber "\<%[01]\+\>"  " binary numbers (% prefix)
+syn match sjasmNumber "%[01]\+"      " binary numbers (% prefix)
 hi link sjasmNumber Number
 
 " Some constants I have introduced
