@@ -30,10 +30,10 @@ highlight sjasmInstruction ctermfg=DarkYellow
 highlight sjasmDirective  ctermfg=Magenta
 
 " Strings ... they are kind of lame, paint them gray
-highlight sjasmString  ctermfg=DarkGray
+highlight sjasmString  ctermfg=Gray
 
 " Registers ... I don't know, maybe the same as keywords
-highlight sjasmRegister  ctermfg=Green
+highlight sjasmRegister  ctermfg=Green  cterm=bold
 
 " Ghost numbers are not desirable, mark them red
 highlight sjasmNumber  ctermfg=Red  cterm=bold
