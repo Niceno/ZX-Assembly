@@ -130,3 +130,40 @@ CHAR_X_UPP             equ  88
 CHAR_Y_UPP             equ  89
 CHAR_Z_UPP             equ  90
 
+MEM_A_UPP  equ  MEM_FONT_START + $108
+MEM_B_UPP  equ  MEM_A_UPP + 8
+MEM_C_UPP  equ  MEM_B_UPP + 8
+MEM_D_UPP  equ  MEM_C_UPP + 8
+MEM_E_UPP  equ  MEM_D_UPP + 8
+MEM_F_UPP  equ  MEM_E_UPP + 8
+MEM_G_UPP  equ  MEM_F_UPP + 8
+MEM_H_UPP  equ  MEM_G_UPP + 8
+MEM_I_UPP  equ  MEM_H_UPP + 8
+MEM_J_UPP  equ  MEM_I_UPP + 8
+MEM_K_UPP  equ  MEM_J_UPP + 8
+MEM_L_UPP  equ  MEM_K_UPP + 8
+MEM_M_UPP  equ  MEM_L_UPP + 8
+MEM_N_UPP  equ  MEM_M_UPP + 8
+MEM_O_UPP  equ  MEM_N_UPP + 8
+MEM_P_UPP  equ  MEM_O_UPP + 8
+MEM_Q_UPP  equ  MEM_P_UPP + 8
+MEM_R_UPP  equ  MEM_Q_UPP + 8
+MEM_S_UPP  equ  MEM_R_UPP + 8
+MEM_T_UPP  equ  MEM_S_UPP + 8
+MEM_U_UPP  equ  MEM_T_UPP + 8
+MEM_V_UPP  equ  MEM_U_UPP + 8
+MEM_W_UPP  equ  MEM_V_UPP + 8
+MEM_X_UPP  equ  MEM_W_UPP + 8
+MEM_Y_UPP  equ  MEM_X_UPP + 8
+MEM_Z_UPP  equ  MEM_Y_UPP + 8
+
+MEM_0  equ  MEM_FONT_START + $80
+MEM_1  equ  MEM_0 + 8
+MEM_2  equ  MEM_1 + 8
+MEM_3  equ  MEM_2 + 8
+MEM_4  equ  MEM_3 + 8
+MEM_5  equ  MEM_4 + 8
+MEM_6  equ  MEM_5 + 8
+MEM_7  equ  MEM_6 + 8
+MEM_8  equ  MEM_7 + 8
+MEM_9  equ  MEM_8 + 8
