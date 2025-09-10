@@ -6,13 +6,35 @@
 ;
 ; Parameters (passed via registers)
 ; - A:  color
-; - BC: text box row and column
-; - DE: text box length and height
+; - BC: box row (B) and column (C)
+; - DE: box length (D) and height (E)
 ;
 ; Clobbers:
 ; - AF, BC, DE
 ;-------------------------------------------------------------------------------
 Color_Text_Box:
+
+  ; Realizability check 1: is C outside of the screen?
+  ld H, A              ; store A in H
+  ld A, C              ; load the column into A
+  cp CELL_COL_MAX + 1  ; compare with "32" (the first invalid column)
+  ret nc               ; return immediately if A >= "32" (column > "31")
+  ; Realizability check 2: is C + D - 1 outside of the screen?
+  add D                ; + length ...
+  dec A                ; - 1 gives the last column printed
+  cp CELL_COL_MAX + 1
+  ret nc               ; return immediately if A >= "32" (column > "31")
+
+  ; Realizability check 3: is B outside of the screen?
+  ld A, B              ; load the row into A
+  cp CELL_ROW_MAX + 1  ; compare with "24" (the first invalid row)
+  ret nc               ; return immediately if A >= 24 (row > 23)
+  ; Realizability check 4: is B + E - 1 outside of the screen?
+  add E                ; + height ...
+  dec A                ; ... - 1 give the last row printed
+  cp CELL_ROW_MAX + 1  ; compare with "24" (the first invalid row)
+  ret nc               ; return immediately if A >= 24 (row > 23)
+  ld A, H              ; recover A from H
 
   push DE  ; length (D) and height (E)
   push AF  ; color (A)
