@@ -26,6 +26,12 @@ Main:
   ;----------------------------------
   call Open_Upper_Screen
 
+  ;----------------------
+  ; Set the border color
+  ;----------------------
+  ld A, RED_INK              ; load A with desired color
+  call ROM_SET_BORDER_COLOR
+
   ;---------------------------------------
   ; Address of the null-terminated string
   ;---------------------------------------
