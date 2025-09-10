@@ -1,18 +1,23 @@
 ;===============================================================================
-; Print_Udgs_Sprite_Box
+; Color_Tile_Box
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Prints a box filled up with an array of UDGs characters, making it a sprite
+; - Prints a box filled up with single UDGs character
 ;
 ; Parameters (passed via registers)
-; - HL: address of the UDG character to be printed
 ; - BC: starting row (B) and column (C)
 ; - DE: ending (and inclusive) row (D) and column (E)
 ;
 ; Clobbers:
 ; - AF, BC, DE, HL ... but should be double checked
+;
+; Notes:
+; - There is a very similar, and older, subroutine called Color_Text_Box.  This
+;   one is arguably simpler, maybe even faster, and might superseed the other.
+;   Not sure yet.  The other one is doing a descent job when painting text.
+; - Parameters are NOT the same as in the call to Color_Text_Box.
 ;-------------------------------------------------------------------------------
-Print_Udgs_Sprite_Box:
+Color_Tile_Box:
 
   ;---------------------------------------
   ;
@@ -34,25 +39,33 @@ Print_Udgs_Sprite_Box:
       ;--------------------------------------------------------------
       push BC  ; BC is the input, row and column for Print_Udgs_Character
       push DE
-      push HL
-      call Print_Udgs_Character  ; this clobbers B
-      pop HL
+
+      ; Set the HL to the proper row in the screen memory
+      ld DE, MEM_SCREEN_COLORS  ; load DE with the address of screen color
+      ld H, 0
+      ld L, B     ; this will place row into HL
+      add HL, HL  ; HL = HL *  2
+      add HL, HL  ; HL = HL *  4
+      add HL, HL  ; HL = HL *  8
+      add HL, HL  ; HL = HL * 16
+      add HL, HL  ; HL = HL * 32
+      add HL, DE
+
+      ; Set the proper column
+      ld D, 0
+      ld E, C
+      add HL, DE
+
+      ; The following line is the central action, really
+      ld (HL), YELLOW_PAPER + RED_INK
+
       pop DE
       pop BC
       ;--------------------------------------------------------------
       ; Body (of the called sub), here B holds the row, C the column
       ;--------------------------------------------------------------
 
-      inc HL  ; move to the next character definition
-      inc HL  ; each character ...
-      inc HL  ; ... of course ...
-      inc HL  ; ... is defined ...
-      inc HL  ; ... with eight ...
-      inc HL  ; ... bytes
-      inc HL
-      inc HL
-
-      inc C  ; move to the next column
+      inc C    ; move to the next column
       ld A, C
       dec A
       cp E     ; did C already reach E?

@@ -11,8 +11,19 @@
 ;
 ; Clobbers:
 ; - AF, BC, DE
+;
+; Notes:
+; - There is a very similar subroutine called Color_Tile_Box.  This one might
+;   be replaced by the other completelly, or might just stay for coloring
+;   static text boxes, it seems to do a decent job at that.
+; - Parameters are NOT the same as in the call to Color_Tile_Box.
 ;-------------------------------------------------------------------------------
 Color_Text_Box:
+
+  ;---------------------------------------------
+  ; Check if the box fits in the screen
+  ; (I call it realizibility, don't ask me why)
+  ;---------------------------------------------
 
   ; Realizability check 1: is C outside of the screen?
   ld H, A              ; store A in H

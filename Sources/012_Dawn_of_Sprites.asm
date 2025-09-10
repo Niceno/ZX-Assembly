@@ -47,11 +47,16 @@ Main:
   ld HL, monster_01
   call Print_Udgs_Tile_Box
 
+  ld BC, $0101
+  ld DE, $0406
+  ld HL, monster_01
+  call Color_Tile_Box
+
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
   ld BC, $010A
-  ld DE, $0202
+  ld DE, $020B
   ld HL, circle_q1
   call Print_Udgs_Sprite_Box
 
@@ -66,6 +71,7 @@ Main:
   include "Subs/Print_Udgs_Character.asm"
   include "Subs/Print_Udgs_Tile_Box.asm"
   include "Subs/Print_Udgs_Sprite_Box.asm"
+  include "Subs/Color_Tile_Box.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

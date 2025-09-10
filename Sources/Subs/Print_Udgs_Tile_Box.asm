@@ -6,53 +6,55 @@
 ;
 ; Parameters (passed via registers)
 ; - HL: address of the UDG character to be printed
-; - BC: text box row and column
-; - DE: text box length and height
+; - BC: starting row (B) and column (C)
+; - DE: ending (and inclusive) row (D) and column (E)
 ;
 ; Clobbers:
 ; - AF, BC, DE, HL ... but should be double checked
 ;-------------------------------------------------------------------------------
 Print_Udgs_Tile_Box:
 
-  ;--------------------------
-  ; Outer loop; through rows
-  ;--------------------------
-  ld A, D
+  ;---------------------------------------
+  ;
+  ; Outer loop; through rows, from B to D
+  ;
+  ;---------------------------------------
 .outer_loop:
+  push BC
 
-    push AF  ; save the outer counter
-    push BC  ; save the initial column (you also save the row along the way)
-
-    ;--------------------------
-    ; Inner loop; through rows
-    ;--------------------------
-    ld A, E
-    push DE  ; save length and height
-
+    ;------------------------------------------
+    ;
+    ; Inner loop; through columns, from C to E
+    ;
+    ;------------------------------------------
 .inner_loop:
-      push AF
 
-      push BC
+      ;--------------------------------------------------------------
+      ; Body (of the called sub), here B holds the row, C the column
+      ;--------------------------------------------------------------
+      push BC  ; BC is the input, row and column for Print_Udgs_Character
+      push DE
       push HL
       call Print_Udgs_Character  ; this clobbers B
       pop HL
+      pop DE
       pop BC
+      ;--------------------------------------------------------------
+      ; Body (of the called sub), here B holds the row, C the column
+      ;--------------------------------------------------------------
 
-      inc C  ; move to the next column
-
-      pop AF
+      inc C    ; move to the next column
+      ld A, C
       dec A
+      cp E     ; did C already reach E?
     jr nz, .inner_loop
 
-    pop DE  ; restore length (D) and height (E)
+    pop BC
 
-    pop BC  ; restore the row (B) and the column (C), ...
-            ; ... C will be set to original value ...
-    inc B   ; ... but you will increase B to the next row
-
-    pop AF  ; restore the outer counter
+    inc B    ; move to the next row
+    ld A, B
     dec A
-
+    cp D     ; did B already reach D?
   jr nz, .outer_loop
 
   ret
