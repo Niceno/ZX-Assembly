@@ -71,6 +71,16 @@ syn keyword sjasmConstant MEM_CHARS               MEM_USER_DEFINED_GRAPHICS
 syn keyword sjasmConstant MEM_STORE_SCREEN_COLOR  MEM_AVAILABLE_RAM_START
 syn keyword sjasmConstant MEM_PROGRAM_START       MEM_CUSTOM_FONT_START
 
+syn keyword sjasmConstant MEM_A_UPP  MEM_B_UPP  MEM_C_UPP  MEM_D_UPP  MEM_E_UPP
+syn keyword sjasmConstant MEM_F_UPP  MEM_G_UPP  MEM_H_UPP  MEM_I_UPP  MEM_J_UPP
+syn keyword sjasmConstant MEM_K_UPP  MEM_L_UPP  MEM_M_UPP  MEM_N_UPP  MEM_O_UPP
+syn keyword sjasmConstant MEM_P_UPP  MEM_Q_UPP  MEM_R_UPP  MEM_S_UPP  MEM_T_UPP
+syn keyword sjasmConstant MEM_U_UPP  MEM_V_UPP  MEM_W_UPP  MEM_X_UPP  MEM_Y_UPP
+syn keyword sjasmConstant MEM_Z_UPP
+
+syn keyword sjasmConstant MEM_0  MEM_1  MEM_2  MEM_3  MEM_4
+syn keyword sjasmConstant MEM_5  MEM_6  MEM_7  MEM_8  MEM_9
+
 syn keyword sjasmConstant CELL_ROWS     CELL_COLS
 syn keyword sjasmConstant CELL_ROW_MIN  CELL_COL_MIN  CELL_ROW_MAX  CELL_COL_MAX
 
