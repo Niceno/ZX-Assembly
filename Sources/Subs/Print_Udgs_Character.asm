@@ -11,6 +11,9 @@
 ; Constant array
 ; - screen_row_offset
 ;
+; Clobbers:
+; - probably just about all registers
+;
 ; Notes:
 ; - This sub has a sister, called Merge_Udgs_Character, which merges the UDG
 ;   with what is already on the screen.
