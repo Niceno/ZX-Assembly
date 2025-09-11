@@ -5,6 +5,7 @@
 ; - Colors a tile defined by upper left and lower right corner
 ;
 ; Parameters (passed via registers)
+; - A:  color
 ; - BC: starting row (B) and column (C) - upper left corner
 ; - DE: ending (and inclusive) row (D) and column (E) - lower right corner
 ;
@@ -18,6 +19,8 @@
 ; - Parameters are NOT the same as in the call to Color_Text_Box.
 ;-------------------------------------------------------------------------------
 Color_Tile:
+
+  ex AF, AF'  ; keep color in A shadow for the entire routine
 
   ;---------------------------------------
   ;
@@ -57,7 +60,9 @@ Color_Tile:
       add HL, DE
 
       ; The following line is the central action, really
-      ld (HL), YELLOW_PAPER + RED_INK
+      ex AF, AF'  ; retreive the color from the shadow
+      ld (HL), A
+      ex AF, AF'  ; go back to your usual A
 
       pop DE
       pop BC

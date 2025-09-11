@@ -47,6 +47,7 @@ Main:
   ld HL, monster_01
   call Print_Udgs_Tile
 
+  ld A,  BLUE_INK + YELLOW_PAPER
   ld BC, $0101
   ld DE, $0406
   ld HL, monster_01
