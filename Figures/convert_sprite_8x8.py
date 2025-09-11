@@ -13,8 +13,8 @@ def convert_sprite(filename):
     label = os.path.splitext(os.path.basename(filename))[0]
 
     defb_line = ", ".join(
-        f"${int(''.join('1' if ch != ' ' else '0' for ch in line.rstrip('\n')[:8].ljust(8)), 2):02X}"
-        for line in open(filename)
+        f"${int(''.join('1' if ch != ' ' else '0' for ch in line[:8].ljust(8)), 2):02X}"
+        for line in lines
     )
 
     print(f"\n{label}: ;")
