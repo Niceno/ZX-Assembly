@@ -1,4 +1,16 @@
-
+;===============================================================================
+; Merge_Grid
+;-------------------------------------------------------------------------------
+; Purpose:
+; - Merges a grid over whatever is already on the screen.  It is a helping tool
+;   which helps you to check if sprites and tiles are placed correctly
+;
+; Parameters (passed via registers)
+; - none
+;
+; Clobbers:
+; - AF, BC, DE, HL
+;-------------------------------------------------------------------------------
 Merge_Grid:
 
   ;--------------------------------------------------------------
@@ -33,9 +45,9 @@ Merge_Grid:
       inc C
       inc C
 
-      ; Check if C is smaller than 24
+      ; Check if C is smaller than 32 (CELL_COLS)
       ld A, C
-      cp 32
+      cp CELL_COLS
     jr c, .loop_columns
 
     inc B
@@ -43,9 +55,9 @@ Merge_Grid:
     inc B
     inc B
 
-    ; Check if B is smaller than 24
+    ; Check if B is smaller than 24 (CELL_ROWS)
     ld A, B
-    cp 24
+    cp CELL_ROWS
   jr c, .loop_rows
 
   ret
