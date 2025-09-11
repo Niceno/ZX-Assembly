@@ -1,18 +1,19 @@
 ;===============================================================================
-; Print_Udgs_Tile_Box
+; Print_Udgs_Tile
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Prints a box filled up with single UDGs character
+; - Prints a tile, defined by upper left and lower right corners, filled up
+;   with SINGLE UDGs character
 ;
 ; Parameters (passed via registers)
+; - BC: starting row (B) and column (C) - upper left corner
+; - DE: ending (and inclusive) row (D) and column (E) - lower right corner
 ; - HL: address of the UDG character to be printed
-; - BC: starting row (B) and column (C)
-; - DE: ending (and inclusive) row (D) and column (E)
 ;
 ; Clobbers:
 ; - AF, BC, DE, HL ... but should be double checked
 ;-------------------------------------------------------------------------------
-Print_Udgs_Tile_Box:
+Print_Udgs_Tile:
 
   ;---------------------------------------
   ;

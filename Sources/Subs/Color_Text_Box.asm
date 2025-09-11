@@ -13,7 +13,7 @@
 ; - AF, BC, DE
 ;
 ; Notes:
-; - There is a very similar subroutine called Color_Tile_Box.  This one might
+; - There is a very similar subroutine called Color_Tile.  This one might
 ;   be replaced by the other completelly, or might just stay for coloring
 ;   static text boxes, it seems to do a decent job at that.
 ; - Parameters are NOT the same as in the call to Color_Tile_Box.

@@ -1,18 +1,19 @@
 ;===============================================================================
-; Print_Udgs_Sprite_Box
+; Print_Udgs_Sprite
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Prints a box filled up with an array of UDGs characters, making it a sprite
+; - Prints a tile, defined by upper left and lower right corners, filled up
+;   with and array of UDGs character, making it effectivelly a sprite.
 ;
 ; Parameters (passed via registers)
-; - HL: address of the UDG character to be printed
-; - BC: starting row (B) and column (C)
-; - DE: ending (and inclusive) row (D) and column (E)
+; - BC: starting row (B) and column (C) - upper left corner
+; - DE: ending (and inclusive) row (D) and column (E) - lower right corner
+; - HL: address of the UDG array of characters to be printed
 ;
 ; Clobbers:
 ; - AF, BC, DE, HL ... but should be double checked
 ;-------------------------------------------------------------------------------
-Print_Udgs_Sprite_Box:
+Print_Udgs_Sprite:
 
   ;---------------------------------------
   ;

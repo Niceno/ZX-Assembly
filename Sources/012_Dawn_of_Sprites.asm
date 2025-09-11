@@ -45,12 +45,12 @@ Main:
   ld BC, $0101
   ld DE, $0406
   ld HL, monster_01
-  call Print_Udgs_Tile_Box
+  call Print_Udgs_Tile
 
   ld BC, $0101
   ld DE, $0406
   ld HL, monster_01
-  call Color_Tile_Box
+  call Color_Tile
 
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
@@ -58,7 +58,7 @@ Main:
   ld BC, $010A
   ld DE, $020B
   ld HL, circle_q1
-  call Print_Udgs_Sprite_Box
+  call Print_Udgs_Sprite
 
   ret
 

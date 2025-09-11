@@ -1,12 +1,12 @@
 ;===============================================================================
-; Color_Tile_Box
+; Color_Tile
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Prints a box filled up with single UDGs character
+; - Colors a tile defined by upper left and lower right corner
 ;
 ; Parameters (passed via registers)
-; - BC: starting row (B) and column (C)
-; - DE: ending (and inclusive) row (D) and column (E)
+; - BC: starting row (B) and column (C) - upper left corner
+; - DE: ending (and inclusive) row (D) and column (E) - lower right corner
 ;
 ; Clobbers:
 ; - AF, BC, DE, HL ... but should be double checked
@@ -17,7 +17,7 @@
 ;   Not sure yet.  The other one is doing a descent job when painting text.
 ; - Parameters are NOT the same as in the call to Color_Text_Box.
 ;-------------------------------------------------------------------------------
-Color_Tile_Box:
+Color_Tile:
 
   ;---------------------------------------
   ;
