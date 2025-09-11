@@ -35,42 +35,58 @@ Main:
   ;---------------
   ; Set the color
   ;---------------
-  ld A, RED_INK + CYAN_PAPER      ; load A with desired color
+  ld A, RED_INK + GREEN_PAPER     ; load A with desired color
   ld (MEM_STORE_SCREEN_COLOR), A  ; set the screen colors
   call ROM_CLEAR_SCREEN           ; clear the screen
+
+  ;----------------------
+  ; Set the border color
+  ;----------------------
+  ld A, GREEN_INK              ; load A with desired color
+  call ROM_SET_BORDER_COLOR
+
+  ;---------------------
+  ; Create the viewport
+  ;---------------------
+  ld A, WHITE_PAPER + BLUE_INK
+  ld B,  0  ; upper left row
+  ld C,  0  ; upper left column
+  ld D, 21  ; lower right row
+  ld E, 27  ; lower right column
+  call Create_Viewport
 
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld B,  1  ; uper left row
-  ld C,  1  ; uper left column
-  ld D,  4  ; lower right row
-  ld E,  6  ; lower right column
+  ld B,  2  ; upper left row
+  ld C,  2  ; upper left column
+  ld D,  5  ; lower right row
+  ld E,  7  ; lower right column
   ld HL, monster_01
   call Print_Udgs_Tile
 
-  ld A,  BLUE_INK + YELLOW_PAPER
-  ld B,  1  ; uper left row
-  ld C,  1  ; uper left column
-  ld D,  4  ; lower right row
-  ld E,  6  ; lower right column
+  ld A,  RED_INK + YELLOW_PAPER
+  ld B,  2  ; upper left row
+  ld C,  2  ; upper left column
+  ld D,  5  ; lower right row
+  ld E,  7  ; lower right column
   call Color_Tile
 
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld B,  1  ; uper left row
-  ld C, 10  ; uper left column
-  ld D,  2  ; lower right row
-  ld E, 11  ; lower right column
+  ld B,  3  ; upper left row
+  ld C, 13  ; upper left column
+  ld D,  4  ; lower right row
+  ld E, 14  ; lower right column
   ld HL, circle_q1
   call Print_Udgs_Sprite
 
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld B, 10  ; uper left row
-  ld C, 10  ; uper left column
+  ld B, 10  ; upper left row
+  ld C, 10  ; upper left column
   ld D, 11  ; lower right row
   ld E, 11  ; lower right column
   ld HL, frame_q1
@@ -79,7 +95,7 @@ Main:
   ;-----------------------------------------------------
   ; Merge the grid over whatever you have on the screen
   ;-----------------------------------------------------
-  call Merge_Grid
+; call Merge_Grid
 
   ret
 
@@ -96,6 +112,7 @@ Main:
   include "Subs/Merge_Udgs_Character.asm"
   include "Subs/Merge_Udgs_Sprite_Box.asm"
   include "Subs/Merge_Grid.asm"
+  include "Subs/Create_Viewport.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -126,10 +143,18 @@ circle_q2: defb $C0, $30, $08, $04, $02, $02, $01, $01
 circle_q3: defb $80, $80, $40, $40, $20, $10, $0C, $03
 circle_q4: defb $01, $01, $02, $02, $04, $08, $30, $C0
 
-frame_q1: defb $FF, $80, $BF, $BF, $B0, $B7, $B7, $B7
-frame_q2: defb $FF, $01, $FD, $FD, $0D, $ED, $ED, $ED
-frame_q3: defb $B7, $B7, $B7, $B0, $BF, $BF, $80, $FF
-frame_q4: defb $ED, $ED, $ED, $0D, $FD, $FD, $01, $FF
+; The frame is for the viewport
+frame_q1:    defb $FF, $80, $BF, $BF, $B0, $B7, $B7, $B7
+frame_q2:    defb $FF, $01, $FD, $FD, $0D, $ED, $ED, $ED
+frame_q3:    defb $B7, $B7, $B7, $B0, $BF, $BF, $80, $FF
+frame_q4:    defb $ED, $ED, $ED, $0D, $FD, $FD, $01, $FF
+
+frame_up:    defb $FF, $00, $FF, $FF, $00, $FF, $FF, $FF
+frame_down:  defb $FF, $FF, $FF, $00, $FF, $FF, $00, $FF
+frame_left:  defb $B7, $B7, $B7, $B7, $B7, $B7, $B7, $B7
+frame_right: defb $ED, $ED, $ED, $ED, $ED, $ED, $ED, $ED
+
+
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
