@@ -36,9 +36,11 @@ Main:
   ; Color that asterisk
   ;---------------------
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
-  ld BC, $0C10                  ; row and column
-  ld DE, $0101                  ; length and height
-  call Color_Text_Box
+  ld B, 12                      ; upper left row
+  ld C, 16                      ; upper left column
+  ld D,  B                      ; lower right row
+  ld E,  C                      ; lower right column
+  call Color_Tile
 
   ;--------------------------------------------------------------------
   ; Wait until a key is pressed
@@ -84,33 +86,33 @@ Main:
 .browse_key_rows:
 
       ; Keyboard row; load the port number into BC indirectly through HL
-      ld C, (HL)      ; low byte into C
+      ld C, (HL)  ; low byte into C
       inc HL
-      ld B, (HL)      ; high byte into B
+      ld B, (HL)  ; high byte into B
       inc HL
 
-      in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-      bit 0, A        ; bit 0
+      in A, (C)   ; read key states (1 = not pressed, 0 = pressed)
+      bit 0, A    ; bit 0
       inc IX
       inc IX
       jp z, .print_the_pressed_key
-      in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-      bit 1, A        ; bit 1
+      in A, (C)   ; read key states (1 = not pressed, 0 = pressed)
+      bit 1, A    ; bit 1
       inc IX
       inc IX
       jp z, .print_the_pressed_key
-      in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-      bit 2, A        ; bit 2
+      in A, (C)   ; read key states (1 = not pressed, 0 = pressed)
+      bit 2, A    ; bit 2
       inc IX
       inc IX
       jp z, .print_the_pressed_key
-      in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-      bit 3, A        ; bit 3
+      in A, (C)   ; read key states (1 = not pressed, 0 = pressed)
+      bit 3, A    ; bit 3
       inc IX
       inc IX
       jp z, .print_the_pressed_key
-      in A, (C)       ; read key states (1 = not pressed, 0 = pressed)
-      bit 4, A        ; bit 4
+      in A, (C)   ; read key states (1 = not pressed, 0 = pressed)
+      bit 4, A    ; bit 4
       inc IX
       inc IX
       jp z, .print_the_pressed_key
@@ -128,7 +130,8 @@ Main:
 
     ld H, (IX+1)  ; address of the character to print
     ld L, (IX+0)  ; address of the character to print
-    ld BC, $0C10  ; row (B) and column (C)
+    ld B, 12      ; row
+    ld C, 16      ; column
     call Print_Udgs_Character
 
   jp .outer_infinite_loop
@@ -141,7 +144,7 @@ Main:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen.asm"
-  include "Subs/Color_Text_Box.asm"
+  include "Subs/Color_Tile.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Print_Udgs_Character.asm"
 

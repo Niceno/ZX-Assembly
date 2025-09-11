@@ -70,9 +70,9 @@ Main:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Print_Udgs_Character.asm"
-  include "Subs/Print_Udgs_Tile_Box.asm"
+  include "Subs/Print_Udgs_Tile.asm"
   include "Subs/Print_Udgs_Sprite_Box.asm"
-  include "Subs/Color_Tile_Box.asm"
+  include "Subs/Color_Tile.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

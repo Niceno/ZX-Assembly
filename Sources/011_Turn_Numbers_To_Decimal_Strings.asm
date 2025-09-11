@@ -25,28 +25,34 @@ Main:  ; If the adress is that of a subroutine, end it up with  suffix
   ; Print an 8-bit number
   ;
   ;-----------------------
-  ld BC, $0B0B                  ; row and column
-  ld HL, $0039                  ; number to print
+  ld B,  11                 ; row
+  ld C,  11                 ; column
+  ld HL, $0039              ; number to print
   call Print_08_Bit_Number
 
-  ld A, WHITE_INK + RED_PAPER  ; color of the string
-  ld BC, $0B0B                 ; row and column
-  ld DE, $0301                 ; length and height
-  call Color_Text_Box
+  ld A, WHITE_INK + RED_PAPER
+  ld B,  11        ; upper left row
+  ld C,  11        ; upper left column
+  ld D,   B        ; lower right row
+  ld E,  13        ; lower right column
+  call Color_Tile
 
   ;-----------------------
   ;
   ; Print a 16-bit number
   ;
   ;-----------------------
-  ld BC, $0909                  ; row and column
-  ld HL, $3039                  ; number to print
+  ld B,  9                  ; row
+  ld C,  9                  ; column
+  ld HL, $3039              ; number to print
   call Print_16_Bit_Number
 
-  ld A, WHITE_INK + BLUE_PAPER  ; color of the string
-  ld BC, $0909                  ; row and column
-  ld DE, $0501                  ; length and height
-  call Color_Text_Box
+  ld A, WHITE_INK + BLUE_PAPER
+  ld B,   9        ; upper left row
+  ld C,   9        ; upper left column
+  ld D,   B        ; lower right row
+  ld E,  13        ; lower right column
+  call Color_Tile
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -59,7 +65,7 @@ Main:  ; If the adress is that of a subroutine, end it up with  suffix
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Merge_Udgs_Character.asm"
-  include "Subs/Color_Text_Box.asm"
+  include "Subs/Color_Tile.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Print_String.asm"
   include "Subs/Print_08_Bit_Number.asm"

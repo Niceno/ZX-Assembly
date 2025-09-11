@@ -11,12 +11,6 @@
 ;
 ; Clobbers:
 ; - AF, BC, DE, HL ... but should be double checked
-;
-; Notes:
-; - There is a very similar, and older, subroutine called Color_Text_Box.  This
-;   one is arguably simpler, maybe even faster, and might superseed the other.
-;   Not sure yet.  The other one is doing a descent job when painting text.
-; - Parameters are NOT the same as in the call to Color_Text_Box.
 ;-------------------------------------------------------------------------------
 Color_Tile:
 

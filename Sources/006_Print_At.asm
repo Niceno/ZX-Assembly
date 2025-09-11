@@ -34,67 +34,76 @@ Main:
   ;--------------------------
   ; Set coordinates to 15, 5
   ;--------------------------
-  ld BC, $0F05              ; row and column
-  ld HL, asterisk           ; address of the asterisk
+  ld B, 15              ; row
+  ld C,  5              ; column
+  ld HL, asterisk       ; address of the asterisk
   call Print_Character  ; HL & BC are the parameter
 
   ;---------------------
   ; Color that asterisk
   ;---------------------
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
-  ld BC, $0F05                  ; row and column
-  ld DE, $0101                  ; length and height
-  call Color_Text_Box       ; A, BC & DE are parameters
+  ld B, 15                      ; upper left row
+  ld C,  5                      ; upper left column
+  ld D,  B                      ; lower right row
+  ld E,  C                      ; lower right column
+  call Color_Tile               ; A, BC & DE are parameters
 
   ;--------------------------------------------
   ; Set coordinates to 9, 9 and print a string
   ;--------------------------------------------
-  ld BC, $0909             ; row and column
-  ld DE, $0E01             ; length and height
-  call Color_Text_Box  ; A, BC & DE are parameters
-
-  ld BC, $0909             ; row and column
+  ld B,  9             ; row
+  ld C,  9             ; column
   ld HL, bojan_string
   call Print_String
 
   ;-------------------------
   ; Color that line of text
   ;-------------------------
-  ld A, RED_INK + YELLOW_PAPER  ; color of the string
-  ld BC, $0909                  ; row and column
-  ld DE, $0E01                  ; length and height
-  call Color_Text_Box
+  ld A, RED_INK + YELLOW_PAPER
+  ld B,  9         ; upper left row
+  ld C,  9         ; upper left column
+  ld D,  B         ; lower right row
+  ld E, 22         ; lower right column
+  call Color_Tile
 
   ;-----------------------------
   ; Print the five digit number
   ;-----------------------------
-  ld BC, $0D0D                  ; row and column
-  ld HL, 9999                   ; set the number
+  ld B,    13               ; row
+  ld C,    13               ; column
+  ld HL, 9999               ; set the number
   call Print_16_Bit_Number
 
   ;-------------------
   ; Color that number
   ;-------------------
-  ld A, RED_INK + CYAN_PAPER  ; color of the string
-  ld BC, $0D0D                 ; row and column
-  ld DE, $0501                 ; length and height
-  call Color_Text_Box
+  ld A, RED_INK + CYAN_PAPER
+  ld B, 13         ; upper left row
+  ld C, 13         ; upper left column
+  ld D,  B         ; lower right row
+  ld E, 17         ; lower right column
+  call Color_Tile
 
   ;----------------
   ; Color a column
   ;----------------
   ld A, WHITE_INK + RED_PAPER
-  ld BC, $0818                 ; row and column
-  ld DE, $010A                 ; length and height
-  call Color_Text_Box
+  ld B,  8         ; upper left row
+  ld C, 24         ; upper left column
+  ld D, 17         ; lower left row
+  ld E,  C         ; lower right column
+  call Color_Tile
 
   ;-------------
   ; Color a box
   ;-------------
   ld A, WHITE_INK + BLUE_PAPER
-  ld BC, $0A1A                  ; row and column
-  ld DE, $0303                  ; length and height
-  call Color_Text_Box
+  ld B, 10         ; upper left row
+  ld C, 26         ; upper left column
+  ld D, 12         ; lower left row
+  ld E, 28         ; lower right column
+  call Color_Tile
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -107,7 +116,7 @@ Main:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Set_Custom_Font.asm"
-  include "Subs/Color_Text_Box.asm"
+  include "Subs/Color_Tile.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Print_String.asm"
   include "Subs/Print_16_Bit_Number.asm"

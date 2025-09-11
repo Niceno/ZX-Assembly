@@ -49,10 +49,12 @@ Main:
   call Print_String
 
   ; Color the text box
-  ld A,  BLUE_INK + WHITE_PAPER  ; color of the string
-  ld BC, $0303
-  ld DE, $1801                   ; length (D) is 24, height (E) is 1
-  call Color_Text_Box
+  ld A,  BLUE_INK + WHITE_PAPER
+  ld B,  3         ; upper left row
+  ld C,  3         ; upper left column
+  ld D,  B         ; same as the upper
+  ld E, 16         ; lower right column
+  call Color_Tile
 
   ;--------------------------
   ;
@@ -138,9 +140,10 @@ Main:
     ; Color that little box
     ld A,  RED_INK + YELLOW_PAPER + FLASH  ; color of the string
     ld C,  5                               ; B should hold the row
-    ld DE, $0101                           ; length (D) and height (E) are 1
+    ld D, B
+    ld E, C
     push BC
-    call Color_Text_Box
+    call Color_Tile
     pop BC
 
     ; This is where it finally prints the symbol
@@ -252,9 +255,10 @@ Main:
     ld A, (text_row)  ; retreive the last row
     ld B, A
     ld C, 5
-    ld DE, $0101
+    ld D, B
+    ld E, C
     ld A, RED_INK + YELLOW_PAPER  ; color of the string
-    call Color_Text_Box
+    call Color_Tile
 
     ;--------------------------------------
     ; Loop until all the keys are released
@@ -317,9 +321,10 @@ Main:
   push BC
   call Print_Udgs_Character
   pop BC
-  ld DE, $0101
+  ld D, B
+  ld E, C
   ld A, WHITE_PAPER + BRIGHT
-  call Color_Text_Box
+  call Color_Tile
 
   ;----------------
   ;
@@ -361,8 +366,8 @@ Main:
   call Print_08_Bit_Number
   ld A,  CYAN_PAPER
   ld BC, $0000
-  ld DE, $0302
-  call Color_Text_Box
+  ld DE, $0102
+  call Color_Tile
 
 .hero_not_moved:
   ld A, 0
@@ -576,7 +581,7 @@ Main:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen.asm"
-  include "Subs/Color_Text_Box.asm"
+  include "Subs/Color_Tile.asm"
   include "Subs/Press_Any_Key.asm"
   include "Subs/Unpress.asm"
   include "Subs/Print_Character.asm"

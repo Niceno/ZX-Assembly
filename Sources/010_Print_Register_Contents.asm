@@ -85,7 +85,7 @@ Main:
   include "Subs/Print_Character.asm"
   include "Subs/Print_Udgs_Character.asm"
   include "Subs/Merge_Udgs_Character.asm"
-  include "Subs/Color_Text_Box.asm"
+  include "Subs/Color_Tile.asm"
   include "Subs/Print_Registers.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

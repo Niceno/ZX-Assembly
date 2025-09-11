@@ -40,12 +40,15 @@ Main:
   call Print_Character
 
   ld A, CYAN_PAPER + BLUE_INK
-  ld BC, $0200         ; row and column
-  ld DE, $0E01         ; length and height
-  call Color_Text_Box
+  ld B,  2         ; upper left row
+  ld C,  0         ; upper left column
+  ld D,  B         ; lower right row
+  ld E, 13         ; lower right column
+  call Color_Tile
 
   ld HL, bojan_string  ; address where the string is stored
-  ld BC, $0200         ; row and column
+  ld B,  2           ; row
+  ld C,  0           ; column
   call Print_String
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
@@ -60,7 +63,7 @@ Main:
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Print_String.asm"
-  include "Subs/Color_Text_Box.asm"
+  include "Subs/Color_Tile.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
