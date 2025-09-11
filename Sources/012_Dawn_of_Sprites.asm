@@ -42,23 +42,38 @@ Main:
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld BC, $0101
-  ld DE, $0406
+  ld B,  1  ; uper left row
+  ld C,  1  ; uper left column
+  ld D,  4  ; lower right row
+  ld E,  6  ; lower right column
   ld HL, monster_01
   call Print_Udgs_Tile
 
   ld A,  BLUE_INK + YELLOW_PAPER
-  ld BC, $0101
-  ld DE, $0406
-  ld HL, monster_01
+  ld B,  1  ; uper left row
+  ld C,  1  ; uper left column
+  ld D,  4  ; lower right row
+  ld E,  6  ; lower right column
   call Color_Tile
 
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld BC, $010A
-  ld DE, $020B
+  ld B,  1  ; uper left row
+  ld C, 10  ; uper left column
+  ld D,  2  ; lower right row
+  ld E, 11  ; lower right column
   ld HL, circle_q1
+  call Print_Udgs_Sprite
+
+  ;--------------------------------------------------------------
+  ; Initialize coordinates and size of the box and print the box
+  ;--------------------------------------------------------------
+  ld B, 10  ; uper left row
+  ld C, 10  ; uper left column
+  ld D, 11  ; lower right row
+  ld E, 11  ; lower right column
+  ld HL, frame_q1
   call Print_Udgs_Sprite
 
   ;-----------------------------------------------------
@@ -110,6 +125,11 @@ circle_q1: defb $03, $0C, $10, $20, $40, $40, $80, $80
 circle_q2: defb $C0, $30, $08, $04, $02, $02, $01, $01
 circle_q3: defb $80, $80, $40, $40, $20, $10, $0C, $03
 circle_q4: defb $01, $01, $02, $02, $04, $08, $30, $C0
+
+frame_q1: defb $FF, $80, $BF, $BF, $B0, $B7, $B7, $B7
+frame_q2: defb $FF, $01, $FD, $FD, $0D, $ED, $ED, $ED
+frame_q3: defb $B7, $B7, $B7, $B0, $BF, $BF, $80, $FF
+frame_q4: defb $ED, $ED, $ED, $0D, $FD, $FD, $01, $FF
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
