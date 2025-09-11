@@ -138,10 +138,22 @@ arrow_left:      defb $10, $30, $4F, $81, $81, $4F, $30, $10
 arrow_right:     defb $08, $0C, $F2, $81, $81, $F2, $0C, $08
 space_to_print:  defb $00, $00, $00, $00, $00, $00, $00, $00
 
-circle_q1: defb $03, $0C, $10, $20, $40, $40, $80, $80
-circle_q2: defb $C0, $30, $08, $04, $02, $02, $01, $01
-circle_q3: defb $80, $80, $40, $40, $20, $10, $0C, $03
-circle_q4: defb $01, $01, $02, $02, $04, $08, $30, $C0
+; old: circle_q1: defb $03, $0C, $10, $20, $40, $40, $80, $80
+; old: circle_q2: defb $C0, $30, $08, $04, $02, $02, $01, $01
+; old: circle_q3: defb $80, $80, $40, $40, $20, $10, $0C, $03
+; old: circle_q4: defb $01, $01, $02, $02, $04, $08, $30, $C0
+
+circle_q1: ;
+  defb $03, $0F, $13, $33, $4F, $4F, $FF, $7F
+
+circle_q2: ;
+  defb $C0, $F0, $F8, $FC, $FE, $FE, $FF, $FE ;
+
+circle_q3: ;
+  defb $BF, $CF, $70, $7F, $3F, $1F, $0F, $03 ;
+
+circle_q4: ;
+  defb $FD, $F3, $0E, $FE, $FC, $F8, $F0, $C0 ;
 
 ; The frame is for the viewport
 frame_q1:    defb $FF, $80, $BF, $BF, $B0, $B7, $B7, $B7
