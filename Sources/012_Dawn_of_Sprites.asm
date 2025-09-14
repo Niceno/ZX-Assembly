@@ -92,6 +92,16 @@ Main:
   ld HL, frame_q1
   call Print_Udgs_Sprite
 
+  ;--------------------------------------------------------------
+  ; Initialize coordinates and size of the box and print the box
+  ;--------------------------------------------------------------
+  ld B, 10  ; upper left row
+  ld C, 14  ; upper left column
+  ld HL, arrow_left
+  call Print_Udgs_Character
+  ld HL, arrow_right
+  call Print_Next_Udgs_Character
+
   ;-----------------------------------------------------
   ; Merge the grid over whatever you have on the screen
   ;-----------------------------------------------------
@@ -108,6 +118,7 @@ Main:
   include "Subs/Print_Udgs_Character.asm"
   include "Subs/Print_Udgs_Tile.asm"
   include "Subs/Print_Udgs_Sprite_Box.asm"
+  include "Subs/Print_Next_Udgs_Character.asm"
   include "Subs/Color_Tile.asm"
   include "Subs/Merge_Udgs_Character.asm"
   include "Subs/Merge_Udgs_Sprite_Box.asm"
