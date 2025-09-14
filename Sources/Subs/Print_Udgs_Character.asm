@@ -50,13 +50,14 @@ Print_Udgs_Character:
   ;-----------------------------------------
   ; Copy the glyph definition to the screen
   ;-----------------------------------------
-  ld B, 8  ; characters are eight lines high
-.loop_character_bytes:
-    ld A, (DE)
-    ld(HL), A
-    inc H       ; increase position at the screen (HL = HL + 256)
-    inc DE      ; increase position in the memory
-  djnz .loop_character_bytes
+  ld A, (DE) : ld(HL), A : inc H : inc DE
+  ld A, (DE) : ld(HL), A : inc H : inc DE
+  ld A, (DE) : ld(HL), A : inc H : inc DE
+  ld A, (DE) : ld(HL), A : inc H : inc DE
+  ld A, (DE) : ld(HL), A : inc H : inc DE
+  ld A, (DE) : ld(HL), A : inc H : inc DE
+  ld A, (DE) : ld(HL), A : inc H : inc DE
+  ld A, (DE) : ld(HL), A : inc H : inc DE
 
   ret
 
