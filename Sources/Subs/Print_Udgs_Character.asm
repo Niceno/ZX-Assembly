@@ -8,9 +8,6 @@
 ; - HL: address of the character
 ; - BC: row and column
 ;
-; Constant array
-; - screen_row_offset
-;
 ; Clobbers:
 ; - probably just about all registers
 ;
@@ -21,30 +18,34 @@
 ;-------------------------------------------------------------------------------
 Print_Udgs_Character:
 
-  push HL  ; store this memory address on stack (will pop as DE later)
+  ex DE, HL  ; store the character/sprite address in DE
 
-  ; Calculate screen address from row and column
-  ld A, B                 ; get row number (0-23)
-  add A, A                ; multiply by 2 (each offset is 2 bytes)
-  ld E, A
-  ld D, 0
-  ld HL, screen_row_offset
-  add HL, DE              ; HL points to the offset for this row
+  ; Calculate screen address
+  ld H, 0
+  ld L, 0
+  ld A, B        ; B holds the row
+  and %00000111  ; keep only three lower bits ...
+  add A, A       ; ... and multiply with 32 ...
+  add A, A       ; ... since there are 32 ...
+  add A, A       ; ... columns on Speccy's ...
+  add A, A       ; ... screen.
+  add A, A       ; five additions is multiplying with 32
+  ld L, A        ; store the result in lower part of the HL pair
 
-  ; Load offset into DE, so that you can add it to HL
-  ld E, (HL)              ; get low byte of offset
-  inc HL
-  ld D, (HL)              ; get high byte of offset
-  ; Now DE = row offset
+  ; Now take care of the Speccy's screen sectioning in thirds, 2nd section
+  ; starts at the offset of 2048, third section at the offset of 4096
+  ld   A, B       ; load row into A
+  and  %00011000  ; Delete bits 0..2 and keep 3..4.  Thus if row is bigger than
+                  ; 7, A will hold bit 3 which is 2048 when in H.  If the row
+                  ; is bigger than 15, A will hold bit 4, which is 4096 in H
+                  ; Since there are only 24 rows (from 0 to 23), row number
+                  ; will never hold both bits 3 and 4 (16+8=24)
+  or   $40        ; add 16384 (MEM_SCREEN_PIXELS = $4000) to HL
+  ld   H, A
 
-  ld HL, MEM_SCREEN_PIXELS
-  add HL, DE              ; HL = screen start + row offset
-
-  ; Now add column offset
-  ld A, C
-  ld E, A
-  ld D, 0
-  add HL, DE  ; HL now points to correct screen position
+  ; Add column
+  ld  B,  0
+  add HL, BC  ; HL = (row, col) byte  add HL, BC
 
   ld B, 8  ; characters are eight lines high
   pop DE   ; this was pushed as HL with memory font start
