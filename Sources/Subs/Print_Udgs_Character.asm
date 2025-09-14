@@ -20,9 +20,9 @@ Print_Udgs_Character:
 
   ex DE, HL  ; store the character/sprite address in DE
 
+  ;--------------------------
   ; Calculate screen address
-  ld H, 0
-  ld L, 0
+  ;--------------------------
   ld A, B        ; B holds the row
   and %00000111  ; keep only three lower bits ...
   add A, A       ; ... and multiply with 32 ...
@@ -47,9 +47,10 @@ Print_Udgs_Character:
   ld  B,  0
   add HL, BC  ; HL = (row, col) byte  add HL, BC
 
+  ;-----------------------------------------
+  ; Copy the glyph definition to the screen
+  ;-----------------------------------------
   ld B, 8  ; characters are eight lines high
-  pop DE   ; this was pushed as HL with memory font start
-
 .loop_character_bytes:
     ld A, (DE)
     ld(HL), A
