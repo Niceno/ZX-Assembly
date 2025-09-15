@@ -13,6 +13,54 @@
 ; - AF, BC, DE, HL ... but should be double checked
 ;
 ; Note:
+; - To see why this works, scroll down!
+;-------------------------------------------------------------------------------
+Color_Line
+
+  push DE  ; store the length (E)
+
+  ;--------------------------------------
+  ; Calculate screen attributes' address
+  ;--------------------------------------
+  ex AF, AF'  ; use the shadow registers for calculations
+
+  ; Set proper row
+  ld H, 0
+  ld L, B   ; HL now holds the row number
+  sla L
+  sla L
+  sla L
+  sla L
+  sla L
+
+  ld A, B
+  and %00011000
+  rrca
+  rrca
+  rrca
+  ld   H, $58
+  or   H
+  ld   H, A
+
+  ; Set the proper column
+  ld D, 0
+  ld E, C
+  add HL, DE
+
+  pop DE  ; restore the column
+
+  ex AF, AF'  ; get the value of the color back
+
+.loop
+    ld (HL), A
+    dec E
+    inc HL
+  jr nz, .loop
+
+  ret
+
+;-------------------------------------------------------------------------------
+; Note:
 ; - The algorithm here works because:
 ;
 ; - Attributes start at:
@@ -74,47 +122,3 @@
 ; - It would be great if I could also write such a lengthy explanation for the
 ;   screen pixel addresses
 ;-------------------------------------------------------------------------------
-Color_Line
-
-  push DE  ; store the length (E)
-
-  ;--------------------------------------
-  ; Calculate screen attributes' address
-  ;--------------------------------------
-  ex AF, AF'  ; use the shadow registers for calculations
-
-  ; Set proper row
-  ld H, 0
-  ld L, B   ; HL now holds the row number
-  sla L
-  sla L
-  sla L
-  sla L
-  sla L
-
-  ld A, B
-  and %00011000
-  rrca
-  rrca
-  rrca
-  ld   H, $58
-  or   H
-  ld   H, A
-
-  ; Set the proper column
-  ld D, 0
-  ld E, C
-  add HL, DE
-
-  pop DE  ; restore the column
-
-  ex AF, AF'  ; get the value of the color back
-
-.loop
-    ld (HL), A
-    dec E
-    inc HL
-  jr nz, .loop
-
-  ret
-
