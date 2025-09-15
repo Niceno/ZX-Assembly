@@ -580,6 +580,7 @@ Main:
   include "Subs/Color_Line.asm"
   include "Subs/Press_Any_Key.asm"
   include "Subs/Unpress.asm"
+  include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Print_String.asm"
   include "Subs/Print_Udgs_Character.asm"

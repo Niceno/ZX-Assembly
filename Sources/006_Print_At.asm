@@ -115,6 +115,7 @@ Main:
   include "Subs/Set_Custom_Font.asm"
   include "Subs/Color_Line.asm"
   include "Subs/Color_Tile.asm"
+  include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Print_String.asm"
   include "Subs/Print_16_Bit_Number.asm"
