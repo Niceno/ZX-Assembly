@@ -48,7 +48,7 @@ Print_Udgs_Character:
   add HL, BC  ; HL = (row, col) byte  add HL, BC
 
   ; Store the screen address for the next call
-  push HL
+  push HL  ; is this really needed?
 
   ;-----------------------------------------
   ; Copy the glyph definition to the screen
@@ -63,6 +63,7 @@ Print_Udgs_Character:
   ld A, (DE) : ld(HL), A : inc H : inc DE
 
   pop DE  ; DE will store the screen address for the next call
+          ; is this really needed?
 
   ret
 
