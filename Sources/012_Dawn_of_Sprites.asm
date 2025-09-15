@@ -104,22 +104,22 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Subs/Color_Line.asm"
+  include "Subs/Color_Tile.asm"
+  include "Subs/Create_Viewport.asm"
   include "Subs/Open_Upper_Screen.asm"
+  include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Print_Udgs_Character.asm"
   include "Subs/Print_Udgs_Tile_Line.asm"
   include "Subs/Print_Udgs_Tile.asm"
   include "Subs/Print_Udgs_Sprite_Line.asm"
   include "Subs/Print_Udgs_Sprite.asm"
-  include "Subs/Print_Next_Udgs_Character.asm"
-  include "Subs/Color_Line.asm"
-  include "Subs/Color_Tile.asm"
   include "Subs/Merge_Udgs_Character.asm"
   include "Subs/Merge_Udgs_Sprite_Line.asm"
   include "Subs/Merge_Udgs_Sprite.asm"
   include "Subs/Merge_Udgs_Tile_Line.asm"
   include "Subs/Merge_Udgs_Tile.asm"
   include "Subs/Merge_Grid.asm"
-  include "Subs/Create_Viewport.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

@@ -45,6 +45,7 @@ Main:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen.asm"
+  include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Print_Udgs_Character.asm"
   include "Subs/Print_Udgs_Tile_Line.asm"
   include "Subs/Print_Udgs_Tile.asm"
