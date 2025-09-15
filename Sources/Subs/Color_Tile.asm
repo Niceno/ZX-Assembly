@@ -17,9 +17,7 @@ Color_Tile
 .loop_rows
     push BC
     push DE
-    push HL          ; is this needed?
     call Color_Line
-    pop HL           ; is this needed?
     pop DE
     pop BC
     inc B
