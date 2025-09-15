@@ -23,21 +23,13 @@ Merge_Grid:
     ld C, 0
 .loop_columns
 
-      ; D = B + 3
-      ld A, B
-      add 3
-      ld D, A
-  
-      ; E = C + 3
-      ld A, C
-      add 3
-      ld E, A
+      ; Grid sprite is 4x4
+      ld D, 4
+      ld E, 4
   
       ld HL, grid
       push BC
-      push DE
       call Merge_Udgs_Sprite
-      pop DE
       pop BC
 
       inc C

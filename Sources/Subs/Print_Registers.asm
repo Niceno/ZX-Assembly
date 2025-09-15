@@ -123,12 +123,9 @@ Print_Registers:
     ld D, (IX+ 9)  ; old_ptr
     ld A, (IX+10)  ; color
     call Compare_Registers
-    ld   D, B      ; stay in the same row
-    ld   E, C      ; copy the column ...
-    inc E          ; ... and ...
-    inc E          ; ... increase it ...
-    inc E          ; ... three times
-    call Color_Tile
+
+    ld E, 4
+    call Color_Line
 
     ld DE, REG_ROW_SIZE
     add IX, DE

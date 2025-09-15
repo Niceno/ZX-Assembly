@@ -36,11 +36,10 @@ Main:
   ; Color that asterisk
   ;---------------------
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
-  ld B, 12                      ; upper left row
-  ld C, 16                      ; upper left column
-  ld D,  B                      ; lower right row
-  ld E,  C                      ; lower right column
-  call Color_Tile
+  ld B, 12                      ; row
+  ld C, 16                      ; column
+  ld E,  1                      ; length
+  call Color_Line               ; A, BC and E are parameters
 
   ;--------------------------------------------------------------------
   ; Wait until a key is pressed
@@ -144,7 +143,7 @@ Main:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen.asm"
-  include "Subs/Color_Tile.asm"
+  include "Subs/Color_Line.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Print_Udgs_Character.asm"
 

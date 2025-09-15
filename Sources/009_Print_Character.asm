@@ -40,11 +40,10 @@ Main:
   call Print_Character
 
   ld A, CYAN_PAPER + BLUE_INK
-  ld B,  2         ; upper left row
-  ld C,  0         ; upper left column
-  ld D,  B         ; lower right row
-  ld E, 13         ; lower right column
-  call Color_Tile
+  ld B,  2         ; row
+  ld C,  0         ; column
+  ld E, 14         ; length
+  call Color_Line
 
   ld HL, bojan_string  ; address where the string is stored
   ld B,  2           ; row
@@ -63,7 +62,7 @@ Main:
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Print_String.asm"
-  include "Subs/Color_Tile.asm"
+  include "Subs/Color_Line.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

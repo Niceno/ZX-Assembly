@@ -50,11 +50,10 @@ Main:
 
   ; Color the text box
   ld A,  BLUE_INK + WHITE_PAPER
-  ld B,  3         ; upper left row
-  ld C,  3         ; upper left column
-  ld D,  B         ; same as the upper
-  ld E, 16         ; lower right column
-  call Color_Tile
+  ld B,  3         ; row
+  ld C,  3         ; column
+  ld E, 14         ; length
+  call Color_Line
 
   ;--------------------------
   ;
@@ -135,15 +134,14 @@ Main:
     inc A                     ; ... by two ...
     ld (text_row), A          ; ... and store it back
     ld B, A                   ; store it in B too
-    ld C,  5
+    ld C, 5
 
     ; Color that little box
-    ld A,  RED_INK + YELLOW_PAPER + FLASH  ; color of the string
-    ld C,  5                               ; B should hold the row
-    ld D, B
-    ld E, C
+    ld A, RED_INK + YELLOW_PAPER + FLASH  ; color of the string
+    ld C, 5                               ; B should hold the row
+    ld E, 1
     push BC
-    call Color_Tile
+    call Color_Line
     pop BC
 
     ; This is where it finally prints the symbol
@@ -255,10 +253,9 @@ Main:
     ld A, (text_row)  ; retreive the last row
     ld B, A
     ld C, 5
-    ld D, B
-    ld E, C
+    ld E, 1
     ld A, RED_INK + YELLOW_PAPER  ; color of the string
-    call Color_Tile
+    call Color_Line
 
     ;--------------------------------------
     ; Loop until all the keys are released
@@ -321,10 +318,9 @@ Main:
   push BC
   call Print_Udgs_Character
   pop BC
-  ld D, B
-  ld E, C
+  ld E, 1
   ld A, WHITE_PAPER + BRIGHT
-  call Color_Tile
+  call Color_Line
 
   ;----------------
   ;
@@ -366,8 +362,8 @@ Main:
   call Print_08_Bit_Number
   ld A,  CYAN_PAPER
   ld BC, $0000
-  ld DE, $0102
-  call Color_Tile
+  ld E,  2
+  call Color_Line
 
 .hero_not_moved:
   ld A, 0
@@ -581,7 +577,7 @@ Main:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen.asm"
-  include "Subs/Color_Tile.asm"
+  include "Subs/Color_Line.asm"
   include "Subs/Press_Any_Key.asm"
   include "Subs/Unpress.asm"
   include "Subs/Print_Character.asm"

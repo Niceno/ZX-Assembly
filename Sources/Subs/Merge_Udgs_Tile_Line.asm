@@ -1,22 +1,28 @@
 ;===============================================================================
-; Print_Udgs_Character
+; Merge_Udgs_Tile_Line
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Prints a single user defined character by directly addressing screen memory
+; - Merges a sequence of repetitive UDG characters at prescribed row and
+;   column, with a given length, by directly addressing screen's pixel memory
 ;
-; Parameters (passed via registers)
+; Parameters
 ; - HL: address of the character
 ; - BC: row and column
+; - E:  length of the line
 ;
 ; Clobbers:
 ; - probably just about all registers
 ;
 ; Notes:
-; - This sub has a sister, called Merge_Udgs_Character, which merges the UDG
-;   with what is already on the screen.
-; - These two sisters should differ by one line of code only.
+; - This sub belongs to the group of four sisters:
+;   > Merge_Udgs_Sprite_Line  (like this but chars are non-repetive)
+;   > Merge_Udgs_Tile_Line    (this one)
+;   > Print_Udgs_Sprite_Line  (like this but chars are printed & non-repetitive)
+;   > Print_Udgs_Tile_Line    (like this but chars are printed)
 ;-------------------------------------------------------------------------------
-Print_Udgs_Character:
+Merge_Udgs_Tile_Line:
+
+  push DE ; save the length
 
   ex DE, HL  ; store the character/sprite address in DE
 
@@ -47,17 +53,30 @@ Print_Udgs_Character:
   ld  B,  0
   add HL, BC  ; HL = (row, col) byte  add HL, BC
 
+  pop BC  ; this used to be DE, E held the length
+
   ;-----------------------------------------
   ; Copy the glyph definition to the screen
   ;-----------------------------------------
-  ld A, (DE) : ld(HL), A : inc H : inc DE
-  ld A, (DE) : ld(HL), A : inc H : inc DE
-  ld A, (DE) : ld(HL), A : inc H : inc DE
-  ld A, (DE) : ld(HL), A : inc H : inc DE
-  ld A, (DE) : ld(HL), A : inc H : inc DE
-  ld A, (DE) : ld(HL), A : inc H : inc DE
-  ld A, (DE) : ld(HL), A : inc H : inc DE
-  ld A, (DE) : ld(HL), A : inc H : inc DE
+.loop        ; loop through columns (length)
+    push DE  ; store character defintion
+    push HL  ; store screen address
+    ld A, (DE) : or(HL) : ld(HL), A : inc H : inc DE
+    ld A, (DE) : or(HL) : ld(HL), A : inc H : inc DE
+    ld A, (DE) : or(HL) : ld(HL), A : inc H : inc DE
+    ld A, (DE) : or(HL) : ld(HL), A : inc H : inc DE
+    ld A, (DE) : or(HL) : ld(HL), A : inc H : inc DE
+    ld A, (DE) : or(HL) : ld(HL), A : inc H : inc DE
+    ld A, (DE) : or(HL) : ld(HL), A : inc H : inc DE
+    ld A, (DE) : or(HL) : ld(HL), A : inc H : inc DE
+    pop HL      ; restore screen address
+    pop DE      ; go back to character's definition
+
+    inc HL      ; move to the next column on the screen
+    dec C       ; decrease the length counter
+  jr nz, .loop  ; if desired length not reached, repeat the loop
+
+  ex DE, HL  ; return the character addresss to HL
 
   ret
 

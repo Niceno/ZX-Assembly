@@ -60,16 +60,16 @@ Main:
   ;--------------------------------------------------------------
   ld B,  2  ; upper left row
   ld C,  2  ; upper left column
-  ld D,  5  ; lower right row
-  ld E,  7  ; lower right column
+  ld D,  4  ; height of the sprite (in rows)
+  ld E,  6  ; length of the sprite (in columns)
   ld HL, monster_01
   call Print_Udgs_Tile
 
   ld A,  RED_INK + YELLOW_PAPER
   ld B,  2  ; upper left row
   ld C,  2  ; upper left column
-  ld D,  5  ; lower right row
-  ld E,  7  ; lower right column
+  ld D,  4  ; height in rows
+  ld E,  6  ; length in columns
   call Color_Tile
 
   ;--------------------------------------------------------------
@@ -77,8 +77,8 @@ Main:
   ;--------------------------------------------------------------
   ld B,  3  ; upper left row
   ld C, 13  ; upper left column
-  ld D,  4  ; lower right row
-  ld E, 14  ; lower right column
+  ld D,  2  ; height of the sprite (in rows)
+  ld E,  2  ; length of the sprite (in columns)
   ld HL, circle_q1
   call Print_Udgs_Sprite
 
@@ -87,25 +87,15 @@ Main:
   ;--------------------------------------------------------------
   ld B, 10  ; upper left row
   ld C, 10  ; upper left column
-  ld D, 11  ; lower right row
-  ld E, 11  ; lower right column
+  ld D,  2  ; height of the sprite (in rows)
+  ld E,  2  ; length of the sprite (in columns)
   ld HL, frame_q1
-  call Print_Udgs_Sprite
-
-  ;--------------------------------------------------------------
-  ; Initialize coordinates and size of the box and print the box
-  ;--------------------------------------------------------------
-  ld B, 10  ; upper left row
-  ld C, 14  ; upper left column
-  ld HL, arrow_left
-  call Print_Udgs_Character
-  ld HL, arrow_right
-  call Print_Next_Udgs_Character
+  call Merge_Udgs_Sprite
 
   ;-----------------------------------------------------
   ; Merge the grid over whatever you have on the screen
   ;-----------------------------------------------------
-; call Merge_Grid
+  call Merge_Grid
 
   ret
 
@@ -116,12 +106,18 @@ Main:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Print_Udgs_Character.asm"
+  include "Subs/Print_Udgs_Tile_Line.asm"
   include "Subs/Print_Udgs_Tile.asm"
-  include "Subs/Print_Udgs_Sprite_Box.asm"
+  include "Subs/Print_Udgs_Sprite_Line.asm"
+  include "Subs/Print_Udgs_Sprite.asm"
   include "Subs/Print_Next_Udgs_Character.asm"
+  include "Subs/Color_Line.asm"
   include "Subs/Color_Tile.asm"
   include "Subs/Merge_Udgs_Character.asm"
-  include "Subs/Merge_Udgs_Sprite_Box.asm"
+  include "Subs/Merge_Udgs_Sprite_Line.asm"
+  include "Subs/Merge_Udgs_Sprite.asm"
+  include "Subs/Merge_Udgs_Tile_Line.asm"
+  include "Subs/Merge_Udgs_Tile.asm"
   include "Subs/Merge_Grid.asm"
   include "Subs/Create_Viewport.asm"
 
@@ -176,8 +172,6 @@ frame_up:    defb $FF, $00, $FF, $FF, $00, $FF, $FF, $FF
 frame_down:  defb $FF, $FF, $FF, $00, $FF, $FF, $00, $FF
 frame_left:  defb $B7, $B7, $B7, $B7, $B7, $B7, $B7, $B7
 frame_right: defb $ED, $ED, $ED, $ED, $ED, $ED, $ED, $ED
-
-
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main

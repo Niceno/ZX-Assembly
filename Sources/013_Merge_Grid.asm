@@ -46,10 +46,11 @@ Main:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Print_Udgs_Character.asm"
+  include "Subs/Print_Udgs_Tile_Line.asm"
   include "Subs/Print_Udgs_Tile.asm"
-  include "Subs/Print_Udgs_Sprite_Box.asm"
   include "Subs/Merge_Udgs_Character.asm"
-  include "Subs/Merge_Udgs_Sprite_Box.asm"
+  include "Subs/Merge_Udgs_Sprite_Line.asm"
+  include "Subs/Merge_Udgs_Sprite.asm"
   include "Subs/Merge_Grid.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

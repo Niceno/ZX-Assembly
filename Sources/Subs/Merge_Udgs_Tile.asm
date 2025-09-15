@@ -1,8 +1,8 @@
 ;===============================================================================
-; Print_Udgs_Tile
+; Merge_Udgs_Tile
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Prints a sprite formed by a sequence of non-repetitive UDG charactes to
+; - Merges a sprite formed by a sequence of repetitive UDG charactes to
 ;   the screen, at prescribed row and column coordinates and with prescribed
 ;   dimensions in rows and columns.
 ;
@@ -12,22 +12,22 @@
 ; - HL: address of the first character in the sprite, passed to called function
 ;
 ; Calls:
-; - Print_Udgs_Tile_Line
+; - Merge_Udgs_Tile_Line
 ;
 ; Note:
 ; - This sub belongs to the group of four sisters:
-;   > Merge_Udgs_Sprite  (like this, but chars are merged and non-repetitive)
-;   > Merge_Udgs_Tile    (like this, but chars are merged)
-;   > Print_Udgs_Sprite  (like this, but chars are non-repetitive)
-;   > Print_Udgs_Tile    (this one)
+;   > Merge_Udgs_Sprite   (this one)
+;   > Merge_Udgs_Tile     (like this, but chars are repetitive)
+;   > Print_Udgs_Sprite   (like this, but chars are printed)
+;   > Print_Udgs_Tile     (like this, but chars are printed and repetitive)
 ;-------------------------------------------------------------------------------
-Print_Udgs_Tile
+Merge_Udgs_Tile_New
 
 .loop_rows
     push BC            ; store the row/column information
     push DE            ; store the size in rows/columns
     push HL            ; store the character defintion
-    call Print_Udgs_Tile_Line
+    call Merge_Udgs_Tile_Line
     pop HL             ; restore the character
     pop DE             ; restore the dimenstion
     pop BC             ; restore the row/column information

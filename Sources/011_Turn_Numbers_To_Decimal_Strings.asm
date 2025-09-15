@@ -31,11 +31,10 @@ Main:  ; If the adress is that of a subroutine, end it up with  suffix
   call Print_08_Bit_Number
 
   ld A, WHITE_INK + RED_PAPER
-  ld B,  11        ; upper left row
-  ld C,  11        ; upper left column
-  ld D,   B        ; lower right row
-  ld E,  13        ; lower right column
-  call Color_Tile
+  ld B,  11        ; row
+  ld C,  11        ; column
+  ld E,   3        ; length
+  call Color_Line
 
   ;-----------------------
   ;
@@ -48,11 +47,10 @@ Main:  ; If the adress is that of a subroutine, end it up with  suffix
   call Print_16_Bit_Number
 
   ld A, WHITE_INK + BLUE_PAPER
-  ld B,   9        ; upper left row
-  ld C,   9        ; upper left column
-  ld D,   B        ; lower right row
-  ld E,  13        ; lower right column
-  call Color_Tile
+  ld B,   9        ; row
+  ld C,   9        ; column
+  ld E,   5        ; length
+  call Color_Line
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -65,7 +63,7 @@ Main:  ; If the adress is that of a subroutine, end it up with  suffix
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Merge_Udgs_Character.asm"
-  include "Subs/Color_Tile.asm"
+  include "Subs/Color_Line.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Print_String.asm"
   include "Subs/Print_08_Bit_Number.asm"
