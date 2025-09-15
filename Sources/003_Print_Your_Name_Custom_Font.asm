@@ -80,7 +80,7 @@ loop_count:  defb 10
 ;---------------------------------
 ; Null-terminated string to print
 ;---------------------------------
-bojan_string:  defb "Bojan is cool!", 0
+bojan_string:  defb "Bojan Niceno", 0
 
 ;---------------------------------------------
 ; Custom font will end up at a custom address

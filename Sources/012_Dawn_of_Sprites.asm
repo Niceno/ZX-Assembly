@@ -82,6 +82,13 @@ Main:
   ld HL, circle_q1
   call Print_Udgs_Sprite
 
+  ld A,  BLACK_INK + WHITE_PAPER
+  ld B,  3  ; upper left row
+  ld C, 13  ; upper left column
+  ld D,  2  ; height of the sprite (in rows)
+  ld E,  2  ; length of the sprite (in columns)
+  call Color_Tile
+
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------

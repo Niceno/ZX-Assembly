@@ -118,7 +118,4 @@ Color_Line
 ; - So, in order to compute the address of attributes, we can rotate the row
 ;   number to the right for the lower byte and do the trick with and %00011000
 ;   for the higher byte and ... things work
-;
-; - It would be great if I could also write such a lengthy explanation for the
-;   screen pixel addresses
 ;-------------------------------------------------------------------------------
