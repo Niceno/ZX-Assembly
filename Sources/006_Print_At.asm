@@ -51,9 +51,9 @@ Main:
   ;--------------------------------------------
   ; Set coordinates to 9, 9 and print a string
   ;--------------------------------------------
-  ld B,  9             ; row
-  ld C,  9             ; column
-  ld HL, bojan_string
+  ld B,  9           ; row
+  ld C,  9           ; column
+  ld HL, z80_string
   call Print_String
 
   ;-------------------------
@@ -127,9 +127,9 @@ Main:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Global_Data.inc"
 
-asterisk:     defb "*"
-bojan_string: defb "Bojan is cool!", 0
-number:       defw  9999         ; defw = define word  <---=
+asterisk:    defb "*"
+z80_string:  defb "Z80 is superb!", 0
+number:      defw 9999                 ; defw = define word  <---=
 
 number_16_ascii_storage:  ; leave space for five digits, plus a trailing zero
   defb "00000", 0

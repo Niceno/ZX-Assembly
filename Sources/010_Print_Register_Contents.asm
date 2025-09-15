@@ -35,8 +35,8 @@ Main:
   ;---------------------------------------
   ; Address of the null-terminated string
   ;---------------------------------------
-  ld HL, bojan_string  ; address where the string is stored
-  ld BC, $0606         ; row and column
+  ld HL, z80_string  ; address where the string is stored
+  ld BC, $0606       ; row and column
 
   ; Real life example - see which registers get
   ; clobbered with a call to Print_Character
@@ -99,7 +99,7 @@ Main:
 ;---------------------------------
 ; Null-terminated string to print
 ;---------------------------------
-bojan_string: defb "Bojan is cool!", 0
+z80_string: defb "Z80 is superb!", 0
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main

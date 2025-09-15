@@ -68,7 +68,7 @@ Main:
 ;---------------------------------
 ; Null-terminated string to print
 ;---------------------------------
-bojan_string:  defb "Bojan is cool!", 0
+bojan_string:  defb "Bojan Niceno", 0
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
