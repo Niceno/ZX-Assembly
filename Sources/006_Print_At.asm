@@ -113,6 +113,7 @@ Main:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Set_Custom_Font.asm"
+  include "Subs/Calculate_Screen_Attribute_Address.asm"
   include "Subs/Color_Line.asm"
   include "Subs/Color_Tile.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
