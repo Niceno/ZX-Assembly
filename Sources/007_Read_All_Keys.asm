@@ -26,14 +26,37 @@ Main:
   ;----------------------------------
   call Open_Upper_Screen
 
-  ;---------------------
-  ; Color that asterisk
-  ;---------------------
+  ;-----------------------------------
+  ; Color the box for the pressed key
+  ;-----------------------------------
   ld A, RED_INK + YELLOW_PAPER  ; color of the string
-  ld B, 12                      ; row
-  ld C, 16                      ; column
-  ld E,  1                      ; length
-  call Color_Line               ; A, BC and E are parameters
+  ld B, 11                      ; row
+  ld C, 15                      ; column
+  ld D,  3                      ; length
+  ld E,  3                      ; length
+  call Color_Tile               ; A, BC and DE are parameters
+
+  ;--------------------------------------
+  ; Print DE register names and contents
+  ;--------------------------------------
+  ld B,  0           ; row
+  ld C,  0           ; column
+  ld HL, reg_d
+  call Print_String  ; HL & BC are the parameters
+  ld B,  1           ; row
+  ld C,  0           ; column
+  ld HL, reg_e
+  call Print_String  ; HL & BC are the parameter
+
+  ;---------------------------------
+  ; Color the box for the registers
+  ;---------------------------------
+  ld B,  0  ; row
+  ld C,  0  ; column
+  ld D,  2
+  ld E, 15
+  ld A, BLUE_INK + CYAN_PAPER
+  call Color_Tile
 
   ;--------------------------------------------------------------------
   ; Wait until a key is pressed
@@ -74,7 +97,7 @@ Main:
     ;------------------------------
     ; There are eight rows of keys
     ;------------------------------
-    ld D, 8              ; there are eight rows of keys
+    ld D, 0              ; there are eight rows of keys
 
 .browse_key_rows:
 
@@ -86,28 +109,57 @@ Main:
 
       ; Read key states (1 = not pressed, 0 = pressed)
       in A, (C)
-      bit 0, A : inc IX : inc IX : jp z, .print_the_pressed_key
-      bit 1, A : inc IX : inc IX : jp z, .print_the_pressed_key
-      bit 2, A : inc IX : inc IX : jp z, .print_the_pressed_key
-      bit 3, A : inc IX : inc IX : jp z, .print_the_pressed_key
-      bit 4, A : inc IX : inc IX : jp z, .print_the_pressed_key
+      bit 0, A : inc IX : inc IX : ld E, 0 : jp z, .print_the_pressed_key
+      bit 1, A : inc IX : inc IX : ld E, 1 : jp z, .print_the_pressed_key
+      bit 2, A : inc IX : inc IX : ld E, 2 : jp z, .print_the_pressed_key
+      bit 3, A : inc IX : inc IX : ld E, 3 : jp z, .print_the_pressed_key
+      bit 4, A : inc IX : inc IX : ld E, 4 : jp z, .print_the_pressed_key
 
-      dec D
+      ; Go up to D is 8
+      inc D
+      ld A, D
+      cp 8
 
     jr nz, .browse_key_rows
 
   jp .outer_infinite_loop    ; if not pressed, repeat loop
 
   ;----------------------------
+  ;
   ; Print the proper character
+  ;
   ;----------------------------
 .print_the_pressed_key:
 
+    ; At this point, D holds the key port and E the bit which is pressed
+
+    ;---------------------
+    ; Print the character
+    ;---------------------
     ld H, (IX+1)  ; address of the character to print
     ld L, (IX+0)  ; address of the character to print
     ld B, 12      ; row
     ld C, 16      ; column
+    push DE
     call Print_Udgs_Character
+    pop DE
+
+
+    ld B,  0                  ; row
+    ld C, 12                  ; column
+    ld H,  0                  ; number to print
+    ld L,  D                  ; number to print
+    push DE
+    call Print_08_Bit_Number
+    pop DE
+
+    ld B,  1                  ; row
+    ld C, 12                  ; column
+    ld H,  0                  ; number to print
+    ld L,  E                  ; number to print
+    push DE
+    call Print_08_Bit_Number
+    pop DE
 
   jp .outer_infinite_loop
 
@@ -124,6 +176,9 @@ Main:
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Udgs/Print_Character.asm"
+  include "Subs/Color_Tile.asm"
+  include "Subs/Print_String.asm"
+  include "Subs/Print_08_Bit_Number.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -155,6 +210,9 @@ mem_ente:  defb $00, $02, $12, $32, $7E, $30, $10, $00
 mem_caps:  defb $00, $10, $38, $7C, $10, $10, $10, $00
 mem_symb:  defb $00, $7E, $4E, $4E, $72, $72, $7E, $00
 mem_spac:  defb $00, $00, $00, $00, $00, $42, $7E, $00
+
+reg_d:  defb "D (key row):", 0
+reg_e:  defb "E (key bit):", 0
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
