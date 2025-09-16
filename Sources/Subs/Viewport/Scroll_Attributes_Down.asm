@@ -34,12 +34,11 @@ Viewport_Scroll_Attributes_Down
   ; This whole contraption is to make IX point to attribute addresses
   ld L, (IX+0)  ; store number of rows in HL
   ld H, (IX+1)
+  dec HL        ; not to go beyond the last record
   add HL, HL    ; multiply by two, addresses are stored in two bytes
   ex DE, HL
   ld IX, viewport_attribute_addresses
   add IX, DE
-  dec IX
-  dec IX
 
 .loop_rows
     ld E, (IX+0)  ; first row (target) goes into DE
