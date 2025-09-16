@@ -6,14 +6,12 @@
 ;
 ; Parameters:
 ; - BC: upper left row and column coordinate
-; - DE; lower right row and column coordinate
+; - DE: dimensions of the viewport in rows and columns
 ;-------------------------------------------------------------------------------
 Create_Viewport:
 
   push BC
   push DE
-  inc D
-  inc E
   call Color_Tile
   pop DE
   pop BC
@@ -21,97 +19,102 @@ Create_Viewport:
   ;--------------------------
   ; Create upper left corner
   ;--------------------------
-  push BC          ; save the upper left row/column coordinate
-  push DE          ; save the lower right row/column coordinate
+  push BC
+  push DE
   ld HL, frame_q1
   call Print_Udgs_Character
-  pop DE           ; restore the lower right row/column coordinate
-  pop BC           ; restore the upper left row/column coordinate
+  pop DE
+  pop BC
 
   ;---------------------------
   ; Create upper right corner
   ;---------------------------
-  push BC          ; save the upper left row/column coordinate
-  push DE          ; save the lower right row/column coordinate
-  ld C, E          ; set the upper left column to be the same as the last (E)
+  push BC
+  push DE
+  ld A, C : add E : dec A : ld C, A  ; adjust column (C)
   ld HL, frame_q2
   call Print_Udgs_Character
-  pop DE           ; restore the lower right row/column coordinate
-  pop BC           ; restore the upper left row/column coordinate
+  pop DE
+  pop BC
 
   ;--------------------------
-  ; Create Lower left corner
+  ; Create lower left corner
   ;--------------------------
-  push BC          ; save the upper left row/column coordinate
-  push DE          ; save the lower right row/column coordinate
-  ld B, D          ; set the lower right row to be the same as the last (D)
+  push BC
+  push DE
+  ld A, B : add D : dec A : ld B, A  ; adjust row (B)
   ld HL, frame_q3
   call Print_Udgs_Character
-  pop DE           ; restore the lower right row/column coordinate
-  pop BC           ; restore the upper left row/column coordinate
+  pop DE
+  pop BC
 
-  push BC          ; save the upper left row/column coordinate
-  push DE          ; save the lower right row/column coordinate
-  ld B, D          ; set the lower right row to be the same as the last (D)
-  ld C, E          ; set the upper left column to be the same as the last (E)
+  ;---------------------------
+  ; Create lower right corner
+  ;---------------------------
+  push BC
+  push DE
+  ld A, C : add E : dec A : ld C, A  ; adjust column (C)
+  ld A, B : add D : dec A : ld B, A  ; adjust row (B)
   ld HL, frame_q4
   call Print_Udgs_Character
-  pop DE           ; restore the lower right row/column coordinate
-  pop BC           ; restore the upper left row/column coordinate
+  pop DE
+  pop BC
 
   ;----------
   ; Frame up
   ;----------
-  push BC          ; save the upper left row/column coordinate
-  push DE          ; save the lower right row/column coordinate
-  inc C            ; don't overwrite the corner piece
-  ld  D, 1         ; set number of rows to 1
+  push BC
+  push DE
+  inc C
+  dec E            ; don't overwrite the corner piece
   dec E            ; don't overwrite the corner piece
   ld HL, frame_up
-  call Print_Udgs_Tile
-  pop DE           ; restore the lower right row/column coordinate
-  pop BC           ; restore the upper left row/column coordinate
+  call Print_Udgs_Tile_Line
+  pop DE
+  pop BC
 
   ;------------
   ; Frame down
   ;------------
-  push BC          ; save the upper left row/column coordinate
-  push DE          ; save the lower right row/column coordinate
-  ld  B, D         ; start in the last row
-  ld D, 1          ; set number of rows to 1
-  inc C            ; don't overwrite the corner piece
-  dec E            ; don't overwrite the corner piece
+  push BC
+  push DE
+  ld A, B : add D : dec A : ld B, A  ; adjust row (B)
+  inc C
+  dec E                              ; don't overwrite the corner piece
+  dec E                              ; don't overwrite the corner piece
   ld HL, frame_down
-  call Print_Udgs_Tile
-  pop DE           ; restore the lower right row/column coordinate
-  pop BC           ; restore the upper left row/column coordinate
+  call Print_Udgs_Tile_Line
+  pop DE
+  pop BC
 
   ;------------
   ; Frame left
   ;------------
-  push BC          ; save the upper left row/column coordinate
-  push DE          ; save the lower right row/column coordinate
-  inc B            ; don't overwrite the corner piece
-  dec D            ; don't overwrite the corner piece
-  ld  E, 1         ; set number of columns to 1
+  push BC
+  push DE
+  inc B
+  dec D              ; don't overwrite the corner piece
+  dec D              ; don't overwrite the corner piece
+  ld  E, 1           ; set number of columns to 1
   ld HL, frame_left
   call Print_Udgs_Tile
-  pop DE           ; restore the lower right row/column coordinate
-  pop BC           ; restore the upper left row/column coordinate
+  pop DE
+  pop BC
 
   ;-------------
   ; Frame right
   ;-------------
-  push BC          ; save the upper left row/column coordinate
-  push DE          ; save the lower right row/column coordinate
-  inc B            ; don't overwrite the corner piece
-  dec D            ; don't overwrite the corner piece
-  ld  C, E         ; start at the last column (E)
-  ld  E, 1         ; set number of columns to 1
+  push BC
+  push DE
+  inc B                              ; don't overwrite the corner piece
+  ld A, C : add E : dec A : ld C, A  ; adjust column (C)
+  dec D                              ; don't overwrite the corner piece
+  dec D                              ; don't overwrite the corner piece
+  ld  E, 1                           ; set number of columns to 1
   ld HL, frame_right
   call Print_Udgs_Tile
-  pop DE           ; restore the lower right row/column coordinate
-  pop BC           ; restore the upper left row/column coordinate
+  pop DE
+  pop BC
 
   ret
 

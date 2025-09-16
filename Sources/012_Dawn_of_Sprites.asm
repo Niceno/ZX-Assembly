@@ -49,25 +49,25 @@ Main:
   ; Create the viewport
   ;---------------------
   ld A, WHITE_PAPER + BLUE_INK
-  ld B,  0  ; upper left row
-  ld C,  0  ; upper left column
-  ld D, 21  ; lower right row
-  ld E, 27  ; lower right column
+  ld B,  2  ; upper left row
+  ld C,  2  ; upper left column
+  ld D, 20  ; lower right row
+  ld E, 24  ; lower right column
   call Create_Viewport
 
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld B,  2  ; upper left row
-  ld C,  2  ; upper left column
+  ld B,  4  ; upper left row
+  ld C,  4  ; upper left column
   ld D,  4  ; height of the sprite (in rows)
   ld E,  6  ; length of the sprite (in columns)
   ld HL, monster_01
   call Print_Udgs_Tile
 
   ld A,  RED_INK + YELLOW_PAPER
-  ld B,  2  ; upper left row
-  ld C,  2  ; upper left column
+  ld B,  4  ; upper left row
+  ld C,  4  ; upper left column
   ld D,  4  ; height in rows
   ld E,  6  ; length in columns
   call Color_Tile
@@ -75,16 +75,16 @@ Main:
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld B,  3  ; upper left row
-  ld C, 13  ; upper left column
+  ld B,  5  ; upper left row
+  ld C, 15  ; upper left column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
   ld HL, circle_q1
   call Print_Udgs_Sprite
 
   ld A,  BLACK_INK + WHITE_PAPER
-  ld B,  3  ; upper left row
-  ld C, 13  ; upper left column
+  ld B,  5  ; upper left row
+  ld C, 15  ; upper left column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
   call Color_Tile
@@ -92,8 +92,8 @@ Main:
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld B, 10  ; upper left row
-  ld C, 10  ; upper left column
+  ld B, 11  ; upper left row
+  ld C, 11  ; upper left column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
   ld HL, frame_q1
