@@ -58,16 +58,16 @@ Main:
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld B,  4  ; upper left row
-  ld C,  4  ; upper left column
+  ld B, 10  ; upper left row
+  ld C, 11  ; upper left column
   ld D,  4  ; height of the sprite (in rows)
   ld E,  6  ; length of the sprite (in columns)
   ld HL, monster_01
   call Print_Udgs_Tile
 
   ld A,  RED_INK + YELLOW_PAPER
-  ld B,  4  ; upper left row
-  ld C,  4  ; upper left column
+  ld B, 10  ; upper left row
+  ld C, 11  ; upper left column
   ld D,  4  ; height in rows
   ld E,  6  ; length in columns
   call Color_Tile
@@ -75,16 +75,16 @@ Main:
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld B,  5  ; upper left row
-  ld C, 15  ; upper left column
+  ld B,  3  ; upper left row
+  ld C, 19  ; upper left column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
   ld HL, circle_q1
   call Print_Udgs_Sprite
 
   ld A,  BLACK_INK + WHITE_PAPER
-  ld B,  5  ; upper left row
-  ld C, 15  ; upper left column
+  ld B,  3  ; upper left row
+  ld C, 19  ; upper left column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
   call Color_Tile
@@ -92,17 +92,63 @@ Main:
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld B, 11  ; upper left row
-  ld C, 11  ; upper left column
+  ld B,  9  ; upper left row
+  ld C,  3  ; upper left column
+  ld D,  2  ; height of the sprite (in rows)
+  ld E,  2  ; length of the sprite (in columns)
+  ld HL, circle_q1
+  call Print_Udgs_Sprite
+
+  ld A,  RED_INK + WHITE_PAPER
+  ld B,  9  ; upper left row
+  ld C,  3  ; upper left column
+  ld D,  2  ; height of the sprite (in rows)
+  ld E,  2  ; length of the sprite (in columns)
+  call Color_Tile
+
+  ;--------------------------------------------------------------
+  ; Initialize coordinates and size of the box and print the box
+  ;--------------------------------------------------------------
+  ld B, 19  ; row
+  ld C,  7  ; column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
   ld HL, frame_q1
   call Merge_Udgs_Sprite
 
+  ld A,  MAGENTA_INK + CYAN_PAPER
+  ld B, 19  ; row
+  ld C,  7  ; column
+  ld D,  2  ; height of the sprite (in rows)
+  ld E,  2  ; length of the sprite (in columns)
+  call Color_Tile
+
+  ;--------------------------------------------------------------
+  ; Initialize coordinates and size of the box and print the box
+  ;--------------------------------------------------------------
+  ld B, 13  ; row
+  ld C, 23  ; column
+  ld D,  2  ; height of the sprite (in rows)
+  ld E,  2  ; length of the sprite (in columns)
+  ld HL, frame_q1
+  call Merge_Udgs_Sprite
+
+  ld A,  RED_INK + CYAN_PAPER
+  ld B, 13  ; row
+  ld C, 23  ; column
+  ld D,  2  ; height of the sprite (in rows)
+  ld E,  2  ; length of the sprite (in columns)
+  call Color_Tile
+
   ;-----------------------------------------------------
   ; Merge the grid over whatever you have on the screen
   ;-----------------------------------------------------
   call Merge_Grid
+
+  ; call Scroll_Viewport_Attributes_Up
+  ; call Scroll_Viewport_Attributes_Down
+  ; call Scroll_Viewport_Attributes_Left
+  call Scroll_Viewport_Attributes_Right
 
   ret
 
@@ -115,6 +161,10 @@ Main:
   include "Subs/Color_Line.asm"
   include "Subs/Color_Tile.asm"
   include "Subs/Create_Viewport.asm"
+  include "Subs/Scroll_Viewport_Attributes_Up.asm"
+  include "Subs/Scroll_Viewport_Attributes_Down.asm"
+  include "Subs/Scroll_Viewport_Attributes_Left.asm"
+  include "Subs/Scroll_Viewport_Attributes_Right.asm"
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Print_Udgs_Character.asm"
