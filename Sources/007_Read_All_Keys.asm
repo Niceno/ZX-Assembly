@@ -84,33 +84,15 @@ Main:
       ld B, (HL)  ; high byte into B
       inc HL
 
-      in A, (C)   ; read key states (1 = not pressed, 0 = pressed)
-      bit 0, A    ; bit 0
-      inc IX
-      inc IX
-      jp z, .print_the_pressed_key
-      in A, (C)   ; read key states (1 = not pressed, 0 = pressed)
-      bit 1, A    ; bit 1
-      inc IX
-      inc IX
-      jp z, .print_the_pressed_key
-      in A, (C)   ; read key states (1 = not pressed, 0 = pressed)
-      bit 2, A    ; bit 2
-      inc IX
-      inc IX
-      jp z, .print_the_pressed_key
-      in A, (C)   ; read key states (1 = not pressed, 0 = pressed)
-      bit 3, A    ; bit 3
-      inc IX
-      inc IX
-      jp z, .print_the_pressed_key
-      in A, (C)   ; read key states (1 = not pressed, 0 = pressed)
-      bit 4, A    ; bit 4
-      inc IX
-      inc IX
-      jp z, .print_the_pressed_key
+      ; Read key states (1 = not pressed, 0 = pressed)
+      in A, (C)
+      bit 0, A : inc IX : inc IX : jp z, .print_the_pressed_key
+      bit 1, A : inc IX : inc IX : jp z, .print_the_pressed_key
+      bit 2, A : inc IX : inc IX : jp z, .print_the_pressed_key
+      bit 3, A : inc IX : inc IX : jp z, .print_the_pressed_key
+      bit 4, A : inc IX : inc IX : jp z, .print_the_pressed_key
 
-    dec D
+      dec D
 
     jr nz, .browse_key_rows
 
