@@ -207,6 +207,24 @@ Main:
   call Viewport_Scroll_Pixels_Up
   call Unpress
 
+  ; Go left
+  call Press_Any_Key
+  call Viewport_Scroll_Pixels_Left
+  call Unpress
+
+  ; Go right twice
+  call Press_Any_Key
+  call Viewport_Scroll_Pixels_Right
+  call Unpress
+  call Press_Any_Key
+  call Viewport_Scroll_Pixels_Right
+  call Unpress
+
+  ; Go back left
+  call Press_Any_Key
+  call Viewport_Scroll_Pixels_Left
+  call Unpress
+
   ret
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -227,6 +245,8 @@ Main:
   include "Subs/Viewport/Scroll_Attributes_Right.asm"
   include "Subs/Viewport/Scroll_Pixels_Up.asm"
   include "Subs/Viewport/Scroll_Pixels_Down.asm"
+  include "Subs/Viewport/Scroll_Pixels_Left.asm"
+  include "Subs/Viewport/Scroll_Pixels_Right.asm"
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Udgs/Print_Character.asm"

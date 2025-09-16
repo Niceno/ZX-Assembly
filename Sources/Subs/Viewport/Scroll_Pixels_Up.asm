@@ -12,22 +12,30 @@
 ;-------------------------------------------------------------------------------
 Viewport_Scroll_Pixels_Up
 
+  ;-------------------------------------------------------------------------
+  ; Fetch the number of columns from viewport_*_metadata and store it in
+  ; the BC pair.  (BC pair is convenient because used in ldir command below
+  ;-------------------------------------------------------------------------
   ld IX, viewport_pixel_metadata
 
   ld C, (IX+2)  ; let the pair BC hold the number of bytes to transfer
   ld B, 0       ; high byte is zero
-  ; At this point, the BC pair holds number of columns (to be coppied)
 
-  ; A will serve as the loop counter
+  ;--------------------------------------------
+  ; Use A as the loop counter through the rows
+  ;--------------------------------------------
   ld A, (IX+0)  ; number of rows inside the viewport
   dec A         ; copy one less than the dimension
 
-  ld IX, viewport_pixel_addresses
+  ;-----------------------------
+  ; Main loop for pixel copying
+  ;-----------------------------
+  ld IX, viewport_pixel_addresses  ; let IX point to pixel addresses
 
 .loop_rows
-    ld E, (IX+0)  ; first row (target) goes into DE
+    ld E, (IX+0)  ; target address goes into DE
     ld D, (IX+1)
-    ld L, (IX+2)  ; second row (source) goes into HL
+    ld L, (IX+2)  ; source address goes into HL
     ld H, (IX+3)
 
     ; Perform the copy
