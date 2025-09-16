@@ -75,7 +75,7 @@ Main:
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld B,  3  ; upper left row
+  ld B,  2  ; upper left row
   ld C, 19  ; upper left column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
@@ -83,7 +83,7 @@ Main:
   call Print_Udgs_Sprite
 
   ld A,  BLACK_INK + WHITE_PAPER
-  ld B,  3  ; upper left row
+  ld B,  2  ; upper left row
   ld C, 19  ; upper left column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
@@ -93,7 +93,7 @@ Main:
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
   ld B,  9  ; upper left row
-  ld C,  3  ; upper left column
+  ld C,  2  ; upper left column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
   ld HL, circle_q1
@@ -101,7 +101,7 @@ Main:
 
   ld A,  RED_INK + WHITE_PAPER
   ld B,  9  ; upper left row
-  ld C,  3  ; upper left column
+  ld C,  2  ; upper left column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
   call Color_Tile
@@ -109,7 +109,7 @@ Main:
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld B, 19  ; row
+  ld B, 20  ; row
   ld C,  7  ; column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
@@ -117,7 +117,7 @@ Main:
   call Merge_Udgs_Sprite
 
   ld A,  MAGENTA_INK + CYAN_PAPER
-  ld B, 19  ; row
+  ld B, 20  ; row
   ld C,  7  ; column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
@@ -127,7 +127,7 @@ Main:
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
   ld B, 13  ; row
-  ld C, 23  ; column
+  ld C, 24  ; column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
   ld HL, frame_q1
@@ -135,7 +135,7 @@ Main:
 
   ld A,  RED_INK + CYAN_PAPER
   ld B, 13  ; row
-  ld C, 23  ; column
+  ld C, 24  ; column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
   call Color_Tile
@@ -147,8 +147,8 @@ Main:
 
   ; call Scroll_Viewport_Attributes_Up
   ; call Scroll_Viewport_Attributes_Down
-  ; call Scroll_Viewport_Attributes_Left
-  call Scroll_Viewport_Attributes_Right
+  call Scroll_Viewport_Attributes_Left
+  ; call Scroll_Viewport_Attributes_Right
 
   ret
 
@@ -160,6 +160,7 @@ Main:
   include "Subs/Calculate_Screen_Attribute_Address.asm"
   include "Subs/Color_Line.asm"
   include "Subs/Color_Tile.asm"
+  include "Subs/Draw_Frame.asm"
   include "Subs/Create_Viewport.asm"
   include "Subs/Scroll_Viewport_Attributes_Up.asm"
   include "Subs/Scroll_Viewport_Attributes_Down.asm"
