@@ -26,12 +26,6 @@ Main:
   ;----------------------------------
   call Open_Upper_Screen
 
-  ;------------------------------
-  ; Specify the beginning of UDG
-  ;------------------------------
-  ld HL, udgs                         ; user defined graphics (UDGs)
-  ld (MEM_USER_DEFINED_GRAPHICS), HL  ; set up UDG system variable.
-
   ;---------------------
   ; Color that asterisk
   ;---------------------
@@ -172,11 +166,9 @@ all_characters_mem:
   defw mem_caps,   MEM_Z_UPP,  MEM_X_UPP,  MEM_C_UPP,  MEM_V_UPP
   defw mem_spac,   mem_symb,   MEM_M_UPP,  MEM_N_UPP,  MEM_B_UPP  ; reversed
 
-;-----------------------------------------------------------
-; User defined graphics (start at $90, then go $91, $92 ...
-;-----------------------------------------------------------
-udgs:
-
+;------------------------------------------
+; User defined characters for special keys
+;------------------------------------------
 mem_ente:  defb $00, $02, $12, $32, $7E, $30, $10, $00
 mem_caps:  defb $00, $10, $38, $7C, $10, $10, $10, $00
 mem_symb:  defb $00, $7E, $4E, $4E, $72, $72, $7E, $00
