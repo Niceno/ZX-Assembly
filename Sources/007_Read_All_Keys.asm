@@ -156,19 +156,6 @@ Main:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Global_Data.inc"
 
-;---------------------------------------------------------------------------
-; All key ports; used only in Unpressed now, maybe it can be defined there?
-;---------------------------------------------------------------------------
-all_key_ports:          ; this is like first array I created!
-  defw KEYS_12345
-  defw KEYS_67890
-  defw KEYS_QWERT
-  defw KEYS_YUIOP
-  defw KEYS_ASDFG
-  defw KEYS_HJKLENTER
-  defw KEYS_CAPSZXCV
-  defw KEYS_BNMSYMSPC
-
 ;----------------------------------------------------------------
 ; The addresses of all characters you can get from Spectrum keys
 ; (Standard ones are taken from ROM, but some had to be replaced

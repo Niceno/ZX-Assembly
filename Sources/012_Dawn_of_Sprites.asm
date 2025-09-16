@@ -49,10 +49,10 @@ Main:
   ; Create the viewport
   ;---------------------
   ld A, WHITE_PAPER + BLUE_INK
-  ld B,  2  ; row
-  ld C,  2  ; column
-  ld D, 20  ; height of the viewport
-  ld E, 24  ; length of the viewport
+  ld B,  0  ; row
+  ld C,  0  ; column
+  ld D, 24  ; height of the viewport
+  ld E, 32  ; length of the viewport
   call Viewport_Create
 
   ;--------------------------------------------------------------
@@ -145,10 +145,67 @@ Main:
   ;-----------------------------------------------------
   call Merge_Grid
 
-  ; call Viewport_SCroll_Attributes_Up
-  ; call Viewport_SCroll_Attributes_Down
-  call Viewport_SCroll_Attributes_Left
-  ; call Viewport_SCroll_Attributes_Right
+  ;---------------------------
+  ; Check attribute scrolling
+  ;---------------------------
+
+  ; Go up
+  call Press_Any_Key
+  call Viewport_Scroll_Attributes_Up
+  call Unpress
+
+  ; Go down twice
+  call Press_Any_Key
+  call Viewport_Scroll_Attributes_Down
+  call Unpress
+  call Press_Any_Key
+  call Viewport_Scroll_Attributes_Down
+  call Unpress
+
+  ; Go back up
+  call Press_Any_Key
+  call Viewport_Scroll_Attributes_Up
+  call Unpress
+
+  ; Go left
+  call Press_Any_Key
+  call Viewport_Scroll_Attributes_Left
+  call Unpress
+
+  ; Go right twice
+  call Press_Any_Key
+  call Viewport_Scroll_Attributes_Right
+  call Unpress
+  call Press_Any_Key
+  call Viewport_Scroll_Attributes_Right
+  call Unpress
+
+  ; Go back left
+  call Press_Any_Key
+  call Viewport_Scroll_Attributes_Left
+  call Unpress
+
+  ;-----------------------
+  ; Check pixel scrolling
+  ;-----------------------
+
+  ; Go up
+  call Press_Any_Key
+  call Viewport_Scroll_Pixels_Up
+  call Unpress
+
+  ; Go down twice
+  call Press_Any_Key
+  call Viewport_Scroll_Pixels_Down
+  call Unpress
+  call Press_Any_Key
+  call Viewport_Scroll_Pixels_Down
+  call Unpress
+
+  ; Go back up
+  call Press_Any_Key
+  call Viewport_Scroll_Pixels_Up
+  call Unpress
 
   ret
 
@@ -162,10 +219,14 @@ Main:
   include "Subs/Color_Tile.asm"
   include "Subs/Draw_Frame.asm"
   include "Subs/Viewport/Create.asm"
-  include "Subs/Viewport/SCroll_Attributes_Up.asm"
-  include "Subs/Viewport/SCroll_Attributes_Down.asm"
-  include "Subs/Viewport/SCroll_Attributes_Left.asm"
-  include "Subs/Viewport/SCroll_Attributes_Right.asm"
+  include "Subs/Viewport/Store_Data_For_Attributes.asm"
+  include "Subs/Viewport/Store_Data_For_Pixels.asm"
+  include "Subs/Viewport/Scroll_Attributes_Up.asm"
+  include "Subs/Viewport/Scroll_Attributes_Down.asm"
+  include "Subs/Viewport/Scroll_Attributes_Left.asm"
+  include "Subs/Viewport/Scroll_Attributes_Right.asm"
+  include "Subs/Viewport/Scroll_Pixels_Up.asm"
+  include "Subs/Viewport/Scroll_Pixels_Down.asm"
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Udgs/Print_Character.asm"
@@ -179,6 +240,8 @@ Main:
   include "Subs/Udgs/Merge_Line_Tile.asm"
   include "Subs/Udgs/Merge_Tile.asm"
   include "Subs/Merge_Grid.asm"
+  include "Subs/Press_Any_Key.asm"
+  include "Subs/Unpress.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

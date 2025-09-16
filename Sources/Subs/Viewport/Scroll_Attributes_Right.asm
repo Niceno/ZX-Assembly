@@ -1,5 +1,5 @@
 ;===============================================================================
-; Viewport_SCroll_Attributes_Right
+; Viewport_Scroll_Attributes_Right
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Scrolls the attributes inside the viewport right
@@ -10,7 +10,7 @@
 ; Clobbers:
 ; - AF, BC, DE, HL, IX
 ;-------------------------------------------------------------------------------
-Viewport_SCroll_Attributes_Right
+Viewport_Scroll_Attributes_Right
 
   ld IX, viewport_attribute_metadata
 
@@ -24,7 +24,6 @@ Viewport_SCroll_Attributes_Right
 
   ld IX, viewport_attribute_addresses
 .loop_rows
-    push BC       ; store the number of columns
     ld E, (IX+0)  ; first row (target) goes into DE
     ld D, (IX+1)
     ld L, (IX+0)  ; second row (source) goes into HL
@@ -34,10 +33,14 @@ Viewport_SCroll_Attributes_Right
     ex DE, HL
     add HL, BC    ; HL = HL + BC
     dec HL
+
+    ; Perform the copy
+    push BC       ; store the number of columns
     lddr          ; copy BC bytes from (HL) to (DE)
-    inc IX
-    inc IX
     pop BC        ; restore the number of columns
+
+    inc IX
+    inc IX
     dec A
   jr nz, .loop_rows
 

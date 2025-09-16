@@ -1,18 +1,18 @@
 ;===============================================================================
-; Viewport_Scroll_Attributes_Down
+; Viewport_Scroll_Pixels_Down
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Scrolls the attributes inside the viewport down
 ;
 ; Parameters:
-; - viewport_attribute_addresses
+; - viewport_pixel_addresses
 ;
 ; Clobbers:
 ; - AF, BC, DE, HL, IX
 ;-------------------------------------------------------------------------------
-Viewport_Scroll_Attributes_Down
+Viewport_Scroll_Pixels_Down
 
-  ld IX, viewport_attribute_metadata
+  ld IX, viewport_pixel_metadata
 
   ld C, (IX+2)  ; let the pair BC hold the number of bytes to transfer
   ld B, 0       ; high byte is zero
@@ -28,7 +28,7 @@ Viewport_Scroll_Attributes_Down
   ; Multiply by two, addresses are stored in two bytes
   add HL, HL
   ex DE, HL
-  ld IX, viewport_attribute_addresses
+  ld IX, viewport_pixel_addresses
   add IX, DE
   dec IX
   dec IX
@@ -40,9 +40,21 @@ Viewport_Scroll_Attributes_Down
     ld H, (IX-1)
 
     ; Perform the copy
-    push BC       ; store the number of columns
-    ldir          ; copy BC bytes from (HL) to (DE)
-    pop BC        ; restore the number of columns
+    ex AF, AF'
+    ld A, 8
+.loop_pixels
+      push BC       ; store the number of columns
+      push DE       ; store target
+      push HL       ; store source
+      ldir          ; copy BC bytes from (HL) to (DE)
+      pop HL        ; restore source
+      pop DE        ; restore target
+      pop BC        ; restore the number of columns
+      inc H
+      inc D
+      dec A
+    jr nz, .loop_pixels
+    ex AF, AF'
 
     dec IX
     dec IX
