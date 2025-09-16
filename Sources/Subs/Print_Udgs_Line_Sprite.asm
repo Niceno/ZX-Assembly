@@ -1,5 +1,5 @@
 ;===============================================================================
-; Print_Udgs_Sprite_Line
+; Print_Udgs_Line_Sprite
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Prints a sequence of non-repetitive UDG characters at prescribed row and
@@ -15,12 +15,12 @@
 ;
 ; Notes:
 ; - This sub belongs to the group of four sisters:
-;   > Merge_Udgs_Sprite_Line  (like this but chars are merged)
-;   > Merge_Udgs_Tile_Line    (like this but chars are merged and repetitive)
-;   > Print_Udgs_Sprite_Line  (this one)
-;   > Print_Udgs_Tile_Line    (like this but chars are repetitive)
+;   > Merge_Udgs_Line_Sprite  (like this but chars are merged)
+;   > Merge_Udgs_Line_Tile    (like this but chars are merged and repetitive)
+;   > Print_Udgs_Line_Sprite  (this one)
+;   > Print_Udgs_Line_Tile    (like this but chars are repetitive)
 ;-------------------------------------------------------------------------------
-Print_Udgs_Sprite_Line:
+Print_Udgs_Line_Sprite:
 
   push DE ; save the length
 

@@ -12,7 +12,7 @@
 ; - HL: address of the first character in the sprite, passed to called function
 ;
 ; Calls:
-; - Print_Udgs_Sprite_Line
+; - Print_Udgs_Line_Sprite
 ;
 ; Note:
 ; - This sub belongs to the group of four sisters:
@@ -27,7 +27,7 @@ Print_Udgs_Sprite
     push BC            ; store the row/column information
     push DE            ; store the size in rows/columns
     :
-    call Print_Udgs_Sprite_Line
+    call Print_Udgs_Line_Sprite
     ;
     pop DE             ; restore the dimenstion
     pop BC             ; restore the row/column information

@@ -1,8 +1,8 @@
 ;===============================================================================
-; Merge_Udgs_Sprite_Line
+; Merge_Udgs_Line_Tile
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Merges a sequence of non-repetitive UDG characters at prescribed row and
+; - Merges a sequence of repetitive UDG characters at prescribed row and
 ;   column, with a given length, by directly addressing screen's pixel memory
 ;
 ; Parameters
@@ -15,12 +15,12 @@
 ;
 ; Notes:
 ; - This sub belongs to the group of four sisters:
-;   > Merge_Udgs_Sprite_Line  (this one)
-;   > Merge_Udgs_Tile_Line    (like this but chars are repetitive)
-;   > Print_Udgs_Sprite_Line  (like this but chars are printed)
-;   > Print_Udgs_Tile_Line    (like this but chars are printed & repetitive)
+;   > Merge_Udgs_Line_Sprite  (like this but chars are non-repetive)
+;   > Merge_Udgs_Line_Tile    (this one)
+;   > Print_Udgs_Line_Sprite  (like this but chars are printed & non-repetitive)
+;   > Print_Udgs_Line_Tile    (like this but chars are printed)
 ;-------------------------------------------------------------------------------
-Merge_Udgs_Sprite_Line:
+Merge_Udgs_Line_Tile:
 
   push DE ; save the length
 
@@ -37,6 +37,7 @@ Merge_Udgs_Sprite_Line:
   ; Copy the glyph definition to the screen
   ;-----------------------------------------
 .loop        ; loop through columns (length)
+    push DE  ; store character defintion
     push HL  ; store screen address
     ld A, (DE) : or(HL) : ld(HL), A : inc H : inc DE
     ld A, (DE) : or(HL) : ld(HL), A : inc H : inc DE
@@ -47,6 +48,7 @@ Merge_Udgs_Sprite_Line:
     ld A, (DE) : or(HL) : ld(HL), A : inc H : inc DE
     ld A, (DE) : or(HL) : ld(HL), A : inc H : inc DE
     pop HL      ; restore screen address
+    pop DE      ; go back to character's definition
 
     inc HL      ; move to the next column on the screen
     dec C       ; decrease the length counter

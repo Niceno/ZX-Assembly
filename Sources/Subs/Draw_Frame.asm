@@ -29,7 +29,6 @@ Draw_Frame:
   ;--------------------------
   ; Create lower left corner
   ;--------------------------
-  push AF
   push BC
   push DE
   ld A, B : add D : dec A : ld B, A  ; adjust row (B)
@@ -37,7 +36,6 @@ Draw_Frame:
   call Print_Udgs_Character
   pop DE
   pop BC
-  pop AF
 
   ;---------------------------
   ; Create lower right corner
@@ -60,7 +58,7 @@ Draw_Frame:
   dec E            ; don't overwrite the corner piece
   dec E            ; don't overwrite the corner piece
   ld HL, frame_up
-  call Print_Udgs_Tile_Line
+  call Print_Udgs_Line_Tile
   pop DE
   pop BC
 
@@ -74,7 +72,7 @@ Draw_Frame:
   dec E                              ; don't overwrite the corner piece
   dec E                              ; don't overwrite the corner piece
   ld HL, frame_down
-  call Print_Udgs_Tile_Line
+  call Print_Udgs_Line_Tile
   pop DE
   pop BC
 
