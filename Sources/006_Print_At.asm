@@ -145,5 +145,5 @@ custom_font:
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
-  savebin "bojan.bin", Main, $ - Main
+  savesna "bojan_006.sna", Main
+  savebin "bojan_006.bin", Main, $ - Main

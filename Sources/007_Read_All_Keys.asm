@@ -147,7 +147,7 @@ Main:
   include "Subs/Color_Line.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Print_Character.asm"
-  include "Subs/Print_Udgs_Character.asm"
+  include "Subs/Udgs/Print_Character.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -198,5 +198,5 @@ mem_spac:  defb $00, $00, $00, $00, $00, $42, $7E, $00
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
-  savebin "bojan.bin", Main, $ - Main
+  savesna "bojan_007.sna", Main
+  savebin "bojan_007.bin", Main, $ - Main

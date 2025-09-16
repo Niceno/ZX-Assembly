@@ -1,5 +1,5 @@
 ;===============================================================================
-; Create_Viewport
+; Viewport_Create
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Creates a viewport
@@ -8,7 +8,7 @@
 ; - BC: upper left row and column coordinate
 ; - DE: dimensions of the viewport in rows and columns
 ;-------------------------------------------------------------------------------
-Create_Viewport:
+Viewport_Create:
 
   ;--------------------
   ;

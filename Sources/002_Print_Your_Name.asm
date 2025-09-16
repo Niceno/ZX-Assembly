@@ -73,5 +73,5 @@ bojan_string:  defb "Bojan Niceno", 0
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
-  savebin "bojan.bin", Main, $ - Main
+  savesna "bojan_002.sna", Main
+  savebin "bojan_002.bin", Main, $ - Main

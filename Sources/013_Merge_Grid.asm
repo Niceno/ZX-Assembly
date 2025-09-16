@@ -46,12 +46,12 @@ Main:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
-  include "Subs/Print_Udgs_Character.asm"
-  include "Subs/Print_Udgs_Line_Tile.asm"
-  include "Subs/Print_Udgs_Tile.asm"
-  include "Subs/Merge_Udgs_Character.asm"
-  include "Subs/Merge_Udgs_Line_Sprite.asm"
-  include "Subs/Merge_Udgs_Sprite.asm"
+  include "Subs/Udgs/Print_Character.asm"
+  include "Subs/Udgs/Print_Line_Tile.asm"
+  include "Subs/Udgs/Print_Tile.asm"
+  include "Subs/Udgs/Merge_Character.asm"
+  include "Subs/Udgs/Merge_Line_Sprite.asm"
+  include "Subs/Udgs/Merge_Sprite.asm"
   include "Subs/Merge_Grid.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,5 +68,5 @@ udgs:
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
-  savebin "bojan.bin", Main, $ - Main
+  savesna "bojan_013.sna", Main
+  savebin "bojan_013.bin", Main, $ - Main

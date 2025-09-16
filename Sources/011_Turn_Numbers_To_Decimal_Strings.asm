@@ -62,7 +62,7 @@ Main:  ; If the adress is that of a subroutine, end it up with  suffix
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Open_Upper_Screen.asm"
-  include "Subs/Merge_Udgs_Character.asm"
+  include "Subs/Udgs/Merge_Character.asm"
   include "Subs/Calculate_Screen_Attribute_Address.asm"
   include "Subs/Color_Line.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
@@ -84,5 +84,5 @@ number_source:
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
-  savebin "bojan.bin", Main, $ - Main
+  savesna "bojan_011.sna", Main
+  savebin "bojan_011.bin", Main, $ - Main

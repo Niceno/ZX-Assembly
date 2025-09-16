@@ -584,7 +584,7 @@ Main:
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Print_String.asm"
-  include "Subs/Print_Udgs_Character.asm"
+  include "Subs/Udgs/Print_Character.asm"
   include "Subs/Delay.asm"
   include "Subs/Print_08_Bit_Number.asm"
 
@@ -691,5 +691,5 @@ curr_mask_addr: defw 0
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
-  savebin "bojan.bin", Main, $ - Main
+  savesna "bojan_008.sna", Main
+  savebin "bojan_008.bin", Main, $ - Main

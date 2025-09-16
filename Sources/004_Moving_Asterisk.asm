@@ -81,5 +81,5 @@ space_to_print:  defb  CHAR_SPACE
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
-  savebin "bojan.bin", Main, $ - Main
+  savesna "bojan_004.sna", Main
+  savebin "bojan_004.bin", Main, $ - Main

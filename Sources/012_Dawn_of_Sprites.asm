@@ -49,25 +49,25 @@ Main:
   ; Create the viewport
   ;---------------------
   ld A, WHITE_PAPER + BLUE_INK
-  ld B,  2  ; upper left row
-  ld C,  2  ; upper left column
-  ld D, 20  ; lower right row
-  ld E, 24  ; lower right column
-  call Create_Viewport
+  ld B,  2  ; row
+  ld C,  2  ; column
+  ld D, 20  ; height of the viewport
+  ld E, 24  ; length of the viewport
+  call Viewport_Create
 
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld B, 10  ; upper left row
-  ld C, 11  ; upper left column
+  ld B, 10  ; row
+  ld C, 11  ; column
   ld D,  4  ; height of the sprite (in rows)
   ld E,  6  ; length of the sprite (in columns)
   ld HL, monster_01
   call Print_Udgs_Tile
 
   ld A,  RED_INK + YELLOW_PAPER
-  ld B, 10  ; upper left row
-  ld C, 11  ; upper left column
+  ld B, 10  ; row
+  ld C, 11  ; column
   ld D,  4  ; height in rows
   ld E,  6  ; length in columns
   call Color_Tile
@@ -75,16 +75,16 @@ Main:
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld B,  2  ; upper left row
-  ld C, 19  ; upper left column
+  ld B,  2  ; row
+  ld C, 19  ; column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
   ld HL, circle_q1
   call Print_Udgs_Sprite
 
   ld A,  BLACK_INK + WHITE_PAPER
-  ld B,  2  ; upper left row
-  ld C, 19  ; upper left column
+  ld B,  2  ; row
+  ld C, 19  ; column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
   call Color_Tile
@@ -92,16 +92,16 @@ Main:
   ;--------------------------------------------------------------
   ; Initialize coordinates and size of the box and print the box
   ;--------------------------------------------------------------
-  ld B,  9  ; upper left row
-  ld C,  2  ; upper left column
+  ld B,  9  ; row
+  ld C,  2  ; column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
   ld HL, circle_q1
   call Print_Udgs_Sprite
 
   ld A,  RED_INK + WHITE_PAPER
-  ld B,  9  ; upper left row
-  ld C,  2  ; upper left column
+  ld B,  9  ; row
+  ld C,  2  ; column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
   call Color_Tile
@@ -145,10 +145,10 @@ Main:
   ;-----------------------------------------------------
   call Merge_Grid
 
-  ; call Scroll_Viewport_Attributes_Up
-  ; call Scroll_Viewport_Attributes_Down
-  call Scroll_Viewport_Attributes_Left
-  ; call Scroll_Viewport_Attributes_Right
+  ; call Viewport_SCroll_Attributes_Up
+  ; call Viewport_SCroll_Attributes_Down
+  call Viewport_SCroll_Attributes_Left
+  ; call Viewport_SCroll_Attributes_Right
 
   ret
 
@@ -161,23 +161,23 @@ Main:
   include "Subs/Color_Line.asm"
   include "Subs/Color_Tile.asm"
   include "Subs/Draw_Frame.asm"
-  include "Subs/Create_Viewport.asm"
-  include "Subs/Scroll_Viewport_Attributes_Up.asm"
-  include "Subs/Scroll_Viewport_Attributes_Down.asm"
-  include "Subs/Scroll_Viewport_Attributes_Left.asm"
-  include "Subs/Scroll_Viewport_Attributes_Right.asm"
+  include "Subs/Viewport/Create.asm"
+  include "Subs/Viewport/SCroll_Attributes_Up.asm"
+  include "Subs/Viewport/SCroll_Attributes_Down.asm"
+  include "Subs/Viewport/SCroll_Attributes_Left.asm"
+  include "Subs/Viewport/SCroll_Attributes_Right.asm"
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
-  include "Subs/Print_Udgs_Character.asm"
-  include "Subs/Print_Udgs_Line_Tile.asm"
-  include "Subs/Print_Udgs_Tile.asm"
-  include "Subs/Print_Udgs_Line_Sprite.asm"
-  include "Subs/Print_Udgs_Sprite.asm"
-  include "Subs/Merge_Udgs_Character.asm"
-  include "Subs/Merge_Udgs_Line_Sprite.asm"
-  include "Subs/Merge_Udgs_Sprite.asm"
-  include "Subs/Merge_Udgs_Line_Tile.asm"
-  include "Subs/Merge_Udgs_Tile.asm"
+  include "Subs/Udgs/Print_Character.asm"
+  include "Subs/Udgs/Print_Line_Tile.asm"
+  include "Subs/Udgs/Print_Tile.asm"
+  include "Subs/Udgs/Print_Line_Sprite.asm"
+  include "Subs/Udgs/Print_Sprite.asm"
+  include "Subs/Udgs/Merge_Character.asm"
+  include "Subs/Udgs/Merge_Line_Sprite.asm"
+  include "Subs/Udgs/Merge_Sprite.asm"
+  include "Subs/Udgs/Merge_Line_Tile.asm"
+  include "Subs/Udgs/Merge_Tile.asm"
   include "Subs/Merge_Grid.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -235,5 +235,5 @@ frame_right: defb $ED, $ED, $ED, $ED, $ED, $ED, $ED, $ED
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
-  savebin "bojan.bin", Main, $ - Main
+  savesna "bojan_012.sna", Main
+  savebin "bojan_012.bin", Main, $ - Main

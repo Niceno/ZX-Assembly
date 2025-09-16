@@ -79,7 +79,7 @@ Main:
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Delay.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
-  include "Subs/Print_Udgs_Character.asm"
+  include "Subs/Udgs/Print_Character.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -107,5 +107,5 @@ space_to_print:  defb $00, $00, $00, $00, $00, $00, $00, $00
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
-  savebin "bojan.bin", Main, $ - Main
+  savesna "bojan_005.sna", Main
+  savebin "bojan_005.bin", Main, $ - Main

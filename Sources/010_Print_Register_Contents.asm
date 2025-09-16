@@ -86,8 +86,8 @@ Main:
   include "Subs/Color_Line.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Print_Character.asm"
-  include "Subs/Print_Udgs_Character.asm"
-  include "Subs/Merge_Udgs_Character.asm"
+  include "Subs/Udgs/Print_Character.asm"
+  include "Subs/Udgs/Merge_Character.asm"
   include "Subs/Print_Registers.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -105,5 +105,5 @@ z80_string: defb "Z80 is superb!", 0
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan.sna", Main
-  savebin "bojan.bin", Main, $ - Main
+  savesna "bojan_010.sna", Main
+  savebin "bojan_010.bin", Main, $ - Main

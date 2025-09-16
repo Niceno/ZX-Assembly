@@ -1,5 +1,5 @@
 ;===============================================================================
-; Scroll_Viewport_Attributes_Left
+; Viewport_SCroll_Attributes_Left
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Scrolls the attributes inside the viewport left
@@ -10,7 +10,7 @@
 ; Clobbers:
 ; - AF, BC, DE, HL, IX
 ;-------------------------------------------------------------------------------
-Scroll_Viewport_Attributes_Left
+Viewport_SCroll_Attributes_Left
 
   ld IX, viewport_attribute_metadata
 

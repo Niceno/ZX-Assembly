@@ -1,5 +1,5 @@
 ;===============================================================================
-; Scroll_Viewport_Attributes_Up
+; Viewport_SCroll_Attributes_Up
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Scrolls the attributes inside the viewport up
@@ -10,7 +10,7 @@
 ; Clobbers:
 ; - AF, BC, DE, HL, IX
 ;-------------------------------------------------------------------------------
-Scroll_Viewport_Attributes_Up
+Viewport_SCroll_Attributes_Up
 
   ld IX, viewport_attribute_metadata
 
