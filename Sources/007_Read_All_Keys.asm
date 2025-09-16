@@ -144,7 +144,9 @@ Main:
     call Print_Udgs_Character
     pop DE
 
-
+    ;-----------------------------
+    ; Print the register contents
+    ;-----------------------------
     ld B,  0                  ; row
     ld C, 12                  ; column
     ld H,  0                  ; number to print
@@ -157,6 +159,21 @@ Main:
     ld C, 12                  ; column
     ld H,  0                  ; number to print
     ld L,  E                  ; number to print
+    push DE
+    call Print_08_Bit_Number
+    pop DE
+
+    ; Form the unique key code in A and copy it to HL
+    ld A, E  ; load the accumulator with bits (%000...%100)
+    sla A
+    sla A
+    sla A      ; if E was %100, A would now be %100000 (32)
+    or D       ; if D was %111, A would now be %100111 (39)
+    ld H, 0
+    ld L, A
+    ; Print the unique key
+    ld B,  2   ; row
+    ld C, 12   ; column
     push DE
     call Print_08_Bit_Number
     pop DE
