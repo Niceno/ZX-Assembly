@@ -271,7 +271,7 @@ Main:
   include "Global_Data.inc"
 
 udgs:
-  include "Grid_Cont_Dot.inc"
+  include "Subs/Grid_Cont_Dot.inc"
 
 ; The 8x8 sprites which follow, were created with the command:
 ; python.exe .\convert_sprite_8x8.py .\[name].8x8 in the directory Figures

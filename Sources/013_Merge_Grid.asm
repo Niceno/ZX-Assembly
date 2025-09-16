@@ -63,7 +63,7 @@ Main:
 
 udgs:
 
-  include "Grid_Cont_Dot.inc"
+  include "Subs/Grid_Cont_Dot.inc"
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
