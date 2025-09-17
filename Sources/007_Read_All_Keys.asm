@@ -67,24 +67,6 @@ unique_code:  defb "Unique code:", 0
   ld A, BLUE_INK + CYAN_PAPER
   call Color_Tile
 
-  ;--------------------------------------------------------------------
-  ; Wait until a key is pressed
-  ;
-  ; Just to make sure these constructs are clear:
-  ; - We load the contents of a "KEYS_....." port into BC register
-  ; - Then we read from the port addressed by BC, and stores the
-  ;   result in A (this is what "in" command does.
-  ; - Then we compare a particular bit of A using the bit command
-  ;   (The bit command only modifies the Zero (Z) flag.
-  ;    > If the tested bit is 1, the Z flag is reset to 0.
-  ;    > If the tested bit is 0, the Z flag is set to 1.
-  ; - When the zero flag is zero (i.e., key is pressed), we jump to
-  ;   the label that handles printing that key.
-  ;
-  ; (It would be better to use "jr z, Address" here, but there
-  ;  are simply too many keys now.  When it gets smaller again.)
-  ;--------------------------------------------------------------------
-
   ;--------------------------------
   ;
   ; Infinite loop for reading keys
@@ -92,55 +74,11 @@ unique_code:  defb "Unique code:", 0
   ;--------------------------------
 .outer_infinite_loop:
 
-    ;-------------------------------------------------------------
-    ; Set the HL to point to the beginning of array all_key_ports
-    ;-------------------------------------------------------------
-    ld HL, all_key_ports
+  call Browse_Key_Rows             ; outputs unique code in A, and flag in C
+  bit 0, C                         ; was a key pressed?
+  jr nz, .process_the_pressed_key  ; if a key was pressed process it
 
-    ;------------------------------
-    ; There are eight rows of keys
-    ;------------------------------
-    ld D, 0              ; there are eight rows of keys
-
-.browse_key_rows:
-
-      ; Keyboard row; load the port number into BC indirectly through HL
-      ld C, (HL)  ; low byte into C
-      inc HL
-      ld B, (HL)  ; high byte into B
-      inc HL
-
-      ; Read key states (1 = not pressed, 0 = pressed)
-      in A, (C)
-      and  %00011111  ; only bits 0..4 matter
-      bit 0, A : ld E, 0 : jp z, .a_key_pressed
-      bit 1, A : ld E, 1 : jp z, .a_key_pressed
-      bit 2, A : ld E, 2 : jp z, .a_key_pressed
-      bit 3, A : ld E, 3 : jp z, .a_key_pressed
-      bit 4, A : ld E, 4 : jp z, .a_key_pressed
-
-      ; Jump the section for when a key is pressed
-      jr .no_key_pressed
-
-.a_key_pressed
-      ; Form the unique key code here from the
-      ; values in D (key row) and E (key bit)
-      ld A, E  ; A now holds a value from 0 to 4 (%000 to %100)
-      sla A
-      sla A
-      sla A    ; if E was %100, A would now be %100000 (32)
-      or D     ; if D was %111, A would now be %100111 (39)
-      jr .process_the_pressed_key
-
-.no_key_pressed
-      ; Go up to D is 8, untill all ports are exhausted
-      inc D
-      ld A, D
-      cp 8
-
-    jr nz, .browse_key_rows        ; go for the next key row
-
-    jr z,  .outer_infinite_loop    ; if not pressed, repeat loop
+  jr .outer_infinite_loop          ; if not pressed, repeat loop
 
   ;----------------------------
   ;
@@ -224,6 +162,7 @@ unique_code:  defb "Unique code:", 0
   include "Subs/Color_Tile.asm"
   include "Subs/Print_String.asm"
   include "Subs/Print_08_Bit_Number.asm"
+  include "Subs/Browse_Key_Rows.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
