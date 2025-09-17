@@ -38,6 +38,7 @@ Main:
 
   ;--------------------------------------
   ; Print DE register names and contents
+  ; as well as the text for unique code
   ;--------------------------------------
   ld B,  0           ; row
   ld C,  0           ; column
@@ -47,13 +48,21 @@ Main:
   ld C,  0           ; column
   ld HL, reg_e
   call Print_String  ; HL & BC are the parameter
+  ld B,  2           ; row
+  ld C,  0           ; column
+  ld HL, unique_code
+  call Print_String  ; HL & BC are the parameter
+
+reg_d:        defb "D (key row):", 0
+reg_e:        defb "E (key bit):", 0
+unique_code:  defb "Unique code:", 0
 
   ;---------------------------------
   ; Color the box for the registers
   ;---------------------------------
   ld B,  0  ; row
   ld C,  0  ; column
-  ld D,  2
+  ld D,  3
   ld E, 15
   ld A, BLUE_INK + CYAN_PAPER
   call Color_Tile
@@ -109,27 +118,28 @@ Main:
 
       ; Read key states (1 = not pressed, 0 = pressed)
       in A, (C)
-      bit 0, A : inc IX : inc IX : ld E, 0 : jp z, .print_the_pressed_key
-      bit 1, A : inc IX : inc IX : ld E, 1 : jp z, .print_the_pressed_key
-      bit 2, A : inc IX : inc IX : ld E, 2 : jp z, .print_the_pressed_key
-      bit 3, A : inc IX : inc IX : ld E, 3 : jp z, .print_the_pressed_key
-      bit 4, A : inc IX : inc IX : ld E, 4 : jp z, .print_the_pressed_key
+      and  %00011111  ; only bits 0..4 matter
+      bit 0, A : inc IX : inc IX : ld E, 0 : jp z, .process_the_pressed_key
+      bit 1, A : inc IX : inc IX : ld E, 1 : jp z, .process_the_pressed_key
+      bit 2, A : inc IX : inc IX : ld E, 2 : jp z, .process_the_pressed_key
+      bit 3, A : inc IX : inc IX : ld E, 3 : jp z, .process_the_pressed_key
+      bit 4, A : inc IX : inc IX : ld E, 4 : jp z, .process_the_pressed_key
 
       ; Go up to D is 8
       inc D
       ld A, D
       cp 8
 
-    jr nz, .browse_key_rows
+    jr nz, .browse_key_rows        ; go for the next key row
 
-  jp .outer_infinite_loop    ; if not pressed, repeat loop
+    jr z,  .outer_infinite_loop    ; if not pressed, repeat loop
 
   ;----------------------------
   ;
   ; Print the proper character
   ;
   ;----------------------------
-.print_the_pressed_key:
+.process_the_pressed_key:
 
     ; At this point, D holds the key port and E the bit which is pressed
 
@@ -163,12 +173,15 @@ Main:
     call Print_08_Bit_Number
     pop DE
 
+    ;-------------------------------------------------
     ; Form the unique key code in A and copy it to HL
-    ld A, E  ; load the accumulator with bits (%000...%100)
+    ;-------------------------------------------------
+    ld A, E    ; load the accumulator with bits (%000...%100)
     sla A
     sla A
     sla A      ; if E was %100, A would now be %100000 (32)
     or D       ; if D was %111, A would now be %100111 (39)
+    ; The unique key code is now in HL, but it fits into L only
     ld H, 0
     ld L, A
     ; Print the unique key
@@ -227,9 +240,6 @@ mem_ente:  defb $00, $02, $12, $32, $7E, $30, $10, $00
 mem_caps:  defb $00, $10, $38, $7C, $10, $10, $10, $00
 mem_symb:  defb $00, $7E, $4E, $4E, $72, $72, $7E, $00
 mem_spac:  defb $00, $00, $00, $00, $00, $42, $7E, $00
-
-reg_d:  defb "D (key row):", 0
-reg_e:  defb "E (key bit):", 0
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
