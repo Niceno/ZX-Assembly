@@ -44,13 +44,12 @@ KEY_H     equ  37
 KEY_V     equ  38
 KEY_B     equ  39
 
-
 ;----------------------------------------------------------------
 ; The addresses of all characters you can get from Spectrum keys
 ; sorted by unique key codes. (Standard ones are taken from ROM,
 ; but special keys had to be replaced by UDGs, of course)
 ;----------------------------------------------------------------
-all_characters_mem_coded
+all_characters_mem_coded:
 
   defw  MEM_1
   defw  MEM_0
@@ -96,4 +95,12 @@ all_characters_mem_coded
   defw  MEM_H_UPP
   defw  MEM_V_UPP
   defw  MEM_B_UPP
+
+;------------------------------------------
+; User defined characters for special keys
+;------------------------------------------
+mem_ente:  defb $00, $02, $12, $32, $7E, $30, $10, $00
+mem_caps:  defb $00, $10, $38, $7C, $10, $10, $10, $00
+mem_symb:  defb $00, $7E, $4E, $4E, $72, $72, $7E, $00
+mem_spac:  defb $00, $00, $00, $00, $00, $42, $7E, $00
 

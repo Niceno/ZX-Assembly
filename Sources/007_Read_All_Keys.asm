@@ -87,12 +87,6 @@ unique_code:  defb "Unique code:", 0
   ;----------------------------
 .process_the_pressed_key:
 
-    ; At this point, D holds the key port and E the bit which is pressed
-
-    ;-----------------------------------------------------------
-    ; Form the unique key code in A and copy it to HL and stack
-    ;-----------------------------------------------------------
-
     ; Place the unique key in HL (for printing) and on stack
     ld H, 0
     ld L, A
@@ -171,14 +165,6 @@ unique_code:  defb "Unique code:", 0
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Global_Data.inc"
   include "Unique_Key_Codes_Sorted_By_Values.inc"
-
-;------------------------------------------
-; User defined characters for special keys
-;------------------------------------------
-mem_ente:  defb $00, $02, $12, $32, $7E, $30, $10, $00
-mem_caps:  defb $00, $10, $38, $7C, $10, $10, $10, $00
-mem_symb:  defb $00, $7E, $4E, $4E, $72, $72, $7E, $00
-mem_spac:  defb $00, $00, $00, $00, $00, $42, $7E, $00
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main

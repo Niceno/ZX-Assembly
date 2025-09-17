@@ -148,82 +148,103 @@ Main:
   ;---------------------------
   ; Check attribute scrolling
   ;---------------------------
+.outer_loop_for_attributes:
 
-  ; Go up
+  call Browse_Key_Rows             ; outputs unique code in A, and flag in C
+  bit 0, C                         ; was a key pressed?
+  jr nz, .process_the_pressed_key  ; if a key was pressed process it
+
+  jr .outer_loop_for_attributes          ; if not pressed, repeat loop
+
+.process_the_pressed_key:
+
+  push AF  ; store the unique code
   call Press_Any_Key
+  pop AF
+
+  cp KEY_7
+  jr nz, .key_for_up_attributes
   call Viewport_Scroll_Attributes_Up
-  call Unpress
+.key_for_up_attributes
 
-  ; Go down twice
-  call Press_Any_Key
+  cp KEY_6
+  jr nz, .key_for_down_attributes
   call Viewport_Scroll_Attributes_Down
-  call Unpress
-  call Press_Any_Key
-  call Viewport_Scroll_Attributes_Down
-  call Unpress
+.key_for_down_attributes
 
-  ; Go back up
-  call Press_Any_Key
-  call Viewport_Scroll_Attributes_Up
-  call Unpress
-
-  ; Go left
-  call Press_Any_Key
+  cp KEY_5
+  jr nz, .key_for_left_attributes
   call Viewport_Scroll_Attributes_Left
-  call Unpress
+.key_for_left_attributes
 
-  ; Go right twice
-  call Press_Any_Key
+  cp KEY_8
+  jr nz, .key_for_right_attributes
   call Viewport_Scroll_Attributes_Right
-  call Unpress
-  call Press_Any_Key
-  call Viewport_Scroll_Attributes_Right
-  call Unpress
+.key_for_right_attributes
 
-  ; Go back left
-  call Press_Any_Key
-  call Viewport_Scroll_Attributes_Left
+  cp KEY_0
+  jr nz, .key_for_exit_attributes
+  jr .get_out_of_attributes
+.key_for_exit_attributes
+
+  push AF  ; store the unique code
+  call Unpress
+  pop AF
+
+  jr .outer_loop_for_attributes
+
+.get_out_of_attributes
   call Unpress
 
   ;-----------------------
   ; Check pixel scrolling
   ;-----------------------
+.outer_loop_for_pixels:
 
-  ; Go up
+  call Browse_Key_Rows              ; outputs unique code in A, and flag in C
+  bit 0, C                          ; was a key pressed?
+  jr nz, .process_the_pixel_scroll  ; if a key was pressed process it
+
+  jr .outer_loop_for_pixels         ; if not pressed, repeat loop
+
+.process_the_pixel_scroll:
+
+  push AF  ; store the unique code
   call Press_Any_Key
+  pop AF
+
+  cp KEY_7
+  jr nz, .key_for_up_pixels
   call Viewport_Scroll_Pixels_Up
-  call Unpress
+.key_for_up_pixels
 
-  ; Go down twice
-  call Press_Any_Key
+  cp KEY_6
+  jr nz, .key_for_down_pixels
   call Viewport_Scroll_Pixels_Down
-  call Unpress
-  call Press_Any_Key
-  call Viewport_Scroll_Pixels_Down
-  call Unpress
+.key_for_down_pixels
 
-  ; Go back up
-  call Press_Any_Key
-  call Viewport_Scroll_Pixels_Up
-  call Unpress
-
-  ; Go left
-  call Press_Any_Key
+  cp KEY_5
+  jr nz, .key_for_left_pixels
   call Viewport_Scroll_Pixels_Left
-  call Unpress
+.key_for_left_pixels
 
-  ; Go right twice
-  call Press_Any_Key
+  cp KEY_8
+  jr nz, .key_for_right_pixels
   call Viewport_Scroll_Pixels_Right
-  call Unpress
-  call Press_Any_Key
-  call Viewport_Scroll_Pixels_Right
-  call Unpress
+.key_for_right_pixels
 
-  ; Go back left
-  call Press_Any_Key
-  call Viewport_Scroll_Pixels_Left
+  cp KEY_0
+  jr nz, .key_for_exit_pixels
+  jr .get_out_of_pixels
+.key_for_exit_pixels
+
+  push AF  ; store the unique code
   call Unpress
+  pop AF
+
+  jr .outer_loop_for_pixels
+
+.get_out_of_pixels
 
   ret
 
@@ -262,6 +283,7 @@ Main:
   include "Subs/Merge_Grid.asm"
   include "Subs/Press_Any_Key.asm"
   include "Subs/Unpress.asm"
+  include "Subs/Browse_Key_Rows.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -269,6 +291,7 @@ Main:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Global_Data.inc"
+  include "Unique_Key_Codes_Sorted_By_Values.inc"
 
 udgs:
   include "Subs/Grid_Cont_Dot.inc"
@@ -287,22 +310,10 @@ arrow_left:      defb $10, $30, $4F, $81, $81, $4F, $30, $10
 arrow_right:     defb $08, $0C, $F2, $81, $81, $F2, $0C, $08
 space_to_print:  defb $00, $00, $00, $00, $00, $00, $00, $00
 
-; old: circle_q1: defb $03, $0C, $10, $20, $40, $40, $80, $80
-; old: circle_q2: defb $C0, $30, $08, $04, $02, $02, $01, $01
-; old: circle_q3: defb $80, $80, $40, $40, $20, $10, $0C, $03
-; old: circle_q4: defb $01, $01, $02, $02, $04, $08, $30, $C0
-
-circle_q1: ;
-  defb $03, $0F, $13, $33, $4F, $4F, $FF, $7F
-
-circle_q2: ;
-  defb $C0, $F0, $F8, $FC, $FE, $FE, $FF, $FE ;
-
-circle_q3: ;
-  defb $BF, $CF, $70, $7F, $3F, $1F, $0F, $03 ;
-
-circle_q4: ;
-  defb $FD, $F3, $0E, $FE, $FC, $F8, $F0, $C0 ;
+circle_q1:  defb $03, $0F, $13, $33, $4F, $4F, $FF, $7F
+circle_q2:  defb $C0, $F0, $F8, $FC, $FE, $FE, $FF, $FE 
+circle_q3:  defb $BF, $CF, $70, $7F, $3F, $1F, $0F, $03 
+circle_q4:  defb $FD, $F3, $0E, $FE, $FC, $F8, $F0, $C0 
 
 ; The frame is for the viewport
 frame_q1:    defb $FF, $80, $BF, $BF, $B0, $B7, $B7, $B7
