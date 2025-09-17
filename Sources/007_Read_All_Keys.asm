@@ -113,13 +113,27 @@ unique_code:  defb "Unique code:", 0
       ; Read key states (1 = not pressed, 0 = pressed)
       in A, (C)
       and  %00011111  ; only bits 0..4 matter
-      bit 0, A : ld E, 0 : jp z, .process_the_pressed_key
-      bit 1, A : ld E, 1 : jp z, .process_the_pressed_key
-      bit 2, A : ld E, 2 : jp z, .process_the_pressed_key
-      bit 3, A : ld E, 3 : jp z, .process_the_pressed_key
-      bit 4, A : ld E, 4 : jp z, .process_the_pressed_key
+      bit 0, A : ld E, 0 : jp z, .a_key_pressed
+      bit 1, A : ld E, 1 : jp z, .a_key_pressed
+      bit 2, A : ld E, 2 : jp z, .a_key_pressed
+      bit 3, A : ld E, 3 : jp z, .a_key_pressed
+      bit 4, A : ld E, 4 : jp z, .a_key_pressed
 
-      ; Go up to D is 8
+      ; Jump the section for when a key is pressed
+      jr .no_key_pressed
+
+.a_key_pressed
+      ; Form the unique key code here from the
+      ; values in D (key row) and E (key bit)
+      ld A, E  ; A now holds a value from 0 to 4 (%000 to %100)
+      sla A
+      sla A
+      sla A    ; if E was %100, A would now be %100000 (32)
+      or D     ; if D was %111, A would now be %100111 (39)
+      jr .process_the_pressed_key
+
+.no_key_pressed
+      ; Go up to D is 8, untill all ports are exhausted
       inc D
       ld A, D
       cp 8
@@ -141,49 +155,39 @@ unique_code:  defb "Unique code:", 0
     ; Form the unique key code in A and copy it to HL and stack
     ;-----------------------------------------------------------
 
-    ; Form the unique key in A
-    ld A, E    ; load the accumulator with bits (%000...%100)
-    sla A
-    sla A
-    sla A      ; if E was %100, A would now be %100000 (32)
-    or D       ; if D was %111, A would now be %100111 (39)
-
     ; Place the unique key in HL (for printing) and on stack
     ld H, 0
     ld L, A
-    push HL
+    push HL  ; store for later printing
 
     ; Print the unique key
-    ld B,  2   ; row
-    ld C, 12   ; column
-    push DE
+    ld B,  2                  ; row
+    ld C, 12                  ; column
+    push DE                   ; have to store them for printing below
     call Print_08_Bit_Number
     pop DE
 
     ;-----------------------------
     ; Print the register contents
-    ; (This is just for kicks)
+    ;  (This is just for kicks)
     ;-----------------------------
     ld B,  0                  ; row
     ld C, 12                  ; column
     ld H,  0                  ; number to print
     ld L,  D                  ; number to print
-    push DE
+    push DE                   ; still for printing
     call Print_08_Bit_Number
-    pop DE  ; pushed as HL above
+    pop DE
     ld B,  1                  ; row
     ld C, 12                  ; column
     ld H,  0                  ; number to print
     ld L,  E                  ; number to print
-    push DE
     call Print_08_Bit_Number
-    pop DE  ; pushed as HL above
-
-    pop DE  ; pushed as HL above
 
     ;---------------------
     ; Print the character
     ;---------------------
+    pop DE  ; pushed as HL above
 
     ; Set HL to point to the right character
     ld HL, all_characters_mem_coded
