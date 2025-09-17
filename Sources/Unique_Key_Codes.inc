@@ -1,4 +1,3 @@
-
 ; Rows 0 & 1
 KEY_1     equ   0
 KEY_2     equ   8
@@ -47,8 +46,3 @@ KEY_N     equ  31
 KEY_M     equ  23
 KEY_symb  equ  15
 KEY_spac  equ   7
-
-
-
-
-

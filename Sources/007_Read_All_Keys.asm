@@ -92,12 +92,6 @@ unique_code:  defb "Unique code:", 0
   ;--------------------------------
 .outer_infinite_loop:
 
-    ;--------------------------------------
-    ; Let IX point to all characters array
-    ;--------------------------------------
-    ld IX, all_characters_mem - 2  ; make sure first two increases ...
-                                   ; ... points to all_characters
-
     ;-------------------------------------------------------------
     ; Set the HL to point to the beginning of array all_key_ports
     ;-------------------------------------------------------------
@@ -119,11 +113,11 @@ unique_code:  defb "Unique code:", 0
       ; Read key states (1 = not pressed, 0 = pressed)
       in A, (C)
       and  %00011111  ; only bits 0..4 matter
-      bit 0, A : inc IX : inc IX : ld E, 0 : jp z, .process_the_pressed_key
-      bit 1, A : inc IX : inc IX : ld E, 1 : jp z, .process_the_pressed_key
-      bit 2, A : inc IX : inc IX : ld E, 2 : jp z, .process_the_pressed_key
-      bit 3, A : inc IX : inc IX : ld E, 3 : jp z, .process_the_pressed_key
-      bit 4, A : inc IX : inc IX : ld E, 4 : jp z, .process_the_pressed_key
+      bit 0, A : ld E, 0 : jp z, .process_the_pressed_key
+      bit 1, A : ld E, 1 : jp z, .process_the_pressed_key
+      bit 2, A : ld E, 2 : jp z, .process_the_pressed_key
+      bit 3, A : ld E, 3 : jp z, .process_the_pressed_key
+      bit 4, A : ld E, 4 : jp z, .process_the_pressed_key
 
       ; Go up to D is 8
       inc D
@@ -143,19 +137,32 @@ unique_code:  defb "Unique code:", 0
 
     ; At this point, D holds the key port and E the bit which is pressed
 
-    ;---------------------
-    ; Print the character
-    ;---------------------
-    ld H, (IX+1)  ; address of the character to print
-    ld L, (IX+0)  ; address of the character to print
-    ld B, 12      ; row
-    ld C, 16      ; column
+    ;-----------------------------------------------------------
+    ; Form the unique key code in A and copy it to HL and stack
+    ;-----------------------------------------------------------
+
+    ; Form the unique key in A
+    ld A, E    ; load the accumulator with bits (%000...%100)
+    sla A
+    sla A
+    sla A      ; if E was %100, A would now be %100000 (32)
+    or D       ; if D was %111, A would now be %100111 (39)
+
+    ; Place the unique key in HL (for printing) and on stack
+    ld H, 0
+    ld L, A
+    push HL
+
+    ; Print the unique key
+    ld B,  2   ; row
+    ld C, 12   ; column
     push DE
-    call Print_Udgs_Character
+    call Print_08_Bit_Number
     pop DE
 
     ;-----------------------------
     ; Print the register contents
+    ; (This is just for kicks)
     ;-----------------------------
     ld B,  0                  ; row
     ld C, 12                  ; column
@@ -163,33 +170,37 @@ unique_code:  defb "Unique code:", 0
     ld L,  D                  ; number to print
     push DE
     call Print_08_Bit_Number
-    pop DE
-
+    pop DE  ; pushed as HL above
     ld B,  1                  ; row
     ld C, 12                  ; column
     ld H,  0                  ; number to print
     ld L,  E                  ; number to print
     push DE
     call Print_08_Bit_Number
-    pop DE
+    pop DE  ; pushed as HL above
 
-    ;-------------------------------------------------
-    ; Form the unique key code in A and copy it to HL
-    ;-------------------------------------------------
-    ld A, E    ; load the accumulator with bits (%000...%100)
-    sla A
-    sla A
-    sla A      ; if E was %100, A would now be %100000 (32)
-    or D       ; if D was %111, A would now be %100111 (39)
-    ; The unique key code is now in HL, but it fits into L only
-    ld H, 0
-    ld L, A
-    ; Print the unique key
-    ld B,  2   ; row
-    ld C, 12   ; column
-    push DE
-    call Print_08_Bit_Number
-    pop DE
+    pop DE  ; pushed as HL above
+
+    ;---------------------
+    ; Print the character
+    ;---------------------
+
+    ; Set HL to point to the right character
+    ld HL, all_characters_mem_coded
+    add HL, DE
+    add HL, DE
+
+    ; Load DE with the address to whihc HL correctly points
+    ld E, (HL)
+    inc HL
+    ld D, (HL)
+
+    ; Swap DE and HL
+    ex DE, HL
+
+    ld B, 12      ; row
+    ld C, 16      ; column
+    call Print_Udgs_Character
 
   jp .outer_infinite_loop
 
@@ -216,22 +227,7 @@ unique_code:  defb "Unique code:", 0
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Global_Data.inc"
-
-;----------------------------------------------------------------
-; The addresses of all characters you can get from Spectrum keys
-; (Standard ones are taken from ROM, but some had to be replaced
-;  by UDGs, of course)
-;----------------------------------------------------------------
-all_characters_mem:
-; Ordered by their bit positions in keyboard ports
-  defw MEM_1,      MEM_2,      MEM_3,      MEM_4,      MEM_5
-  defw MEM_0,      MEM_9,      MEM_8,      MEM_7,      MEM_6      ; reversed
-  defw MEM_Q_UPP,  MEM_W_UPP,  MEM_E_UPP,  MEM_R_UPP,  MEM_T_UPP
-  defw MEM_P_UPP,  MEM_O_UPP,  MEM_I_UPP,  MEM_U_UPP,  MEM_Y_UPP  ; reversed
-  defw MEM_A_UPP,  MEM_S_UPP,  MEM_D_UPP,  MEM_F_UPP,  MEM_G_UPP
-  defw mem_ente,   MEM_L_UPP,  MEM_K_UPP,  MEM_J_UPP,  MEM_H_UPP  ; reversed
-  defw mem_caps,   MEM_Z_UPP,  MEM_X_UPP,  MEM_C_UPP,  MEM_V_UPP
-  defw mem_spac,   mem_symb,   MEM_M_UPP,  MEM_N_UPP,  MEM_B_UPP  ; reversed
+  include "Unique_Key_Codes_Sorted_By_Values.inc"
 
 ;------------------------------------------
 ; User defined characters for special keys
