@@ -126,7 +126,7 @@ unique_code:  defb "Unique code:", 0
     add HL, DE
     add HL, DE
 
-    ; Load DE with the address to whihc HL correctly points
+    ; Load DE with the address to which HL correctly points
     ld E, (HL)
     inc HL
     ld D, (HL)
