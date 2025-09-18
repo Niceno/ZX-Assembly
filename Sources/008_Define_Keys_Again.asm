@@ -21,11 +21,23 @@
 ;-------------------------------------------------------------------------------
 Main:
 
-;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-; SECTION 0/X: PRINT DEFINED KEYS
-;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  call Main_Menu
 
-.main_menu:
+  ei   ; <--= (re)enable interrupts if you want to return to OS/BASIC
+
+  ret  ; end of the main program
+
+;===============================================================================
+; Main_Menu
+;-------------------------------------------------------------------------------
+; Purpose:
+; - draws “defined keys” page
+; - waits for R or P
+; - dispatches by calling another sub
+; - returns to caller (Main)
+;-------------------------------------------------------------------------------
+Main_Menu:
+
   call Unpress  ; unpress first
 
   call ROM_CLEAR_SCREEN           ; clear the screen
@@ -120,20 +132,25 @@ Main:
     call Browse_Key_Rows      ; A = code, C bit0 = 1 if pressed
 
     cp KEY_R                  ; is the key "R" pressed?  Set z if so
-    jr z, .define_keys 
+    call z, Define_Keys 
 
     cp KEY_P                  ; is the key "P" pressed?  Set z if so
-    jr z, .play_the_game
+    call z, Play_The_Game
 
     jr .wait_for_keys_r_or_p
 
-;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-; SECTION 1/X: DEFINE KEYS
-;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  ret  ; end of Main_Menu
 
-.define_keys:
+;===============================================================================
+; Define_Keys
+;-------------------------------------------------------------------------------
+; Purpose:
+; - Shows prompts, records 5 keys
+; - Returns to caller (menu)
+;-------------------------------------------------------------------------------
+Define_Keys:
+
   call Unpress  ; unpress first
-
 
   call ROM_CLEAR_SCREEN           ; clear the screen
 
@@ -232,13 +249,19 @@ Main:
 
   jp nz, .define_five_keys          ; loop until we've taken 5 presses
 
-  jp .main_menu
+  call Main_Menu
 
-;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-; SECTION 2/X: PLAY THE GAME
-;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  ret  ; end of Define_Keys
 
-.play_the_game:
+;===============================================================================
+; Play_The_Game
+;-------------------------------------------------------------------------------
+; Purpose:
+; - Clears screen, runs main game loop
+; - Returns to caller (menu) when done
+;-------------------------------------------------------------------------------
+Play_The_Game:
+
   call Unpress  ; unpress first
 
   call ROM_CLEAR_SCREEN           ; clear the screen
@@ -346,15 +369,9 @@ Main:
 
 .were_all_keys_pressed:
 
-  jp .main_menu
+  call Main_Menu
 
-;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-; SECTION 3/X: GAME OVER
-;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-  ei   ; <--= (re)enable interrupts if you want to return to OS/BASIC
-
-  ret  ; end of the main program
+  ret  ; end of Play_The_Game
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
