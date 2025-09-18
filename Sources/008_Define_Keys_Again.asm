@@ -274,6 +274,10 @@ Play_The_Game:
   ;
   ;-------------------------
 
+  ld HL, arrow_up
+  ld B, 11 : ld C, 15
+  call Print_Udgs_Character
+
   ;----------------
   ;
   ;
@@ -282,6 +286,17 @@ Play_The_Game:
   ;
   ;----------------
 .main_game_loop:
+
+    ; Fetch hero's coordinates and print them
+    ld IX, hero_row : ld A, (IX+0)  ; place hero's row into A
+    ld H, 0 : ld L, A               ; load HL pair with A (hero's row)
+    ld B, 0 : ld C, 0               ; set row and column
+    call Print_08_Bit_Number        ; print it
+
+    ld IX, hero_column : ld A, (IX+0)  ; place hero's column into A
+    ld H, 0 : ld L, A                  ; load HL pair with A (hero's column)
+    ld B, 1 : ld C, 0                  ; set row and column
+    call Print_08_Bit_Number           ; print it
 
     ;-----------------------------
     ;
@@ -308,8 +323,14 @@ Play_The_Game:
     cp (HL)
     jr nz, .was_the_key_for_down_pressed
 
+    ; Update coordinates
+    ld A, (hero_row)
+    dec A
+    ld (hero_row), A
+
+    ; Update sprite
     ld HL, arrow_up
-    ld B, 1 : ld C, 1
+    ld B, 11 : ld C, 15
     call Print_Udgs_Character
 
     jr .main_game_loop
@@ -322,11 +343,17 @@ Play_The_Game:
     cp (HL)
     jr nz, .was_the_key_for_left_pressed
 
+    ; Update coordinates
+    ld A, (hero_row)
+    inc A
+    ld (hero_row), A
+
+    ; Update sprite
     ld HL, arrow_down
-    ld B, 1 : ld C, 1
+    ld B, 11 : ld C, 15
     call Print_Udgs_Character
 
-    jr .main_game_loop
+    jp .main_game_loop
 
     ;-----------------
     ; Action for left
@@ -336,11 +363,17 @@ Play_The_Game:
     cp (HL)
     jr nz, .was_the_key_for_right_pressed
 
+    ; Update coordinates
+    ld A, (hero_column)
+    dec A
+    ld (hero_column), A
+
+    ; Update sprite
     ld HL, arrow_left
-    ld B, 1 : ld C, 1
+    ld B, 11 : ld C, 15
     call Print_Udgs_Character
 
-    jr .main_game_loop
+    jp .main_game_loop
 
     ;------------------
     ; Action for right
@@ -350,22 +383,29 @@ Play_The_Game:
     cp (HL)
     jr nz, .was_the_key_for_fire_pressed
 
+    ; Update coordinates
+    ld A, (hero_column)
+    inc A
+    ld (hero_column), A
+
+    ; Update sprite
     ld HL, arrow_right
-    ld B, 1 : ld C, 1
+    ld B, 11 : ld C, 15
     call Print_Udgs_Character
 
-    jr .main_game_loop
+    jp .main_game_loop
 
 .was_the_key_for_fire_pressed:
     ld HL, key_for_fire
     cp (HL)
     jr nz, .were_all_keys_pressed
 
+    ; Update sprite
     ld HL, fire
-    ld B, 1 : ld C, 1
+    ld B, 11 : ld C, 15
     call Print_Udgs_Character
 
-    jr .main_game_loop
+    jp .main_game_loop
 
 .were_all_keys_pressed:
 
@@ -397,6 +437,10 @@ Play_The_Game:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Global_Data.inc"
+
+; Hero's position
+hero_row:    defb  10
+hero_column: defb  10
 
 ;-------------------------------
 ; Storage for user defined keys
