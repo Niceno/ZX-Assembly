@@ -5,10 +5,22 @@
 ; - Creates a viewport
 ;
 ; Parameters:
-; - BC: upper left row and column coordinate
-; - DE: dimensions of the viewport in rows and columns
+; - Global constants CELL_ROW_MIN, CELL_COL_MIN, CELL_ROW_MAX and CELL_COL_MAX
+;   are used to define the Viewport.  This is introduced for the sake of
+;   efficiency, the dimensions of the viewport are practically hard coded.
 ;-------------------------------------------------------------------------------
 Viewport_Create:
+
+  ;---------------------------
+  ;   CELL_ROW_MIN
+  ;   |         CELL_ROW_MAX
+  ;   |         |
+  ; 0 1 2 3 4 5 6 7 8 9
+  ;---------------------------
+  ld B, CELL_ROW_MIN                     ; row
+  ld C, CELL_COL_MIN                     ; column
+  ld D, CELL_ROW_MAX - CELL_ROW_MIN + 1  ; viewport dimension in rows
+  ld E, CELL_COL_MAX - CELL_COL_MIN + 1  ; viewport dimension in columns
 
   ;--------------------
   ;
@@ -21,11 +33,11 @@ Viewport_Create:
   pop DE
   pop BC
 
-  ;----------------------
+  ;--------------------------------------------
   ;
-  ; Draw the frame first
+  ; Draw the frame first - if it fits, that is
   ;
-  ;----------------------
+  ;--------------------------------------------
   ld A, B : cp 0 : jr z, .skip_frame  ; if B (row) is zero, skip the frame
   ld A, C : cp 0 : jr z, .skip_frame  ; if C (column) is zero, skip the frame
   ld A, B : add D : dec A : cp CELL_ROWS - 1

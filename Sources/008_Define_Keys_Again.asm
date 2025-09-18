@@ -290,10 +290,6 @@ Play_The_Game:
   ; Create the viewport
   ;---------------------
   ld A, WHITE_PAPER + BLUE_INK
-  ld B,  1  ; row
-  ld C,  1  ; column
-  ld D, 22  ; height of the viewport
-  ld E, 26  ; length of the viewport
   call Viewport_Create
 
   ;-----------------------------------
@@ -477,8 +473,8 @@ Play_The_Game:
   include "Global_Data.inc"
 
 ; Hero's position
-hero_row:    defb  10
-hero_column: defb  10
+hero_row:    defb  127
+hero_column: defb  127
 
 ;-------------------------------
 ; Storage for user defined keys

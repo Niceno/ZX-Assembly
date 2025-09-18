@@ -49,10 +49,6 @@ Main:
   ; Create the viewport
   ;---------------------
   ld A, WHITE_PAPER + BLUE_INK
-  ld B,  0  ; row
-  ld C,  0  ; column
-  ld D, 24  ; height of the viewport
-  ld E, 32  ; length of the viewport
   call Viewport_Create
 
   ;--------------------------------------------------------------
