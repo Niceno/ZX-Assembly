@@ -21,6 +21,18 @@
 ;-------------------------------------------------------------------------------
 Main:
 
+  ;---------------
+  ; Set the color
+  ;---------------
+  ld A, BLACK_INK + CYAN_PAPER    ; load A with desired color
+  ld (MEM_STORE_SCREEN_COLOR), A  ; set the screen colors
+
+  ;----------------------
+  ; Set the border color
+  ;----------------------
+  ld A, CYAN_INK             ; load A with desired color
+  call ROM_SET_BORDER_COLOR
+
   call Main_Menu
 
   ei   ; <--= (re)enable interrupts if you want to return to OS/BASIC
@@ -274,6 +286,19 @@ Play_The_Game:
   ;
   ;-------------------------
 
+  ;---------------------
+  ; Create the viewport
+  ;---------------------
+  ld A, WHITE_PAPER + BLUE_INK
+  ld B,  1  ; row
+  ld C,  1  ; column
+  ld D, 22  ; height of the viewport
+  ld E, 26  ; length of the viewport
+  call Viewport_Create
+
+  ;-----------------------------------
+  ; Show hero at his initial position
+  ;-----------------------------------
   ld HL, arrow_up
   ld B, 11 : ld C, 15
   call Print_Udgs_Character
@@ -290,13 +315,17 @@ Play_The_Game:
     ; Fetch hero's coordinates and print them
     ld IX, hero_row : ld A, (IX+0)  ; place hero's row into A
     ld H, 0 : ld L, A               ; load HL pair with A (hero's row)
-    ld B, 0 : ld C, 0               ; set row and column
+    ld B, 0 : ld C, 29              ; set row and column
     call Print_08_Bit_Number        ; print it
 
     ld IX, hero_column : ld A, (IX+0)  ; place hero's column into A
     ld H, 0 : ld L, A                  ; load HL pair with A (hero's column)
-    ld B, 1 : ld C, 0                  ; set row and column
+    ld B, 1 : ld C, 29                 ; set row and column
     call Print_08_Bit_Number           ; print it
+
+    ; Create a little delay
+    ld B, 10
+    call Delay
 
     ;-----------------------------
     ;
@@ -418,18 +447,27 @@ Play_The_Game:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Open_Upper_Screen.asm"
   include "Subs/Calculate_Screen_Attribute_Address.asm"
   include "Subs/Color_Line.asm"
+  include "Subs/Color_Tile.asm"
+  include "Subs/Draw_Frame.asm"
+  include "Subs/Viewport/Create.asm"
+  include "Subs/Viewport/Store_Data_For_Attributes.asm"
+  include "Subs/Viewport/Store_Data_For_Pixels.asm"
+  include "Subs/Open_Upper_Screen.asm"
+  include "Subs/Calculate_Screen_Pixel_Address.asm"
+  include "Subs/Udgs/Print_Character.asm"
+  include "Subs/Udgs/Print_Line_Tile.asm"
+  include "Subs/Udgs/Print_Tile.asm"
+  include "Subs/Udgs/Print_Line_Sprite.asm"
+  include "Subs/Udgs/Print_Sprite.asm"
+  include "Subs/Browse_Key_Rows.asm"
   include "Subs/Press_Any_Key.asm"
   include "Subs/Unpress.asm"
-  include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Print_String.asm"
-  include "Subs/Udgs/Print_Character.asm"
   include "Subs/Delay.asm"
   include "Subs/Print_08_Bit_Number.asm"
-  include "Subs/Browse_Key_Rows.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

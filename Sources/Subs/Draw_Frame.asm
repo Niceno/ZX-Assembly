@@ -107,3 +107,16 @@ Draw_Frame:
 
   ret
 
+;------------------------
+; Graphics for the frame
+;------------------------
+frame_q1:    defb $FF, $80, $BF, $BF, $B0, $B7, $B7, $B7
+frame_q2:    defb $FF, $01, $FD, $FD, $0D, $ED, $ED, $ED
+frame_q3:    defb $B7, $B7, $B7, $B0, $BF, $BF, $80, $FF
+frame_q4:    defb $ED, $ED, $ED, $0D, $FD, $FD, $01, $FF
+
+frame_up:    defb $FF, $00, $FF, $FF, $00, $FF, $FF, $FF
+frame_down:  defb $FF, $FF, $FF, $00, $FF, $FF, $00, $FF
+frame_left:  defb $B7, $B7, $B7, $B7, $B7, $B7, $B7, $B7
+frame_right: defb $ED, $ED, $ED, $ED, $ED, $ED, $ED, $ED
+
