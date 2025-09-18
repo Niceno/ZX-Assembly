@@ -35,7 +35,7 @@ Main:
   ;---------------------------------------------------
   ; Print ten times using subroutine Print_String
   ;---------------------------------------------------
-  ld IX, lines_table  ; IX holds the address of lines' addresses
+  ld IX, lines_address_table  ; IX holds the address of lines' addresses
 .loop:
 
     ; Load the line address into HL
@@ -93,8 +93,8 @@ line_08:  defb "Data and code intertwined.",   0
 line_09:  defb "Machine code is poetry.",      0
 line_10:  defb "Hello world, in 48K RAM.",     0
 
-; (Optional) pointer table if you want to iterate:
-lines_table:
+; Address table for the lines
+lines_address_table:  ; this is a good name, try to stick to it
   defw line_01, line_02, line_03, line_04, line_05
   defw line_06, line_07, line_08, line_09, line_10
 
