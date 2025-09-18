@@ -72,7 +72,7 @@ KEY_B     equ  39
 ; sorted by unique key codes. (Standard ones are taken from ROM,
 ; but special keys had to be replaced by UDGs, of course)
 ;----------------------------------------------------------------
-all_characters_mem_coded:
+key_chars_address_table:
 
   defw  MEM_1
   defw  MEM_0

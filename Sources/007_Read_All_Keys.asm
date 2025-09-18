@@ -122,7 +122,7 @@ unique_code:  defb "Unique code:", 0
     pop DE  ; unique key; pushed as HL above
 
     ; Set HL to point to the right character
-    ld  IX, all_characters_mem_coded
+    ld  IX, key_chars_address_table
     add IX, DE
     add IX, DE
 

@@ -25,6 +25,11 @@ Main:
 ; SECTION 0/X: PRINT DEFINED KEYS
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+.main_menu:
+  call Unpress  ; unpress first
+
+  call ROM_CLEAR_SCREEN           ; clear the screen
+
   ld B, 0 : ld C, 0
   ld HL, text_current
   call Print_String
@@ -49,7 +54,7 @@ Main:
 
     ld L, C : ld H, 0    ; place C (count) in HL pair
     add  HL, HL          ; index * 2 (word table)
-    ld   DE, text_current_table
+    ld   DE, text_current_address_table
     add  HL, DE          ; HL -> defw entry
 
     ld   E, (HL)  ; load string ptr
@@ -79,11 +84,11 @@ Main:
 
     ld D, 0 : ld A, (HL) : ld E, A  ; load DE with the unique key code
 
-    ld IX, all_characters_mem_coded  ; add DE twice to HL ...
-    add IX, DE                       ; ... making it an offset from ...
-    add IX, DE                       ; ... all_characters_mem_coded
-    ld L, (IX+0)                     ; finally load HL with the address ...
-    ld H, (IX+1)                     ; ... pointed to by IX
+    ld IX, key_chars_address_table  ; add DE twice to IX ...
+    add IX, DE                      ; ... making it an offset from ...
+    add IX, DE                      ; ... key_chars_address_table
+    ld L, (IX+0)                    ; finally load HL with the address ...
+    ld H, (IX+1)                    ; ... pointed to by IX
 
     ld  A,  C
     add A,  A
@@ -99,19 +104,36 @@ Main:
 
   jr nz, .loop_to_print_defined_keys    ; loop until we've taken 5 presses
 
-  ;--------------------------------
+  ;---------------------------------------
   ;
   ;
-  ; Press any key to continue loop
+  ; Press R to redefine keys or P to play
   ;
   ;
-  ;--------------------------------
-  call Press_Any_Key
-  call Unpress        ; better be followed with "Unpress"
+  ;---------------------------------------
+  ld HL, text_press_r_or_p
+  ld B, 21 : ld C, 0
+  call Print_String
+
+.wait_for_keys_r_or_p
+
+    call Browse_Key_Rows      ; A = code, C bit0 = 1 if pressed
+
+    cp KEY_R                  ; is the key "R" pressed?  Set z if so
+    jr z, .define_keys 
+
+    cp KEY_P                  ; is the key "P" pressed?  Set z if so
+    jr z, .play_the_game
+
+    jr .wait_for_keys_r_or_p
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ; SECTION 1/X: DEFINE KEYS
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+.define_keys:
+  call Unpress  ; unpress first
+
 
   call ROM_CLEAR_SCREEN           ; clear the screen
 
@@ -135,7 +157,7 @@ Main:
 
     ld L, C : ld H, 0    ; place C (count) in HL pair
     add  HL, HL          ; index * 2 (word table)
-    ld   DE, text_table
+    ld   DE, text_current_address_table
     add  HL, DE          ; HL -> defw entry
 
     ld   E, (HL)  ; load string ptr
@@ -187,19 +209,19 @@ Main:
     ld (HL), A  ; store the key's unique code
 
     ; Print the key you just pressed ... quite handy
-    ld IX, all_characters_mem_coded  ; point to all key characters table
-    ld D, 0                          ; create offset from unique key code ...
-    ld E, A                          ; ... (stored in A) in the the DE pair
-    add IX, DE                       ; add the offset ...
-    add IX, DE                       ; ... to IX pair
-    ld L, (IX+0)                     ; finally load HL with the address ...
-    ld H, (IX+1)                     ; ... pointed to by IX
+    ld IX, key_chars_address_table  ; point to all key characters table
+    ld D, 0                         ; create offset from unique key code ...
+    ld E, A                         ; ... (stored in A) in the the DE pair
+    add IX, DE                      ; add the offset ...
+    add IX, DE                      ; ... to IX pair
+    ld L, (IX+0)                    ; finally load HL with the address ...
+    ld H, (IX+1)                    ; ... pointed to by IX
 
     push BC                    ; save key counter (in C)
     ld   A, C                  ; compute the row ...
     add  A, A                  ; ... as twice the counter
     ld   B, A                  ; set row
-    ld   C, 22                 ; set column
+    ld   C, 16                 ; set column
     call Print_Udgs_Character
     pop BC                     ; restore the counter
 
@@ -210,9 +232,14 @@ Main:
 
   jp nz, .define_five_keys          ; loop until we've taken 5 presses
 
+  jp .main_menu
+
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ; SECTION 2/X: PLAY THE GAME
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+.play_the_game:
+  call Unpress  ; unpress first
 
   call ROM_CLEAR_SCREEN           ; clear the screen
 
@@ -371,7 +398,7 @@ fire:          defb $08, $04, $0C, $2A, $3A, $7A, $66, $3C
 
 text_current:  defb "Currently defined keys:", 0
 
-text_current_table:
+text_current_address_table:
   defw text_current_up
   defw text_current_down
   defw text_current_left
@@ -384,18 +411,20 @@ text_current_left:   defb "Key for LEFT  [ ]", 0
 text_current_right:  defb "Key for RIGHT [ ]", 0
 text_current_fire:   defb "Key for FIRE  [ ]", 0
 
-text_table:
-  defw text_for_up
-  defw text_for_down
-  defw text_for_left
-  defw text_for_right
-  defw text_for_fire
+text_press_r_or_p:  defb "[R]: redefine keys [P]: play", 0
 
-text_for_up:    defb "Press key for UP    [ ]", 0
-text_for_down:  defb "Press key for DOWN  [ ]", 0
-text_for_left:  defb "Press key for LEFT  [ ]", 0
-text_for_right: defb "Press key for RIGHT [ ]", 0
-text_for_fire:  defb "Press key for FIRE  [ ]", 0
+text_prompt_address_table:
+  defw text_prompt_for_up
+  defw text_prompt_for_down
+  defw text_prompt_for_left
+  defw text_prompt_for_right
+  defw text_prompt_for_fire
+
+text_prompt_for_up:    defb "Press key for UP    [ ]", 0
+text_prompt_for_down:  defb "Press key for DOWN  [ ]", 0
+text_prompt_for_left:  defb "Press key for LEFT  [ ]", 0
+text_prompt_for_right: defb "Press key for RIGHT [ ]", 0
+text_prompt_for_fire:  defb "Press key for FIRE  [ ]", 0
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
