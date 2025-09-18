@@ -22,8 +22,101 @@
 Main:
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+; SECTION 0/X: PRINT DEFINED KEYS
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  ld B, 0 : ld C, 0
+  ld HL, text_current
+  call Print_String
+
+  ;----------------------------
+  ;
+  ;
+  ; Loop to print defined keys
+  ;
+  ;
+  ;----------------------------
+  ld C, 0
+
+.loop_to_print_defined_keys
+
+    ;----------------------
+    ;
+    ; First print the text
+    ;
+    ;----------------------
+    push BC  ; save the counter
+
+    ld L, C : ld H, 0    ; place C (count) in HL pair
+    add  HL, HL          ; index * 2 (word table)
+    ld   DE, text_current_table
+    add  HL, DE          ; HL -> defw entry
+
+    ld   E, (HL)  ; load string ptr
+    inc  HL
+    ld   D, (HL)
+    ex   DE, HL   ; HL = prompt string
+
+    ld   A, C          ; compute the row ...
+    add  A, A          ; ... as twice the counter
+    add  A, 2
+    ld   B, A          ; set row
+    ld   C, 1          ; set column
+    call Print_String  ; prints zero-terminated string at HL
+
+    pop BC
+
+    ;--------------
+    ;
+    ; Then the key
+    ;
+    ;--------------
+    push BC
+
+    ld HL, five_defined_keys
+    ld D, 0 : ld E, C         ; place counter into DE
+    add HL, DE                ; add it as an offset to HL
+
+    ld D, 0 : ld A, (HL) : ld E, A  ; load DE with the key code
+
+    ld HL, all_characters_mem_coded         ; add DE twice to HL ...
+    add HL, DE                              ; ... making it an offset from ...
+    add HL, DE                              ; ... all_characters_mem_coded
+
+    ld E, (HL)
+    inc HL
+    ld D, (HL)
+    ex DE, HL
+
+    ld  A,  C
+    add A,  A
+    add A,  2
+    ld  B,  A      ; row
+    ld  C, 16      ; column
+    call Print_Udgs_Character
+
+    pop BC   ; retreive the counter ...
+    inc C    ; ... increase it ...
+    ld A, C  ; ... and via accumulator ...
+    cp 5     ; ... compare with 5
+
+  jr nz, .loop_to_print_defined_keys    ; loop until we've taken 5 presses
+
+  ;--------------------------------
+  ;
+  ;
+  ; Press any key to continue loop
+  ;
+  ;
+  ;--------------------------------
+  call Press_Any_Key
+  call Unpress        ; better be followed with "Unpress"
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ; SECTION 1/X: DEFINE KEYS
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  call ROM_CLEAR_SCREEN           ; clear the screen
 
   ;--------------------------
   ;
@@ -43,9 +136,7 @@ Main:
     ;------------------------
     push BC  ; keep the counter safe
 
-    ld   A, C
-    ld   L, A
-    ld   H, 0
+    ld L, C : ld H, 0    ; place C (count) in HL pair
     add  HL, HL          ; index * 2 (word table)
     ld   DE, text_table
     add  HL, DE          ; HL -> defw entry
@@ -128,6 +219,8 @@ Main:
 ; SECTION 2/X: PLAY THE GAME
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+  call ROM_CLEAR_SCREEN           ; clear the screen
+
   ;-------------------------
   ;
   ;
@@ -135,11 +228,6 @@ Main:
   ;
   ;
   ;-------------------------
-
-  ;------------------
-  ; Clear the screen
-  ;------------------
-  call ROM_CLEAR_SCREEN           ; clear the screen
 
   ;----------------
   ;
@@ -268,17 +356,17 @@ Main:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Global_Data.inc"
-  include "Unique_Key_Codes_Sorted_By_Values.inc"
 
 ;-------------------------------
 ; Storage for user defined keys
+; The unique key code is stored
 ;-------------------------------
 five_defined_keys:
-key_for_up:     defb  0
-key_for_down:   defb  0
-key_for_left:   defb  0
-key_for_right:  defb  0
-key_for_fire:   defb  0
+key_for_up:     defb  KEY_7
+key_for_down:   defb  KEY_6
+key_for_left:   defb  KEY_5
+key_for_right:  defb  KEY_8
+key_for_fire:   defb  KEY_0
 
 arrow_up:      defb $00, $18, $3C, $7E, $18, $18, $18, $00
 arrow_down:    defb $00, $18, $18, $18, $7E, $3C, $18, $00
@@ -286,8 +374,27 @@ arrow_left:    defb $00, $10, $30, $7E, $7E, $30, $10, $00
 arrow_right:   defb $00, $08, $0C, $7E, $7E, $0C, $08, $00
 fire:          defb $08, $04, $0C, $2A, $3A, $7A, $66, $3C
 
+text_current:  defb "Currently defined keys:", 0
+
+text_current_table:
+  defw text_current_up
+  defw text_current_down
+  defw text_current_left
+  defw text_current_right
+  defw text_current_fire
+
+text_current_up:     defb "Key for UP    [ ]", 0
+text_current_down:   defb "Key for DOWN  [ ]", 0
+text_current_left:   defb "Key for LEFT  [ ]", 0
+text_current_right:  defb "Key for RIGHT [ ]", 0
+text_current_fire:   defb "Key for FIRE  [ ]", 0
+
 text_table:
-  defw text_for_up, text_for_down, text_for_left, text_for_right, text_for_fire
+  defw text_for_up
+  defw text_for_down
+  defw text_for_left
+  defw text_for_right
+  defw text_for_fire
 
 text_for_up:    defb "Press key for UP    [ ]", 0
 text_for_down:  defb "Press key for DOWN  [ ]", 0

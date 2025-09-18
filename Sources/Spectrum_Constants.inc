@@ -130,6 +130,10 @@ CHAR_X_UPP             equ  88
 CHAR_Y_UPP             equ  89
 CHAR_Z_UPP             equ  90
 
+;---------------------------------------------------------
+; Addresses, in ROM, at which the characters are defined
+; Obviously, these define Speccy's standard character set
+;---------------------------------------------------------
 MEM_A_UPP  equ  MEM_FONT_START + $108
 MEM_B_UPP  equ  MEM_A_UPP + 8
 MEM_C_UPP  equ  MEM_B_UPP + 8
