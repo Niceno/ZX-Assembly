@@ -77,16 +77,13 @@ Main:
     ld D, 0 : ld E, C         ; place counter into DE
     add HL, DE                ; add it as an offset to HL
 
-    ld D, 0 : ld A, (HL) : ld E, A  ; load DE with the key code
+    ld D, 0 : ld A, (HL) : ld E, A  ; load DE with the unique key code
 
-    ld HL, all_characters_mem_coded         ; add DE twice to HL ...
-    add HL, DE                              ; ... making it an offset from ...
-    add HL, DE                              ; ... all_characters_mem_coded
-
-    ld E, (HL)
-    inc HL
-    ld D, (HL)
-    ex DE, HL
+    ld IX, all_characters_mem_coded  ; add DE twice to HL ...
+    add IX, DE                       ; ... making it an offset from ...
+    add IX, DE                       ; ... all_characters_mem_coded
+    ld L, (IX+0)                     ; finally load HL with the address ...
+    ld H, (IX+1)                     ; ... pointed to by IX
 
     ld  A,  C
     add A,  A
@@ -190,15 +187,13 @@ Main:
     ld (HL), A  ; store the key's unique code
 
     ; Print the key you just pressed ... quite handy
-    ld HL, all_characters_mem_coded  ; point to all key characters table
+    ld IX, all_characters_mem_coded  ; point to all key characters table
     ld D, 0                          ; create offset from unique key code ...
     ld E, A                          ; ... (stored in A) in the the DE pair
-    add HL, DE                       ; add the offset ...
-    add HL, DE                       ; ... to HL pair
-    ld E, (HL)                       ; Load DE pair with ...
-    inc HL                           ; ... the address to which ...
-    ld D, (HL)                       ; ... HL correclty point
-    ex DE, HL                        ; ... and put it back to HL!!!
+    add IX, DE                       ; add the offset ...
+    add IX, DE                       ; ... to IX pair
+    ld L, (IX+0)                     ; finally load HL with the address ...
+    ld H, (IX+1)                     ; ... pointed to by IX
 
     push BC                    ; save key counter (in C)
     ld   A, C                  ; compute the row ...

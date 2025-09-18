@@ -92,7 +92,7 @@ unique_code:  defb "Unique code:", 0
     ld L, A
     push HL  ; store for later printing
 
-    ; Print the unique key
+    ; Print the unique key (stored in HL for printing)
     ld B,  2                  ; row
     ld C, 12                  ; column
     push DE                   ; have to store them for printing below
@@ -119,20 +119,16 @@ unique_code:  defb "Unique code:", 0
     ;---------------------
     ; Print the character
     ;---------------------
-    pop DE  ; pushed as HL above
+    pop DE  ; unique key; pushed as HL above
 
     ; Set HL to point to the right character
-    ld HL, all_characters_mem_coded
-    add HL, DE
-    add HL, DE
+    ld  IX, all_characters_mem_coded
+    add IX, DE
+    add IX, DE
 
-    ; Load DE with the address to which HL correctly points
-    ld E, (HL)
-    inc HL
-    ld D, (HL)
-
-    ; Swap DE and HL
-    ex DE, HL
+    ; Load HL with the correct character to print
+    ld L, (IX+0)
+    ld H, (IX+1)
 
     ld B, 12      ; row
     ld C, 16      ; column
