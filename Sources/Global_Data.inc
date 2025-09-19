@@ -19,60 +19,15 @@ all_key_ports:
   defw KEYS_CAPSZXCV
   defw KEYS_BNMSYMSPC
 
-;---------------------------------------------------------------------
-; Unique key codes 0..39 produced by Browse_Key_Rows sorted ascending
-;---------------------------------------------------------------------
-KEY_1     equ   0
-KEY_0     equ   1
-KEY_Q     equ   2
-KEY_P     equ   3
-KEY_A     equ   4
-KEY_ente  equ   5
-KEY_caps  equ   6
-KEY_spac  equ   7
-
-KEY_2     equ   8
-KEY_9     equ   9
-KEY_W     equ  10
-KEY_O     equ  11
-KEY_S     equ  12
-KEY_L     equ  13
-KEY_Z     equ  14
-KEY_symb  equ  15
-
-KEY_3     equ  16
-KEY_8     equ  17
-KEY_E     equ  18
-KEY_I     equ  19
-KEY_D     equ  20
-KEY_K     equ  21
-KEY_X     equ  22
-KEY_M     equ  23
-
-KEY_4     equ  24
-KEY_7     equ  25
-KEY_R     equ  26
-KEY_U     equ  27
-KEY_F     equ  28
-KEY_J     equ  29
-KEY_C     equ  30
-KEY_N     equ  31
-
-KEY_5     equ  32
-KEY_6     equ  33
-KEY_T     equ  34
-KEY_Y     equ  35
-KEY_G     equ  36
-KEY_H     equ  37
-KEY_V     equ  38
-KEY_B     equ  39
-
-;----------------------------------------------------------------
-; The addresses of all characters you can get from Spectrum keys
-; sorted by unique key codes. (Standard ones are taken from ROM,
-; but special keys had to be replaced by UDGs, of course)
-;----------------------------------------------------------------
-key_chars_address_table:
+;------------------------------------------------------------------
+; This table holds a list of addresses of glyphs which represent
+; the pressed keys.  The table holds the addresses where each of
+; the glyphs is defined.  For letters and numbers it points to
+; the ROM addresses where they are defined, but for special keys
+; (such as symbol shift, caps shift, space and enter, I defined
+; a special set of glyphs (mem_ente, mem_caps, mem_spac, mem_symb)
+;------------------------------------------------------------------
+key_glyphs_address_table:
 
   defw  MEM_1
   defw  MEM_0
@@ -119,9 +74,9 @@ key_chars_address_table:
   defw  MEM_V_UPP
   defw  MEM_B_UPP
 
-;------------------------------------------
-; User defined characters for special keys
-;------------------------------------------
+;-----------------------------------
+; Glyph characters for special keys
+;-----------------------------------
 mem_ente:  defb $00, $02, $12, $32, $7E, $30, $10, $00
 mem_caps:  defb $00, $10, $38, $7C, $10, $10, $10, $00
 mem_symb:  defb $00, $7E, $4E, $4E, $72, $72, $7E, $00

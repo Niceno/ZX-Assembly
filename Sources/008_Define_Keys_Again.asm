@@ -1,4 +1,4 @@
-  include "Spectrum_Constants.inc"
+  include "Constants.inc"
 
 ;--------------------------------------
 ; Set the architecture you'll be using
@@ -108,11 +108,11 @@ Main_Menu:
 
     ld D, 0 : ld A, (HL) : ld E, A  ; load DE with the unique key code
 
-    ld IX, key_chars_address_table  ; add DE twice to IX ...
-    add IX, DE                      ; ... making it an offset from ...
-    add IX, DE                      ; ... key_chars_address_table
-    ld L, (IX+0)                    ; finally load HL with the address ...
-    ld H, (IX+1)                    ; ... pointed to by IX
+    ld IX, key_glyphs_address_table  ; add DE twice to IX ...
+    add IX, DE                       ; ... making it an offset from ...
+    add IX, DE                       ; ... key_glyphs_address_table
+    ld L, (IX+0)                     ; finally load HL with the address ...
+    ld H, (IX+1)                     ; ... pointed to by IX
 
     ld  A,  C
     add A,  A
@@ -238,13 +238,13 @@ Define_Keys:
     ld (HL), A  ; store the key's unique code
 
     ; Print the key you just pressed ... quite handy
-    ld IX, key_chars_address_table  ; point to all key characters table
-    ld D, 0                         ; create offset from unique key code ...
-    ld E, A                         ; ... (stored in A) in the the DE pair
-    add IX, DE                      ; add the offset ...
-    add IX, DE                      ; ... to IX pair
-    ld L, (IX+0)                    ; finally load HL with the address ...
-    ld H, (IX+1)                    ; ... pointed to by IX
+    ld IX, key_glyphs_address_table  ; point to all key glyphs table
+    ld D, 0                          ; create offset from unique key code ...
+    ld E, A                          ; ... (stored in A) in the the DE pair
+    add IX, DE                       ; add the offset ...
+    add IX, DE                       ; ... to IX pair
+    ld L, (IX+0)                     ; finally load HL with the address ...
+    ld H, (IX+1)                     ; ... pointed to by IX
 
     push BC                    ; save key counter (in C)
     ld   A, C                  ; compute the row ...
@@ -296,7 +296,7 @@ Play_The_Game:
   ; Show hero at his initial position
   ;-----------------------------------
   ld HL, arrow_up
-  ld B, 11 : ld C, 15
+  ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
   call Print_Udgs_Character
 
   ;----------------
@@ -320,7 +320,7 @@ Play_The_Game:
     call Print_08_Bit_Number           ; print it
 
     ; Create a little delay
-    ld B, 10
+    ld B, 5
     call Delay
 
     ;-----------------------------
@@ -355,7 +355,7 @@ Play_The_Game:
 
     ; Update sprite
     ld HL, arrow_up
-    ld B, 11 : ld C, 15
+    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
     call Print_Udgs_Character
 
     jr .main_game_loop
@@ -375,7 +375,7 @@ Play_The_Game:
 
     ; Update sprite
     ld HL, arrow_down
-    ld B, 11 : ld C, 15
+    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
     call Print_Udgs_Character
 
     jp .main_game_loop
@@ -395,7 +395,7 @@ Play_The_Game:
 
     ; Update sprite
     ld HL, arrow_left
-    ld B, 11 : ld C, 15
+    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
     call Print_Udgs_Character
 
     jp .main_game_loop
@@ -415,7 +415,7 @@ Play_The_Game:
 
     ; Update sprite
     ld HL, arrow_right
-    ld B, 11 : ld C, 15
+    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
     call Print_Udgs_Character
 
     jp .main_game_loop
@@ -427,7 +427,7 @@ Play_The_Game:
 
     ; Update sprite
     ld HL, fire
-    ld B, 11 : ld C, 15
+    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
     call Print_Udgs_Character
 
     jp .main_game_loop
@@ -481,11 +481,11 @@ hero_column: defb  127
 ; The unique key code is stored
 ;-------------------------------
 five_defined_keys:
-key_for_up:     defb  KEY_7
-key_for_down:   defb  KEY_6
-key_for_left:   defb  KEY_5
-key_for_right:  defb  KEY_8
-key_for_fire:   defb  KEY_0
+key_for_up:     defb  KEY_Q
+key_for_down:   defb  KEY_A
+key_for_left:   defb  KEY_O
+key_for_right:  defb  KEY_P
+key_for_fire:   defb  KEY_M
 
 arrow_up:      defb $00, $18, $3C, $7E, $18, $18, $18, $00
 arrow_down:    defb $00, $18, $18, $18, $7E, $3C, $18, $00
