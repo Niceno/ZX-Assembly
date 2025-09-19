@@ -294,6 +294,11 @@ Play_The_Game:
 
   call Draw_The_World
 
+  ;-----------------------------------------------------
+  ; Merge the grid over whatever you have on the screen
+  ;-----------------------------------------------------
+  call Merge_Grid
+
   ;-----------------------------------
   ; Show hero at his initial position
   ;-----------------------------------
@@ -321,6 +326,11 @@ Play_The_Game:
     ld B, 1 : ld C, 29                    ; set row and column
     call Print_08_Bit_Number              ; print it
 
+    ld B, 0 : ld C, 29
+    ld D, 2 : ld E, 3
+    ld A, CYAN_PAPER + BRIGHT
+    call Color_Tile
+
     ; Fetch hero's offset coordinates and print them too
     ld IX, hero_row_offset : ld A, (IX+0)  ; place hero's row offset into A
     ld H, 0 : ld L, A                      ; load HL pair with A
@@ -332,8 +342,45 @@ Play_The_Game:
     ld B, 4 : ld C, 29                     ; set row and column
     call Print_08_Bit_Number               ; print it
 
+    ld B, 3 : ld C, 29
+    ld D, 2 : ld E, 3
+    ld A, CYAN_PAPER + BRIGHT
+    call Color_Tile
+
+    ; Fetch world's min coordinates and print them
+    ld IX, world_row_min   : ld A, (IX+0)  ; place hero's row offset into A
+    ld H, 0 : ld L, A                      ; load HL pair with A
+    ld B, 6 : ld C, 29                     ; set row and column
+    call Print_08_Bit_Number               ; print it
+
+    ld IX, world_col_min   : ld A, (IX+0)  ; place hero's column offset into A
+    ld H, 0 : ld L, A                      ; load HL pair with A
+    ld B, 7 : ld C, 29                     ; set row and column
+    call Print_08_Bit_Number               ; print it
+
+    ld B, 6 : ld C, 29
+    ld D, 2 : ld E, 3
+    ld A, GREEN_PAPER + BRIGHT
+    call Color_Tile
+
+    ; Fetch world's min coordinates and print them
+    ld IX, world_row_max   : ld A, (IX+0)  ; place hero's row offset into A
+    ld H, 0 : ld L, A                      ; load HL pair with A
+    ld B, 9 : ld C, 29                     ; set row and column
+    call Print_08_Bit_Number               ; print it
+
+    ld IX, world_col_max   : ld A, (IX+0)  ; place hero's column offset into A
+    ld H, 0 : ld L, A                      ; load HL pair with A
+    ld B,10 : ld C, 29                     ; set row and column
+    call Print_08_Bit_Number               ; print it
+
+    ld B, 9 : ld C, 29
+    ld D, 2 : ld E, 3
+    ld A, GREEN_PAPER + BRIGHT
+    call Color_Tile
+
     ; Create a little delay
-    ld B, 5
+    ld B, 15
     call Delay
 
     ;-----------------------------
@@ -344,7 +391,7 @@ Play_The_Game:
     call Browse_Key_Rows  ; A = unique code, C bit0 = 1 if any key pressed
     bit  0, C             ; check C register's zeroth bit
 
-    jr z, .main_game_loop  ; no key pressed -> keep polling
+    jp z, .main_game_loop  ; no key pressed -> keep polling
 
     ;---------------------------------------------
     ;
@@ -364,13 +411,15 @@ Play_The_Game:
     ; Update coordinates
     ld A, (hero_world_row)  : dec A : ld (hero_world_row),  A
     ld A, (hero_row_offset) : dec A : ld (hero_row_offset), A
+    ld A, (world_row_min)   : dec A : ld (world_row_min),   A
+    ld A, (world_row_max)   : dec A : ld (world_row_max),   A
 
     ; Update sprite
     ld HL, arrow_up
     ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
     call Print_Udgs_Character
 
-    jr .main_game_loop
+    jp .main_game_loop
 
     ;-----------------
     ; Action for down
@@ -383,6 +432,8 @@ Play_The_Game:
     ; Update coordinates
     ld A, (hero_world_row)  : inc A : ld (hero_world_row),  A
     ld A, (hero_row_offset) : inc A : ld (hero_row_offset), A
+    ld A, (world_row_min)   : inc A : ld (world_row_min),   A
+    ld A, (world_row_max)   : inc A : ld (world_row_max),   A
 
     ; Update sprite
     ld HL, arrow_down
@@ -400,8 +451,10 @@ Play_The_Game:
     jr nz, .was_the_key_for_right_pressed
 
     ; Update coordinates
-    ld A, (hero_world_col)  : dec A : ld (hero_world_col), A
+    ld A, (hero_world_col)  : dec A : ld (hero_world_col),  A
     ld A, (hero_col_offset) : dec A : ld (hero_col_offset), A
+    ld A, (world_col_min)   : dec A : ld (world_col_min),   A
+    ld A, (world_col_max)   : dec A : ld (world_col_max),   A
 
     ; Update sprite
     ld HL, arrow_left
@@ -419,8 +472,10 @@ Play_The_Game:
     jr nz, .was_the_key_for_fire_pressed
 
     ; Update coordinates
-    ld A, (hero_world_col)  : inc A : ld (hero_world_col), A
+    ld A, (hero_world_col)  : inc A : ld (hero_world_col),  A
     ld A, (hero_col_offset) : inc A : ld (hero_col_offset), A
+    ld A, (world_col_min)   : inc A : ld (world_col_min),   A
+    ld A, (world_col_max)   : inc A : ld (world_col_max),   A
 
     ; Update sprite
     ld HL, arrow_right
@@ -466,6 +521,9 @@ Play_The_Game:
   include "Subs/Udgs/Print_Tile.asm"
   include "Subs/Udgs/Print_Line_Sprite.asm"
   include "Subs/Udgs/Print_Sprite.asm"
+  include "Subs/Udgs/Merge_Line_Sprite.asm"
+  include "Subs/Udgs/Merge_Sprite.asm"
+  include "Subs/Merge_Grid.asm"
   include "Subs/Browse_Key_Rows.asm"
   include "Subs/Press_Any_Key.asm"
   include "Subs/Unpress.asm"
@@ -481,11 +539,17 @@ Play_The_Game:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Global_Data.inc"
 
-; Hero's position and offset
+; Hero's position and offset (not all of them will be used in the end)
 hero_world_row:   defb  127
 hero_world_col:   defb  127
 hero_row_offset:  defb  127 - HERO_SCREEN_ROW
 hero_col_offset:  defb  127 - HERO_SCREEN_COL
+
+; These four must be in this order - don't mess it up!
+world_row_max:    defb  127 + CELL_ROW_MAX - HERO_SCREEN_ROW
+world_col_max:    defb  127 + CELL_COL_MAX - HERO_SCREEN_COL
+world_row_min:    defb  127 + CELL_ROW_MIN - HERO_SCREEN_ROW
+world_col_min:    defb  127 + CELL_COL_MIN - HERO_SCREEN_COL
 
 ;-------------------------------
 ; Storage for user defined keys
@@ -538,50 +602,150 @@ text_prompt_for_fire:  defb "Press key for FIRE  [ ]", 0
 ; Definition of the world
 ;-------------------------
 world_address_table:
+  dw tile_00_record  ; this covers the whole world
   dw tile_01_record
   dw tile_02_record
   dw tile_03_record
   dw tile_04_record
+  dw tile_05_record  ; starts inside, but breaks out at lower right
+  dw tile_06_record  ; starts outside, but protrudes from upper left
+  dw tile_07_record  ; everything smaller than min row
+  dw tile_08_record  ; everything greater than max row
+  dw tile_09_record  ; everything smaller than min col
+  dw tile_10_record  ; everything greater than max col
   dw $0000           ; this marks the end of the world
 
-;--------------
+;----------------------------------------
 ; Tile records
-;--------------
+;----------------------------------------
 ;                   row0  col0  row1  col1  color
-tile_01_record:  db  128,  128,  130,  130, RED_PAPER
-tile_02_record:  db  131,  131,  133,  133, CYAN_PAPER
-tile_03_record:  db  128,  131,  130,  133, YELLOW_PAPER
-tile_04_record:  db  131,  128,  133,  130, GREEN_PAPER
-
+tile_00_record:  db    1,    1,  254,  254, GREEN_PAPER
+tile_01_record:  db  128,  128,  130,  130, RED_PAPER    + BRIGHT
+tile_02_record:  db  131,  131,  133,  133, CYAN_PAPER   + BRIGHT
+tile_03_record:  db  128,  131,  130,  133, YELLOW_PAPER + BRIGHT
+tile_04_record:  db  131,  128,  133,  130, GREEN_PAPER  + BRIGHT
+tile_05_record:  db  134,  134,  150,  150, MAGENTA_PAPER
+tile_06_record:  db  110,  110,  121,  121, MAGENTA_PAPER
+tile_07_record:  db    0,  128,    1,  130, BLACK_PAPER  ; over the top
+tile_08_record:  db  254,  128,  255,  130, BLACK_PAPER  ; rock bottom
+tile_09_record:  db  128,    0,  130,    1, BLACK_PAPER  ; far left
+tile_10_record:  db  128,  254,  130,  255, BLACK_PAPER  ; far right
 
 ;===============================================================================
-Draw_One_Tile:
+; Draw_One_Tile
 ;-------------------------------------------------------------------------------
 ; Purpose:
+; - Draws one tile in the viewport.  But, it does it with prudence.  Tiles
+;   which are outside of the viewport are skipped, and the tiles which are
+;   only partially in the viewport are clamped.
 ;
+; Parameters:
+; - HL: points to the tile
 ;
 ; Clobbers:
-; - AF, HL, IX
+; - AF, DE, HL, IX
 ;-------------------------------------------------------------------------------
+Draw_One_Tile:
 
-  push HL  ; will pop up as IX later
+  ;----------------------------------------------------------
+  ; Fetch tile's coordinates and place them in B, C, D and E
+  ;----------------------------------------------------------
+  ld A, (HL) : ld B, A : inc HL  ; row0
+  ld A, (HL) : ld C, A : inc HL  ; col0
+  ld A, (HL) : ld D, A : inc HL  ; row1
+  ld A, (HL) : ld E, A : inc HL  ; col1
+
+  ;---------------------------------------------------------------
+  ; Eliminate tiles which are completelly outside of the viewport
+  ;---------------------------------------------------------------
+
+  ; Is row0 (B) greater than world_row_max
+  ld IX, world_row_max
+  ld A, B
+  cp (IX+0)    ; B - world_row_max
+  jr c, .b_ok  ; B <  world_row_max =--> OK
+  jr z, .b_ok  ; B == world_row_max
+  ret
+.b_ok
+
+  ; Is col0 (C) greater than world_col_max
+  ld IX, world_col_max
+  ld A, C
+  cp (IX+0)    ; C - world_row_min
+  jr c, .c_ok  ; C <  world_row_min =--> OK
+  jr z, .c_ok  ; C == world_row_max
+  ret
+.c_ok
+
+  ; Is row1 (D) smaller than world_row_min
+  ld IX, world_row_min
+  ld A, D
+  cp (IX+0)  ; D - world_row_min
+  ret c      ; D < world_row_min =--> not OK, get out
+
+  ; Is col1 (E) smaller than world_col_min
+  ld IX, world_col_min
+  ld A, E
+  cp (IX+0)  ; E - world_col_min
+  ret c      ; E < world_col_min =--> not OK, get out
+
+  ; If you reached this point, there is at least something to print
+
+  ;--------------------------------
+  ; Clamp the tile to the viewport
+  ;--------------------------------
+
+  ; Is row0 (B) smaller than world_row_min
+  ld IX, world_row_min
+  ld A, B
+  cp (IX+0)       ; B - world_row_min
+  jr nc, .b_fine  ; B > world_row_min =--> OK
+  ld B, (IX+0)    ; put world_row_min to B
+.b_fine
+
+  ; Is col0 (C) smaller than world_col_min
+  ld IX, world_col_min
+  ld A, C
+  cp (IX+0)       ; C - world_col_min
+  jr nc, .c_fine  ; C > world_col_min =--> OK
+  ld C, (IX+0)    ; put world_col_min to C
+.c_fine
+
+  ; Is row1 (D) greater than world_row_max
+  ld IX, world_row_max
+  ld A, D
+  cp (IX+0)       ; D - world_row_max
+  jr c, .d_fine   ; D <  world_row_max =--> OK
+  jr z, .d_fine   ; D == world_row_max =--> OK
+  ld D, (IX+0)    ; put world_row_max to D
+.d_fine
+
+  ; Is col1 (E) greater than world_col_max
+  ld IX, world_col_max
+  ld A, E
+  cp (IX+0)       ; E - world_col_max
+  jr c, .e_fine   ; E <  world_col_max =--> OK
+  jr z, .e_fine   ; E == world_col_max =--> OK
+  ld E, (IX+0)    ; put world_col_max to E
+.e_fine
 
   ;---------------------------------
-  ; Work out the row and the column
+  ; Work out the tile's dimensions and screen coordinates
   ;---------------------------------
-  ld IX, hero_row_offset
-  ld A, (HL) : sbc (IX+0) : ld B, A : inc HL  ; store screen row
-  ld A, (HL) : sbc (IX+1) : ld C, A : inc HL  ; store screen column
+  ld A, D : sub B : inc A : ld D, A  ; calculate number of rows
+  ld A, E : sub C : inc A : ld E, A  ; calculate number of columns
+  ld IX, hero_row_offset  ; transfer world to screen coordinates
+  ld A, B : sub (IX+0) : ld B, A
+  ld A, C : sub (IX+1) : ld C, A
 
-  ;-------------------------
-  ; Work out the dimensions
-  ;-------------------------
-  pop IX  ; point IX to the tile you are drawing now because you want ...
-          ; ... to be able to work out the dimensions from the record
-  ld A, (HL) : sbc (IX+0) : inc A : ld D, A : inc HL  ; dim. in rows
-  ld A, (HL) : sbc (IX+1) : inc A : ld E, A : inc HL  ; dim. in columns
-  ld A, (HL)  ; load the color
+  ;----------------
+  ; Load the color
+  ;----------------
+  ld A, (HL)
 
+  ;--------------------------------
+  ; Place the tile in the viewport
+  ;--------------------------------
   call Color_Tile  ; A, BC and DE are the parameters
 
   ret

@@ -26,7 +26,7 @@ Merge_Grid:
       ; Grid sprite is 4x4
       ld D, 4
       ld E, 4
-  
+
       ld HL, grid
       push BC
       call Merge_Udgs_Sprite
@@ -54,3 +54,4 @@ Merge_Grid:
 
   ret
 
+  include "Subs/Grid_Cont_Dot.inc"
