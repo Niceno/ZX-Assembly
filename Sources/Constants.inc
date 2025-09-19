@@ -35,12 +35,18 @@ MEM_CUSTOM_FONT_START      equ  $FA00  ; 64000
 ;-------------------------------------------------------------------------------
 ; Screen attributes (for the 8x8 cell grid)
 ;-------------------------------------------------------------------------------
-CELL_ROWS     equ  24  ; cell rows
-CELL_COLS     equ  32  ; cell columns
-CELL_ROW_MIN  equ   1  ; though I might think of a confined window
-CELL_COL_MIN  equ   1  ; though I might think of a confined window
-CELL_ROW_MAX  equ  22  ; though I might think of a confined window
-CELL_COL_MAX  equ  26  ; though I might think of a confined window
+CELL_ROWS     equ  24  ; total number of cell rows
+CELL_COLS     equ  32  ; total number of cell columns
+CELL_ROW_MIN  equ   1  ; first row of the viewport
+CELL_COL_MIN  equ   1  ; first column of the viewport
+CELL_ROW_MAX  equ  22  ; last row of the viewport
+CELL_COL_MAX  equ  26  ; last column of the viewport
+
+;-------------------------------------------------------------------------------
+; Hero's row and column on the screen
+;-------------------------------------------------------------------------------
+HERO_SCREEN_ROW  equ  (CELL_ROW_MIN+CELL_ROW_MAX)/2
+HERO_SCREEN_COL  equ  (CELL_COL_MIN+CELL_COL_MAX)/2
 
 ;-------------------------------------------------------------------------------
 ; ZX Spectrum colors
@@ -171,3 +177,53 @@ MEM_6  equ  MEM_5 + 8
 MEM_7  equ  MEM_6 + 8
 MEM_8  equ  MEM_7 + 8
 MEM_9  equ  MEM_8 + 8
+
+;---------------------------------------------------------------------
+; Unique key codes 0..39 produced by Browse_Key_Rows sorted ascending
+; This unique key code is obtained as: (row_index) | (bit_index <<< 3)
+;---------------------------------------------------------------------
+KEY_1     equ   0
+KEY_0     equ   1
+KEY_Q     equ   2
+KEY_P     equ   3
+KEY_A     equ   4
+KEY_ente  equ   5
+KEY_caps  equ   6
+KEY_spac  equ   7
+
+KEY_2     equ   8
+KEY_9     equ   9
+KEY_W     equ  10
+KEY_O     equ  11
+KEY_S     equ  12
+KEY_L     equ  13
+KEY_Z     equ  14
+KEY_symb  equ  15
+
+KEY_3     equ  16
+KEY_8     equ  17
+KEY_E     equ  18
+KEY_I     equ  19
+KEY_D     equ  20
+KEY_K     equ  21
+KEY_X     equ  22
+KEY_M     equ  23
+
+KEY_4     equ  24
+KEY_7     equ  25
+KEY_R     equ  26
+KEY_U     equ  27
+KEY_F     equ  28
+KEY_J     equ  29
+KEY_C     equ  30
+KEY_N     equ  31
+
+KEY_5     equ  32
+KEY_6     equ  33
+KEY_T     equ  34
+KEY_Y     equ  35
+KEY_G     equ  36
+KEY_H     equ  37
+KEY_V     equ  38
+KEY_B     equ  39
+

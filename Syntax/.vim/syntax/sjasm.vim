@@ -81,8 +81,18 @@ syn keyword sjasmConstant MEM_Z_UPP
 syn keyword sjasmConstant MEM_0  MEM_1  MEM_2  MEM_3  MEM_4
 syn keyword sjasmConstant MEM_5  MEM_6  MEM_7  MEM_8  MEM_9
 
+syn keyword sjasmConstant KEY_1     KEY_0     KEY_Q     KEY_P     KEY_A
+syn keyword sjasmConstant KEY_ente  KEY_caps  KEY_spac  KEY_2     KEY_9
+syn keyword sjasmConstant KEY_W     KEY_O     KEY_S     KEY_L     KEY_Z
+syn keyword sjasmConstant KEY_symb  KEY_3     KEY_8     KEY_E     KEY_I
+syn keyword sjasmConstant KEY_D     KEY_K     KEY_X     KEY_M     KEY_4
+syn keyword sjasmConstant KEY_7     KEY_R     KEY_U     KEY_F     KEY_J
+syn keyword sjasmConstant KEY_C     KEY_N     KEY_5     KEY_6     KEY_T
+syn keyword sjasmConstant KEY_Y     KEY_G     KEY_H     KEY_V     KEY_B
+
 syn keyword sjasmConstant CELL_ROWS     CELL_COLS
 syn keyword sjasmConstant CELL_ROW_MIN  CELL_COL_MIN  CELL_ROW_MAX  CELL_COL_MAX
+syn keyword sjasmConstant HERO_SCREEN_ROW  HERO_SCREEN_COL
 
 syn keyword sjasmConstant BLACK_INK      BLUE_INK     RED_INK
 syn keyword sjasmConstant MAGENTA_INK    GREEN_INK    CYAN_INK

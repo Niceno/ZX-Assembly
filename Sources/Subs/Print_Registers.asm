@@ -64,7 +64,7 @@ Print_Registers:
   ; Browse through all registers
   ;
   ;------------------------------
-  ld IX, reg_table
+  ld IX, reg_record
   ld B, REG_ENTRIES
 
 .loop:
@@ -386,41 +386,27 @@ old_hl:  defw  $00
 old_ix:  defw  $00
 old_iy:  defw  $00
 
-; Null-terminated register names to print
-af_string: defb $90, $96, 0
-bc_string: defb $91, $96, 0
-de_string: defb $92, $96, 0
-hl_string: defb $93, $96, 0
-ix_string: defb $94, $96, 0
-iy_string: defb $95, $96, 0
-
 ;    row,col,    str_ptr,    unused,   new_ptr,  old_ptr,     color
 ;    0   1       2-3         4-5       6-7       8-9          10
-reg_table:
+reg_record:
   db 0,  26 : dw reg_af,     reg_eq,   new_af,   old_af :  db WHITE_INK + BLACK_PAPER
   db 1,  26 : dw reg_bc,     reg_eq,   new_bc,   old_bc :  db WHITE_INK + BLUE_PAPER
   db 2,  26 : dw reg_de,     reg_eq,   new_de,   old_de :  db WHITE_INK + MAGENTA_PAPER
   db 3,  26 : dw reg_hl,     reg_eq,   new_hl,   old_hl :  db WHITE_INK + RED_PAPER
   db 4,  26 : dw reg_ix,     reg_eq,   new_ix,   old_ix :  db BLACK_INK + GREEN_PAPER
   db 5,  26 : dw reg_iy,     reg_eq,   new_iy,   old_iy :  db BLACK_INK + YELLOW_PAPER
-reg_table_end:
 REG_ROW_SIZE  equ  11
 REG_ENTRIES   equ   6
 
-hex_char_table:
-  defb "01234567890ABCDEF"
-
-udgs:
-
 ; Registers are accesses as classical UDGs
-reg_af:     defb $00, $27, $54, $56, $74, $54, $54, $00 ; $90  AF
-reg_bc:     defb $00, $63, $54, $64, $54, $54, $63, $00 ; $91  BC
-reg_de:     defb $00, $67, $54, $56, $54, $54, $67, $00 ; $92  DE
-reg_hl:     defb $00, $54, $54, $74, $54, $54, $57, $00 ; $93  HL
-reg_ix:     defb $00, $2A, $2A, $24, $24, $2A, $2A, $00 ; $94  IX
-reg_iy:     defb $00, $2A, $2A, $2A, $24, $24, $24, $00 ; $95  IY
-reg_eq:     defb $00, $00, $00, $1E, $00, $1E, $00, $00 ; $96   =
-reg_p_eq:   defb $00, $40, $40, $1E, $00, $1E, $00, $00 ; $97  '=
+reg_af:     defb $00, $27, $54, $56, $74, $54, $54, $00 ;
+reg_bc:     defb $00, $63, $54, $64, $54, $54, $63, $00 ;
+reg_de:     defb $00, $67, $54, $56, $54, $54, $67, $00 ;
+reg_hl:     defb $00, $54, $54, $74, $54, $54, $57, $00 ;
+reg_ix:     defb $00, $2A, $2A, $24, $24, $2A, $2A, $00 ;
+reg_iy:     defb $00, $2A, $2A, $2A, $24, $24, $24, $00 ;
+reg_eq:     defb $00, $00, $00, $1E, $00, $1E, $00, $00 ;
+reg_p_eq:   defb $00, $40, $40, $1E, $00, $1E, $00, $00 ;
 
 ; But hex numbers, given that there are 32 of them, need a different approah
 hex_0_low:  defb $00, $02, $05, $05, $05, $05, $02, $00 ;

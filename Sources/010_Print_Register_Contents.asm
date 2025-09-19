@@ -1,4 +1,4 @@
-  include "Spectrum_Constants.inc"
+  include "Constants.inc"
 
 ;--------------------------------------
 ; Set the architecture you'll be using
@@ -25,12 +25,6 @@ Main:
   ; Open the channel to upper screen
   ;----------------------------------
   call Open_Upper_Screen
-
-  ;------------------------------
-  ; Specify the beginning of UDG
-  ;------------------------------
-  ld HL, udgs                         ; user defined graphics (UDGs)
-  ld (MEM_USER_DEFINED_GRAPHICS), HL  ; set up UDG system variable.
 
   ;---------------------------------------
   ; Address of the null-terminated string

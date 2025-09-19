@@ -1,4 +1,4 @@
-  include "Spectrum_Constants.inc"
+  include "Constants.inc"
 
 ;--------------------------------------
 ; Set the architecture you'll be using

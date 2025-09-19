@@ -1,4 +1,4 @@
-  include "Spectrum_Constants.inc"
+  include "Constants.inc"
 
 ;--------------------------------------
 ; Set the architecture you'll be using
@@ -122,7 +122,7 @@ unique_code:  defb "Unique code:", 0
     pop DE  ; unique key; pushed as HL above
 
     ; Set HL to point to the right character
-    ld  IX, key_chars_address_table
+    ld  IX, key_glyphs_address_table
     add IX, DE
     add IX, DE
 
