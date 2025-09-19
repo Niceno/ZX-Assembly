@@ -292,6 +292,8 @@ Play_The_Game:
   ld A, WHITE_PAPER + BLUE_INK
   call Viewport_Create
 
+  call Draw_The_World
+
   ;-----------------------------------
   ; Show hero at his initial position
   ;-----------------------------------
@@ -309,15 +311,26 @@ Play_The_Game:
 .main_game_loop:
 
     ; Fetch hero's coordinates and print them
-    ld IX, hero_row : ld A, (IX+0)  ; place hero's row into A
-    ld H, 0 : ld L, A               ; load HL pair with A (hero's row)
-    ld B, 0 : ld C, 29              ; set row and column
-    call Print_08_Bit_Number        ; print it
+    ld IX, hero_world_row : ld A, (IX+0)  ; place hero's world row into A
+    ld H, 0 : ld L, A                     ; load HL pair with A (hero's row)
+    ld B, 0 : ld C, 29                    ; set row and column
+    call Print_08_Bit_Number              ; print it
 
-    ld IX, hero_column : ld A, (IX+0)  ; place hero's column into A
-    ld H, 0 : ld L, A                  ; load HL pair with A (hero's column)
-    ld B, 1 : ld C, 29                 ; set row and column
-    call Print_08_Bit_Number           ; print it
+    ld IX, hero_world_col : ld A, (IX+0)  ; place hero's world column into A
+    ld H, 0 : ld L, A                     ; load HL pair with A (hero's column)
+    ld B, 1 : ld C, 29                    ; set row and column
+    call Print_08_Bit_Number              ; print it
+
+    ; Fetch hero's offset coordinates and print them too
+    ld IX, hero_row_offset : ld A, (IX+0)  ; place hero's row offset into A
+    ld H, 0 : ld L, A                      ; load HL pair with A
+    ld B, 3 : ld C, 29                     ; set row and column
+    call Print_08_Bit_Number               ; print it
+
+    ld IX, hero_col_offset : ld A, (IX+0)  ; place hero's column offset into A
+    ld H, 0 : ld L, A                      ; load HL pair with A
+    ld B, 4 : ld C, 29                     ; set row and column
+    call Print_08_Bit_Number               ; print it
 
     ; Create a little delay
     ld B, 5
@@ -349,9 +362,8 @@ Play_The_Game:
     jr nz, .was_the_key_for_down_pressed
 
     ; Update coordinates
-    ld A, (hero_row)
-    dec A
-    ld (hero_row), A
+    ld A, (hero_world_row)  : dec A : ld (hero_world_row),  A
+    ld A, (hero_row_offset) : dec A : ld (hero_row_offset), A
 
     ; Update sprite
     ld HL, arrow_up
@@ -369,9 +381,8 @@ Play_The_Game:
     jr nz, .was_the_key_for_left_pressed
 
     ; Update coordinates
-    ld A, (hero_row)
-    inc A
-    ld (hero_row), A
+    ld A, (hero_world_row)  : inc A : ld (hero_world_row),  A
+    ld A, (hero_row_offset) : inc A : ld (hero_row_offset), A
 
     ; Update sprite
     ld HL, arrow_down
@@ -389,9 +400,8 @@ Play_The_Game:
     jr nz, .was_the_key_for_right_pressed
 
     ; Update coordinates
-    ld A, (hero_column)
-    dec A
-    ld (hero_column), A
+    ld A, (hero_world_col)  : dec A : ld (hero_world_col), A
+    ld A, (hero_col_offset) : dec A : ld (hero_col_offset), A
 
     ; Update sprite
     ld HL, arrow_left
@@ -409,9 +419,8 @@ Play_The_Game:
     jr nz, .was_the_key_for_fire_pressed
 
     ; Update coordinates
-    ld A, (hero_column)
-    inc A
-    ld (hero_column), A
+    ld A, (hero_world_col)  : inc A : ld (hero_world_col), A
+    ld A, (hero_col_offset) : inc A : ld (hero_col_offset), A
 
     ; Update sprite
     ld HL, arrow_right
@@ -472,9 +481,11 @@ Play_The_Game:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Global_Data.inc"
 
-; Hero's position
-hero_row:    defb  127
-hero_column: defb  127
+; Hero's position and offset
+hero_world_row:   defb  127
+hero_world_col:   defb  127
+hero_row_offset:  defb  127 - HERO_SCREEN_ROW
+hero_col_offset:  defb  127 - HERO_SCREEN_COL
 
 ;-------------------------------
 ; Storage for user defined keys
@@ -522,6 +533,87 @@ text_prompt_for_down:  defb "Press key for DOWN  [ ]", 0
 text_prompt_for_left:  defb "Press key for LEFT  [ ]", 0
 text_prompt_for_right: defb "Press key for RIGHT [ ]", 0
 text_prompt_for_fire:  defb "Press key for FIRE  [ ]", 0
+
+;-------------------------
+; Definition of the world
+;-------------------------
+world_address_table:
+  dw tile_01_record
+  dw tile_02_record
+  dw tile_03_record
+  dw tile_04_record
+  dw $0000           ; this marks the end of the world
+
+;--------------
+; Tile records
+;--------------
+;                   row0  col0  row1  col1  color
+tile_01_record:  db  128,  128,  130,  130, RED_PAPER
+tile_02_record:  db  131,  131,  133,  133, CYAN_PAPER
+tile_03_record:  db  128,  131,  130,  133, YELLOW_PAPER
+tile_04_record:  db  131,  128,  133,  130, GREEN_PAPER
+
+
+;===============================================================================
+Draw_One_Tile:
+;-------------------------------------------------------------------------------
+; Purpose:
+;
+;
+; Clobbers:
+; - AF, HL, IX
+;-------------------------------------------------------------------------------
+
+  push HL  ; will pop up as IX later
+
+  ;---------------------------------
+  ; Work out the row and the column
+  ;---------------------------------
+  ld IX, hero_row_offset
+  ld A, (HL) : sbc (IX+0) : ld B, A : inc HL  ; store screen row
+  ld A, (HL) : sbc (IX+1) : ld C, A : inc HL  ; store screen column
+
+  ;-------------------------
+  ; Work out the dimensions
+  ;-------------------------
+  pop IX  ; point IX to the tile you are drawing now because you want ...
+          ; ... to be able to work out the dimensions from the record
+  ld A, (HL) : sbc (IX+0) : inc A : ld D, A : inc HL  ; dim. in rows
+  ld A, (HL) : sbc (IX+1) : inc A : ld E, A : inc HL  ; dim. in columns
+  ld A, (HL)  ; load the color
+
+  call Color_Tile  ; A, BC and DE are the parameters
+
+  ret
+
+;===============================================================================
+Draw_The_World:
+;-------------------------------------------------------------------------------
+
+  ;------------------------------
+  ; Draw all the tiles in a loop
+  ;------------------------------
+  ld IX, world_address_table
+.loop_the_world
+
+    ld A,(IX+0)   ; load low byte
+    or (IX+1)     ; OR with high byte
+    jr z, .both_zero
+
+    ld L, (IX+0)
+    ld H, (IX+1)
+    push IX
+    call Draw_One_Tile
+    pop IX
+
+    inc IX
+    inc IX
+
+  jr .loop_the_world
+
+.both_zero
+
+  ret
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
