@@ -144,7 +144,7 @@ Main_Menu:
     call Browse_Key_Rows      ; A = code, C bit0 = 1 if pressed
 
     cp KEY_R                  ; is the key "R" pressed?  Set z if so
-    call z, Define_Keys 
+    call z, Define_Keys
 
     cp KEY_P                  ; is the key "P" pressed?  Set z if so
     call z, Play_The_Game
@@ -502,136 +502,6 @@ Play_The_Game:
 
   ret  ; end of Play_The_Game
 
-;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-;
-;   SUBROUTINES
-;
-;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Calculate_Screen_Attribute_Address.asm"
-  include "Subs/Color_Line.asm"
-  include "Subs/Color_Tile.asm"
-  include "Subs/Draw_Frame.asm"
-  include "Subs/Viewport/Create.asm"
-  include "Subs/Viewport/Store_Data_For_Attributes.asm"
-  include "Subs/Viewport/Store_Data_For_Pixels.asm"
-  include "Subs/Open_Upper_Screen.asm"
-  include "Subs/Calculate_Screen_Pixel_Address.asm"
-  include "Subs/Udgs/Print_Character.asm"
-  include "Subs/Udgs/Print_Line_Tile.asm"
-  include "Subs/Udgs/Print_Tile.asm"
-  include "Subs/Udgs/Print_Line_Sprite.asm"
-  include "Subs/Udgs/Print_Sprite.asm"
-  include "Subs/Udgs/Merge_Line_Sprite.asm"
-  include "Subs/Udgs/Merge_Sprite.asm"
-  include "Subs/Merge_Grid.asm"
-  include "Subs/Browse_Key_Rows.asm"
-  include "Subs/Press_Any_Key.asm"
-  include "Subs/Unpress.asm"
-  include "Subs/Print_Character.asm"
-  include "Subs/Print_String.asm"
-  include "Subs/Delay.asm"
-  include "Subs/Print_08_Bit_Number.asm"
-
-;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-;
-;   DATA
-;
-;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Global_Data.inc"
-
-; Hero's position and offset (not all of them will be used in the end)
-hero_world_row:   defb  127
-hero_world_col:   defb  127
-hero_row_offset:  defb  127 - HERO_SCREEN_ROW
-hero_col_offset:  defb  127 - HERO_SCREEN_COL
-
-; These four must be in this order - don't mess it up!
-world_limits:
-world_row_min:    defb  127 + CELL_ROW_MIN - HERO_SCREEN_ROW
-world_col_min:    defb  127 + CELL_COL_MIN - HERO_SCREEN_COL
-world_row_max:    defb  127 + CELL_ROW_MAX - HERO_SCREEN_ROW
-world_col_max:    defb  127 + CELL_COL_MAX - HERO_SCREEN_COL
-
-;-------------------------------
-; Storage for user defined keys
-; The unique key code is stored
-;-------------------------------
-five_defined_keys:
-key_for_up:     defb  KEY_Q
-key_for_down:   defb  KEY_A
-key_for_left:   defb  KEY_O
-key_for_right:  defb  KEY_P
-key_for_fire:   defb  KEY_M
-
-arrow_up:      defb $00, $18, $3C, $7E, $18, $18, $18, $00
-arrow_down:    defb $00, $18, $18, $18, $7E, $3C, $18, $00
-arrow_left:    defb $00, $10, $30, $7E, $7E, $30, $10, $00
-arrow_right:   defb $00, $08, $0C, $7E, $7E, $0C, $08, $00
-fire:          defb $08, $04, $0C, $2A, $3A, $7A, $66, $3C
-
-text_current:  defb "Currently defined keys:", 0
-
-text_current_address_table:
-  defw text_current_up
-  defw text_current_down
-  defw text_current_left
-  defw text_current_right
-  defw text_current_fire
-
-text_current_up:     defb "Key for UP    [ ]", 0
-text_current_down:   defb "Key for DOWN  [ ]", 0
-text_current_left:   defb "Key for LEFT  [ ]", 0
-text_current_right:  defb "Key for RIGHT [ ]", 0
-text_current_fire:   defb "Key for FIRE  [ ]", 0
-
-text_press_r_or_p:  defb "[R]: redefine keys [P]: play", 0
-
-text_prompt_address_table:
-  defw text_prompt_for_up
-  defw text_prompt_for_down
-  defw text_prompt_for_left
-  defw text_prompt_for_right
-  defw text_prompt_for_fire
-
-text_prompt_for_up:    defb "Press key for UP    [ ]", 0
-text_prompt_for_down:  defb "Press key for DOWN  [ ]", 0
-text_prompt_for_left:  defb "Press key for LEFT  [ ]", 0
-text_prompt_for_right: defb "Press key for RIGHT [ ]", 0
-text_prompt_for_fire:  defb "Press key for FIRE  [ ]", 0
-
-;-------------------------
-; Definition of the world
-;-------------------------
-world_address_table:
-  dw tile_00_record  ; this covers the whole world
-  dw tile_01_record
-  dw tile_02_record
-  dw tile_03_record
-  dw tile_04_record
-  dw tile_05_record  ; starts inside, but breaks out at lower right
-  dw tile_06_record  ; starts outside, but protrudes from upper left
-  dw tile_07_record  ; everything smaller than min row
-  dw tile_08_record  ; everything greater than max row
-  dw tile_09_record  ; everything smaller than min col
-  dw tile_10_record  ; everything greater than max col
-  dw $0000           ; this marks the end of the world
-
-;----------------------------------------
-; Tile records
-;----------------------------------------
-;                   row0  col0  row1  col1  color
-tile_00_record:  db    1,    1,  254,  254, GREEN_PAPER
-tile_01_record:  db  128,  128,  130,  130, RED_PAPER    + BRIGHT
-tile_02_record:  db  131,  131,  133,  133, CYAN_PAPER   + BRIGHT
-tile_03_record:  db  128,  131,  130,  133, YELLOW_PAPER + BRIGHT
-tile_04_record:  db  131,  128,  133,  130, GREEN_PAPER  + BRIGHT
-tile_05_record:  db  134,  134,  150,  150, MAGENTA_PAPER
-tile_06_record:  db  110,  110,  121,  121, MAGENTA_PAPER
-tile_07_record:  db    0,  128,    1,  130, BLACK_PAPER  ; over the top
-tile_08_record:  db  254,  128,  255,  130, BLACK_PAPER  ; rock bottom
-tile_09_record:  db  128,    0,  130,    1, BLACK_PAPER  ; far left
-tile_10_record:  db  128,  254,  130,  255, BLACK_PAPER  ; far right
-
 ;===============================================================================
 ; Draw_One_Tile
 ;-------------------------------------------------------------------------------
@@ -752,8 +622,15 @@ Draw_One_Tile:
   ret
 
 ;===============================================================================
-Draw_The_World:
+; Draw_The_World
 ;-------------------------------------------------------------------------------
+; Purpose:
+; - Redraws the whole world
+;
+; Parameters:
+; - world_address_table global variable is used
+;-------------------------------------------------------------------------------
+Draw_The_World:
 
   ;------------------------------
   ; Draw all the tiles in a loop
@@ -780,8 +657,111 @@ Draw_The_World:
 
   ret
 
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Subs/Calculate_Screen_Attribute_Address.asm"
+  include "Subs/Color_Line.asm"
+  include "Subs/Color_Tile.asm"
+  include "Subs/Draw_Frame.asm"
+  include "Subs/Viewport/Create.asm"
+  include "Subs/Viewport/Store_Data_For_Attributes.asm"
+  include "Subs/Viewport/Store_Data_For_Pixels.asm"
+  include "Subs/Open_Upper_Screen.asm"
+  include "Subs/Calculate_Screen_Pixel_Address.asm"
+  include "Subs/Udgs/Print_Character.asm"
+  include "Subs/Udgs/Print_Line_Tile.asm"
+  include "Subs/Udgs/Print_Tile.asm"
+  include "Subs/Udgs/Print_Line_Sprite.asm"
+  include "Subs/Udgs/Print_Sprite.asm"
+  include "Subs/Udgs/Merge_Line_Sprite.asm"
+  include "Subs/Udgs/Merge_Sprite.asm"
+  include "Subs/Merge_Grid.asm"
+  include "Subs/Browse_Key_Rows.asm"
+  include "Subs/Press_Any_Key.asm"
+  include "Subs/Unpress.asm"
+  include "Subs/Print_Character.asm"
+  include "Subs/Print_String.asm"
+  include "Subs/Delay.asm"
+  include "Subs/Print_08_Bit_Number.asm"
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   DATA
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Global_Data.inc"
+
+; Hero's position and offset (not all of them will be used in the end)
+hero_world_row:   defb  127
+hero_world_col:   defb  127
+hero_row_offset:  defb  127 - HERO_SCREEN_ROW
+hero_col_offset:  defb  127 - HERO_SCREEN_COL
+
+; These four must be in this order - don't mess it up!
+world_limits:
+world_row_min:    defb  127 + CELL_ROW_MIN - HERO_SCREEN_ROW
+world_col_min:    defb  127 + CELL_COL_MIN - HERO_SCREEN_COL
+world_row_max:    defb  127 + CELL_ROW_MAX - HERO_SCREEN_ROW
+world_col_max:    defb  127 + CELL_COL_MAX - HERO_SCREEN_COL
+
+;-------------------------------
+; Storage for user defined keys
+; The unique key code is stored
+;-------------------------------
+five_defined_keys:
+key_for_up:     defb  KEY_Q
+key_for_down:   defb  KEY_A
+key_for_left:   defb  KEY_O
+key_for_right:  defb  KEY_P
+key_for_fire:   defb  KEY_M
+
+arrow_up:      defb $00, $18, $3C, $7E, $18, $18, $18, $00
+arrow_down:    defb $00, $18, $18, $18, $7E, $3C, $18, $00
+arrow_left:    defb $00, $10, $30, $7E, $7E, $30, $10, $00
+arrow_right:   defb $00, $08, $0C, $7E, $7E, $0C, $08, $00
+fire:          defb $08, $04, $0C, $2A, $3A, $7A, $66, $3C
+
+text_current:  defb "Currently defined keys:", 0
+
+text_current_address_table:
+  defw text_current_up
+  defw text_current_down
+  defw text_current_left
+  defw text_current_right
+  defw text_current_fire
+
+text_current_up:     defb "Key for UP    [ ]", 0
+text_current_down:   defb "Key for DOWN  [ ]", 0
+text_current_left:   defb "Key for LEFT  [ ]", 0
+text_current_right:  defb "Key for RIGHT [ ]", 0
+text_current_fire:   defb "Key for FIRE  [ ]", 0
+
+text_press_r_or_p:  defb "[R]: redefine keys [P]: play", 0
+
+text_prompt_address_table:
+  defw text_prompt_for_up
+  defw text_prompt_for_down
+  defw text_prompt_for_left
+  defw text_prompt_for_right
+  defw text_prompt_for_fire
+
+text_prompt_for_up:    defb "Press key for UP    [ ]", 0
+text_prompt_for_down:  defb "Press key for DOWN  [ ]", 0
+text_prompt_for_left:  defb "Press key for LEFT  [ ]", 0
+text_prompt_for_right: defb "Press key for RIGHT [ ]", 0
+text_prompt_for_fire:  defb "Press key for FIRE  [ ]", 0
+
+;-------------------------
+; Definition of the world
+;-------------------------
+  include "World_002.inc"
+
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
   savesna "bojan_008.sna", Main
   savebin "bojan_008.bin", Main, $ - Main
+

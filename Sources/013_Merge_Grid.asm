@@ -26,12 +26,6 @@ Main:
   ;----------------------------------
   call Open_Upper_Screen
 
-  ;------------------------------
-  ; Specify the beginning of UDG
-  ;------------------------------
-  ld HL, udgs                         ; user defined graphics (UDGs)
-  ld (MEM_USER_DEFINED_GRAPHICS), HL  ; set up UDG system variable.
-
   ;-----------------------------------------------------
   ; Merge the grid over whatever you have on the screen
   ;-----------------------------------------------------
@@ -60,10 +54,6 @@ Main:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Global_Data.inc"
-
-udgs:
-
-  include "Subs/Grid_Cont_Dot.inc"
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main

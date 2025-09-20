@@ -5,7 +5,7 @@ sjasmplus 004_Moving_Asterisk.asm
 sjasmplus 005_Moving_Monster.asm
 sjasmplus 006_Print_At.asm
 sjasmplus 007_Read_All_Keys.asm
-sjasmplus 008_Define_Keys_Again.asm
+sjasmplus 008_Game_Framework.asm
 sjasmplus 009_Print_Character.asm
 sjasmplus 010_Print_Register_Contents.asm
 sjasmplus 011_Turn_Numbers_To_Decimal_Strings.asm
