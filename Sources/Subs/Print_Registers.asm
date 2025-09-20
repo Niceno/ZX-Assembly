@@ -386,15 +386,16 @@ old_hl:  defw  $00
 old_ix:  defw  $00
 old_iy:  defw  $00
 
-;    row,col,    str_ptr,    unused,   new_ptr,  old_ptr,     color
-;    0   1       2-3         4-5       6-7       8-9          10
+;    row,col,    str_ptr,  unused,  new_ptr,  old_ptr,    color
+;    0   1       2-3       4-5      6-7       8-9         10
 reg_record:
-  db 0,  26 : dw reg_af,     reg_eq,   new_af,   old_af :  db WHITE_INK + BLACK_PAPER
-  db 1,  26 : dw reg_bc,     reg_eq,   new_bc,   old_bc :  db WHITE_INK + BLUE_PAPER
-  db 2,  26 : dw reg_de,     reg_eq,   new_de,   old_de :  db WHITE_INK + MAGENTA_PAPER
-  db 3,  26 : dw reg_hl,     reg_eq,   new_hl,   old_hl :  db WHITE_INK + RED_PAPER
-  db 4,  26 : dw reg_ix,     reg_eq,   new_ix,   old_ix :  db BLACK_INK + GREEN_PAPER
-  db 5,  26 : dw reg_iy,     reg_eq,   new_iy,   old_iy :  db BLACK_INK + YELLOW_PAPER
+  db 0,  16 : dw reg_af,   reg_eq,  new_af,   old_af : db BLACK_INK + YELLOW_PAPER
+  db 1,  16 : dw reg_bc,   reg_eq,  new_bc,   old_bc : db BLACK_INK + GREEN_PAPER
+  db 2,  16 : dw reg_de,   reg_eq,  new_de,   old_de : db BLACK_INK + GREEN_PAPER
+  db 3,  16 : dw reg_hl,   reg_eq,  new_hl,   old_hl : db BLACK_INK + GREEN_PAPER   + BRIGHT
+  db 4,  16 : dw reg_ix,   reg_eq,  new_ix,   old_ix : db BLACK_INK + CYAN_PAPER
+  db 5,  16 : dw reg_iy,   reg_eq,  new_iy,   old_iy : db BLACK_INK + CYAN_PAPER
+
 REG_ROW_SIZE  equ  11
 REG_ENTRIES   equ   6
 
