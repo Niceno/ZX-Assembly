@@ -1,0 +1,42 @@
+Hero has two set of coordinates:
+
+   hero_world_row,  hero_world_col  - where is the hero in the world
+   HERO_SCREEN_ROW, HERO_SCREEN_COL - where is the hero on the screen
+
+There is an obvious offset for the hero:
+
+   hero_row_offset = hero_world_row - HERO_SCREEN_ROW
+   hero_col_offset = hero_world_col - HERO_SCREEN_COL
+
+Thus, if hero (or any other object) is at a certain world coordinate,
+its screen position will be:
+
+  screen_position = world_position - hero_row_offset
+
+
+OK, now imagine we have an object, say a tile, defined with:
+
+  tile_row
+  tile_col
+
+This tile's screen position will be
+
+  tile_screen_row = tile_row - hero_row_offset
+  tile_screen_col = tile_col - hero_col_offset
+
+Let's imagine an example:
+
+  Hero is at 127, 127 world coordinates
+  Hero's screen position is at 11, 15 (roughly middle of the screen)
+
+  That gives hero's offset:
+
+  hero_row_offset = 127 - 11 = 116
+  hero_col_offset = 127 - 15 = 112
+
+  A tile starts at world coordinates 128, 128 (close to hero)
+
+  tile_screen_row = tile_row - hero_row_offset = 128 - 116 = 12
+  tile_screen_col = tile_col - hero_col_offset = 128 - 112 = 16
+
+  So, the concept works: hero is printed at 11, 15 and the tile at 12, 16

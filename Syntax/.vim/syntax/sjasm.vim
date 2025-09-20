@@ -100,6 +100,8 @@ syn keyword sjasmConstant WORLD_ROW_MIN_OFFSET  WORLD_COL_MIN_OFFSET
 syn keyword sjasmConstant WORLD_ROW_MAX_OFFSET  WORLD_COL_MAX_OFFSET
 syn keyword sjasmConstant HERO_START_ROW        HERO_START_COL
 
+syn keyword sjasmConstant WORLD_END  WORLD_TILE  WORLD_SPRITE
+
 syn keyword sjasmConstant BLACK_INK      BLUE_INK     RED_INK
 syn keyword sjasmConstant MAGENTA_INK    GREEN_INK    CYAN_INK
 syn keyword sjasmConstant YELLOW_INK     WHITE_INK

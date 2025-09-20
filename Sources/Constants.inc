@@ -63,6 +63,13 @@ WORLD_COL_MAX_OFFSET  equ  CELL_COL_VIEW_MAX - HERO_SCREEN_COL
 HERO_START_ROW  equ  WORLD_ROWS / 2 - 1
 HERO_START_COL  equ  WORLD_COLS / 2 - 1
 
+;--------------------
+; World's definition
+;--------------------
+WORLD_END     equ  0  ; reached the end of the world
+WORLD_TILE    equ  1  ; about to define a tile
+WORLD_SPRITE  equ  2  ; about to define a sprite
+
 ;-------------------------------------------------------------------------------
 ; ZX Spectrum colors
 ;

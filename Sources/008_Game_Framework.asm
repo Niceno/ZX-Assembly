@@ -565,6 +565,7 @@ Play_The_Game:
 ;   only partially in the viewport are clamped.
 ;
 ; Parameters:
+; - BC: holds row and column
 ; - HL: points to the tile
 ; - IX: points to the world limits, which must be in this order:
 ;       - IX+0 =--> world_row_min
@@ -577,13 +578,12 @@ Play_The_Game:
 ;-------------------------------------------------------------------------------
 Draw_One_Tile:
 
-  ;----------------------------------------------------------
-  ; Fetch tile's coordinates and place them in B, C, D and E
-  ;----------------------------------------------------------
-  ld A, (HL) : ld B, A : inc HL  ; row0
-  ld A, (HL) : ld C, A : inc HL  ; col0
-  ld A, (HL) : ld D, A : inc HL  ; row1
-  ld A, (HL) : ld E, A : inc HL  ; col1
+  ;--------------------------------------
+  ; Fetch tile's dimensions, add them to
+  ; row0 and col0 and store in D and E
+  ;--------------------------------------
+  ld A, (HL) : add B : dec A : ld D, A : inc HL
+  ld A, (HL) : add C : dec A : ld E, A : inc HL
 
   ;---------------------------------------------------------------
   ; Eliminate tiles which are completelly outside of the viewport
@@ -689,25 +689,31 @@ Draw_The_World:
   ld IX, world_address_table
 .loop_the_world
 
-    ld A,(IX+0)   ; load low byte
-    or (IX+1)     ; OR with high byte
-    jr z, .both_zero
+    ld A,(IX+0)              ; load the first byte
+    cp WORLD_END             ; does it mark the end of the world?
+    jr z, .end_of_the_world  ; if so, get out of here
 
-    push IX              ; inefficient, try to avoid this
+    push IX              ; =--> inefficient, try to avoid this
 
-    ld L, (IX+0)
-    ld H, (IX+1)
-    ld IX, world_limits  ; inefficient, try to avoid this
+    ; IX+0 would be a type, WORLD_TILE or WORLD_SPRITE, do nothing about it yet
+    ld B, (IX+1)  ; starting row
+    ld C, (IX+2)  ; starting column
+    ld L, (IX+3)
+    ld H, (IX+4)
+    ld IX, world_limits  ; =--> inefficient, try to avoid this
     call Draw_One_Tile
 
-    pop IX               ; inefficient, try to avoid this
+    pop IX               ; =--> inefficient, try to avoid this
 
+    inc IX  ; type (WORLD_END, WORLD_TILE or WORLD_SPRITE)
+    inc IX  ; row
+    inc IX  ; col
     inc IX
     inc IX
 
   jr .loop_the_world
 
-.both_zero
+.end_of_the_world
 
   ret
 
