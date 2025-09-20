@@ -2,7 +2,7 @@
 ; Definition of the world
 ;-------------------------
 world_address_table:
-  dw tile_00_record  ; this covers the whole world
+  dw tile_ground     ; this covers the whole world and it is a MUST!!!
   dw tile_01_record
   dw tile_02_record
   dw tile_03_record
@@ -19,7 +19,7 @@ world_address_table:
 ; Tile records
 ;----------------------------------------
 ;                    row0  col0  row1  col1  color
-tile_00_record:  db    1,    1,  254,  254, GREEN_PAPER
+tile_ground   :  db    0,    0,  255,  255, GREEN_PAPER
 tile_01_record:  db  128,  128,  130,  130, RED_PAPER    + BRIGHT
 tile_02_record:  db  131,  131,  133,  133, CYAN_PAPER   + BRIGHT
 tile_03_record:  db  128,  131,  130,  133, YELLOW_PAPER + BRIGHT

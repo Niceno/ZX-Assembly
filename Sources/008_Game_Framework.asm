@@ -818,8 +818,8 @@ text_view: defb "VIEW", 0
 ;-------------------------
 ; Definition of the world
 ;-------------------------
-  include "World_001.inc"
-; include "World_002.inc"
+; include "World_001.inc"
+  include "World_002.inc"
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
