@@ -335,22 +335,6 @@ Play_The_Game:
     ld A, CYAN_PAPER + BRIGHT
     call Color_Tile
 
-    ; Fetch hero's offset coordinates and print them too
-    ld IX, hero_row_offset : ld A, (IX+0)  ; place hero's row offset into A
-    ld H, 0 : ld L, A                      ; load HL pair with A
-    ld B, 5 : ld C, 29                     ; set row and column
-    call Print_08_Bit_Number               ; print it
-
-    ld IX, hero_col_offset : ld A, (IX+0)  ; place hero's column offset into A
-    ld H, 0 : ld L, A                      ; load HL pair with A
-    ld B, 6 : ld C, 29                     ; set row and column
-    call Print_08_Bit_Number               ; print it
-
-    ld B, 5 : ld C, 29
-    ld D, 2 : ld E, 3
-    ld A, CYAN_PAPER + BRIGHT
-    call Color_Tile
-
     ld B, 8 : ld C, 28
     ld HL, text_view
     call Print_String
@@ -387,11 +371,11 @@ Play_The_Game:
     ld A, GREEN_PAPER + BRIGHT
     call Color_Tile
 
-    ;-------------------------------
-    ; Create a little delay no more
-    ;-------------------------------
-    ; ld B, 15
-    ; call Delay
+    ;-----------------------
+    ; Create a little delay
+    ;-----------------------
+    ld B, 1
+    call Delay
 
     ;-----------------------------
     ;
@@ -410,6 +394,15 @@ Play_The_Game:
     ;
     ;---------------------------------------------
 
+    ; Reset (restore) row and col coordinates
+    ; (If they stayed like this, the whole viewport would redraw.)
+    ex AF, AF'
+    ld A, (hero_world_row) : add WORLD_ROW_MIN_OFFSET : ld (world_row_min), A
+    ld A, (hero_world_col) : add WORLD_COL_MIN_OFFSET : ld (world_col_min), A
+    ld A, (hero_world_row) : add WORLD_ROW_MAX_OFFSET : ld (world_row_max), A
+    ld A, (hero_world_col) : add WORLD_COL_MAX_OFFSET : ld (world_col_max), A
+    ex AF, AF'
+
     ;---------------
     ; Action for up
     ;---------------
@@ -420,16 +413,12 @@ Play_The_Game:
 
     ; Update coordinates
     ld A, (hero_world_row)  : dec A : ld (hero_world_row),  A
-    ld A, (hero_row_offset) : dec A : ld (hero_row_offset), A
 
     ; Hero goes up =--> screen scrolls down =--> set row max to row min
-    ld A, (hero_world_row) : add WORLD_ROW_MIN_OFFSET  ; work out min
-    ld (world_row_min), A                              ; store min
-    ld (world_row_max), A                              ; set max = min
-
-    ; Reset (restore) col coordinates
-    ld A, (hero_world_col) : add WORLD_COL_MIN_OFFSET : ld (world_col_min), A
-    ld A, (hero_world_col) : add WORLD_COL_MAX_OFFSET : ld (world_col_max), A
+    ; Register A still holds hero_world_row here
+    add WORLD_ROW_MIN_OFFSET  ; work out min
+    ld (world_row_min), A     ; store min
+    ld (world_row_max), A     ; set max = min
 
     ; Scroll
     call Viewport_Scroll_Attributes_Down
@@ -452,16 +441,12 @@ Play_The_Game:
 
     ; Update coordinates
     ld A, (hero_world_row)  : inc A : ld (hero_world_row),  A
-    ld A, (hero_row_offset) : inc A : ld (hero_row_offset), A
 
     ; Hero goes down =--> screen scrolls up =--> set row min to row max
-    ld A, (hero_world_row) : add WORLD_ROW_MAX_OFFSET  ; work out max
-    ld (world_row_max), A                              ; store max
-    ld (world_row_min), A                              ; set min = max
-
-    ; Reset (restore) col coordinates
-    ld A, (hero_world_col) : add WORLD_COL_MIN_OFFSET : ld (world_col_min), A
-    ld A, (hero_world_col) : add WORLD_COL_MAX_OFFSET : ld (world_col_max), A
+    ; Register A still holds hero_world_row here
+    add WORLD_ROW_MAX_OFFSET  ; work out max
+    ld (world_row_max), A     ; store max
+    ld (world_row_min), A     ; set min = max
 
     ; Scroll
     call Viewport_Scroll_Attributes_Up
@@ -484,16 +469,12 @@ Play_The_Game:
 
     ; Update coordinates
     ld A, (hero_world_col)  : dec A : ld (hero_world_col),  A
-    ld A, (hero_col_offset) : dec A : ld (hero_col_offset), A
 
     ; Hero goes left =--> screen scrolls right =--> set col max to col min
-    ld A, (hero_world_col)  : add WORLD_COL_MIN_OFFSET  ; work out min
-    ld (world_col_min), A                               ; store min
-    ld (world_col_max), A                               ; set max = min
-
-    ; Reset (restore) row coordinates
-    ld A, (hero_world_row) : add WORLD_ROW_MIN_OFFSET : ld (world_row_min), A
-    ld A, (hero_world_row) : add WORLD_ROW_MAX_OFFSET : ld (world_row_max), A
+    ; Register A still holds hero_world_col here
+    add WORLD_COL_MIN_OFFSET  ; work out min
+    ld (world_col_min), A     ; store min
+    ld (world_col_max), A     ; set max = min
 
     ; Scroll
     call Viewport_Scroll_Attributes_Right
@@ -516,16 +497,12 @@ Play_The_Game:
 
     ; Update coordinates
     ld A, (hero_world_col)  : inc A : ld (hero_world_col),  A
-    ld A, (hero_col_offset) : inc A : ld (hero_col_offset), A
 
     ; Hero goes right =--> screen scrolls left =--> set col min to col max
-    ld A, (hero_world_col)  : add WORLD_COL_MAX_OFFSET  ; work out max
-    ld (world_col_max), A                               ; store max
-    ld (world_col_min), A                               ; set min = max
-
-    ; Reset (restore) row coordinates
-    ld A, (hero_world_row) : add WORLD_ROW_MIN_OFFSET : ld (world_row_min), A
-    ld A, (hero_world_row) : add WORLD_ROW_MAX_OFFSET : ld (world_row_max), A
+    ; Register A still holds hero_world_col here
+    add WORLD_COL_MAX_OFFSET  ; work out max
+    ld (world_col_max), A     ; store max
+    ld (world_col_min), A     ; set min = max
 
     ; Scroll
     call Viewport_Scroll_Attributes_Left
@@ -656,9 +633,9 @@ Draw_One_Tile:
   ;---------------------------------
   ld A, D : sub B : inc A : ld D, A  ; calculate number of rows
   ld A, E : sub C : inc A : ld E, A  ; calculate number of columns
-  ld IX, hero_row_offset  ; transfer world to screen coordinates
-  ld A, B : sub (IX+0) : ld B, A
-  ld A, C : sub (IX+1) : ld C, A
+  ld IX, hero_world_row  ; transfer world to screen coordinates
+  ld A, B : sub (IX+0) : add HERO_SCREEN_ROW : ld B, A
+  ld A, C : sub (IX+1) : add HERO_SCREEN_COL : ld C, A
 
   ;----------------
   ; Load the color
@@ -761,8 +738,6 @@ Draw_The_World:
 ; Hero's position and offset (not all of them will be used in the end)
 hero_world_row:   defb  HERO_START_ROW
 hero_world_col:   defb  HERO_START_COL
-hero_row_offset:  defb  HERO_START_ROW - HERO_SCREEN_ROW
-hero_col_offset:  defb  HERO_START_COL - HERO_SCREEN_COL
 
 ; These four must be in this order - don't mess it up!
 world_limits:
@@ -824,8 +799,8 @@ text_view: defb "VIEW", 0
 ;-------------------------
 ; Definition of the world
 ;-------------------------
-; include "World_001.inc"
-  include "World_002.inc"
+  include "World_001.inc"
+; include "World_002.inc"
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
