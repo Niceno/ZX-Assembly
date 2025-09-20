@@ -315,18 +315,22 @@ Play_The_Game:
   ;----------------
 .main_game_loop:
 
+    ld B, 0 : ld C, 28
+    ld HL, text_hero
+    call Print_String
+
     ; Fetch hero's coordinates and print them
     ld IX, hero_world_row : ld A, (IX+0)  ; place hero's world row into A
     ld H, 0 : ld L, A                     ; load HL pair with A (hero's row)
-    ld B, 0 : ld C, 29                    ; set row and column
+    ld B, 2 : ld C, 29                    ; set row and column
     call Print_08_Bit_Number              ; print it
 
     ld IX, hero_world_col : ld A, (IX+0)  ; place hero's world column into A
     ld H, 0 : ld L, A                     ; load HL pair with A (hero's column)
-    ld B, 1 : ld C, 29                    ; set row and column
+    ld B, 3 : ld C, 29                    ; set row and column
     call Print_08_Bit_Number              ; print it
 
-    ld B, 0 : ld C, 29
+    ld B, 2 : ld C, 29
     ld D, 2 : ld E, 3
     ld A, CYAN_PAPER + BRIGHT
     call Color_Tile
@@ -334,31 +338,35 @@ Play_The_Game:
     ; Fetch hero's offset coordinates and print them too
     ld IX, hero_row_offset : ld A, (IX+0)  ; place hero's row offset into A
     ld H, 0 : ld L, A                      ; load HL pair with A
-    ld B, 3 : ld C, 29                     ; set row and column
+    ld B, 5 : ld C, 29                     ; set row and column
     call Print_08_Bit_Number               ; print it
 
     ld IX, hero_col_offset : ld A, (IX+0)  ; place hero's column offset into A
     ld H, 0 : ld L, A                      ; load HL pair with A
-    ld B, 4 : ld C, 29                     ; set row and column
+    ld B, 6 : ld C, 29                     ; set row and column
     call Print_08_Bit_Number               ; print it
 
-    ld B, 3 : ld C, 29
+    ld B, 5 : ld C, 29
     ld D, 2 : ld E, 3
     ld A, CYAN_PAPER + BRIGHT
     call Color_Tile
 
+    ld B, 8 : ld C, 28
+    ld HL, text_view
+    call Print_String
+
     ; Fetch world's min coordinates and print them
     ld IX, world_row_min   : ld A, (IX+0)  ; place hero's row offset into A
     ld H, 0 : ld L, A                      ; load HL pair with A
-    ld B, 6 : ld C, 29                     ; set row and column
+    ld B,10 : ld C, 29                     ; set row and column
     call Print_08_Bit_Number               ; print it
 
     ld IX, world_col_min   : ld A, (IX+0)  ; place hero's column offset into A
     ld H, 0 : ld L, A                      ; load HL pair with A
-    ld B, 7 : ld C, 29                     ; set row and column
+    ld B,11 : ld C, 29                     ; set row and column
     call Print_08_Bit_Number               ; print it
 
-    ld B, 6 : ld C, 29
+    ld B,10 : ld C, 29
     ld D, 2 : ld E, 3
     ld A, GREEN_PAPER + BRIGHT
     call Color_Tile
@@ -366,22 +374,24 @@ Play_The_Game:
     ; Fetch world's min coordinates and print them
     ld IX, world_row_max   : ld A, (IX+0)  ; place hero's row offset into A
     ld H, 0 : ld L, A                      ; load HL pair with A
-    ld B, 9 : ld C, 29                     ; set row and column
+    ld B,13 : ld C, 29                     ; set row and column
     call Print_08_Bit_Number               ; print it
 
     ld IX, world_col_max   : ld A, (IX+0)  ; place hero's column offset into A
     ld H, 0 : ld L, A                      ; load HL pair with A
-    ld B,10 : ld C, 29                     ; set row and column
+    ld B,14 : ld C, 29                     ; set row and column
     call Print_08_Bit_Number               ; print it
 
-    ld B, 9 : ld C, 29
+    ld B,13 : ld C, 29
     ld D, 2 : ld E, 3
     ld A, GREEN_PAPER + BRIGHT
     call Color_Tile
 
-    ; Create a little delay
-    ld B, 15
-    call Delay
+    ;-------------------------------
+    ; Create a little delay no more
+    ;-------------------------------
+    ; ld B, 15
+    ; call Delay
 
     ;-----------------------------
     ;
@@ -411,8 +421,19 @@ Play_The_Game:
     ; Update coordinates
     ld A, (hero_world_row)  : dec A : ld (hero_world_row),  A
     ld A, (hero_row_offset) : dec A : ld (hero_row_offset), A
-    ld A, (world_row_min)   : dec A : ld (world_row_min),   A
-    ld A, (world_row_max)   : dec A : ld (world_row_max),   A
+
+    ; Hero goes up =--> screen scrolls down =--> set row max to row min
+    ld A, (hero_world_row) : add WORLD_ROW_MIN_OFFSET  ; work out min
+    ld (world_row_min), A                              ; store min
+    ld (world_row_max), A                              ; set max = min
+
+    ; Reset (restore) col coordinates
+    ld A, (hero_world_col) : add WORLD_COL_MIN_OFFSET : ld (world_col_min), A
+    ld A, (hero_world_col) : add WORLD_COL_MAX_OFFSET : ld (world_col_max), A
+
+    ; Scroll
+    call Viewport_Scroll_Attributes_Down
+    call Draw_The_World  ; this depends on world_limits
 
     ; Update sprite
     ld HL, arrow_up
@@ -432,8 +453,19 @@ Play_The_Game:
     ; Update coordinates
     ld A, (hero_world_row)  : inc A : ld (hero_world_row),  A
     ld A, (hero_row_offset) : inc A : ld (hero_row_offset), A
-    ld A, (world_row_min)   : inc A : ld (world_row_min),   A
-    ld A, (world_row_max)   : inc A : ld (world_row_max),   A
+
+    ; Hero goes down =--> screen scrolls up =--> set row min to row max
+    ld A, (hero_world_row) : add WORLD_ROW_MAX_OFFSET  ; work out max
+    ld (world_row_max), A                              ; store max
+    ld (world_row_min), A                              ; set min = max
+
+    ; Reset (restore) col coordinates
+    ld A, (hero_world_col) : add WORLD_COL_MIN_OFFSET : ld (world_col_min), A
+    ld A, (hero_world_col) : add WORLD_COL_MAX_OFFSET : ld (world_col_max), A
+
+    ; Scroll
+    call Viewport_Scroll_Attributes_Up
+    call Draw_The_World  ; this depends on world_limits
 
     ; Update sprite
     ld HL, arrow_down
@@ -453,8 +485,19 @@ Play_The_Game:
     ; Update coordinates
     ld A, (hero_world_col)  : dec A : ld (hero_world_col),  A
     ld A, (hero_col_offset) : dec A : ld (hero_col_offset), A
-    ld A, (world_col_min)   : dec A : ld (world_col_min),   A
-    ld A, (world_col_max)   : dec A : ld (world_col_max),   A
+
+    ; Hero goes left =--> screen scrolls right =--> set col max to col min
+    ld A, (hero_world_col)  : add WORLD_COL_MIN_OFFSET  ; work out min
+    ld (world_col_min), A                               ; store min
+    ld (world_col_max), A                               ; set max = min
+
+    ; Reset (restore) row coordinates
+    ld A, (hero_world_row) : add WORLD_ROW_MIN_OFFSET : ld (world_row_min), A
+    ld A, (hero_world_row) : add WORLD_ROW_MAX_OFFSET : ld (world_row_max), A
+
+    ; Scroll
+    call Viewport_Scroll_Attributes_Right
+    call Draw_The_World  ; this depends on world_limits
 
     ; Update sprite
     ld HL, arrow_left
@@ -474,8 +517,19 @@ Play_The_Game:
     ; Update coordinates
     ld A, (hero_world_col)  : inc A : ld (hero_world_col),  A
     ld A, (hero_col_offset) : inc A : ld (hero_col_offset), A
-    ld A, (world_col_min)   : inc A : ld (world_col_min),   A
-    ld A, (world_col_max)   : inc A : ld (world_col_max),   A
+
+    ; Hero goes right =--> screen scrolls left =--> set col min to col max
+    ld A, (hero_world_col)  : add WORLD_COL_MAX_OFFSET  ; work out max
+    ld (world_col_max), A                               ; store max
+    ld (world_col_min), A                               ; set min = max
+
+    ; Reset (restore) row coordinates
+    ld A, (hero_world_row) : add WORLD_ROW_MIN_OFFSET : ld (world_row_min), A
+    ld A, (hero_world_row) : add WORLD_ROW_MAX_OFFSET : ld (world_row_max), A
+
+    ; Scroll
+    call Viewport_Scroll_Attributes_Left
+    call Draw_The_World  ; this depends on world_limits
 
     ; Update sprite
     ld HL, arrow_right
@@ -639,14 +693,14 @@ Draw_The_World:
     or (IX+1)     ; OR with high byte
     jr z, .both_zero
 
-    push IX
+    push IX              ; inefficient, try to avoid this
 
     ld L, (IX+0)
     ld H, (IX+1)
-    ld IX, world_limits
+    ld IX, world_limits  ; inefficient, try to avoid this
     call Draw_One_Tile
 
-    pop IX
+    pop IX               ; inefficient, try to avoid this
 
     inc IX
     inc IX
@@ -669,6 +723,10 @@ Draw_The_World:
   include "Subs/Viewport/Create.asm"
   include "Subs/Viewport/Store_Data_For_Attributes.asm"
   include "Subs/Viewport/Store_Data_For_Pixels.asm"
+  include "Subs/Viewport/Scroll_Attributes_Up.asm"
+  include "Subs/Viewport/Scroll_Attributes_Down.asm"
+  include "Subs/Viewport/Scroll_Attributes_Left.asm"
+  include "Subs/Viewport/Scroll_Attributes_Right.asm"
   include "Subs/Open_Upper_Screen.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Udgs/Print_Character.asm"
@@ -695,17 +753,17 @@ Draw_The_World:
   include "Global_Data.inc"
 
 ; Hero's position and offset (not all of them will be used in the end)
-hero_world_row:   defb  127
-hero_world_col:   defb  127
-hero_row_offset:  defb  127 - HERO_SCREEN_ROW
-hero_col_offset:  defb  127 - HERO_SCREEN_COL
+hero_world_row:   defb  HERO_START_ROW
+hero_world_col:   defb  HERO_START_COL
+hero_row_offset:  defb  HERO_START_ROW - HERO_SCREEN_ROW
+hero_col_offset:  defb  HERO_START_COL - HERO_SCREEN_COL
 
 ; These four must be in this order - don't mess it up!
 world_limits:
-world_row_min:    defb  127 + CELL_ROW_MIN - HERO_SCREEN_ROW
-world_col_min:    defb  127 + CELL_COL_MIN - HERO_SCREEN_COL
-world_row_max:    defb  127 + CELL_ROW_MAX - HERO_SCREEN_ROW
-world_col_max:    defb  127 + CELL_COL_MAX - HERO_SCREEN_COL
+world_row_min:  defb  HERO_START_ROW + WORLD_ROW_MIN_OFFSET
+world_col_min:  defb  HERO_START_COL + WORLD_COL_MIN_OFFSET
+world_row_max:  defb  HERO_START_ROW + WORLD_ROW_MAX_OFFSET
+world_col_max:  defb  HERO_START_COL + WORLD_COL_MAX_OFFSET
 
 ;-------------------------------
 ; Storage for user defined keys
@@ -754,10 +812,14 @@ text_prompt_for_left:  defb "Press key for LEFT  [ ]", 0
 text_prompt_for_right: defb "Press key for RIGHT [ ]", 0
 text_prompt_for_fire:  defb "Press key for FIRE  [ ]", 0
 
+text_hero: defb "HERO", 0
+text_view: defb "VIEW", 0
+
 ;-------------------------
 ; Definition of the world
 ;-------------------------
   include "World_001.inc"
+; include "World_002.inc"
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main

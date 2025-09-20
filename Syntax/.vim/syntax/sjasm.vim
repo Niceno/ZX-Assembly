@@ -90,9 +90,15 @@ syn keyword sjasmConstant KEY_7     KEY_R     KEY_U     KEY_F     KEY_J
 syn keyword sjasmConstant KEY_C     KEY_N     KEY_5     KEY_6     KEY_T
 syn keyword sjasmConstant KEY_Y     KEY_G     KEY_H     KEY_V     KEY_B
 
-syn keyword sjasmConstant CELL_ROWS     CELL_COLS
-syn keyword sjasmConstant CELL_ROW_MIN  CELL_COL_MIN  CELL_ROW_MAX  CELL_COL_MAX
-syn keyword sjasmConstant HERO_SCREEN_ROW  HERO_SCREEN_COL
+syn keyword sjasmConstant CELL_ROWS          CELL_COLS
+syn keyword sjasmConstant CELL_ROW_VIEW_MIN  CELL_COL_VIEW_MIN
+syn keyword sjasmConstant CELL_ROW_VIEW_MAX  CELL_COL_VIEW_MAX
+syn keyword sjasmConstant HERO_SCREEN_ROW    HERO_SCREEN_COL
+
+syn keyword sjasmConstant WORLD_ROWS            WORLD_COLS
+syn keyword sjasmConstant WORLD_ROW_MIN_OFFSET  WORLD_COL_MIN_OFFSET
+syn keyword sjasmConstant WORLD_ROW_MAX_OFFSET  WORLD_COL_MAX_OFFSET
+syn keyword sjasmConstant HERO_START_ROW        HERO_START_COL
 
 syn keyword sjasmConstant BLACK_INK      BLUE_INK     RED_INK
 syn keyword sjasmConstant MAGENTA_INK    GREEN_INK    CYAN_INK

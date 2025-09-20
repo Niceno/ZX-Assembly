@@ -35,18 +35,33 @@ MEM_CUSTOM_FONT_START      equ  $FA00  ; 64000
 ;-------------------------------------------------------------------------------
 ; Screen attributes (for the 8x8 cell grid)
 ;-------------------------------------------------------------------------------
-CELL_ROWS     equ  24  ; total number of cell rows
-CELL_COLS     equ  32  ; total number of cell columns
-CELL_ROW_MIN  equ   1  ; first row of the viewport
-CELL_COL_MIN  equ   1  ; first column of the viewport
-CELL_ROW_MAX  equ  22  ; last row of the viewport
-CELL_COL_MAX  equ  26  ; last column of the viewport
+CELL_ROWS          equ  24  ; total number of cell rows on the screen
+CELL_COLS          equ  32  ; total number of cell columns on the screen
+CELL_ROW_VIEW_MIN  equ   1  ; first row of the viewport
+CELL_COL_VIEW_MIN  equ   1  ; first column of the viewport
+CELL_ROW_VIEW_MAX  equ  22  ; last row of the viewport
+CELL_COL_VIEW_MAX  equ  26  ; last column of the viewport
+
+; Hero's row and column on the screen
+; Hero is always in the middle of the screen
+HERO_SCREEN_ROW  equ  (CELL_ROW_VIEW_MIN + CELL_ROW_VIEW_MAX) / 2
+HERO_SCREEN_COL  equ  (CELL_COL_VIEW_MIN + CELL_COL_VIEW_MAX) / 2
 
 ;-------------------------------------------------------------------------------
-; Hero's row and column on the screen
+; World's attributes
 ;-------------------------------------------------------------------------------
-HERO_SCREEN_ROW  equ  (CELL_ROW_MIN+CELL_ROW_MAX)/2
-HERO_SCREEN_COL  equ  (CELL_COL_MIN+CELL_COL_MAX)/2
+WORLD_ROWS  equ  256  ; total number of rows in the world
+WORLD_COLS  equ  256  ; total number of cols in the world
+
+WORLD_ROW_MIN_OFFSET  equ  CELL_ROW_VIEW_MIN - HERO_SCREEN_ROW
+WORLD_COL_MIN_OFFSET  equ  CELL_COL_VIEW_MIN - HERO_SCREEN_COL
+WORLD_ROW_MAX_OFFSET  equ  CELL_ROW_VIEW_MAX - HERO_SCREEN_ROW
+WORLD_COL_MAX_OFFSET  equ  CELL_COL_VIEW_MAX - HERO_SCREEN_COL
+
+; Hero;s starting position in rows and cols
+; (Is it compatible with HERO_SCREEN_ROW and HERO_SCREEN_COL?  Does it matter?)
+HERO_START_ROW  equ  WORLD_ROWS / 2 - 1
+HERO_START_COL  equ  WORLD_COLS / 2 - 1
 
 ;-------------------------------------------------------------------------------
 ; ZX Spectrum colors
