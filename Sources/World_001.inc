@@ -19,20 +19,15 @@ world_address_table:
 ; Tile records
 ;----------------------------------------
 ;                    row0  col0  row1  col1  color
-tile_000_record:  db    1,    1,   16,   16, GREEN_PAPER
-tile_000_record:  db   17,    1,   32,   16, GREEN_PAPER
-tile_000_record:  db   33,    1,   48,   16, GREEN_PAPER
-tile_000_record:  db   49,    1,   64,   16, GREEN_PAPER
-tile_000_record:  db   63,    1,   80,   16, GREEN_PAPER
-tile_000_record:  db   81,    1,   96,   16, GREEN_PAPER
-tile_000_record:  db   97,    1,  112,   16, GREEN_PAPER
-tile_000_record:  db   17,    1,  128,   16, GREEN_PAPER
-tile_000_record:  db   17,    1,  144,   16, GREEN_PAPER
-tile_000_record:  db   17,    1,  160,   16, GREEN_PAPER
-tile_000_record:  db   17,    1,  176,   16, GREEN_PAPER
-tile_000_record:  db   17,    1,  192,   16, GREEN_PAPER
-tile_000_record:  db   17,    1,  208,   16, GREEN_PAPER
-tile_000_record:  db   17,    1,  224,   16, GREEN_PAPER
-tile_000_record:  db   17,    1,  240,   16, GREEN_PAPER
-tile_000_record:  db   17,    1,  256,   16, GREEN_PAPER
+tile_00_record:  db    1,    1,  254,  254, GREEN_PAPER
+tile_01_record:  db  128,  128,  130,  130, RED_PAPER    + BRIGHT
+tile_02_record:  db  131,  131,  133,  133, CYAN_PAPER   + BRIGHT
+tile_03_record:  db  128,  131,  130,  133, YELLOW_PAPER + BRIGHT
+tile_04_record:  db  131,  128,  133,  130, GREEN_PAPER  + BRIGHT
+tile_05_record:  db  134,  134,  150,  150, MAGENTA_PAPER
+tile_06_record:  db  110,  110,  121,  121, MAGENTA_PAPER
+tile_07_record:  db    0,  128,    1,  130, BLACK_PAPER  ; over the top
+tile_08_record:  db  254,  128,  255,  130, BLACK_PAPER  ; rock bottom
+tile_09_record:  db  128,    0,  130,    1, BLACK_PAPER  ; far left
+tile_10_record:  db  128,  254,  130,  255, BLACK_PAPER  ; far right
 

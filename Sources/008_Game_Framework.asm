@@ -512,6 +512,11 @@ Play_The_Game:
 ;
 ; Parameters:
 ; - HL: points to the tile
+; - IX: points to the world limits, which must be in this order:
+;       - IX+0 =--> world_row_min
+;       - IX+1 =--> world_col_min
+;       - IX+2 =--> world_row_max
+;       - IX+3 =--> world_col_max
 ;
 ; Clobbers:
 ; - AF, DE, HL, IX
@@ -529,10 +534,6 @@ Draw_One_Tile:
   ;---------------------------------------------------------------
   ; Eliminate tiles which are completelly outside of the viewport
   ;---------------------------------------------------------------
-  ld IX, world_limits  ; IX+0 =--> world_row_min
-                       ; IX+1 =--> world_col_min
-                       ; IX+2 =--> world_row_max
-                       ; IX+3 =--> world_col_max
 
   ; Is row1 (D) smaller than world_row_min
   ld A, D
@@ -548,15 +549,15 @@ Draw_One_Tile:
   ld A, B
   cp (IX+2)    ; B - world_row_max
   jr c, .b_ok  ; B <  world_row_max =--> OK
-  jr z, .b_ok  ; B == world_row_max
+  jr z, .b_ok  ; B == world_row_max =--> OK
   ret
 .b_ok
 
   ; Is col0 (C) greater than world_col_max
   ld A, C
-  cp (IX+3)    ; C - world_row_min
-  jr c, .c_ok  ; C <  world_row_min =--> OK
-  jr z, .c_ok  ; C == world_row_max
+  cp (IX+3)    ; C - world_col_max
+  jr c, .c_ok  ; C <  world_col_max =--> OK
+  jr z, .c_ok  ; C == world_col_max =--> OK
   ret
 .c_ok
 
@@ -565,10 +566,6 @@ Draw_One_Tile:
   ;--------------------------------
   ; Clamp the tile to the viewport
   ;--------------------------------
-  ; IX+0 =--> world_row_min
-  ; IX+1 =--> world_col_min
-  ; IX+2 =--> world_row_max
-  ; IX+3 =--> world_col_max
 
   ; Is row0 (B) smaller than world_row_min
   ld A, B
@@ -642,10 +639,13 @@ Draw_The_World:
     or (IX+1)     ; OR with high byte
     jr z, .both_zero
 
+    push IX
+
     ld L, (IX+0)
     ld H, (IX+1)
-    push IX
+    ld IX, world_limits
     call Draw_One_Tile
+
     pop IX
 
     inc IX
@@ -757,7 +757,7 @@ text_prompt_for_fire:  defb "Press key for FIRE  [ ]", 0
 ;-------------------------
 ; Definition of the world
 ;-------------------------
-  include "World_002.inc"
+  include "World_001.inc"
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
