@@ -31,8 +31,7 @@ Main:
   ; Set the color
   ;---------------
   ld A, RED_INK + CYAN_PAPER      ; load A with desired color
-  ld (MEM_STORE_SCREEN_COLOR), A  ; set the screen colors
-  call ROM_CLEAR_SCREEN           ; clear the screen
+  call Clear_Screen
 
   ;---------------------------------------------
   ; Initialize text row in which you will start
@@ -71,6 +70,7 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Subs/Clear_Screen.asm"
   include "Subs/Delay.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Udgs/Print_Character.asm"

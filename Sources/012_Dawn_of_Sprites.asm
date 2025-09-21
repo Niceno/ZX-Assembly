@@ -27,12 +27,11 @@ Main:
   ld HL, udgs                         ; user defined graphics (UDGs)
   ld (MEM_USER_DEFINED_GRAPHICS), HL  ; set up UDG system variable.
 
-  ;---------------
-  ; Set the color
-  ;---------------
+  ;------------------------------------
+  ; Set the color and clear the screen
+  ;------------------------------------
   ld A, RED_INK + GREEN_PAPER     ; load A with desired color
-  ld (MEM_STORE_SCREEN_COLOR), A  ; set the screen colors
-  call ROM_CLEAR_SCREEN           ; clear the screen
+  call Clear_Screen
 
   ;----------------------
   ; Set the border color
@@ -244,6 +243,7 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Subs/Clear_Screen.asm"
   include "Subs/Calculate_Screen_Attribute_Address.asm"
   include "Subs/Color_Line.asm"
   include "Subs/Color_Tile.asm"

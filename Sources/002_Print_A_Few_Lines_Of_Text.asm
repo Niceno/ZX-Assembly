@@ -21,6 +21,12 @@
 ;-------------------------------------------------------------------------------
 Main:
 
+  ;------------------
+  ; Clear the screen
+  ;------------------
+  ld A, BLUE_PAPER + WHITE_INK
+  call Clear_Screen
+
   ;-------------------------
   ; Initialize loop counter
   ;-------------------------
@@ -62,6 +68,7 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Subs/Clear_Screen.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Print_String.asm"

@@ -52,7 +52,8 @@ Main_Menu:
 
   call Unpress  ; unpress first
 
-  call ROM_CLEAR_SCREEN           ; clear the screen
+  ld A, (MEM_STORE_SCREEN_COLOR)  ; set color into A
+  call Clear_Screen               ; clear the screen
 
   ld B, 0 : ld C, 0
   ld HL, text_current
@@ -164,7 +165,8 @@ Define_Keys:
 
   call Unpress  ; unpress first
 
-  call ROM_CLEAR_SCREEN           ; clear the screen
+  ld A, (MEM_STORE_SCREEN_COLOR)  ; set color into A
+  call Clear_Screen               ; clear the screen
 
   ;--------------------------
   ;
@@ -276,7 +278,8 @@ Play_The_Game:
 
   call Unpress  ; unpress first
 
-  call ROM_CLEAR_SCREEN           ; clear the screen
+  ld A, (MEM_STORE_SCREEN_COLOR)  ; set color into A
+  call Clear_Screen               ; clear the screen
 
   ;-------------------------
   ;
@@ -702,6 +705,7 @@ Draw_The_World:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Subs/Clear_Screen.asm"
   include "Subs/Calculate_Screen_Attribute_Address.asm"
   include "Subs/Color_Line.asm"
   include "Subs/Color_Tile.asm"

@@ -3,7 +3,6 @@
 ;
 ; https://skoolkid.github.io/rom/dec/maps/routines.html
 ;-------------------------------------------------------------------------------
-ROM_CLEAR_SCREEN      equ  3503  ; clear screen
 ROM_SET_BORDER_COLOR  equ  8859
 
 ;-------------------------------------------------------------------------------
@@ -26,7 +25,7 @@ MEM_PRINTER_BUFFER         equ  $5B00
 MEM_SYSTEM_VARS            equ  $5C00
 MEM_CHARS                  equ  $5C37  ; 23607  higher byte of custom font def.
 MEM_USER_DEFINED_GRAPHICS  equ  $5C7B  ; holds the address where UDG starts
-MEM_STORE_SCREEN_COLOR     equ  $5C8D  ; holds the screen color
+MEM_STORE_SCREEN_COLOR     equ  $5C8D  ; holds the screen color (ROM uses it)
 MEM_AVAILABLE_RAM_START    equ  $5CCB
 MEM_PROGRAM_START          equ  $8000  ; 32768
 MEM_CUSTOM_FONT_START      equ  $FA00  ; 64000
