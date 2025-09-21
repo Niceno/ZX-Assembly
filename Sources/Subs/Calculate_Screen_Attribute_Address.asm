@@ -20,20 +20,15 @@
 Calculate_Screen_Attribute_Address
 
   ; Set proper row
-  ld H, 0
-  ld L, B   ; HL now holds the row number
-  sla L
-  sla L
-  sla L
-  sla L
-  sla L
+  ld H, 0 : ld L, B                      ; HL now holds the row number
+  sla L : sla L : sla L : sla L : sla L  ; multiply L with 32
 
   ld A, B
   and %00011000
   rrca
   rrca
   rrca
-  ld   H, $58
+  ld   H, $58  ; add 22528 (MEM_SCREEN_COLORS = $5800) to HL
   or   H
   ld   H, A
 
