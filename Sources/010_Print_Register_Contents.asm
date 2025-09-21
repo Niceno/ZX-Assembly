@@ -26,14 +26,10 @@ Main:
   ;----------------------------------
   call Open_Upper_Screen
 
-  ;---------------------------------------
-  ; Address of the null-terminated string
-  ;---------------------------------------
-  ld HL, z80_string  ; address where the string is stored
-  ld BC, $0606       ; row and column
-
+  ;---------------------------------------------
   ; Real life example - see which registers get
   ; clobbered with a call to Print_Character
+  ;---------------------------------------------
   call Print_Registers
   push AF
   push BC
@@ -54,15 +50,27 @@ Main:
 ; Academic example  ld DE, $3344  ; example value
 ; Academic example  ld HL, $ABCD  ; example value
 ; Academic example
+; Academic example  exx
+; Academic example  ld BC, $FEF7  ; example value
+; Academic example  ld DE, $4433  ; example value
+; Academic example  ld HL, $DCBA  ; example value
+; Academic example  exx
+; Academic example
 ; Academic example  call Print_Registers
 ; Academic example
 ; Academic example  ;--------------------------------------------
 ; Academic example  ; Set registers to some test value and print
 ; Academic example  ; register contents for the second time
 ; Academic example  ;--------------------------------------------
-; Academic example  ld BC, $FEF7  ; example value
+; Academic example  ld BC, $FEF7  ; example value, different on purpose
 ; Academic example  ld DE, $3344  ; example value
 ; Academic example  ld HL, $ABCD  ; example value
+; Academic example
+; Academic example  exx
+; Academic example  ld BC, $FEF7  ; example value
+; Academic example  ld DE, $5566  ; example value, different on purpose
+; Academic example  ld HL, $DCBA  ; example value
+; Academic example  exx
 ; Academic example
 ; Academic example  call Print_Registers
 
@@ -80,8 +88,14 @@ Main:
   include "Subs/Color_Line.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Print_Character.asm"
+  include "Subs/Print_String.asm"
   include "Subs/Udgs/Print_Character.asm"
   include "Subs/Udgs/Merge_Character.asm"
+  include "Subs/Udgs/Merge_Line_Sprite.asm"
+  include "Subs/Udgs/Merge_Sprite.asm"
+  include "Subs/Udgs/Merge_Line_Tile.asm"
+  include "Subs/Udgs/Merge_Tile.asm"
+  include "Subs/Merge_Grid.asm"
   include "Subs/Print_Registers.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -90,11 +104,6 @@ Main:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Global_Data.inc"
-
-;---------------------------------
-; Null-terminated string to print
-;---------------------------------
-z80_string: defb "Z80 is superb!", 0
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
