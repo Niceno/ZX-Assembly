@@ -21,11 +21,6 @@
 ;-------------------------------------------------------------------------------
 Main:
 
-  ;----------------------------------
-  ; Open the channel to upper screen
-  ;----------------------------------
-  call Open_Upper_Screen
-
   ;-----------------
   ; Set custom font
   ;-----------------
@@ -59,7 +54,6 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Open_Upper_Screen.asm"
   include "Subs/Set_Custom_Font.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Print_Character.asm"

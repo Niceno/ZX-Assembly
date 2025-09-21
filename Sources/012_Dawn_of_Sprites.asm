@@ -21,11 +21,6 @@
 ;-------------------------------------------------------------------------------
 Main:
 
-  ;----------------------------------
-  ; Open the channel to upper screen
-  ;----------------------------------
-  call Open_Upper_Screen
-
   ;------------------------------
   ; Specify the beginning of UDG
   ;------------------------------
@@ -264,7 +259,6 @@ Main:
   include "Subs/Viewport/Scroll_Pixels_Down.asm"
   include "Subs/Viewport/Scroll_Pixels_Left.asm"
   include "Subs/Viewport/Scroll_Pixels_Right.asm"
-  include "Subs/Open_Upper_Screen.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Udgs/Print_Character.asm"
   include "Subs/Udgs/Print_Line_Tile.asm"

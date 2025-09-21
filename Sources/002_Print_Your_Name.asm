@@ -21,11 +21,6 @@
 ;-------------------------------------------------------------------------------
 Main:
 
-  ;----------------------------------
-  ; Open the channel to upper screen
-  ;----------------------------------
-  call Open_Upper_Screen
-
   ;-------------------------
   ; Initialize loop counter
   ;-------------------------
@@ -53,7 +48,6 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Open_Upper_Screen.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Print_String.asm"
@@ -73,5 +67,5 @@ bojan_string:  defb "Bojan Niceno", 0
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan_002.sna", Main
-  savebin "bojan_002.bin", Main, $ - Main
+  savesna "bojan_002_name.sna", Main
+  savebin "bojan_002_name.bin", Main, $ - Main

@@ -21,11 +21,6 @@
 ;-------------------------------------------------------------------------------
 Main:
 
-  ;----------------------------------
-  ; Open the channel to upper screen
-  ;----------------------------------
-  call Open_Upper_Screen
-
   ;-----------------------------------
   ; Color the box for the pressed key
   ;-----------------------------------
@@ -143,7 +138,6 @@ unique_code:  defb "Unique code:", 0
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Open_Upper_Screen.asm"
   include "Subs/Calculate_Screen_Attribute_Address.asm"
   include "Subs/Color_Line.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"

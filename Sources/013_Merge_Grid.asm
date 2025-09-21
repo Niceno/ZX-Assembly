@@ -21,11 +21,6 @@
 ;-------------------------------------------------------------------------------
 Main:
 
-  ;----------------------------------
-  ; Open the channel to upper screen
-  ;----------------------------------
-  call Open_Upper_Screen
-
   ;-----------------------------------------------------
   ; Merge the grid over whatever you have on the screen
   ;-----------------------------------------------------
@@ -38,7 +33,6 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Open_Upper_Screen.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Udgs/Print_Character.asm"
   include "Subs/Udgs/Print_Line_Tile.asm"

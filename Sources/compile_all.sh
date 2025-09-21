@@ -1,5 +1,6 @@
 sjasmplus 001_Do_Nothing.asm
 sjasmplus 002_Print_Your_Name.asm
+sjasmplus 002_Print_A_Few_Lines_Of_Text.asm
 sjasmplus 003_Print_Your_Name_Custom_Font.asm
 sjasmplus 004_Moving_Asterisk.asm
 sjasmplus 005_Moving_Monster.asm

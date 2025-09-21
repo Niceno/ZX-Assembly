@@ -713,7 +713,6 @@ Draw_The_World:
   include "Subs/Viewport/Scroll_Attributes_Down.asm"
   include "Subs/Viewport/Scroll_Attributes_Left.asm"
   include "Subs/Viewport/Scroll_Attributes_Right.asm"
-  include "Subs/Open_Upper_Screen.asm"
   include "Subs/Calculate_Screen_Pixel_Address.asm"
   include "Subs/Udgs/Print_Character.asm"
   include "Subs/Udgs/Print_Line_Tile.asm"

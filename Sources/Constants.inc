@@ -4,7 +4,6 @@
 ; https://skoolkid.github.io/rom/dec/maps/routines.html
 ;-------------------------------------------------------------------------------
 ROM_CLEAR_SCREEN      equ  3503  ; clear screen
-ROM_CHAN_OPEN         equ  5633  ; channel (1 or 2) in A
 ROM_SET_BORDER_COLOR  equ  8859
 
 ;-------------------------------------------------------------------------------

@@ -15,11 +15,6 @@
 ;-------------------------------------------------------------------------------
 Main:  ; If the adress is that of a subroutine, end it up with  suffix
 
-  ;----------------------------------
-  ; Open the channel to upper screen
-  ;----------------------------------
-  call Open_Upper_Screen
-
   ;-----------------------
   ;
   ; Print an 8-bit number
@@ -61,7 +56,6 @@ Main:  ; If the adress is that of a subroutine, end it up with  suffix
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Open_Upper_Screen.asm"
   include "Subs/Udgs/Merge_Character.asm"
   include "Subs/Calculate_Screen_Attribute_Address.asm"
   include "Subs/Color_Line.asm"
