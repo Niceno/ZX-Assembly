@@ -44,3 +44,7 @@ highlight sjasmConstant  ctermfg=Blue
 
 " Just Comment didn't work, sjasmComment did
 highlight sjasmComment  ctermfg=DarkCyan
+
+" Macros
+highlight sjasmMacro  ctermfg=Cyan  cterm=bold
+

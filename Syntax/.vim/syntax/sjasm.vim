@@ -44,7 +44,6 @@ hi link sjasmDirective Define
 
 " Simple strings without complex escaping
 syn region sjasmString start=+"+ end=+"+ oneline
-syn region sjasmString start=+'+ end=+'+ oneline
 hi link sjasmString String
 
 " Registers
@@ -129,7 +128,14 @@ syn keyword sjasmConstant CHAR_Q_UPP  CHAR_R_UPP  CHAR_S_UPP  CHAR_T_UPP
 syn keyword sjasmConstant CHAR_U_UPP  CHAR_V_UPP  CHAR_W_UPP  CHAR_X_UPP
 syn keyword sjasmConstant CHAR_Y_UPP  CHAR_Z_UPP
 
+syn keyword sjasmConstant CHAR_Y_UPP  CHAR_Z_UPP
+
 hi link sjasmConstant Constant
+
+" Macros ... maybe I could define some other type for them
+syn keyword sjasmMacro PUSH_ALL_REGISTERS  POP_ALL_REGISTERS
+
+hi link sjasmMacro Macro
 
 let b:current_syntax = "sjasm"
 

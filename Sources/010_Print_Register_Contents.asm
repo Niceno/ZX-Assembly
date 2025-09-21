@@ -1,4 +1,5 @@
   include "Constants.inc"
+  include "Macros.inc"
 
 ;--------------------------------------
 ; Set the architecture you'll be using
@@ -91,11 +92,6 @@ Main:
   include "Subs/Print_String.asm"
   include "Subs/Udgs/Print_Character.asm"
   include "Subs/Udgs/Merge_Character.asm"
-  include "Subs/Udgs/Merge_Line_Sprite.asm"
-  include "Subs/Udgs/Merge_Sprite.asm"
-  include "Subs/Udgs/Merge_Line_Tile.asm"
-  include "Subs/Udgs/Merge_Tile.asm"
-  include "Subs/Merge_Grid.asm"
   include "Subs/Print_Registers.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

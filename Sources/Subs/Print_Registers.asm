@@ -21,59 +21,53 @@ Print_Registers:
   ; Save the registers first
   ;
   ;--------------------------
+  PUSH_ALL_REGISTERS
 
-  push AF
-  push BC
-  push DE
-  push HL
-  ex AF, AF'
-  exx
-  push AF
-  push BC
-  push DE
-  push HL
-  ex AF, AF'
-  exx
-  push IX
-  push IY
-
-  ;-----------------------------
+  ;----------------------------
+  ;
   ;  Increase the loop counter
-  ; and print the proper header
-  ;-----------------------------
-  push AF
-  push BC
-  push DE
-  push HL
+  ;  & print the proper header
+  ;
+  ;----------------------------
+  PUSH_ALL_REGISTERS  ; this is an overkill here, but I do it for kicks
 
+  ;---------------------
   ; Increase call count
+  ;---------------------
   ld A, (call_count)
   inc A               ; at this point, A is 1 or 2
   ld (call_count), A
 
+  ;-----------------------------
   ; Print line for the 1st call
+  ;-----------------------------
   ld B, 0 : ld C, 24
   ld HL, text_1st_call
   call Print_String
+  ld A, BLUE_PAPER + WHITE_INK
+  ld B, 0 : ld C, 24 : ld E, 6
+  call Color_Line
 
+  ; Is this the first call?
   ld A, (call_count)
   cp 1  ; checks A - 1
   jr z, .first_call
 
-  ; Print text for the second call
+  ;-----------------------------
+  ; Print line for the 2nd call
+  ;-----------------------------
   ld B, 0 : ld C, 24
   call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
   ld HL, text_2nd_call
   call Print_String
+  ld A, BLUE_PAPER + WHITE_INK
+  ld B, 0 : ld C, 24 : ld E, 6
+  call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
+  call Color_Line
 
 .first_call
 
-  pop HL
-  pop DE
-  pop BC
-  pop AF
-
-  
+  POP_ALL_REGISTERS  ; this is an overkill here, but I do it for kicks
 
   ;------------------------------------------
   ; Save registers in the "new" memory slots
@@ -197,20 +191,7 @@ Print_Registers:
   ; Restore the registers last
   ;
   ;----------------------------
-  pop IY
-  pop IX
-  ex AF, AF'
-  exx
-  pop HL
-  pop DE
-  pop BC
-  pop AF
-  ex AF, AF'
-  exx
-  pop HL
-  pop DE
-  pop BC
-  pop AF
+  POP_ALL_REGISTERS
 
   ret
 
@@ -219,8 +200,6 @@ Print_Registers:
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Increases B by 10 for the 2nd call
-;
-;
 ;-------------------------------------------------------------------------------
 Increase_Row_For_2nd_Call:
 
@@ -236,7 +215,7 @@ Increase_Row_For_2nd_Call:
 
 .this_is_the_second_call:
   ld A, B
-  add A, 9
+  add A, 10
   ld B, A
 
   pop AF
@@ -416,8 +395,8 @@ Merge_Narrow_Hex_Digit:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 call_count:  defb  $0
 
-text_1st_call:  defb  "Call 1", 0
-text_2nd_call:  defb  "Call 2", 0
+text_1st_call:  defb  "CALL 1", 0
+text_2nd_call:  defb  "CALL 2", 0
 
 ; Saved on the current call, be it first or second
 new_register_values:
@@ -450,16 +429,16 @@ REG_VALUES  equ  20
 ;    row,col,    str_ptr,  reg(')=,   new_ptr,   old_ptr,    color
 ;    0   1       2-3       4-5        6-7        8-9         10
 reg_record:
-  db 1,  22 : dw reg_af,   reg_eq,    new_af,    old_af   : db BLACK_INK + YELLOW_PAPER
-  db 2,  22 : dw reg_bc,   reg_eq,    new_bc,    old_bc   : db BLACK_INK + GREEN_PAPER
-  db 3,  22 : dw reg_de,   reg_eq,    new_de,    old_de   : db BLACK_INK + GREEN_PAPER
-  db 4,  22 : dw reg_hl,   reg_eq,    new_hl,    old_hl   : db BLACK_INK + GREEN_PAPER   + BRIGHT
-  db 1,  28 : dw reg_af,   reg_p_eq,  new_af_p,  old_af_p : db BLACK_INK + YELLOW_PAPER
-  db 2,  28 : dw reg_bc,   reg_p_eq,  new_bc_p,  old_bc_p : db BLACK_INK + GREEN_PAPER
-  db 3,  28 : dw reg_de,   reg_p_eq,  new_de_p,  old_de_p : db BLACK_INK + GREEN_PAPER
-  db 4,  28 : dw reg_hl,   reg_p_eq,  new_hl_p,  old_hl_p : db BLACK_INK + GREEN_PAPER   + BRIGHT
-  db 5,  25 : dw reg_ix,   reg_eq,    new_ix,    old_ix   : db BLACK_INK + CYAN_PAPER
-  db 6,  25 : dw reg_iy,   reg_eq,    new_iy,    old_iy   : db BLACK_INK + CYAN_PAPER
+  db 2,  22 : dw reg_af,   reg_eq,    new_af,    old_af   : db BLACK_INK + YELLOW_PAPER
+  db 3,  22 : dw reg_bc,   reg_eq,    new_bc,    old_bc   : db BLACK_INK + GREEN_PAPER
+  db 4,  22 : dw reg_de,   reg_eq,    new_de,    old_de   : db BLACK_INK + GREEN_PAPER
+  db 5,  22 : dw reg_hl,   reg_eq,    new_hl,    old_hl   : db BLACK_INK + GREEN_PAPER   + BRIGHT
+  db 2,  28 : dw reg_af,   reg_p_eq,  new_af_p,  old_af_p : db BLACK_INK + YELLOW_PAPER
+  db 3,  28 : dw reg_bc,   reg_p_eq,  new_bc_p,  old_bc_p : db BLACK_INK + GREEN_PAPER
+  db 4,  28 : dw reg_de,   reg_p_eq,  new_de_p,  old_de_p : db BLACK_INK + GREEN_PAPER
+  db 5,  28 : dw reg_hl,   reg_p_eq,  new_hl_p,  old_hl_p : db BLACK_INK + GREEN_PAPER   + BRIGHT
+  db 6,  25 : dw reg_ix,   reg_eq,    new_ix,    old_ix   : db BLACK_INK + CYAN_PAPER
+  db 7,  25 : dw reg_iy,   reg_eq,    new_iy,    old_iy   : db BLACK_INK + CYAN_PAPER
 
 REG_ROW_SIZE  equ  11
 REG_ENTRIES   equ  10  ; (AX, BC, DE, HL) x 2 + IX and IY = 10
