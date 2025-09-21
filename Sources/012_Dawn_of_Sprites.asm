@@ -37,7 +37,7 @@ Main:
   ; Set the border color
   ;----------------------
   ld A, GREEN_INK              ; load A with desired color
-  call ROM_SET_BORDER_COLOR
+  call Set_Border_Color
 
   ;---------------------
   ; Create the viewport
@@ -244,6 +244,7 @@ Main:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Subs/Clear_Screen.asm"
+  include "Subs/Set_Border_Color.asm"
   include "Subs/Calculate_Screen_Attribute_Address.asm"
   include "Subs/Color_Line.asm"
   include "Subs/Color_Tile.asm"
