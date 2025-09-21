@@ -9,6 +9,9 @@
 ; - BC: starting row (B) and column (C) - upper left corner
 ; - DE: dimension of the color tile, number of rows (D) and columns (E)
 ;
+; Calls:
+; - Color_Line
+;
 ; Clobbers:
 ; - AF, BC, DE, HL ... but should be double checked
 ;-------------------------------------------------------------------------------

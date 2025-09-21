@@ -550,6 +550,9 @@ Play_The_Game:
 ;       - IX+2 =--> world_row_max
 ;       - IX+3 =--> world_col_max
 ;
+; Calls:
+; - Color_Tile
+;
 ; Clobbers:
 ; - AF, DE, HL, IX
 ;-------------------------------------------------------------------------------

@@ -9,6 +9,9 @@
 ; - BC: starting row (B) and column (C) - upper left corner
 ; - E:  length of the color strip (in columns)
 ;
+; Calls:
+; - Calculate_Screen_Attribute_Address
+;
 ; Clobbers:
 ; - AF, BC, DE, HL ... but should be double checked
 ;
