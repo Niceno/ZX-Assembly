@@ -223,6 +223,8 @@ Increase_Row_For_2nd_Call:
   ret
 
 ;===============================================================================
+; Compare_Registers:
+;-------------------------------------------------------------------------------
 ; Parameters:
 ; - HL: address of the first memory address
 ; - DE: address of the second memory address
