@@ -564,17 +564,17 @@ Dump_Memory:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Clear_Screen.asm"
-  include "Subs/Calculate_Screen_Pixel_Address.asm"
-  include "Subs/Calculate_Screen_Attribute_Address.asm"
-  include "Subs/Udgs/Print_Character.asm"
-  include "Subs/Udgs/Merge_Character.asm"
-  include "Subs/Color_Line.asm"
-  include "Subs/Browse_Key_Rows.asm"
-  include "Subs/Unpress.asm"
-  include "Subs/Delay.asm"
-  include "Subs/Print_Character.asm"
-  include "Subs/Print_String.asm"
+  include "Shared/Clear_Screen.asm"
+  include "Shared/Calculate_Screen_Pixel_Address.asm"
+  include "Shared/Calculate_Screen_Attribute_Address.asm"
+  include "Shared/Udgs/Print_Character.asm"
+  include "Shared/Udgs/Merge_Character.asm"
+  include "Shared/Color_Line.asm"
+  include "Shared/Browse_Key_Rows.asm"
+  include "Shared/Unpress.asm"
+  include "Shared/Delay.asm"
+  include "Shared/Print_Character.asm"
+  include "Shared/Print_String.asm"
 
 ;===============================================================================
 ; Print_Hex_Byte

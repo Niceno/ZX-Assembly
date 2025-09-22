@@ -48,9 +48,9 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Calculate_Screen_Pixel_Address.asm"
-  include "Subs/Print_Character.asm"
-  include "Subs/Print_String.asm"
+  include "Shared/Calculate_Screen_Pixel_Address.asm"
+  include "Shared/Print_Character.asm"
+  include "Shared/Print_String.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

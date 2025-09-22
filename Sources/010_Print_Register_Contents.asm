@@ -79,14 +79,14 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Calculate_Screen_Attribute_Address.asm"
-  include "Subs/Color_Line.asm"
-  include "Subs/Calculate_Screen_Pixel_Address.asm"
-  include "Subs/Print_Character.asm"
-  include "Subs/Print_String.asm"
-  include "Subs/Udgs/Print_Character.asm"
-  include "Subs/Udgs/Merge_Character.asm"
-  include "Subs/Print_Registers.asm"
+  include "Shared/Calculate_Screen_Attribute_Address.asm"
+  include "Shared/Color_Line.asm"
+  include "Shared/Calculate_Screen_Pixel_Address.asm"
+  include "Shared/Print_Character.asm"
+  include "Shared/Print_String.asm"
+  include "Shared/Udgs/Print_Character.asm"
+  include "Shared/Udgs/Merge_Character.asm"
+  include "Utilities/Print_Registers.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

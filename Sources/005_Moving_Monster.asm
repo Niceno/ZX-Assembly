@@ -70,10 +70,10 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Clear_Screen.asm"
-  include "Subs/Delay.asm"
-  include "Subs/Calculate_Screen_Pixel_Address.asm"
-  include "Subs/Udgs/Print_Character.asm"
+  include "Shared/Clear_Screen.asm"
+  include "Shared/Delay.asm"
+  include "Shared/Calculate_Screen_Pixel_Address.asm"
+  include "Shared/Udgs/Print_Character.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

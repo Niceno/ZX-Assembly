@@ -54,12 +54,12 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Set_Border_Color.asm"
-  include "Subs/Calculate_Screen_Attribute_Address.asm"
-  include "Subs/Color_Line.asm"
-  include "Subs/Calculate_Screen_Pixel_Address.asm"
-  include "Subs/Print_Character.asm"
-  include "Subs/Print_String.asm"
+  include "Shared/Set_Border_Color.asm"
+  include "Shared/Calculate_Screen_Attribute_Address.asm"
+  include "Shared/Color_Line.asm"
+  include "Shared/Calculate_Screen_Pixel_Address.asm"
+  include "Shared/Print_Character.asm"
+  include "Shared/Print_String.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

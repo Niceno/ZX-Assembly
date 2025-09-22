@@ -54,10 +54,10 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Set_Custom_Font.asm"
-  include "Subs/Calculate_Screen_Pixel_Address.asm"
-  include "Subs/Print_Character.asm"
-  include "Subs/Print_String.asm"
+  include "Shared/Set_Custom_Font.asm"
+  include "Shared/Calculate_Screen_Pixel_Address.asm"
+  include "Shared/Print_Character.asm"
+  include "Shared/Print_String.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

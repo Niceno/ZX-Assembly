@@ -56,14 +56,14 @@ Main:  ; If the adress is that of a subroutine, end it up with  suffix
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Udgs/Merge_Character.asm"
-  include "Subs/Calculate_Screen_Attribute_Address.asm"
-  include "Subs/Color_Line.asm"
-  include "Subs/Calculate_Screen_Pixel_Address.asm"
-  include "Subs/Print_Character.asm"
-  include "Subs/Print_String.asm"
-  include "Subs/Print_08_Bit_Number.asm"
-  include "Subs/Print_16_Bit_Number.asm"
+  include "Shared/Udgs/Merge_Character.asm"
+  include "Shared/Calculate_Screen_Attribute_Address.asm"
+  include "Shared/Color_Line.asm"
+  include "Shared/Calculate_Screen_Pixel_Address.asm"
+  include "Shared/Print_Character.asm"
+  include "Shared/Print_String.asm"
+  include "Shared/Print_08_Bit_Number.asm"
+  include "Shared/Print_16_Bit_Number.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

@@ -33,14 +33,14 @@ Main:
 ;   SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Subs/Calculate_Screen_Pixel_Address.asm"
-  include "Subs/Udgs/Print_Character.asm"
-  include "Subs/Udgs/Print_Line_Tile.asm"
-  include "Subs/Udgs/Print_Tile.asm"
-  include "Subs/Udgs/Merge_Character.asm"
-  include "Subs/Udgs/Merge_Line_Sprite.asm"
-  include "Subs/Udgs/Merge_Sprite.asm"
-  include "Subs/Merge_Grid.asm"
+  include "Shared/Calculate_Screen_Pixel_Address.asm"
+  include "Shared/Udgs/Print_Character.asm"
+  include "Shared/Udgs/Print_Line_Tile.asm"
+  include "Shared/Udgs/Print_Tile.asm"
+  include "Shared/Udgs/Merge_Character.asm"
+  include "Shared/Udgs/Merge_Line_Sprite.asm"
+  include "Shared/Udgs/Merge_Sprite.asm"
+  include "Utilities/Merge_Grid.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
