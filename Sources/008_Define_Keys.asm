@@ -55,25 +55,21 @@ Main_Menu:
   ld A, (MEM_STORE_SCREEN_COLOR)  ; set color into A
   call Clear_Screen               ; clear the screen
 
-  ld B, 0 : ld C, 0
-  ld HL, text_currently_defined
-  call Print_String
-
   ;----------------------------
-  ;
   ;
   ; Loop to print defined keys
   ;
-  ;
   ;----------------------------
+
+  ld B, 0 : ld C, 0
+  ld HL, text_currently_defined
+  call Print_String
   ld C, 0
 
 .loop_to_print_defined_keys
 
     ;----------------------
-    ;
     ; First print the text
-    ;
     ;----------------------
     push BC  ; save the counter
 
@@ -97,9 +93,7 @@ Main_Menu:
     pop BC
 
     ;--------------
-    ;
     ; Then the key
-    ;
     ;--------------
     push BC
 
@@ -117,9 +111,9 @@ Main_Menu:
 
     ld  A,  C
     add A,  A
-    add A,  2
-    ld  B,  A      ; row
-    ld  C, 16      ; column
+    add A,  2                  ; row stride, increase rows by two
+    ld  B,  A                  ; row
+    ld  C, CURRENT_KEY_COLUMN  ; column
     call Print_Udgs_Character
 
     pop BC              ; retreive the counter ...
@@ -130,13 +124,11 @@ Main_Menu:
   jr nz, .loop_to_print_defined_keys    ; loop until we've taken
                                         ; NUMBER_OF_UDKS presses
 
-  ;---------------------------------------
+  ;------------------------------------
   ;
+  ; Press D to define keys or R to run
   ;
-  ; Press R to redefine keys or P to play
-  ;
-  ;
-  ;---------------------------------------
+  ;------------------------------------
   ld HL, text_press_d_or_r
   ld B, 21 : ld C, 0
   call Print_String
@@ -169,21 +161,17 @@ Define_Keys:
   ld A, (MEM_STORE_SCREEN_COLOR)  ; set color into A
   call Clear_Screen               ; clear the screen
 
-  ;--------------------------
+  ;---------------------
   ;
+  ; Loop to define keys
   ;
-  ; Loop to define five keys
-  ;
-  ;
-  ;--------------------------
-  ld C, 0  ; need 5 keys
+  ;---------------------
+  ld C, 0  ; counter for keys
 
-.define_five_keys:
+.define_keys:
 
     ;------------------------
-    ;
     ; Print a prompting text
-    ;
     ;------------------------
     push BC  ; keep the counter safe
 
@@ -206,21 +194,17 @@ Define_Keys:
     pop  BC  ; restore the counter
 
     ;-----------------------------
-    ;
     ; Browse through all key rows
-    ;
     ;-----------------------------
-    push BC               ; save the counter in C (through five keys)
+    push BC               ; save the counter in C (through NUMBER_OF_UDKS keys)
     call Browse_Key_Rows  ; A = unique code, C bit0 = 1 if any key pressed
     bit  0, C             ; check C register's zeroth bit
     pop BC                ; retreive the counter in C
 
-    jr z, .define_five_keys   ; no key pressed -> keep polling
+    jr z, .define_keys   ; no key pressed -> keep polling
 
     ;---------------------------------------------------
-    ;
     ; A key was pressed - wait untill it gets unpressed
-    ;
     ;---------------------------------------------------
     push AF       ; keep unique code in A safe
     push BC       ; save the counter in C
@@ -229,15 +213,13 @@ Define_Keys:
     pop AF        ; restore the unique code in A
 
     ;---------------------------
-    ;
     ; Process the key in A here
-    ;
     ;---------------------------
 
     ; Store the defined key ... very important!!!
     ld HL, currently_defined_keys
     ld B, 0     ; with B set to zero, the pair BC will be the offset
-    add HL, BC  ; add the offset to five defined keys
+    add HL, BC  ; add the offset to NUMBER_OF_UDKS defined keys
     ld (HL), A  ; store the key's unique code
 
     ; Print the key you just pressed ... quite handy
@@ -253,16 +235,16 @@ Define_Keys:
     ld   A, C                  ; compute the row ...
     add  A, A                  ; ... as twice the counter
     ld   B, A                  ; set row
-    ld   C, 16                 ; set column
+    ld   C, 21                 ; set column
     call Print_Udgs_Character
     pop BC                     ; restore the counter
 
-    ; Check if counter reached five
+    ; Check if counter reached NUMBER_OF_UDKS
     inc C
     ld A, C
-    cp 5
+    cp NUMBER_OF_UDKS
 
-  jp nz, .define_five_keys          ; loop until we've taken 5 presses
+  jp nz, .define_keys          ; loop until we've taken NUMBER_OF_UDKS presses
 
   call Main_Menu
 
@@ -321,7 +303,8 @@ key_for_book_down:   defb  KEY_4
 key_for_line_up:     defb  KEY_7
 key_for_page_up:     defb  KEY_8
 key_for_book_up:     defb  KEY_9
-NUMBER_OF_UDKS  equ  6            ; number of user defined keys
+key_to_quit          defb  KEY_0
+NUMBER_OF_UDKS  equ  7            ; number of user defined keys
 
 text_currently_defined:  defb "Currently defined keys:", 0
 
@@ -332,6 +315,7 @@ text_current_address_table:
   defw text_current_line_up
   defw text_current_page_up
   defw text_current_book_up
+  defw text_current_quit
 
 text_current_line_down:  defb "Line (   8 B) UP   [ ]", 0
 text_current_page_down:  defb "Page ( 128 B) UP   [ ]", 0
@@ -339,34 +323,36 @@ text_current_book_down:  defb "Book (1024 B) UP   [ ]", 0
 text_current_line_up:    defb "Line (   8 B) DOWN [ ]", 0
 text_current_page_up:    defb "Page ( 128 B) DOWN [ ]", 0
 text_current_book_up:    defb "Book (1024 B) DOWN [ ]", 0
+text_current_quit:       defb "Quit the program   [ ]", 0
+                             ;                     ^
+                             ;                     |
+CURRENT_KEY_COLUMN  equ  21  ; it is here ==-------+
 
-text_press_d_or_r:  defb "[D]: redefine keys [R]: run", 0
+text_press_d_or_r:  defb "[D]: define keys [R]: run", 0
 
 text_prompt_address_table:
-  defw text_prompt_for_up
-  defw text_prompt_for_down
-  defw text_prompt_for_left
-  defw text_prompt_for_right
-  defw text_prompt_for_fire
+  defw text_prompt_line_up
+  defw text_prompt_page_up
+  defw text_prompt_book_up
+  defw text_prompt_line_down
+  defw text_prompt_page_down
+  defw text_prompt_book_down
+  defw text_prompt_quit
 
-text_prompt_for_up:    defb "Press key for UP    [ ]", 0
-text_prompt_for_down:  defb "Press key for DOWN  [ ]", 0
-text_prompt_for_left:  defb "Press key for LEFT  [ ]", 0
-text_prompt_for_right: defb "Press key for RIGHT [ ]", 0
-text_prompt_for_fire:  defb "Press key for FIRE  [ ]", 0
-
-text_hero: defb "HERO", 0
-text_view: defb "VIEW", 0
-
-;-------------------------
-; Definition of the world
-;-------------------------
-  include "World_001.inc"
-; include "World_002.inc"
+text_prompt_line_up:    defb "Press key for line UP    [ ]", 0
+text_prompt_page_up:    defb "Press key for page UP    [ ]", 0
+text_prompt_book_up:    defb "Press key for book UP    [ ]", 0
+text_prompt_line_down:  defb "Press key for line DOWN  [ ]", 0
+text_prompt_page_down:  defb "Press key for page DOWN  [ ]", 0
+text_prompt_book_down:  defb "Press key for book DOWN  [ ]", 0
+text_prompt_quit:       defb "Press key to quit        [ ]", 0
+                            ;                           ^
+                            ;                           |
+PROMPT_KEY_COLUMN  equ  26  ; it is here ==-------------+
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan_008.sna", Main
-  savebin "bojan_008.bin", Main, $ - Main
+  savesna "bojan_008_define_keys.sna", Main
+  savebin "bojan_008_define_keys.bin", Main, $ - Main
 
