@@ -13,4 +13,4 @@ sjasmplus 010_Print_Register_Contents.asm
 sjasmplus 011_Turn_Numbers_To_Decimal_Strings.asm
 sjasmplus 012_Dawn_of_Sprites.asm
 sjasmplus 013_Merge_Grid.asm
-sjasmplus 014_Dump_Memory.asm
+sjasmplus 014_Memory_Browser.asm
