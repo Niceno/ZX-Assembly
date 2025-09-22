@@ -110,13 +110,23 @@ Draw_Frame:
 ;------------------------
 ; Graphics for the frame
 ;------------------------
-frame_q1:    defb $FF, $80, $BF, $BF, $B0, $B7, $B7, $B7
-frame_q2:    defb $FF, $01, $FD, $FD, $0D, $ED, $ED, $ED
-frame_q3:    defb $B7, $B7, $B7, $B0, $BF, $BF, $80, $FF
-frame_q4:    defb $ED, $ED, $ED, $0D, $FD, $FD, $01, $FF
+; frame_q1:     defb $FF, $80, $BF, $BF, $B0, $B7, $B7, $B7
+; frame_q2:     defb $FF, $01, $FD, $FD, $0D, $ED, $ED, $ED
+; frame_q3:     defb $B7, $B7, $B7, $B0, $BF, $BF, $80, $FF
+; frame_q4:     defb $ED, $ED, $ED, $0D, $FD, $FD, $01, $FF
+; 
+; frame_up:     defb $FF, $00, $FF, $FF, $00, $FF, $FF, $FF
+; frame_down:   defb $FF, $FF, $FF, $00, $FF, $FF, $00, $FF
+; frame_left:   defb $B7, $B7, $B7, $B7, $B7, $B7, $B7, $B7
+; frame_right:  defb $ED, $ED, $ED, $ED, $ED, $ED, $ED, $ED
 
-frame_up:    defb $FF, $00, $FF, $FF, $00, $FF, $FF, $FF
-frame_down:  defb $FF, $FF, $FF, $00, $FF, $FF, $00, $FF
-frame_left:  defb $B7, $B7, $B7, $B7, $B7, $B7, $B7, $B7
-frame_right: defb $ED, $ED, $ED, $ED, $ED, $ED, $ED, $ED
+frame_q1:     defb $00, $00, $00, $00, $0F, $08, $0B, $0A ;
+frame_q2:     defb $00, $00, $00, $00, $F0, $10, $D0, $50 ;
+frame_q3:     defb $0A, $0B, $08, $0F, $00, $00, $00, $00 ;
+frame_q4:     defb $50, $D0, $10, $F0, $00, $00, $00, $00 ;
+
+frame_down:   defb $00, $FF, $00, $FF, $00, $00, $00, $00 ;
+frame_left:   defb $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A ;
+frame_right:  defb $50, $50, $50, $50, $50, $50, $50, $50 ;
+frame_up:     defb $00, $00, $00, $00, $FF, $00, $FF, $00 ;
 

@@ -7,6 +7,14 @@
 ;-------------------------------------------------------------------------------
 Dump_Memory:
 
+  push BC
+  push HL
+  ld B,  0 : ld C,  0
+  ld D, 18 : ld E, 31
+  call Draw_Frame
+  pop HL
+  pop BC
+
   ;-----------------------------------------------------
   ;
   ; Set the row and column where you want this to begin
@@ -32,7 +40,7 @@ Dump_Memory:
     ld A, WHITE_PAPER + BLUE_INK
 
 .number_ends_with_eight    
-    ld E, 30
+    ld E, 29
 
     push BC
     push HL
