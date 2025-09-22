@@ -261,6 +261,13 @@ Browse_Memory:
   ;---------------------------------------------------------------
   call Dump_Memory
 
+
+  ;-----------------------
+  ; Create a little delay
+  ;-----------------------
+  ld B, 5
+  call Delay
+
   ;-----------------------
   ; Loop for reading keys
   ;-----------------------
@@ -377,7 +384,9 @@ Dump_Memory:
     push BC  ; store row and column
 
     ;-------------------------------------------
+    ;
     ; Color every other line in different color
+    ;
     ;-------------------------------------------
     ld A, WHITE_PAPER + BLACK_INK
 
@@ -400,6 +409,38 @@ Dump_Memory:
     ; Print the memory address range first
     ;
     ;--------------------------------------
+
+    ;-----------------------------
+    ; Is it some special address?
+    ;-----------------------------
+
+    ld A, H : xor high MEM_FONT_START        : or L  ; @ MEM_FONT_START
+    jr z, .hl_is_special                             ;   nope
+    ld A, H : xor high MEM_SCREEN_PIXELS     : or L  ; @ MEM_SCREEN_PIXELS?
+    jr z, .hl_is_special                             ;   nope
+    ld A, H : xor high MEM_SCREEN_COLORS     : or L  ; @ MEM_SCREEN_COLORS?
+    jr z, .hl_is_special                             ;   nope
+    ld A, H : xor high MEM_PRINTER_BUFFER    : or L  ; @ MEM_PRINTER_BUFFER
+    jr z, .hl_is_special                             ;   nope
+    ld A, H : xor high MEM_SYSTEM_VARS       : or L  ; @ MEM_SYSTEM_VARS?
+    jr z, .hl_is_special                             ;   nope
+    ld A, H : xor high MEM_PROGRAM_START     : or L  ; @ MEM_PROGRAM_START
+    jr z, .hl_is_special                             ;   nope
+    ld A, H : xor high MEM_CUSTOM_FONT_START : or L  ; @ MEM_CUSTOM_FONT_START
+    jr z, .hl_is_special                             ;   nope
+
+    jr .hl_is_not_special
+
+.hl_is_special
+    ld A, RED_PAPER + WHITE_INK
+    ld E, 2
+    push BC
+    push HL
+    call Color_Line
+    pop HL
+    pop BC
+
+.hl_is_not_special
 
     ;--------------------------------------
     ; Print the first address in the range
@@ -514,7 +555,7 @@ Dump_Memory:
 
     inc B   ; increase row
     dec A   ; decrease counter
-  jr nz, .vertical_loop
+  jp nz, .vertical_loop
 
   ret
 
@@ -531,6 +572,7 @@ Dump_Memory:
   include "Subs/Color_Line.asm"
   include "Subs/Browse_Key_Rows.asm"
   include "Subs/Unpress.asm"
+  include "Subs/Delay.asm"
   include "Subs/Print_Character.asm"
   include "Subs/Print_String.asm"
 
