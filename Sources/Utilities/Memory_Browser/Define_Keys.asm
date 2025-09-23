@@ -86,7 +86,7 @@ Define_Keys:
     ld   A, C                  ; compute the row ...
     add  A, A                  ; ... as twice the counter
     ld   B, A                  ; set row
-    ld   C, 21                 ; set column
+    ld   C, PROMPT_KEY_COLUMN  ; set column
     call Print_Udgs_Character
     pop BC                     ; restore the counter
 

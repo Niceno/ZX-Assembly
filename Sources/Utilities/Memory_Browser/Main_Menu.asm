@@ -166,16 +166,16 @@ text_current_address_table:
   defw text_current_book_up
   defw text_current_quit
 
-text_current_line_down:  defb "Line (   8 B) UP   [ ]", 0
-text_current_page_down:  defb "Page ( 128 B) UP   [ ]", 0
-text_current_book_down:  defb "Book (1024 B) UP   [ ]", 0
-text_current_line_up:    defb "Line (   8 B) DOWN [ ]", 0
-text_current_page_up:    defb "Page ( 128 B) DOWN [ ]", 0
-text_current_book_up:    defb "Book (1024 B) DOWN [ ]", 0
-text_current_quit:       defb "Quit the program   [ ]", 0
-                             ;                     ^
-                             ;                     |
-CURRENT_KEY_COLUMN  equ  21  ; it is here ==-------+
+text_current_line_down:  defb "Line DOWN [ ]", 0
+text_current_page_down:  defb "Page DOWN [ ]", 0
+text_current_book_down:  defb "1 KB DOWN [ ]", 0
+text_current_line_up:    defb "Line UP   [ ]", 0
+text_current_page_up:    defb "Page UP   [ ]", 0
+text_current_book_up:    defb "1 KB UP   [ ]", 0
+text_current_quit:       defb "Stop      [ ]", 0
+                             ;            ^
+                             ;            |
+CURRENT_KEY_COLUMN  equ  12  ; here =-----+
 
 text_press_01:  defb "[B]: Browse memory",        0
 text_press_02:  defb "[D]: Define keys",          0
@@ -190,16 +190,16 @@ text_prompt_address_table:
   defw text_prompt_book_down
   defw text_prompt_quit
 
-text_prompt_line_up:    defb "Press key for line UP    [ ]", 0
-text_prompt_page_up:    defb "Press key for page UP    [ ]", 0
-text_prompt_book_up:    defb "Press key for book UP    [ ]", 0
-text_prompt_line_down:  defb "Press key for line DOWN  [ ]", 0
-text_prompt_page_down:  defb "Press key for page DOWN  [ ]", 0
-text_prompt_book_down:  defb "Press key for book DOWN  [ ]", 0
-text_prompt_quit:       defb "Press key to quit        [ ]", 0
-                            ;                           ^
-                            ;                           |
-PROMPT_KEY_COLUMN  equ  26  ; it is here ==-------------+
+text_prompt_line_up:    defb "Key for line DOWN [ ]", 0
+text_prompt_page_up:    defb "Key for page DOWN [ ]", 0
+text_prompt_book_up:    defb "Key for 1 KB DOWN [ ]", 0
+text_prompt_line_down:  defb "Key for line UP   [ ]", 0
+text_prompt_page_down:  defb "Key for page UP   [ ]", 0
+text_prompt_book_down:  defb "Key for 1 KB UP   [ ]", 0
+text_prompt_quit:       defb "Key to stop       [ ]", 0
+                            ;                    ^
+                            ;                    |
+PROMPT_KEY_COLUMN  equ  12  ; it is here ==------+
 
 ;----------------------------
 ; Hex numbers in narrow form
