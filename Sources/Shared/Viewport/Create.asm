@@ -47,7 +47,7 @@ Viewport_Create:
 
   push BC
   push DE
-; ld A, BLACK_INK + MAGENTA_PAPER  ; color not implemented yet
+  ld A, 1                          ; frame version
   dec B : dec C                    ; expand the frame to ...
   inc D : inc D : inc E : inc E    ; ... enclose the viewport
   call Draw_Frame

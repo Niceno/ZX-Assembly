@@ -107,7 +107,7 @@ Main:
   ld C,  7  ; column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
-  ld HL, frame_q1
+  ld HL, frame_v1_q1
   call Merge_Udgs_Sprite
 
   ld A,  MAGENTA_INK + CYAN_PAPER
@@ -124,7 +124,7 @@ Main:
   ld C, 24  ; column
   ld D,  2  ; height of the sprite (in rows)
   ld E,  2  ; length of the sprite (in columns)
-  ld HL, frame_q1
+  ld HL, frame_v1_q1
   call Merge_Udgs_Sprite
 
   ld A,  RED_INK + CYAN_PAPER

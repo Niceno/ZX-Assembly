@@ -11,7 +11,7 @@
 ; Notes:
 ; - The address used here, MEM_BROWSER_START, is just 2 KB below the
 ;   user defined font address.  This means that you have to be careful
-;   that this utility doesn't grow too much.  It is currently at 1954
+;   that this utility doesn't grow too much.  It is currently at 1706
 ;   bytes which is clearly quite close to the upper limit.
 ; - For some reason, if you want to run this utility on top of another
 ;   program already in the fuse emulator, you should load both in

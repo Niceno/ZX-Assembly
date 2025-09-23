@@ -15,7 +15,7 @@
 ; - HL: screen pixel address
 ;
 ; Clobbers:
-; - AF, BC
+; - AF, BC, HL
 ;
 ; Note:
 ; - To see why this works, scroll down!

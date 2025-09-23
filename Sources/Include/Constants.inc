@@ -21,6 +21,8 @@ MEM_USER_DEFINED_GRAPHICS  equ  $5C7B  ; holds the address where UDG starts
 MEM_STORE_SCREEN_COLOR     equ  $5C8D  ; holds the screen color (ROM uses it)
 MEM_AVAILABLE_RAM_START    equ  $5CCB
 MEM_PROGRAM_START          equ  $8000  ; 32768
+MEM_SHADOW_PIXELS          equ  $D700  ; 55040 shadow copy of pixel bitmap
+MEM_SHADOW_COLORS          equ  $EF00  ; 61184 shadow copy of attributes
 MEM_BROWSER_START          equ  $F200  ; 61952 Memory_Browser utility
 MEM_CUSTOM_FONT_START      equ  $FA00  ; 64000
 

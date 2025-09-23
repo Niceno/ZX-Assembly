@@ -1,5 +1,7 @@
+  define __MEMORY_BROWSER_MAIN__
+
 ;===============================================================================
-; Memory_Browser_Main_Menu
+; Memory_Browser_Main
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - draws “defined keys” page
@@ -20,92 +22,48 @@ Memory_Browser_Main:
   ;
   ;----------------------------
 
-  ld B, 0 : ld C, 0
-  ld HL, text_currently_defined
-  call Print_String
-  ld C, 0
+  ;---------------------------------------------------
+  ; Print ten times using subroutine Print_String
+  ;---------------------------------------------------
+  ld IX, text_key_lines_address_table  ; IX -> the address of lines' addresses
+.loop:
 
-.loop_to_print_defined_keys
+    ; Load the line address into HL
+    ld L, (IX+0)
+    ld H, (IX+1)
 
-    ;----------------------
-    ; First print the text
-    ;----------------------
-    push BC  ; save the counter
+    ; Print one line of text
+    push BC            ; store the counter; Print_String clobbers the registers
+    ld A, B : add A : ld B, A
+    call Print_String
+    pop BC             ; restore the counter
 
-    ld L, C : ld H, 0    ; place C (count) in HL pair
-    add  HL, HL          ; index * 2 (word table)
-    ld   DE, text_current_address_table
-    add  HL, DE          ; HL -> defw entry
+    ; Next table entry
+    inc IX
+    inc IX
 
-    ld   E, (HL)  ; load string ptr
-    inc  HL
-    ld   D, (HL)
-    ex   DE, HL   ; HL = prompt string
+    ; Increase loop count
+    inc B
+    ld A, B
+    cp 8       ; if A is equal to ten, zero flag will be set
 
-    ld   A, C          ; compute the row ...
-    add  A, A          ; ... as twice the counter
-    add  A, 2
-    ld   B, A          ; set row
-    ld   C, 1          ; set column
-    call Print_String  ; prints zero-terminated string at HL
-
-    pop BC
-
-    ;--------------
-    ; Then the key
-    ;--------------
-    push BC
-
-    ld HL, currently_defined_keys
-    ld D, 0 : ld E, C         ; place counter into DE
-    add HL, DE                ; add it as an offset to HL
-
-    ld D, 0 : ld A, (HL) : ld E, A  ; load DE with the unique key code
-
-    ld IX, key_glyphs_address_table  ; add DE twice to IX ...
-    add IX, DE                       ; ... making it an offset from ...
-    add IX, DE                       ; ... key_glyphs_address_table
-    ld L, (IX+0)                     ; finally load HL with the address ...
-    ld H, (IX+1)                     ; ... pointed to by IX
-
-    ld  A,  C
-    add A,  A
-    add A,  2                  ; row stride, increase rows by two
-    ld  B,  A                  ; row
-    ld  C, CURRENT_KEY_COLUMN  ; column
-    call Print_Udgs_Character
-
-    pop BC             ; retreive the counter ...
-    inc C              ; ... increase it ...
-    ld A, C            ; ... and via accumulator ...
-    cp NUMBER_OF_UDKS  ; ... compare with NUMBER_OF_UDKS
-
-  jr nz, .loop_to_print_defined_keys    ; loop until we've taken
-                                        ; NUMBER_OF_UDKS presses
+  jr nz, .loop  ; if flag is not set, A (and B) didn't reach eight yet
 
   ;--------------------------------------------------
   ;
   ; Press B to browse, D to define keys or Q to quit
   ;
   ;--------------------------------------------------
-  ld HL, text_press_01 : ld B, 19 : ld C, 0 : call Print_String
-  ld HL, text_press_02 : ld B, 21 : ld C, 0 : call Print_String
-  ld HL, text_press_03 : ld B, 23 : ld C, 0 : call Print_String
+  ld HL, text_press_b : ld B, 19 : ld C, 0 : call Print_String
+  ld HL, text_press_q : ld B, 21 : ld C, 0 : call Print_String
 
-.wait_for_keys_d_or_r
-
+.wait_for_keys_b_or_q
     call Browse_Key_Rows      ; A = code, C bit0 = 1 if pressed
-
     cp KEY_B                  ; is the key "B" pressed?  Set z if so
     call z, Browse_Memory
-
-    cp KEY_D                  ; is the key "D" pressed?  Set z if so
-    call z, Define_Keys
-
     cp KEY_Q                  ; is the key "Q" pressed?  Set z if so
     ret z
-
-    jr .wait_for_keys_d_or_r
+    jr .wait_for_keys_b_or_q
 
   ret  ; end of Main_Menu
 
@@ -114,7 +72,6 @@ Memory_Browser_Main:
 ;   LOCAL SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Define_Keys.asm"
   include "Browse_Memory.asm"
   include "Dump_Memory.asm"
 
@@ -140,7 +97,6 @@ Memory_Browser_Main:
 ; Storage for user defined keys
 ; The unique key code is stored
 ;-------------------------------
-currently_defined_keys:
 key_for_line_down:   defb  KEY_6
 key_for_page_down:   defb  KEY_5
 key_for_book_down:   defb  KEY_4
@@ -148,53 +104,22 @@ key_for_line_up:     defb  KEY_7
 key_for_page_up:     defb  KEY_8
 key_for_book_up:     defb  KEY_9
 key_to_quit          defb  KEY_0
-NUMBER_OF_UDKS  equ  7            ; number of user defined keys
 
-text_currently_defined:  defb "Currently defined keys:", 0
+text_key_lines_address_table:  ; this is a good name, try to stick to it
+  defw text_key_line_01, text_key_line_02, text_key_line_03, text_key_line_04
+  defw text_key_line_05, text_key_line_06, text_key_line_07, text_key_line_08
 
-text_current_address_table:
-  defw text_current_line_down
-  defw text_current_page_down
-  defw text_current_book_down
-  defw text_current_line_up
-  defw text_current_page_up
-  defw text_current_book_up
-  defw text_current_quit
+text_key_line_01:  defb "Keys for browsing memory:",    0
+text_key_line_02:  defb "  Line DOWN [6]",              0
+text_key_line_03:  defb "  Page DOWN [5]",              0
+text_key_line_04:  defb "  1 KB DOWN [4]",              0
+text_key_line_05:  defb "  Line UP   [7]",              0
+text_key_line_06:  defb "  Page UP   [8]",              0
+text_key_line_07:  defb "  1 KB UP   [9]" ,             0
+text_key_line_08:  defb "  Stop",                       0
 
-text_current_line_down:  defb "Line DOWN [ ]", 0
-text_current_page_down:  defb "Page DOWN [ ]", 0
-text_current_book_down:  defb "1 KB DOWN [ ]", 0
-text_current_line_up:    defb "Line UP   [ ]", 0
-text_current_page_up:    defb "Page UP   [ ]", 0
-text_current_book_up:    defb "1 KB UP   [ ]", 0
-text_current_quit:       defb "Stop      [ ]", 0
-                             ;            ^
-                             ;            |
-CURRENT_KEY_COLUMN  equ  12  ; here =-----+
-
-text_press_01:  defb "[B]: Browse memory",        0
-text_press_02:  defb "[D]: Define keys",          0
-text_press_03:  defb "[Q]: Quit the utility",     0
-
-text_prompt_address_table:
-  defw text_prompt_line_up
-  defw text_prompt_page_up
-  defw text_prompt_book_up
-  defw text_prompt_line_down
-  defw text_prompt_page_down
-  defw text_prompt_book_down
-  defw text_prompt_quit
-
-text_prompt_line_up:    defb "Key for line DOWN [ ]", 0
-text_prompt_page_up:    defb "Key for page DOWN [ ]", 0
-text_prompt_book_up:    defb "Key for 1 KB DOWN [ ]", 0
-text_prompt_line_down:  defb "Key for line UP   [ ]", 0
-text_prompt_page_down:  defb "Key for page UP   [ ]", 0
-text_prompt_book_down:  defb "Key for 1 KB UP   [ ]", 0
-text_prompt_quit:       defb "Key to stop       [ ]", 0
-                            ;                    ^
-                            ;                    |
-PROMPT_KEY_COLUMN  equ  12  ; it is here ==------+
+text_press_b:  defb "[B]: Browse memory",        0
+text_press_q:  defb "[Q]: Quit the utility",     0
 
 ;-------------------------
 ; Non-printable character

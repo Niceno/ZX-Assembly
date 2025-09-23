@@ -70,6 +70,10 @@ Dump_Memory:
     jr z, .hl_is_special                             ;   nope
     ld A, H : xor high MEM_PROGRAM_START     : or L  ; @ MEM_PROGRAM_START
     jr z, .hl_is_special                             ;   nope
+    ld A, H : xor high MEM_SHADOW_PIXELS     : or L  ; @ MEM_SHADOW_PIXELS
+    jr z, .hl_is_special                             ;   nope
+    ld A, H : xor high MEM_SHADOW_COLORS     : or L  ; @ MEM_SHADOW_COLORS
+    jr z, .hl_is_special                             ;   nope
     ld A, H : xor high MEM_BROWSER_START     : or L  ; @ MEM_BROWSER_START
     jr z, .hl_is_special                             ;   nope
     ld A, H : xor high MEM_CUSTOM_FONT_START : or L  ; @ MEM_CUSTOM_FONT_START
