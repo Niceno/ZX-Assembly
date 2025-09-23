@@ -6,8 +6,11 @@
 ;   of the keys (denominated by bits in A after the "in" command) are pressed
 ;   and, if pressed, creates a unique key code.  It is pretty cool really.
 ;
-; Parameters:
+; Global variables used:
 ; - all_key_ports global array
+;
+; Clobbers:
+; - AF, BC, DE, HL
 ;
 ; Output:
 ; - A holds the key code
