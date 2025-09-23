@@ -1,5 +1,5 @@
-  IFNDEF __CALCULATE_SCREEN_ATTRIBUTE_ADDRESS__
-  DEFINE __CALCULATE_SCREEN_ATTRIBUTE_ADDRESS__
+  ifndef __CALCULATE_SCREEN_ATTRIBUTE_ADDRESS__
+  define __CALCULATE_SCREEN_ATTRIBUTE_ADDRESS__
 
 ;===============================================================================
 ; Calculate_Screen_Attribute_Address
@@ -103,4 +103,4 @@ Calculate_Screen_Attribute_Address
 ;   for the higher byte and ... things work
 ;-------------------------------------------------------------------------------
 
-  ENDIF
+  endif

@@ -37,8 +37,9 @@ hi link sjasmInstruction Statement
 
 " Sjasm-specific directives (I use small case on purpose)
 syn keyword sjasmDirective module endmodule org equ db dw ds defb defw defs
-syn keyword sjasmDirective include bin macro endm if else endif rept endr
-syn keyword sjasmDirective align phase dephase disp ent disp end device
+syn keyword sjasmDirective include bin macro endm if ifdef ifndef define
+syn keyword sjasmDirective else endif rept endr align phase dephase
+syn keyword sjasmDirective disp ent disp end device
 syn keyword sjasmDirective savesna savebin
 hi link sjasmDirective Define
 

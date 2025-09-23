@@ -1,5 +1,5 @@
-  IFNDEF __CALCULATE_SCREEN_PIXEL_ADDRESS__
-  DEFINE __CALCULATE_SCREEN_PIXEL_ADDRESS__
+  ifndef __CALCULATE_SCREEN_PIXEL_ADDRESS__
+  define __CALCULATE_SCREEN_PIXEL_ADDRESS__
 
 ;===============================================================================
 ; Calculate_Screen_Pixel_Address
@@ -113,4 +113,4 @@ Calculate_Screen_Pixel_Address
 ;   for the higher byte and ... things work
 ;-------------------------------------------------------------------------------
 
-  ENDIF
+  endif
