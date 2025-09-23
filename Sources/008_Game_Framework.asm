@@ -1,4 +1,4 @@
-  include "Constants.inc"
+  include "Include/Constants.inc"
 
 ;--------------------------------------
 ; Set the architecture you'll be using
@@ -702,37 +702,26 @@ Draw_The_World:
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-;   SUBROUTINES
+;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Clear_Screen.asm"
   include "Shared/Set_Border_Color.asm"
-  include "Shared/Calculate_Screen_Attribute_Address.asm"
-  include "Shared/Color_Line.asm"
-  include "Shared/Color_Tile.asm"
-  include "Shared/Draw_Frame.asm"
   include "Shared/Viewport/Create.asm"
-  include "Shared/Viewport/Store_Data_For_Attributes.asm"
-  include "Shared/Viewport/Store_Data_For_Pixels.asm"
   include "Shared/Viewport/Scroll_Attributes_Up.asm"
   include "Shared/Viewport/Scroll_Attributes_Down.asm"
   include "Shared/Viewport/Scroll_Attributes_Left.asm"
   include "Shared/Viewport/Scroll_Attributes_Right.asm"
-  include "Shared/Calculate_Screen_Pixel_Address.asm"
-  include "Shared/Udgs/Print_Character.asm"
-  include "Shared/Udgs/Print_Line_Tile.asm"
-  include "Shared/Udgs/Print_Tile.asm"
-  include "Shared/Udgs/Print_Line_Sprite.asm"
-  include "Shared/Udgs/Print_Sprite.asm"
-  include "Shared/Udgs/Merge_Line_Sprite.asm"
-  include "Shared/Udgs/Merge_Sprite.asm"
   include "Shared/Browse_Key_Rows.asm"
-  include "Shared/Press_Any_Key.asm"
   include "Shared/Unpress.asm"
-  include "Shared/Print_Character.asm"
-  include "Shared/Print_String.asm"
   include "Shared/Delay.asm"
   include "Shared/Print_08_Bit_Number.asm"
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   UTILITIES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Utilities/Merge_Grid.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -740,11 +729,11 @@ Draw_The_World:
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Global_Data.inc"
+  include "Include/Global_Data.inc"
 
 ; Hero's position and offset (not all of them will be used in the end)
-hero_world_row:   defb  HERO_START_ROW
-hero_world_col:   defb  HERO_START_COL
+hero_world_row:  defb  HERO_START_ROW
+hero_world_col:  defb  HERO_START_COL
 
 ; These four must be in this order - don't mess it up!
 world_limits:

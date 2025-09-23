@@ -1,4 +1,8 @@
-  include "Constants.inc"
+;----------------------------------------------------------------------------
+; Core constants for ZX Spectrum 48K: memory map, screen/attribute layout,
+; colors, keyboard ports/keycodes, ROM char addresses, and project addresses
+;----------------------------------------------------------------------------
+  include "Include/Constants.inc"
 
 ;--------------------------------------
 ; Set the architecture you'll be using
@@ -240,18 +244,12 @@ Main:
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-;   SUBROUTINES
+;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Clear_Screen.asm"
   include "Shared/Set_Border_Color.asm"
-  include "Shared/Calculate_Screen_Attribute_Address.asm"
-  include "Shared/Color_Line.asm"
-  include "Shared/Color_Tile.asm"
-  include "Shared/Draw_Frame.asm"
   include "Shared/Viewport/Create.asm"
-  include "Shared/Viewport/Store_Data_For_Attributes.asm"
-  include "Shared/Viewport/Store_Data_For_Pixels.asm"
   include "Shared/Viewport/Scroll_Attributes_Up.asm"
   include "Shared/Viewport/Scroll_Attributes_Down.asm"
   include "Shared/Viewport/Scroll_Attributes_Left.asm"
@@ -260,20 +258,15 @@ Main:
   include "Shared/Viewport/Scroll_Pixels_Down.asm"
   include "Shared/Viewport/Scroll_Pixels_Left.asm"
   include "Shared/Viewport/Scroll_Pixels_Right.asm"
-  include "Shared/Calculate_Screen_Pixel_Address.asm"
-  include "Shared/Udgs/Print_Character.asm"
-  include "Shared/Udgs/Print_Line_Tile.asm"
-  include "Shared/Udgs/Print_Tile.asm"
-  include "Shared/Udgs/Print_Line_Sprite.asm"
   include "Shared/Udgs/Print_Sprite.asm"
-  include "Shared/Udgs/Merge_Character.asm"
-  include "Shared/Udgs/Merge_Line_Sprite.asm"
-  include "Shared/Udgs/Merge_Sprite.asm"
-  include "Shared/Udgs/Merge_Line_Tile.asm"
-  include "Shared/Udgs/Merge_Tile.asm"
-  include "Shared/Browse_Key_Rows.asm"
   include "Shared/Press_Any_Key.asm"
   include "Shared/Unpress.asm"
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   UTILITIES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Utilities/Merge_Grid.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -281,7 +274,7 @@ Main:
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Global_Data.inc"
+  include "Include/Global_Data.inc"
 
 udgs:
 

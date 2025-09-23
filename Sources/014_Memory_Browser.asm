@@ -1,4 +1,4 @@
-  include "Constants.inc"
+  include "Include/Constants.inc"
 
 ;--------------------------------------
 ; Set the architecture you'll be using
@@ -42,7 +42,7 @@ Main:
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-;   SUBROUTINES
+;   UTILITIES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Utilities/Memory_Browser/Main_Menu.asm"
@@ -52,7 +52,7 @@ Main:
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Global_Data.inc"
+  include "Include/Global_Data.inc"
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main

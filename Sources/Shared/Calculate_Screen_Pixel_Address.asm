@@ -1,3 +1,6 @@
+  IFNDEF __CALCULATE_SCREEN_PIXEL_ADDRESS__
+  DEFINE __CALCULATE_SCREEN_PIXEL_ADDRESS__
+
 ;===============================================================================
 ; Calculate_Screen_Pixel_Address
 ;-------------------------------------------------------------------------------
@@ -109,3 +112,5 @@ Calculate_Screen_Pixel_Address
 ;   number to the right for the lower byte and do the trick with and %00011000
 ;   for the higher byte and ... things work
 ;-------------------------------------------------------------------------------
+
+  ENDIF

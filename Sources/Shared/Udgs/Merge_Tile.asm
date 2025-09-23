@@ -36,3 +36,10 @@ Merge_Udgs_Tile_New
   jr nz, .loop_rows  ; if not all rows are printed, repeat
 
   ret
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   SHARED SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "../../Shared/Udgs/Merge_Line_Tile.asm"

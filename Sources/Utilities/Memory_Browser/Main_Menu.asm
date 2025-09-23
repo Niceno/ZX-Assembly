@@ -128,17 +128,11 @@ Memory_Browser_Main_Menu:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "../../Shared/Clear_Screen.asm"
   include "../../Shared/Delay.asm"
-  include "../../Shared/Calculate_Screen_Attribute_Address.asm"
-  include "../../Shared/Calculate_Screen_Pixel_Address.asm"
   include "../../Shared/Unpress.asm"
   include "../../Shared/Draw_Frame.asm"
-  include "../../Shared/Print_Character.asm"
   include "../../Shared/Print_String.asm"
   include "../../Shared/Color_Line.asm"
   include "../../Shared/Udgs/Merge_Character.asm"
-  include "../../Shared/Udgs/Print_Character.asm"
-  include "../../Shared/Udgs/Print_Line_Tile.asm"
-  include "../../Shared/Udgs/Print_Tile.asm"
   include "../../Shared/Browse_Key_Rows.asm"
 
 ;-------------------------------

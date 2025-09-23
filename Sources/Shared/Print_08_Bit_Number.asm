@@ -7,6 +7,9 @@
 ; Parameters:
 ; - HL: operand, the number we want to turn to ASCII
 ; - BC: row and column
+;
+; Calls:
+; - Print_String
 ;-------------------------------------------------------------------------------
 Print_08_Bit_Number:
 
@@ -111,6 +114,18 @@ Print_08_Bit_Number:
 
   ret
 
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   SHARED SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Shared/Print_String.asm"
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   DATA
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ; Place values followed by some extra places to store decimal digits
 ; Storage for decimal digits is not quite compact which is a consequence
 ; of the fact I couldn't use IY as the second pointer.  Anyway, to make

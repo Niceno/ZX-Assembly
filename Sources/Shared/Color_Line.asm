@@ -28,7 +28,7 @@ Color_Line
 
   call Calculate_Screen_Attribute_Address
 
-  pop DE      ; restore the column
+  pop DE       ; restore the column
   ex  AF, AF'  ; get the value of the color back
 
   ;----------------------
@@ -41,3 +41,10 @@ Color_Line
   jr nz, .loop
 
   ret
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   SHARED SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "../Shared/Calculate_Screen_Attribute_Address.asm"

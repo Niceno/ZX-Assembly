@@ -1,4 +1,4 @@
-  include "Constants.inc"
+  include "Include/Constants.inc"
 
 ;--------------------------------------
 ; Set the architecture you'll be using
@@ -30,16 +30,9 @@ Main:
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-;   SUBROUTINES
+;   UTILITIES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Shared/Calculate_Screen_Pixel_Address.asm"
-  include "Shared/Udgs/Print_Character.asm"
-  include "Shared/Udgs/Print_Line_Tile.asm"
-  include "Shared/Udgs/Print_Tile.asm"
-  include "Shared/Udgs/Merge_Character.asm"
-  include "Shared/Udgs/Merge_Line_Sprite.asm"
-  include "Shared/Udgs/Merge_Sprite.asm"
   include "Utilities/Merge_Grid.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -47,7 +40,7 @@ Main:
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Global_Data.inc"
+  include "Include/Global_Data.inc"
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main

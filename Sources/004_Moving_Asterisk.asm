@@ -1,4 +1,8 @@
-  include "Constants.inc"
+;----------------------------------------------------------------------------
+; Core constants for ZX Spectrum 48K: memory map, screen/attribute layout,
+; colors, keyboard ports/keycodes, ROM char addresses, and project addresses
+;----------------------------------------------------------------------------
+  include "Include/Constants.inc"
 
 ;--------------------------------------
 ; Set the architecture you'll be using
@@ -55,11 +59,10 @@ Main:
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-;   SUBROUTINES
+;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Delay.asm"
-  include "Shared/Calculate_Screen_Pixel_Address.asm"
   include "Shared/Print_Character.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -67,7 +70,7 @@ Main:
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Global_Data.inc"
+  include "Include/Global_Data.inc"
 
 char_to_print:   defb  CHAR_ASTERISK
 space_to_print:  defb  CHAR_SPACE

@@ -80,3 +80,12 @@ Viewport_Create:
 
   ret
 
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   SHARED SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "../../Shared/Color_Tile.asm"
+  include "../../Shared/Draw_Frame.asm"
+  include "../../Shared/Viewport/Store_Data_For_Attributes.asm"
+  include "../../Shared/Viewport/Store_Data_For_Pixels.asm"

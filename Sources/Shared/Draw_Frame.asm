@@ -107,6 +107,14 @@ Draw_Frame:
 
   ret
 
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   SHARED SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "../Shared/Udgs/Print_Character.asm"
+  include "../Shared/Udgs/Print_Tile.asm"
+
 ;------------------------
 ; Graphics for the frame
 ;------------------------
@@ -114,7 +122,7 @@ Draw_Frame:
 ; frame_q2:     defb $FF, $01, $FD, $FD, $0D, $ED, $ED, $ED
 ; frame_q3:     defb $B7, $B7, $B7, $B0, $BF, $BF, $80, $FF
 ; frame_q4:     defb $ED, $ED, $ED, $0D, $FD, $FD, $01, $FF
-; 
+
 ; frame_up:     defb $FF, $00, $FF, $FF, $00, $FF, $FF, $FF
 ; frame_down:   defb $FF, $FF, $FF, $00, $FF, $FF, $00, $FF
 ; frame_left:   defb $B7, $B7, $B7, $B7, $B7, $B7, $B7, $B7

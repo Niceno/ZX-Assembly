@@ -1,4 +1,8 @@
-  include "Constants.inc"
+;----------------------------------------------------------------------------
+; Core constants for ZX Spectrum 48K: memory map, screen/attribute layout,
+; colors, keyboard ports/keycodes, ROM char addresses, and project addresses
+;----------------------------------------------------------------------------
+  include "Include/Constants.inc"
 
 ;--------------------------------------
 ; Set the architecture you'll be using
@@ -14,7 +18,9 @@
 ; Main subroutine begins here
 ;-------------------------------------------------------------------------------
 Main:
+
   ei       ; <--= (re)enable interrupts if you want to return to OS/BASIC
+
   ret
 
 ;-------------------------------------------------------------------------------

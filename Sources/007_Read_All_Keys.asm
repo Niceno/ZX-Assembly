@@ -1,4 +1,8 @@
-  include "Constants.inc"
+;----------------------------------------------------------------------------
+; Core constants for ZX Spectrum 48K: memory map, screen/attribute layout,
+; colors, keyboard ports/keycodes, ROM char addresses, and project addresses
+;----------------------------------------------------------------------------
+  include "Include/Constants.inc"
 
 ;--------------------------------------
 ; Set the architecture you'll be using
@@ -135,13 +139,9 @@ unique_code:  defb "Unique code:", 0
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-;   SUBROUTINES
+;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Shared/Calculate_Screen_Attribute_Address.asm"
-  include "Shared/Color_Line.asm"
-  include "Shared/Calculate_Screen_Pixel_Address.asm"
-  include "Shared/Print_Character.asm"
   include "Shared/Udgs/Print_Character.asm"
   include "Shared/Color_Tile.asm"
   include "Shared/Print_String.asm"
@@ -153,7 +153,7 @@ unique_code:  defb "Unique code:", 0
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Global_Data.inc"
+  include "Include/Global_Data.inc"
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main

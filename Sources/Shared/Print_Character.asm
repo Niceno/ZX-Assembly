@@ -11,6 +11,9 @@
 ; Constant array
 ; - screen_row_offset
 ;
+; Calls:
+; - Calculate_Screen_Pixel_Address
+;
 ; Clobber:
 ; - AF, BC, DE and HL
 ;-------------------------------------------------------------------------------
@@ -56,4 +59,11 @@ print_character_memory_patch_end:
   djnz .loop_character_bytes
 
   ret
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   SHARED SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "../Shared/Calculate_Screen_Pixel_Address.asm"
 

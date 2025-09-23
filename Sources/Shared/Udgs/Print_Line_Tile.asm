@@ -10,6 +10,9 @@
 ; - BC: row and column
 ; - E:  length of the line
 ;
+; Calls:
+; - Calculate_Screen_Pixel_Address
+;
 ; Clobbers:
 ; - probably just about all registers
 ;
@@ -57,4 +60,11 @@ Print_Udgs_Line_Tile:
   ex DE, HL  ; return the character addresss to HL
 
   ret
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   SHARED SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "../../Shared/Calculate_Screen_Pixel_Address.asm"
 

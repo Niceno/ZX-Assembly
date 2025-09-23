@@ -1,4 +1,8 @@
-  include "Constants.inc"
+;----------------------------------------------------------------------------
+; Core constants for ZX Spectrum 48K: memory map, screen/attribute layout,
+; colors, keyboard ports/keycodes, ROM char addresses, and project addresses
+;----------------------------------------------------------------------------
+  include "Include/Constants.inc"
 
 ;--------------------------------------
 ; Set the architecture you'll be using
@@ -53,14 +57,10 @@ Main:  ; If the adress is that of a subroutine, end it up with  suffix
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-;   SUBROUTINES
+;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Shared/Udgs/Merge_Character.asm"
-  include "Shared/Calculate_Screen_Attribute_Address.asm"
   include "Shared/Color_Line.asm"
-  include "Shared/Calculate_Screen_Pixel_Address.asm"
-  include "Shared/Print_Character.asm"
   include "Shared/Print_String.asm"
   include "Shared/Print_08_Bit_Number.asm"
   include "Shared/Print_16_Bit_Number.asm"
@@ -70,7 +70,7 @@ Main:  ; If the adress is that of a subroutine, end it up with  suffix
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Global_Data.inc"
+  include "Include/Global_Data.inc"
 
 number_source:
   defw 12345    ; define word or two bytes, 16 bits, 2^16 = 65536

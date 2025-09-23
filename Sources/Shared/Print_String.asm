@@ -1,3 +1,6 @@
+  IFNDEF __PRINT_STRING__
+  DEFINE __PRINT_STRING__
+
 ;===============================================================================
 ; Print_String
 ;-------------------------------------------------------------------------------
@@ -8,6 +11,9 @@
 ; - HL: address of the null-terminated string
 ; - BC: starting row (B) and column (C) for the first character
 ; - DE: holds the length (D) and the height (L) of the box
+;
+; Calls:
+; - Print_Character
 ;
 ; Clobbers:
 ; - AF, BC, HL
@@ -34,3 +40,12 @@ Print_String:
   jr .character_loop  ; loop for next character
 
   ret
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   SHARED SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Shared/Print_Character.asm"
+
+  ENDIF
