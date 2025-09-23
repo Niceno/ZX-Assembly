@@ -15,7 +15,7 @@
 ; - HL: screen pixel address
 ;
 ; Clobbers:
-; - AF, BC, DE
+; - AF, BC, DE, HL
 ;
 ; Note:
 ; - To see why this works, scroll down!
@@ -31,7 +31,7 @@ Calculate_Screen_Attribute_Address
   rrca
   rrca
   rrca
-  ld   H, $58  ; add 22528 (MEM_SCREEN_COLORS = $5800) to HL
+  ld   H, high MEM_SCREEN_COLORS  ; high byte of MEM_SCREEN_COLORS to HL
   or   H
   ld   H, A
 
