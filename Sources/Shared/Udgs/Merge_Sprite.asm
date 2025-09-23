@@ -42,4 +42,4 @@ Merge_Udgs_Sprite
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "../../Shared/Udgs/Merge_Line_Sprite.asm"
+  include "Shared/Udgs/Merge_Line_Sprite.asm"

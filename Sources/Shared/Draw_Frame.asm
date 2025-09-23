@@ -112,8 +112,8 @@ Draw_Frame:
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "../Shared/Udgs/Print_Character.asm"
-  include "../Shared/Udgs/Print_Tile.asm"
+  include "Shared/Udgs/Print_Character.asm"
+  include "Shared/Udgs/Print_Tile.asm"
 
 ;------------------------
 ; Graphics for the frame

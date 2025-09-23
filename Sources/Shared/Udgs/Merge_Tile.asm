@@ -42,4 +42,4 @@ Merge_Udgs_Tile_New
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "../../Shared/Udgs/Merge_Line_Tile.asm"
+  include "Shared/Udgs/Merge_Line_Tile.asm"

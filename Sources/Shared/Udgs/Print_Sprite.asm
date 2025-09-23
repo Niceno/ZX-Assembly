@@ -42,4 +42,4 @@ Print_Udgs_Sprite
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "../../Shared/Udgs/Print_Line_Sprite.asm"
+  include "Shared/Udgs/Print_Line_Sprite.asm"

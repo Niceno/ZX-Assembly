@@ -34,4 +34,4 @@ Color_Tile
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "../Shared/Color_Line.asm"
+  include "Shared/Color_Line.asm"

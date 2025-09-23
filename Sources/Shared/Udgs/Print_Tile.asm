@@ -42,4 +42,5 @@ Print_Udgs_Tile
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "../../Shared/Udgs/Print_Line_Tile.asm"
+  include "Shared/Udgs/Print_Line_Tile.asm"
+

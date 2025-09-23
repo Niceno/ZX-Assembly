@@ -49,5 +49,5 @@ Merge_Udgs_Character:
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "../../Shared/Calculate_Screen_Pixel_Address.asm"
+  include "Shared/Calculate_Screen_Pixel_Address.asm"
 

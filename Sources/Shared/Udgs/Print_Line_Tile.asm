@@ -66,5 +66,5 @@ Print_Udgs_Line_Tile:
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "../../Shared/Calculate_Screen_Pixel_Address.asm"
+  include "Shared/Calculate_Screen_Pixel_Address.asm"
 

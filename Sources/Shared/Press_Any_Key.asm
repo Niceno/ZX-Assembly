@@ -28,4 +28,4 @@ Press_Any_Key:
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "../Shared/Browse_Key_Rows.asm"
+  include "Shared/Browse_Key_Rows.asm"

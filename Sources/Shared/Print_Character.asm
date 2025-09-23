@@ -65,5 +65,5 @@ print_character_memory_patch_end:
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "../Shared/Calculate_Screen_Pixel_Address.asm"
+  include "Shared/Calculate_Screen_Pixel_Address.asm"
 

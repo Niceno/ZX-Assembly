@@ -47,4 +47,4 @@ Color_Line
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "../Shared/Calculate_Screen_Attribute_Address.asm"
+  include "Shared/Calculate_Screen_Attribute_Address.asm"
