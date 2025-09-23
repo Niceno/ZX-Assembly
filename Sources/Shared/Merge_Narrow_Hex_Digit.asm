@@ -7,14 +7,14 @@
 ;
 ; Parameters:
 ; - A:  digit (0-15) to print as hexadecimal
+; - BC: row and column, passed to Merge_Udgs_Character
 ; - HL: beginning of the memory where characters are defined
+;
+; Calls:
+; - Merge_Udgs_Character
 ;
 ; Clobbers:
 ; - nothing
-;
-; Note:
-; - This is a "local function", called only from Print_Hex_Byte
-;   that's why it is not in a separate file
 ;-------------------------------------------------------------------------------
 Merge_Narrow_Hex_Digit:
 
@@ -34,7 +34,7 @@ Merge_Narrow_Hex_Digit:
   add HL, DE             ; now point to the right character in the table
 
   ; Print the string
-  call Merge_Udgs_Character
+  call Merge_Udgs_Character  ; HL: pnt to character; B and C: row and column
 
   pop AF
   pop BC

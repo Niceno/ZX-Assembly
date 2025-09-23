@@ -34,7 +34,7 @@ Main:
   ;-----------------------------------
   ; Call Memory_Browser main function
   ;-----------------------------------
-  call Memory_Browser_Main_Menu
+  call Memory_Browser_Main
 
   ei
 
@@ -45,7 +45,7 @@ Main:
 ;   UTILITIES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Utilities/Memory_Browser/Main_Menu.asm"
+  include "Utilities/Memory_Browser/Main.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

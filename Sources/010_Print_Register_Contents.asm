@@ -30,7 +30,7 @@ Main:
   ; Real life example - see which registers get
   ; clobbered with a call to Print_Character
   ;---------------------------------------------
-  call Print_Registers
+  call Print_Registers_Main
   push AF
   push BC
   push DE
@@ -40,7 +40,7 @@ Main:
   pop DE
   pop BC
   pop AF
-  call Print_Registers
+  call Print_Registers_Main
 
 ; Academic example  ;--------------------------------------------
 ; Academic example  ; Set registers to some test value and print
@@ -83,7 +83,7 @@ Main:
 ;   UTILITIES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Utilities/Print_Registers.asm"
+  include "Utilities/Print_Registers/Main.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

@@ -1,5 +1,5 @@
 ;===============================================================================
-; Print_Registers
+; Print_Registers_Main
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Prints the contents of the registers
@@ -14,7 +14,7 @@
 ; - This source includes three other routines which are only called from here
 ;   I am not sure this is the best practice, but ... seems OK at the moment.
 ;-------------------------------------------------------------------------------
-Print_Registers:
+Print_Registers_Main:
 
   ;--------------------------
   ;
@@ -134,15 +134,19 @@ Print_Registers:
     ;-------------------------------------------------------------
     ; Print hex number from new_ptr (which is always the current)
     ;-------------------------------------------------------------
+    ld   B, (IX+0)  ; B holds row
+    ld   C, (IX+1)  ; C holds column
+    call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
     ld   L, (IX+6)  ; little ...
     ld   H, (IX+7)  ; ... endian
     inc  HL
     ld   A, (HL)
-    ld   E, 2
+    inc  C
+    inc  C
     call Print_Hex_Byte
     dec  HL
     ld   A, (HL)
-    ld   E, 3
+    inc  C
     call Print_Hex_Byte
 
     ;---------------------------------
@@ -195,210 +199,24 @@ Print_Registers:
 
   ret
 
-;===============================================================================
-; Increase_Row_For_2nd_Call:
-;-------------------------------------------------------------------------------
-; Purpose:
-; - Increases B by 10 for the 2nd call
-;-------------------------------------------------------------------------------
-Increase_Row_For_2nd_Call:
-
-  push AF
-
-  ld A, (call_count)
-  cp 2
-  jr z, .this_is_the_second_call
-
-  pop AF
-
-  ret
-
-.this_is_the_second_call:
-  ld A, B
-  add A, 10
-  ld B, A
-
-  pop AF
-
-  ret
-
-;===============================================================================
-; Compare_Registers:
-;-------------------------------------------------------------------------------
-; Parameters:
-; - HL: address of the first memory address
-; - DE: address of the second memory address
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-; Changes:
-; - AF: results in increased A and (possibly) clobbered F
+;   LOCAL SUBROUTINES
 ;
-; Note:
-; - This is a "local function", called only from Print_Registers,
-;   that's why it is not in a separate file
-;-------------------------------------------------------------------------------
-Compare_Registers:
-
-  push AF  ; beginning of the sub, store the A which holds the color
-  push BC
-
-  ;---------------------------------------------------------
-  ; In case this is a second call, do the actual comparison
-  ;---------------------------------------------------------
-  ld A, (call_count)
-  cp 2
-  jr z, .this_is_the_second_call
-
-  pop BC
-  pop AF
-
-  ret
-
-.this_is_the_second_call:
-
-  push AF  ; push AF for comparison
-
-  ; Compare all bytes (why only two?)
-  ld A, (DE)
-  cp (HL)
-  jr nz, .add_flashing
-  inc HL
-  inc DE
-  ld A, (DE)
-  cp (HL)
-  jr nz, .add_flashing
-
-  pop AF  ; comparison done, restore AF
-
-  pop BC
-  pop AF  ; restore AF from the beginning of this sub, the one with color
-
-  ret
-
-.add_flashing:
-
-  pop AF  ; comparison done, restore AF
-
-  pop BC
-  pop AF  ; restore AF from the beginning of this sub, the one with color
-
-  add FLASH
-
-  ret
-
-;===============================================================================
-; Print_Hex_Byte
-;-------------------------------------------------------------------------------
-; Parameters:
-; - A: byte to print as two hexadecimal digits (from $00 to $FF)
-; - E: holds the horizontal offset to print the byte
-;
-; Clobbers:
-; - nothing
-;
-; Note:
-; - This is a "local function", called only from Print_Registers,
-;   that's why it is not in a separate file
-;-------------------------------------------------------------------------------
-Print_Hex_Byte:
-
-  push AF
-  push DE
-  push HL
-  push BC
-
-  ld D, A  ; save original byte
-
-  ;------------------------------------------
-  ; Work out the coordinates of the hex byte
-  ;------------------------------------------
-  ld B, (IX+0)  ; B holds row
-  ld C, (IX+1)  ; C holds column
-  call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
-  ld A, E  ; load the shift
-  add C    ; add shift to the column
-  ld C, A  ; put the result back in C
-
-  ;-------------------------
-  ; Print high nibble first
-  ;-------------------------
-  ld A, D                   ; restore the original byte
-  rra                       ; shift right 4 bits
-  rra
-  rra
-  rra
-  and $0F                   ; mask lower 4 bits
-  ld HL, hex_0_high         ; point to the start of character table
-  call Merge_Narrow_Hex_Digit
-
-  ;--------------------------
-  ; Merge low nibble over it
-  ;--------------------------
-  ld A, D                   ; restore original byte
-  and $0F                   ; mask lower 4 bits
-  ld HL, hex_0_low          ; point to the start of character table
-  call Merge_Narrow_Hex_Digit
-
-  pop BC
-  pop HL
-  pop DE
-  pop AF
-
-  ret
-
-;===============================================================================
-; Merge_Narrow_Hex_Digit
-;-------------------------------------------------------------------------------
-; Purpose:
-; - Merges a "low" (right aligned) or a "high" (left aligned) digit as a
-;   hexadecial number (from 0 to F)
-;
-; Parameters:
-; - A:  digit (0-15) to print as hexadecimal
-; - HL: beginning of the memory where characters are defined
-;
-; Clobbers:
-; - nothing
-;
-; Note:
-; - This is a "local function", called only from Print_Hex_Byte
-;   that's why it is not in a separate file
-;-------------------------------------------------------------------------------
-Merge_Narrow_Hex_Digit:
-
-  push HL
-  push DE
-  push BC
-  push AF
-
-  ; A is now the digit, multiply it with eight so that it becomes memory offset
-  add A, A
-  add A, A
-  add A, A
-
-  ; Calculate address of the string (string_0 to string_F)
-  ld D, 0
-  ld E, A                ; DE = digit value (0-15)
-  add HL, DE             ; now point to the right character in the table
-
-  ; Print the string
-  call Merge_Udgs_Character
-
-  pop AF
-  pop BC
-  pop DE
-  pop HL
-
-  ret
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Increase_Row_For_2nd_Call.asm"
+  include "Compare_Registers.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-;   SUBROUTINES
+;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Color_Line.asm"
   include "Shared/Print_String.asm"
   include "Shared/Udgs/Print_Character.asm"
   include "Shared/Udgs/Merge_Character.asm"
+  include "Shared/Print_Hex_Byte.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -464,38 +282,4 @@ reg_ix:     defb $00, $2A, $2A, $24, $24, $2A, $2A, $00 ;
 reg_iy:     defb $00, $2A, $2A, $2A, $24, $24, $24, $00 ;
 reg_eq:     defb $00, $00, $00, $1E, $00, $1E, $00, $00 ;
 reg_p_eq:   defb $00, $40, $40, $1E, $00, $1E, $00, $00 ;
-
-; But hex numbers, given that there are 32 of them, need a different approah
-hex_0_low:  defb $00, $02, $05, $05, $05, $05, $02, $00 ;
-hex_1_low:  defb $00, $02, $06, $02, $02, $02, $07, $00 ;
-hex_2_low:  defb $00, $06, $01, $01, $02, $04, $07, $00 ;
-hex_3_low:  defb $00, $06, $01, $02, $01, $01, $06, $00 ;
-hex_4_low:  defb $00, $01, $03, $05, $07, $01, $01, $00 ;
-hex_5_low:  defb $00, $07, $04, $06, $01, $01, $06, $00 ;
-hex_6_low:  defb $00, $03, $04, $06, $05, $05, $02, $00 ;
-hex_7_low:  defb $00, $07, $01, $01, $02, $02, $02, $00 ;
-hex_8_low:  defb $00, $02, $05, $02, $05, $05, $02, $00 ;
-hex_9_low:  defb $00, $02, $05, $05, $03, $01, $06, $00 ;
-hex_a_low:  defb $00, $02, $05, $05, $07, $05, $05, $00 ;
-hex_b_low:  defb $00, $06, $05, $06, $05, $05, $06, $00 ;
-hex_c_low:  defb $00, $03, $04, $04, $04, $04, $03, $00 ;
-hex_d_low:  defb $00, $06, $05, $05, $05, $05, $06, $00 ;
-hex_e_low:  defb $00, $07, $04, $06, $04, $04, $07, $00 ;
-hex_f_low:  defb $00, $07, $04, $06, $04, $04, $04, $00 ;
-hex_0_high: defb $00, $20, $50, $50, $50, $50, $20, $00 ;
-hex_1_high: defb $00, $20, $60, $20, $20, $20, $70, $00 ;
-hex_2_high: defb $00, $60, $10, $10, $20, $40, $70, $00 ;
-hex_3_high: defb $00, $60, $10, $20, $10, $10, $60, $00 ;
-hex_4_high: defb $00, $10, $30, $50, $70, $10, $10, $00 ;
-hex_5_high: defb $00, $70, $40, $60, $10, $10, $60, $00 ;
-hex_6_high: defb $00, $30, $40, $60, $50, $50, $20, $00 ;
-hex_7_high: defb $00, $70, $10, $10, $20, $20, $20, $00 ;
-hex_8_high: defb $00, $20, $50, $20, $50, $50, $20, $00 ;
-hex_9_high: defb $00, $20, $50, $50, $30, $10, $60, $00 ;
-hex_a_high: defb $00, $20, $50, $50, $70, $50, $50, $00 ;
-hex_b_high: defb $00, $60, $50, $60, $50, $50, $60, $00 ;
-hex_c_high: defb $00, $30, $40, $40, $40, $40, $30, $00 ;
-hex_d_high: defb $00, $60, $50, $50, $50, $50, $60, $00 ;
-hex_e_high: defb $00, $70, $40, $60, $40, $40, $70, $00 ;
-hex_f_high: defb $00, $70, $40, $60, $40, $40, $40, $00 ;
 

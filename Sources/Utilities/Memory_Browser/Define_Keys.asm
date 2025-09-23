@@ -97,7 +97,7 @@ Define_Keys:
 
   jp nz, .define_keys          ; loop until we've taken NUMBER_OF_UDKS presses
 
-  call Memory_Browser_Main_Menu
+  call Memory_Browser_Main
 
   ret
 

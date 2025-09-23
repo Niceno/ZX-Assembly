@@ -113,7 +113,7 @@ Browse_Memory:
 .done_browsing:
   pop HL
 
-  jp Memory_Browser_Main_Menu
+  jp Memory_Browser_Main
 
   ret
 
