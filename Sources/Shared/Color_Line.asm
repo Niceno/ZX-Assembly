@@ -13,7 +13,7 @@
 ; - Calculate_Screen_Attribute_Address
 ;
 ; Clobbers:
-; - AF, BC, DE, HL ... but should be double checked
+; - AF, AF', BC, DE, HL ... but should be double checked
 ;
 ; Note:
 ; - To see why this works, scroll down!
@@ -48,3 +48,4 @@ Color_Line
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Calculate_Screen_Attribute_Address.asm"
+
