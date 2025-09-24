@@ -12,7 +12,7 @@
 ; - BC: row and column
 ;
 ; Output
-; - HL: screen pixel address
+; - HL: screen attribute address
 ;
 ; Clobbers:
 ; - AF, BC, DE, HL
@@ -23,22 +23,22 @@
 Calculate_Screen_Attribute_Address
 
   ; Set proper row
-  ld H, 0 : ld L, B                      ; HL now holds the row number
-  sla L : sla L : sla L : sla L : sla L  ; multiply L with 32
+  ld A, B
+  and %00000111                     ; keep only three lower bits
+  rlca : rlca : rlca : rlca : rlca  ; multiply row by 32 ...
+  ld L, A                           ; ... and put it in L
 
   ld A, B
   and %00011000
   rrca
   rrca
   rrca
-  ld   H, high MEM_SCREEN_COLORS  ; high byte of MEM_SCREEN_COLORS to HL
-  or   H
-  ld   H, A
+  add A, high MEM_SCREEN_COLORS  ; high byte of MEM_SCREEN_COLORS
+  ld  H, A
 
   ; Set the proper column
-  ld D, 0
-  ld E, C
-  add HL, DE
+  ld B, 0
+  add HL, BC
 
   ret
 
@@ -61,14 +61,14 @@ Calculate_Screen_Attribute_Address
 ;    0  |  00000000  |  00000000 00000000  (  0)  $0000  $5800
 ;    1  |  00000001  |  00000000 00100000  ( 32)  $0020  $5820
 ;    2  |  00000010  |  00000000 01000000  ( 64)  $0040  $5840
-;    3  |  00000011  |  00000000 01100000  ( 92)  $0060  $5860
+;    3  |  00000011  |  00000000 01100000  ( 96)  $0060  $5860
 ;    4  |  00000100  |  00000000 10000000  (128)  $0080  $5880
 ;    5  |  00000101  |  00000000 10100000  (160)  $00A0  $58A0
 ;    6  |  00000110  |  00000000 11000000  (192)  $00C0  $58C0
 ;    7  |  00000111  |  00000000 11100000  (224)  $00E0  $58E0
 ;
 ;   (Note that these can be directly rotated to the left and then
-;    safely OR-ed with 22528, no collision here)
+;    added to the base high byte, no collision here)
 ;
 ;   line   binary       attribute offset    dec    hex    full
 ;
@@ -96,7 +96,7 @@ Calculate_Screen_Attribute_Address
 ;   23  |  00010111  |  00000010 11100000  (736)  $02E0  $5AE0
 ;             ^               ^
 ;   (Here too, lower three bits can be rotated to the left, but you also
-;    have one additional bit (position 4) which tells we are in the 3nd third
+;    have one additional bit (position 4) which tells we are in the 3rd third
 ;
 ; - So, in order to compute the address of attributes, we can rotate the row
 ;   number to the right for the lower byte and do the trick with and %00011000
