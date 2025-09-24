@@ -39,7 +39,7 @@ hi link sjasmInstruction Statement
 syn keyword sjasmDirective module endmodule org equ db dw ds defb defw defs
 syn keyword sjasmDirective include bin macro endm if ifdef ifndef define
 syn keyword sjasmDirective else endif rept endr align phase dephase
-syn keyword sjasmDirective disp ent disp end device
+syn keyword sjasmDirective disp ent disp end device high
 syn keyword sjasmDirective savesna savebin
 hi link sjasmDirective Define
 
@@ -70,6 +70,8 @@ syn keyword sjasmConstant MEM_PRINTER_BUFFER      MEM_SYSTEM_VARS
 syn keyword sjasmConstant MEM_CHARS               MEM_USER_DEFINED_GRAPHICS
 syn keyword sjasmConstant MEM_STORE_SCREEN_COLOR  MEM_AVAILABLE_RAM_START
 syn keyword sjasmConstant MEM_PROGRAM_START       MEM_CUSTOM_FONT_START
+syn keyword sjasmConstant MEM_SHADOW_PIXELS       MEM_SHADOW_COLORS
+syn keyword sjasmConstant MEM_BROWSER_START
 
 syn keyword sjasmConstant MEM_A_UPP  MEM_B_UPP  MEM_C_UPP  MEM_D_UPP  MEM_E_UPP
 syn keyword sjasmConstant MEM_F_UPP  MEM_G_UPP  MEM_H_UPP  MEM_I_UPP  MEM_J_UPP
@@ -115,21 +117,9 @@ syn keyword sjasmConstant KEYS_QWERT     KEYS_YUIOP
 syn keyword sjasmConstant KEYS_ASDFG     KEYS_HJKLENTER
 syn keyword sjasmConstant KEYS_CAPSZXCV  KEYS_BNMSYMSPC
 
-syn keyword sjasmConstant CHAR_ENTER             CHAR_AT_CONTROL
-syn keyword sjasmConstant CHAR_SPACE             CHAR_EXCLAMATION_MARK
-syn keyword sjasmConstant CHAR_AND_SYMBOL        CHAR_ASTERISK
-syn keyword sjasmConstant CHAR_0  CHAR_1  CHAR_2  CHAR_3  CHAR_4
-syn keyword sjasmConstant CHAR_5  CHAR_6  CHAR_7  CHAR_8  CHAR_9
-syn keyword sjasmConstant CHAR_QUESTION_MARK     CHAR_AT
-syn keyword sjasmConstant CHAR_A_UPP  CHAR_B_UPP  CHAR_C_UPP  CHAR_D_UPP
-syn keyword sjasmConstant CHAR_E_UPP  CHAR_F_UPP  CHAR_G_UPP  CHAR_H_UPP
-syn keyword sjasmConstant CHAR_I_UPP  CHAR_J_UPP  CHAR_K_UPP  CHAR_L_UPP
-syn keyword sjasmConstant CHAR_M_UPP  CHAR_N_UPP  CHAR_O_UPP  CHAR_P_UPP
-syn keyword sjasmConstant CHAR_Q_UPP  CHAR_R_UPP  CHAR_S_UPP  CHAR_T_UPP
-syn keyword sjasmConstant CHAR_U_UPP  CHAR_V_UPP  CHAR_W_UPP  CHAR_X_UPP
-syn keyword sjasmConstant CHAR_Y_UPP  CHAR_Z_UPP
-
-syn keyword sjasmConstant CHAR_Y_UPP  CHAR_Z_UPP
+syn keyword sjasmConstant CHAR_SPACE
+syn keyword sjasmConstant CHAR_ASTERISK
+syn keyword sjasmConstant CHAR_0
 
 hi link sjasmConstant Constant
 

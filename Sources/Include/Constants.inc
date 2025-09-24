@@ -107,50 +107,9 @@ KEYS_BNMSYMSPC  equ  $7FFE  ; 32766
 ;
 ; (https://worldofspectrum.net/ZXBasicManual/zxmanappa.html)
 ;-------------------------------------------------------------------------------
-CHAR_ENTER             equ  13
-CHAR_AT_CONTROL        equ  22
 CHAR_SPACE             equ  32
-CHAR_EXCLAMATION_MARK  equ  33
-CHAR_AND_SYMBOL        equ  38
 CHAR_ASTERISK          equ  42
 CHAR_0                 equ  48
-CHAR_1                 equ  49
-CHAR_2                 equ  50
-CHAR_3                 equ  51
-CHAR_4                 equ  52
-CHAR_5                 equ  53
-CHAR_6                 equ  54
-CHAR_7                 equ  55
-CHAR_8                 equ  56
-CHAR_9                 equ  57
-CHAR_QUESTION_MARK     equ  63
-CHAR_AT                equ  64
-CHAR_A_UPP             equ  65
-CHAR_B_UPP             equ  66
-CHAR_C_UPP             equ  67
-CHAR_D_UPP             equ  68
-CHAR_E_UPP             equ  69
-CHAR_F_UPP             equ  70
-CHAR_G_UPP             equ  71
-CHAR_H_UPP             equ  72
-CHAR_I_UPP             equ  73
-CHAR_J_UPP             equ  74
-CHAR_K_UPP             equ  75
-CHAR_L_UPP             equ  76
-CHAR_M_UPP             equ  77
-CHAR_N_UPP             equ  78
-CHAR_O_UPP             equ  79
-CHAR_P_UPP             equ  80
-CHAR_Q_UPP             equ  81
-CHAR_R_UPP             equ  82
-CHAR_S_UPP             equ  83
-CHAR_T_UPP             equ  84
-CHAR_U_UPP             equ  85
-CHAR_V_UPP             equ  86
-CHAR_W_UPP             equ  87
-CHAR_X_UPP             equ  88
-CHAR_Y_UPP             equ  89
-CHAR_Z_UPP             equ  90
 
 ;---------------------------------------------------------
 ; Addresses, in ROM, at which the characters are defined
