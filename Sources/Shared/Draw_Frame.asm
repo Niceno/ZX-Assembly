@@ -58,7 +58,7 @@ Draw_Frame:
   ;---------------------------
   push BC
   push DE
-  ld A, C : add E : dec A : ld C, A  ; adjust column (C)
+  ld A, C : add A, E : dec A : ld C, A  ; adjust column (C)
   ld L, (IX+0) : ld H, (IX+1) : inc IX : inc IX
   call Print_Udgs_Character
   pop DE
@@ -69,7 +69,7 @@ Draw_Frame:
   ;--------------------------
   push BC
   push DE
-  ld A, B : add D : dec A : ld B, A  ; adjust row (B)
+  ld A, B : add A, D : dec A : ld B, A  ; adjust row (B)
   ld L, (IX+0) : ld H, (IX+1) : inc IX : inc IX
   call Print_Udgs_Character
   pop DE
@@ -80,8 +80,8 @@ Draw_Frame:
   ;---------------------------
   push BC
   push DE
-  ld A, C : add E : dec A : ld C, A  ; adjust column (C)
-  ld A, B : add D : dec A : ld B, A  ; adjust row (B)
+  ld A, C : add A, E : dec A : ld C, A  ; adjust column (C)
+  ld A, B : add A, D : dec A : ld B, A  ; adjust row (B)
   ld L, (IX+0) : ld H, (IX+1) : inc IX : inc IX
   call Print_Udgs_Character
   pop DE
@@ -105,10 +105,10 @@ Draw_Frame:
   ;------------
   push BC
   push DE
-  ld A, B : add D : dec A : ld B, A  ; adjust row (B)
+  ld A, B : add A, D : dec A : ld B, A  ; adjust row (B)
   inc C
-  dec E                              ; don't overwrite the corner piece
-  dec E                              ; don't overwrite the corner piece
+  dec E                                 ; don't overwrite the corner piece
+  dec E                                 ; don't overwrite the corner piece
   ld L, (IX+0) : ld H, (IX+1) : inc IX : inc IX
   call Print_Udgs_Line_Tile
   pop DE
@@ -133,11 +133,11 @@ Draw_Frame:
   ;-------------
   push BC
   push DE
-  inc B                              ; don't overwrite the corner piece
-  ld A, C : add E : dec A : ld C, A  ; adjust column (C)
-  dec D                              ; don't overwrite the corner piece
-  dec D                              ; don't overwrite the corner piece
-  ld  E, 1                           ; set number of columns to 1
+  inc B                                 ; don't overwrite the corner piece
+  ld A, C : add A, E : dec A : ld C, A  ; adjust column (C)
+  dec D                                 ; don't overwrite the corner piece
+  dec D                                 ; don't overwrite the corner piece
+  ld  E, 1                              ; set number of columns to 1
   ld L, (IX+0) : ld H, (IX+1) : inc IX : inc IX
   call Print_Udgs_Tile
   pop DE

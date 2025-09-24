@@ -400,10 +400,10 @@ Play_The_Game:
     ; Reset (restore) row and col coordinates
     ; (If they stayed like this, the whole viewport would redraw.)
     ex AF, AF'
-    ld A, (hero_world_row) : add WORLD_ROW_MIN_OFFSET : ld (world_row_min), A
-    ld A, (hero_world_col) : add WORLD_COL_MIN_OFFSET : ld (world_col_min), A
-    ld A, (hero_world_row) : add WORLD_ROW_MAX_OFFSET : ld (world_row_max), A
-    ld A, (hero_world_col) : add WORLD_COL_MAX_OFFSET : ld (world_col_max), A
+    ld A, (hero_world_row) : add A, WORLD_ROW_MIN_OFFSET : ld (world_row_min), A
+    ld A, (hero_world_col) : add A, WORLD_COL_MIN_OFFSET : ld (world_col_min), A
+    ld A, (hero_world_row) : add A, WORLD_ROW_MAX_OFFSET : ld (world_row_max), A
+    ld A, (hero_world_col) : add A, WORLD_COL_MAX_OFFSET : ld (world_col_max), A
     ex AF, AF'
 
     ;---------------
@@ -419,9 +419,9 @@ Play_The_Game:
 
     ; Hero goes up =--> screen scrolls down =--> set row max to row min
     ; Register A still holds hero_world_row here
-    add WORLD_ROW_MIN_OFFSET  ; work out min
-    ld (world_row_min), A     ; store min
-    ld (world_row_max), A     ; set max = min
+    add A, WORLD_ROW_MIN_OFFSET  ; work out min
+    ld (world_row_min), A        ; store min
+    ld (world_row_max), A        ; set max = min
 
     ; Scroll
     call Viewport_Scroll_Attributes_Down
@@ -447,9 +447,9 @@ Play_The_Game:
 
     ; Hero goes down =--> screen scrolls up =--> set row min to row max
     ; Register A still holds hero_world_row here
-    add WORLD_ROW_MAX_OFFSET  ; work out max
-    ld (world_row_max), A     ; store max
-    ld (world_row_min), A     ; set min = max
+    add A, WORLD_ROW_MAX_OFFSET  ; work out max
+    ld (world_row_max), A        ; store max
+    ld (world_row_min), A        ; set min = max
 
     ; Scroll
     call Viewport_Scroll_Attributes_Up
@@ -475,9 +475,9 @@ Play_The_Game:
 
     ; Hero goes left =--> screen scrolls right =--> set col max to col min
     ; Register A still holds hero_world_col here
-    add WORLD_COL_MIN_OFFSET  ; work out min
-    ld (world_col_min), A     ; store min
-    ld (world_col_max), A     ; set max = min
+    add A, WORLD_COL_MIN_OFFSET  ; work out min
+    ld (world_col_min), A        ; store min
+    ld (world_col_max), A        ; set max = min
 
     ; Scroll
     call Viewport_Scroll_Attributes_Right
@@ -503,9 +503,9 @@ Play_The_Game:
 
     ; Hero goes right =--> screen scrolls left =--> set col min to col max
     ; Register A still holds hero_world_col here
-    add WORLD_COL_MAX_OFFSET  ; work out max
-    ld (world_col_max), A     ; store max
-    ld (world_col_min), A     ; set min = max
+    add A, WORLD_COL_MAX_OFFSET  ; work out max
+    ld (world_col_max), A        ; store max
+    ld (world_col_min), A        ; set min = max
 
     ; Scroll
     call Viewport_Scroll_Attributes_Left
@@ -565,8 +565,8 @@ Draw_One_Tile:
   ; Fetch tile's dimensions, add them to
   ; row0 and col0 and store in D and E
   ;--------------------------------------
-  ld A, (HL) : add B : dec A : ld D, A : inc HL
-  ld A, (HL) : add C : dec A : ld E, A : inc HL
+  ld A, (HL) : add A, B : dec A : ld D, A : inc HL
+  ld A, (HL) : add A, C : dec A : ld E, A : inc HL
 
   ;---------------------------------------------------------------
   ; Eliminate tiles which are completelly outside of the viewport
@@ -640,8 +640,8 @@ Draw_One_Tile:
   ld A, D : sub B : inc A : ld D, A  ; calculate number of rows
   ld A, E : sub C : inc A : ld E, A  ; calculate number of columns
   ld IX, hero_world_row  ; transfer world to screen coordinates
-  ld A, B : sub (IX+0) : add HERO_SCREEN_ROW : ld B, A
-  ld A, C : sub (IX+1) : add HERO_SCREEN_COL : ld C, A
+  ld A, B : sub (IX+0) : add A, HERO_SCREEN_ROW : ld B, A
+  ld A, C : sub (IX+1) : add A, HERO_SCREEN_COL : ld C, A
 
   ;----------------
   ; Load the color
