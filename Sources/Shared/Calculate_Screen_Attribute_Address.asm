@@ -33,6 +33,7 @@ Calculate_Screen_Attribute_Address
   rrca
   rrca
   rrca
+swap_screen_and_shadow_colors_here:
   add A, high MEM_SCREEN_COLORS  ; high byte of MEM_SCREEN_COLORS
   ld  H, A
 

@@ -39,6 +39,7 @@ Calculate_Screen_Pixel_Address
                  ; is bigger than 15, A will hold bit 4, which is 4096 in H
                  ; Since there are only 24 rows (from 0 to 23), row number
                  ; will never hold both bits 3 and 4 (16+8=24)
+swap_screen_and_shadow_pixels_here
   add A, high MEM_SCREEN_PIXELS  ; add high byte of MEM_SCREEN_PIXELS to HL
   ld  H, A
 

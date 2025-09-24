@@ -1,9 +1,8 @@
-;======== ======================================================================
+;===============================================================================
 ; Print_Hex_Byte
 ;-------------------------------------------------------------------------------
 ; Parameters:
 ; - A: byte to print as two hexadecimal digits (from $00 to $FF)
-; - E: holds the horizontal offset to print the byte
 ;
 ; Clobbers:
 ; - nothing  REALLY?

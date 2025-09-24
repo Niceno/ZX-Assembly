@@ -7,14 +7,14 @@
 ;
 ; Parameters:
 ; - A:  digit (0-15) to print as hexadecimal
+; - BC: row and column, passed to Print_Udgs_Character
 ; - HL: beginning of the memory where characters are defined
+;
+; Calls:
+; - Print_Udgs_Character
 ;
 ; Clobbers:
 ; - nothing
-;
-; Note:
-; - This is a "local function", called only from Print_Hex_Byte
-;   that's why it is not in a separate file
 ;-------------------------------------------------------------------------------
 Print_Narrow_Hex_Digit:
 
@@ -42,4 +42,11 @@ Print_Narrow_Hex_Digit:
   pop HL
 
   ret
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   SHARED SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Shared/Udgs/Print_Character.asm"
 

@@ -1,3 +1,6 @@
+  ifndef __MERGE_UDGS_CHARACTER__
+  define __MERGE_UDGS_CHARACTER__
+
 ;===============================================================================
 ; Merge_Udgs_Character
 ;-------------------------------------------------------------------------------
@@ -51,3 +54,4 @@ Merge_Udgs_Character:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Calculate_Screen_Pixel_Address.asm"
 
+  endif

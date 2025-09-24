@@ -1,3 +1,6 @@
+  ifndef __PRINT_UDGS_CHARACTER__
+  define __PRINT_UDGS_CHARACTER__
+
 ;===============================================================================
 ; Print_Udgs_Character
 ;-------------------------------------------------------------------------------
@@ -51,3 +54,4 @@ Print_Udgs_Character:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Calculate_Screen_Pixel_Address.asm"
 
+  endif
