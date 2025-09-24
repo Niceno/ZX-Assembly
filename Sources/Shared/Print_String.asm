@@ -10,7 +10,6 @@
 ; Parameters (passed via registers)
 ; - HL: address of the null-terminated string
 ; - BC: starting row (B) and column (C) for the first character
-; - DE: holds the length (D) and the height (L) of the box
 ;
 ; Calls:
 ; - Print_Character
