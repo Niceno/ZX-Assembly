@@ -1,3 +1,10 @@
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   INCLUDE STATEMENTS
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Include/Constants.inc"
+
   define __MEMORY_BROWSER_MAIN__
 
 ;===============================================================================
@@ -93,17 +100,30 @@ Memory_Browser_Main:
   include "Shared/Browse_Key_Rows.asm"
   include "Shared/Print_Hex_Byte.asm"
 
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   GLOBAL DATA
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Include/Global_Data.inc"
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   LOCAL DATA
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 ;-------------------------------
 ; Storage for user defined keys
 ; The unique key code is stored
 ;-------------------------------
-key_for_line_down:   defb  KEY_6
-key_for_page_down:   defb  KEY_5
-key_for_book_down:   defb  KEY_4
-key_for_line_up:     defb  KEY_7
-key_for_page_up:     defb  KEY_8
-key_for_book_up:     defb  KEY_9
-key_to_quit          defb  KEY_0
+key_for_line_down:  defb  KEY_6
+key_for_page_down:  defb  KEY_5
+key_for_book_down:  defb  KEY_4
+key_for_line_up:    defb  KEY_7
+key_for_page_up:    defb  KEY_8
+key_for_book_up:    defb  KEY_9
+key_to_quit         defb  KEY_0
 
 text_key_lines_address_table:  ; this is a good name, try to stick to it
   defw text_key_line_01, text_key_line_02, text_key_line_03, text_key_line_04
