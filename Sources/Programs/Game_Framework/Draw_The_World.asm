@@ -2,7 +2,9 @@
 ; Draw_The_World
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Redraws the whole world
+; - Redraws the world.  Depending on the values in global variable world_limits
+;   it may redraw the whole world, or just one line which dissappears from the
+;   screen during scrolling.
 ;
 ; Parameters:
 ; - world_address_table global variable is used

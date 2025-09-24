@@ -1,6 +1,9 @@
 ;===============================================================================
 ; Viewport_Store_Data_For_Attributes
 ;-------------------------------------------------------------------------------
+; Note:
+; - This sub is called only once, when a viewport is created
+;-------------------------------------------------------------------------------
 Viewport_Store_Data_For_Attributes
 
   ; Store dimension as two bytes.  Although it seems an overkill
