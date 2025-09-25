@@ -2,7 +2,7 @@
 ; Viewport_Scroll_Pixels_Up
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Scrolls the attributes inside the viewport up
+; - Scrolls the pixels inside the viewport up
 ;
 ; Parameters:
 ; - viewport_pixel_addresses

@@ -2,7 +2,7 @@
 ; Viewport_Scroll_Pixels_Right
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Scrolls the attributes inside the viewport right
+; - Scrolls the pixels inside the viewport right
 ;
 ; Parameters:
 ; - viewport_pixel_addresses
