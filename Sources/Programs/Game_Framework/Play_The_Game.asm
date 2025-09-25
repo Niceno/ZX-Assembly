@@ -146,6 +146,11 @@ Play_The_Game:
     cp (HL)
     jr nz, .was_the_key_for_down_pressed
 
+    ; Update sprite
+    ld HL, arrow_up
+    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
+    call Print_Udgs_Character
+
     ; Guard: already at upper edge?
     ld A, (hero_world_row)
     add A, WORLD_ROW_MIN_OFFSET      ; A = world_col_min
@@ -165,11 +170,6 @@ Play_The_Game:
     call Viewport_Scroll_Attributes_Down
     call Draw_The_World  ; this depends on world_limits
 
-    ; Update sprite
-    ld HL, arrow_up
-    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
-    call Print_Udgs_Character
-
     jp .main_game_loop
 
     ;-----------------
@@ -179,6 +179,11 @@ Play_The_Game:
     ld HL, key_for_down
     cp (HL)
     jr nz, .was_the_key_for_left_pressed
+
+    ; Update sprite
+    ld HL, arrow_down
+    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
+    call Print_Udgs_Character
 
     ; Guard: already at the bottom edge
     ld A, (hero_world_row)
@@ -199,11 +204,6 @@ Play_The_Game:
     call Viewport_Scroll_Attributes_Up
     call Draw_The_World  ; this depends on world_limits
 
-    ; Update sprite
-    ld HL, arrow_down
-    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
-    call Print_Udgs_Character
-
     jp .main_game_loop
 
     ;-----------------
@@ -213,6 +213,11 @@ Play_The_Game:
     ld HL, key_for_left
     cp (HL)
     jr nz, .was_the_key_for_right_pressed
+
+    ; Update sprite
+    ld HL, arrow_left
+    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
+    call Print_Udgs_Character
 
     ; Guard: already at left edge?
     ld A, (hero_world_col)
@@ -233,11 +238,6 @@ Play_The_Game:
     call Viewport_Scroll_Attributes_Right
     call Draw_The_World  ; this depends on world_limits
 
-    ; Update sprite
-    ld HL, arrow_left
-    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
-    call Print_Udgs_Character
-
     jp .main_game_loop
 
     ;------------------
@@ -247,6 +247,11 @@ Play_The_Game:
     ld HL, key_for_right
     cp (HL)
     jr nz, .was_the_key_for_fire_pressed
+
+    ; Update sprite
+    ld HL, arrow_right
+    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
+    call Print_Udgs_Character
 
     ; Guard: already at left edge?
     ld A, (hero_world_col)
@@ -266,11 +271,6 @@ Play_The_Game:
     ; Scroll
     call Viewport_Scroll_Attributes_Left
     call Draw_The_World  ; this depends on world_limits
-
-    ; Update sprite
-    ld HL, arrow_right
-    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
-    call Print_Udgs_Character
 
     jp .main_game_loop
 
