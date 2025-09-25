@@ -146,6 +146,12 @@ Play_The_Game:
     cp (HL)
     jr nz, .was_the_key_for_down_pressed
 
+    ; Guard: already at upper edge?
+    ld A, (hero_world_row)
+    add A, WORLD_ROW_MIN_OFFSET      ; A = world_col_min
+    or A                             ; faster than "cp 0"
+    jp z, .got_stuck
+
     ; Update coordinates
     ld A, (hero_world_row)  : dec A : ld (hero_world_row),  A
 
@@ -173,6 +179,12 @@ Play_The_Game:
     ld HL, key_for_down
     cp (HL)
     jr nz, .was_the_key_for_left_pressed
+
+    ; Guard: already at the bottom edge
+    ld A, (hero_world_row)
+    add A, WORLD_ROW_MAX_OFFSET      ; A = world_col_min
+    cp WORLD_ROWS - 1
+    jp z, .got_stuck
 
     ; Update coordinates
     ld A, (hero_world_row)  : inc A : ld (hero_world_row),  A
@@ -202,6 +214,12 @@ Play_The_Game:
     cp (HL)
     jr nz, .was_the_key_for_right_pressed
 
+    ; Guard: already at left edge?
+    ld A, (hero_world_col)
+    add A, WORLD_COL_MIN_OFFSET      ; A = world_col_min
+    or A                             ; faster than "cp 0"
+    jp z, .got_stuck
+
     ; Update coordinates
     ld A, (hero_world_col)  : dec A : ld (hero_world_col),  A
 
@@ -229,6 +247,12 @@ Play_The_Game:
     ld HL, key_for_right
     cp (HL)
     jr nz, .was_the_key_for_fire_pressed
+
+    ; Guard: already at left edge?
+    ld A, (hero_world_col)
+    add A, WORLD_COL_MAX_OFFSET      ; A = world_col_min
+    cp WORLD_COLS - 1
+    jp z, .got_stuck
 
     ; Update coordinates
     ld A, (hero_world_col)  : inc A : ld (hero_world_col),  A
@@ -265,6 +289,28 @@ Play_The_Game:
 .were_all_keys_pressed:
 
   call Main_Menu
+
+  ;----------------------------------
+  ;
+  ; You reched the edge of the world
+  ;
+  ;----------------------------------
+.got_stuck
+
+  ei
+  push AF
+  push BC
+  ld B, 8
+.flicker
+    ld A, RED_INK  : call Set_Border_Color : halt
+    ld A, CYAN_INK : call Set_Border_Color : halt
+  djnz .flicker
+  pop BC
+  pop AF
+  di
+
+  call Unpress
+  jp .main_game_loop
 
   ret
 

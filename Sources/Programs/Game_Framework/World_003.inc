@@ -3,24 +3,24 @@
 ;-------------------------
 world_address_table:
 ; type           row  col   definition
-  db WORLD_TILE,   1,   1 : dw tile_001_record
-  db WORLD_TILE,   1,  16 : dw tile_002_record
-  db WORLD_TILE,   1,  32 : dw tile_001_record
-  db WORLD_TILE,   1,  48 : dw tile_002_record
-  db WORLD_TILE,   1,  64 : dw tile_001_record
-  db WORLD_TILE,   1,  80 : dw tile_002_record
-  db WORLD_TILE,   1,  96 : dw tile_001_record
-  db WORLD_TILE,   1, 112 : dw tile_002_record
-  db WORLD_TILE,   1, 128 : dw tile_001_record
-  db WORLD_TILE,   1, 144 : dw tile_002_record
-  db WORLD_TILE,   1, 160 : dw tile_001_record
-  db WORLD_TILE,   1, 176 : dw tile_002_record
-  db WORLD_TILE,   1, 192 : dw tile_001_record
-  db WORLD_TILE,   1, 208 : dw tile_002_record
-  db WORLD_TILE,   1, 224 : dw tile_001_record
-  db WORLD_TILE,   1, 240 : dw tile_002_record
+  db WORLD_TILE,   0,   0 : dw tile_001_record
+  db WORLD_TILE,   0,  16 : dw tile_002_record
+  db WORLD_TILE,   0,  32 : dw tile_001_record
+  db WORLD_TILE,   0,  48 : dw tile_002_record
+  db WORLD_TILE,   0,  64 : dw tile_001_record
+  db WORLD_TILE,   0,  80 : dw tile_002_record
+  db WORLD_TILE,   0,  96 : dw tile_001_record
+  db WORLD_TILE,   0, 112 : dw tile_002_record
+  db WORLD_TILE,   0, 128 : dw tile_001_record
+  db WORLD_TILE,   0, 144 : dw tile_002_record
+  db WORLD_TILE,   0, 160 : dw tile_001_record
+  db WORLD_TILE,   0, 176 : dw tile_002_record
+  db WORLD_TILE,   0, 192 : dw tile_001_record
+  db WORLD_TILE,   0, 208 : dw tile_002_record
+  db WORLD_TILE,   0, 224 : dw tile_001_record
+  db WORLD_TILE,   0, 240 : dw tile_002_record
 ; type           row  col   definition
-  db WORLD_TILE,  16,   1 : dw tile_003_record
+  db WORLD_TILE,  16,   0 : dw tile_003_record
   db WORLD_TILE,  16,  16 : dw tile_004_record
   db WORLD_TILE,  16,  32 : dw tile_003_record
   db WORLD_TILE,  16,  48 : dw tile_004_record
@@ -37,7 +37,7 @@ world_address_table:
   db WORLD_TILE,  16, 224 : dw tile_003_record
   db WORLD_TILE,  16, 240 : dw tile_004_record
 ; type           row  col   definition
-  db WORLD_TILE,  32,   1 : dw tile_001_record
+  db WORLD_TILE,  32,   0 : dw tile_001_record
   db WORLD_TILE,  32,  16 : dw tile_002_record
   db WORLD_TILE,  32,  32 : dw tile_001_record
   db WORLD_TILE,  32,  48 : dw tile_002_record
@@ -54,7 +54,7 @@ world_address_table:
   db WORLD_TILE,  32, 224 : dw tile_001_record
   db WORLD_TILE,  32, 240 : dw tile_002_record
 ; type           row  col   definition
-  db WORLD_TILE,  48,   1 : dw tile_003_record
+  db WORLD_TILE,  48,   0 : dw tile_003_record
   db WORLD_TILE,  48,  16 : dw tile_004_record
   db WORLD_TILE,  48,  32 : dw tile_003_record
   db WORLD_TILE,  48,  48 : dw tile_004_record
@@ -71,7 +71,7 @@ world_address_table:
   db WORLD_TILE,  48, 224 : dw tile_003_record
   db WORLD_TILE,  48, 240 : dw tile_004_record
 ; type           row  col   definition
-  db WORLD_TILE,  64,   1 : dw tile_001_record
+  db WORLD_TILE,  64,   0 : dw tile_001_record
   db WORLD_TILE,  64,  16 : dw tile_002_record
   db WORLD_TILE,  64,  32 : dw tile_001_record
   db WORLD_TILE,  64,  48 : dw tile_002_record
@@ -88,7 +88,7 @@ world_address_table:
   db WORLD_TILE,  64, 224 : dw tile_001_record
   db WORLD_TILE,  64, 240 : dw tile_002_record
 ; type           row  col   definition
-  db WORLD_TILE,  80,   1 : dw tile_003_record
+  db WORLD_TILE,  80,   0 : dw tile_003_record
   db WORLD_TILE,  80,  16 : dw tile_004_record
   db WORLD_TILE,  80,  32 : dw tile_003_record
   db WORLD_TILE,  80,  48 : dw tile_004_record
@@ -105,7 +105,7 @@ world_address_table:
   db WORLD_TILE,  80, 224 : dw tile_003_record
   db WORLD_TILE,  80, 240 : dw tile_004_record
 ; type           row  col   definition
-  db WORLD_TILE,  96,   1 : dw tile_001_record
+  db WORLD_TILE,  96,   0 : dw tile_001_record
   db WORLD_TILE,  96,  16 : dw tile_002_record
   db WORLD_TILE,  96,  32 : dw tile_001_record
   db WORLD_TILE,  96,  48 : dw tile_002_record
@@ -122,7 +122,7 @@ world_address_table:
   db WORLD_TILE,  96, 224 : dw tile_001_record
   db WORLD_TILE,  96, 240 : dw tile_002_record
 ; type           row  col   definition
-  db WORLD_TILE, 112,   1 : dw tile_003_record
+  db WORLD_TILE, 112,   0 : dw tile_003_record
   db WORLD_TILE, 112,  16 : dw tile_004_record
   db WORLD_TILE, 112,  32 : dw tile_003_record
   db WORLD_TILE, 112,  48 : dw tile_004_record
@@ -139,7 +139,7 @@ world_address_table:
   db WORLD_TILE, 112, 224 : dw tile_003_record
   db WORLD_TILE, 112, 240 : dw tile_004_record
 ; type           row  col   definition
-  db WORLD_TILE, 128,   1 : dw tile_001_record
+  db WORLD_TILE, 128,   0 : dw tile_001_record
   db WORLD_TILE, 128,  16 : dw tile_002_record
   db WORLD_TILE, 128,  32 : dw tile_001_record
   db WORLD_TILE, 128,  48 : dw tile_002_record
@@ -156,7 +156,7 @@ world_address_table:
   db WORLD_TILE, 128, 224 : dw tile_001_record
   db WORLD_TILE, 128, 240 : dw tile_002_record
 ; type           row  col   definition
-  db WORLD_TILE, 144,   1 : dw tile_003_record
+  db WORLD_TILE, 144,   0 : dw tile_003_record
   db WORLD_TILE, 144,  16 : dw tile_004_record
   db WORLD_TILE, 144,  32 : dw tile_003_record
   db WORLD_TILE, 144,  48 : dw tile_004_record
@@ -173,7 +173,7 @@ world_address_table:
   db WORLD_TILE, 144, 224 : dw tile_003_record
   db WORLD_TILE, 144, 240 : dw tile_004_record
 ; type           row  col   definition
-  db WORLD_TILE, 160,   1 : dw tile_001_record
+  db WORLD_TILE, 160,   0 : dw tile_001_record
   db WORLD_TILE, 160,  16 : dw tile_002_record
   db WORLD_TILE, 160,  32 : dw tile_001_record
   db WORLD_TILE, 160,  48 : dw tile_002_record
@@ -190,7 +190,7 @@ world_address_table:
   db WORLD_TILE, 160, 224 : dw tile_001_record
   db WORLD_TILE, 160, 240 : dw tile_002_record
 ; type           row  col   definition
-  db WORLD_TILE, 176,   1 : dw tile_003_record
+  db WORLD_TILE, 176,   0 : dw tile_003_record
   db WORLD_TILE, 176,  16 : dw tile_004_record
   db WORLD_TILE, 176,  32 : dw tile_003_record
   db WORLD_TILE, 176,  48 : dw tile_004_record
@@ -207,7 +207,7 @@ world_address_table:
   db WORLD_TILE, 176, 224 : dw tile_003_record
   db WORLD_TILE, 176, 240 : dw tile_004_record
 ; type           row  col   definition
-  db WORLD_TILE, 192,   1 : dw tile_001_record
+  db WORLD_TILE, 192,   0 : dw tile_001_record
   db WORLD_TILE, 192,  16 : dw tile_002_record
   db WORLD_TILE, 192,  32 : dw tile_001_record
   db WORLD_TILE, 192,  48 : dw tile_002_record
@@ -224,7 +224,7 @@ world_address_table:
   db WORLD_TILE, 192, 224 : dw tile_001_record
   db WORLD_TILE, 192, 240 : dw tile_002_record
 ; type           row  col   definition
-  db WORLD_TILE, 208,   1 : dw tile_003_record
+  db WORLD_TILE, 208,   0 : dw tile_003_record
   db WORLD_TILE, 208,  16 : dw tile_004_record
   db WORLD_TILE, 208,  32 : dw tile_003_record
   db WORLD_TILE, 208,  48 : dw tile_004_record
@@ -241,7 +241,7 @@ world_address_table:
   db WORLD_TILE, 208, 224 : dw tile_003_record
   db WORLD_TILE, 208, 240 : dw tile_004_record
 ; type           row  col   definition
-  db WORLD_TILE, 224,   1 : dw tile_001_record
+  db WORLD_TILE, 224,   0 : dw tile_001_record
   db WORLD_TILE, 224,  16 : dw tile_002_record
   db WORLD_TILE, 224,  32 : dw tile_001_record
   db WORLD_TILE, 224,  48 : dw tile_002_record
@@ -258,7 +258,7 @@ world_address_table:
   db WORLD_TILE, 224, 224 : dw tile_001_record
   db WORLD_TILE, 224, 240 : dw tile_002_record
 ; type           row  col   definition
-  db WORLD_TILE, 240,   1 : dw tile_003_record
+  db WORLD_TILE, 240,   0 : dw tile_003_record
   db WORLD_TILE, 240,  16 : dw tile_004_record
   db WORLD_TILE, 240,  32 : dw tile_003_record
   db WORLD_TILE, 240,  48 : dw tile_004_record
