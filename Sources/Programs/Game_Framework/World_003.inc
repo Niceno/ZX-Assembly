@@ -129,8 +129,8 @@ world_address_table:
   db WORLD_TILE, 112,  64 : dw tile_003_record
   db WORLD_TILE, 112,  80 : dw tile_004_record
   db WORLD_TILE, 112,  96 : dw tile_003_record
-  db WORLD_TILE, 112, 112 : dw tile_004_record
-  db WORLD_TILE, 112, 128 : dw tile_003_record
+  db WORLD_TILE, 112, 112 : dw tile_005_record  ; <--=
+  db WORLD_TILE, 112, 128 : dw tile_006_record  ; <--=
   db WORLD_TILE, 112, 144 : dw tile_004_record
   db WORLD_TILE, 112, 160 : dw tile_003_record
   db WORLD_TILE, 112, 176 : dw tile_004_record
@@ -146,8 +146,8 @@ world_address_table:
   db WORLD_TILE, 128,  64 : dw tile_001_record
   db WORLD_TILE, 128,  80 : dw tile_002_record
   db WORLD_TILE, 128,  96 : dw tile_001_record
-  db WORLD_TILE, 128, 112 : dw tile_002_record
-  db WORLD_TILE, 128, 128 : dw tile_001_record
+  db WORLD_TILE, 128, 112 : dw tile_006_record  ; <--=
+  db WORLD_TILE, 128, 128 : dw tile_005_record  ; <--=
   db WORLD_TILE, 128, 144 : dw tile_002_record
   db WORLD_TILE, 128, 160 : dw tile_001_record
   db WORLD_TILE, 128, 176 : dw tile_002_record
@@ -281,6 +281,9 @@ world_address_table:
 ;----------------------------------------
 ;                   dimensions   color
 tile_001_record:  db   16,  16,  GREEN_PAPER
-tile_002_record:  db   16,  16,  GREEN_PAPER + BRIGHT
-tile_003_record:  db   16,  16,  GREEN_PAPER + BRIGHT
+tile_002_record:  db   16,  16,  GREEN_PAPER   + BRIGHT
+tile_003_record:  db   16,  16,  GREEN_PAPER   + BRIGHT
 tile_004_record:  db   16,  16,  GREEN_PAPER
+tile_005_record:  db   16,  16,  MAGENTA_PAPER
+tile_006_record:  db   16,  16,  MAGENTA_PAPER + BRIGHT
+

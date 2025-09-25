@@ -50,6 +50,9 @@ Play_The_Game:
   ;----------------
 .main_game_loop:
 
+    ;------------------------
+    ; Print hero coordinates
+    ;------------------------
     ld B, 0 : ld C, 28
     ld HL, text_hero
     call Print_String
@@ -57,12 +60,12 @@ Play_The_Game:
     ; Fetch hero's coordinates and print them
     ld A, (hero_world_row)    ; place hero's world row into A
     ld H, 0 : ld L, A         ; load HL pair with A (hero's row)
-    ld B, 2 : ld C, 29        ; set row and column
+    ld B, 2 : ld C, 29        ; set row and column for printing
     call Print_08_Bit_Number  ; print it
 
     ld A, (hero_world_col)    ; place hero's world column into A
     ld H, 0 : ld L, A         ; load HL pair with A (hero's column)
-    ld B, 3 : ld C, 29        ; set row and column
+    ld B, 3 : ld C, 29        ; set row and column for printing
     call Print_08_Bit_Number  ; print it
 
     ld B, 2 : ld C, 29
@@ -70,6 +73,27 @@ Play_The_Game:
     ld A, CYAN_PAPER + BRIGHT
     call Color_Tile
 
+    ; Fetch hero's coordinates, work out his tile coordinates and print them
+    ld A, (hero_world_row)         ; place hero's world row into A
+    srl A : srl A : srl A : srl A  ; divide it by 16
+    ld H, 0 : ld L, A              ; load HL pair with A (hero's tile row)
+    ld B, 5 : ld C, 29             ; set row and column for printing
+    call Print_08_Bit_Number       ; print it
+
+    ld A, (hero_world_col)         ; place hero's world column into A
+    srl A : srl A : srl A : srl A  ; divide it by 16
+    ld H, 0 : ld L, A              ; load HL pair with A (hero's tile column)
+    ld B, 6 : ld C, 29             ; set row and column for printing
+    call Print_08_Bit_Number       ; print it
+
+    ld B, 5 : ld C, 29
+    ld D, 2 : ld E, 3
+    ld A, CYAN_PAPER + BRIGHT
+    call Color_Tile
+
+    ;------------------------
+    ; Print view coordinates
+    ;------------------------
     ld B, 8 : ld C, 28
     ld HL, text_view
     call Print_String
@@ -77,12 +101,12 @@ Play_The_Game:
     ; Fetch world's min coordinates and print them
     ld A, (world_row_min)      ; place hero's row offset into A
     ld H, 0 : ld L, A          ; load HL pair with A
-    ld B,10 : ld C, 29         ; set row and column
+    ld B,10 : ld C, 29         ; set row and column for printing
     call Print_08_Bit_Number   ; print it
 
     ld A, (world_col_min)      ; place hero's column offset into A
     ld H, 0 : ld L, A          ; load HL pair with A
-    ld B,11 : ld C, 29         ; set row and column
+    ld B,11 : ld C, 29         ; set row and column for printing
     call Print_08_Bit_Number   ; print it
 
     ld B,10 : ld C, 29
@@ -93,12 +117,12 @@ Play_The_Game:
     ; Fetch world's min coordinates and print them
     ld A, (world_row_max)      ; place hero's row offset into A
     ld H, 0 : ld L, A          ; load HL pair with A
-    ld B,13 : ld C, 29         ; set row and column
+    ld B,13 : ld C, 29         ; set row and column for printing
     call Print_08_Bit_Number   ; print it
 
     ld A, (world_col_max)      ; place hero's column offset into A
     ld H, 0 : ld L, A          ; load HL pair with A
-    ld B,14 : ld C, 29         ; set row and column
+    ld B,14 : ld C, 29         ; set row and column for printing
     call Print_08_Bit_Number   ; print it
 
     ld B,13 : ld C, 29
@@ -162,13 +186,11 @@ Play_The_Game:
 
     ; Hero goes up =--> screen scrolls down =--> set row max to row min
     ; Register A still holds hero_world_row here
-    add A, WORLD_ROW_MIN_OFFSET  ; work out min
-    ld (world_row_min), A        ; store min
-    ld (world_row_max), A        ; set max = min
-
-    ; Scroll
-    call Viewport_Scroll_Attributes_Down
-    call Draw_The_World  ; this depends on world_limits
+    add A, WORLD_ROW_MIN_OFFSET           ; work out min
+    ld (world_row_min), A                 ; store min
+    ld (world_row_max), A                 ; set max = min
+    call Viewport_Scroll_Attributes_Down  ; scroll
+    call Draw_The_World                   ; this depends on world_limits
 
     jp .main_game_loop
 
@@ -196,13 +218,11 @@ Play_The_Game:
 
     ; Hero goes down =--> screen scrolls up =--> set row min to row max
     ; Register A still holds hero_world_row here
-    add A, WORLD_ROW_MAX_OFFSET  ; work out max
-    ld (world_row_max), A        ; store max
-    ld (world_row_min), A        ; set min = max
-
-    ; Scroll
-    call Viewport_Scroll_Attributes_Up
-    call Draw_The_World  ; this depends on world_limits
+    add A, WORLD_ROW_MAX_OFFSET         ; work out max
+    ld (world_row_max), A               ; store max
+    ld (world_row_min), A               ; set min = max
+    call Viewport_Scroll_Attributes_Up  ; scroll
+    call Draw_The_World                 ; this depends on world_limits
 
     jp .main_game_loop
 
@@ -230,13 +250,11 @@ Play_The_Game:
 
     ; Hero goes left =--> screen scrolls right =--> set col max to col min
     ; Register A still holds hero_world_col here
-    add A, WORLD_COL_MIN_OFFSET  ; work out min
-    ld (world_col_min), A        ; store min
-    ld (world_col_max), A        ; set max = min
-
-    ; Scroll
-    call Viewport_Scroll_Attributes_Right
-    call Draw_The_World  ; this depends on world_limits
+    add A, WORLD_COL_MIN_OFFSET            ; work out min
+    ld (world_col_min), A                  ; store min
+    ld (world_col_max), A                  ; set max = min
+    call Viewport_Scroll_Attributes_Right  ; scroll
+    call Draw_The_World                    ; this depends on world_limits
 
     jp .main_game_loop
 
@@ -264,13 +282,11 @@ Play_The_Game:
 
     ; Hero goes right =--> screen scrolls left =--> set col min to col max
     ; Register A still holds hero_world_col here
-    add A, WORLD_COL_MAX_OFFSET  ; work out max
-    ld (world_col_max), A        ; store max
-    ld (world_col_min), A        ; set min = max
-
-    ; Scroll
-    call Viewport_Scroll_Attributes_Left
-    call Draw_The_World  ; this depends on world_limits
+    add A, WORLD_COL_MAX_OFFSET           ; work out max
+    ld (world_col_max), A                 ; store max
+    ld (world_col_min), A                 ; set min = max
+    call Viewport_Scroll_Attributes_Left  ; scroll
+    call Draw_The_World                   ; this depends on world_limits
 
     jp .main_game_loop
 
