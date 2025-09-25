@@ -55,15 +55,15 @@ Play_The_Game:
     call Print_String
 
     ; Fetch hero's coordinates and print them
-    ld IX, hero_world_row : ld A, (IX+0)  ; place hero's world row into A
-    ld H, 0 : ld L, A                     ; load HL pair with A (hero's row)
-    ld B, 2 : ld C, 29                    ; set row and column
-    call Print_08_Bit_Number              ; print it
+    ld A, (hero_world_row)    ; place hero's world row into A
+    ld H, 0 : ld L, A         ; load HL pair with A (hero's row)
+    ld B, 2 : ld C, 29        ; set row and column
+    call Print_08_Bit_Number  ; print it
 
-    ld IX, hero_world_col : ld A, (IX+0)  ; place hero's world column into A
-    ld H, 0 : ld L, A                     ; load HL pair with A (hero's column)
-    ld B, 3 : ld C, 29                    ; set row and column
-    call Print_08_Bit_Number              ; print it
+    ld A, (hero_world_col)    ; place hero's world column into A
+    ld H, 0 : ld L, A         ; load HL pair with A (hero's column)
+    ld B, 3 : ld C, 29        ; set row and column
+    call Print_08_Bit_Number  ; print it
 
     ld B, 2 : ld C, 29
     ld D, 2 : ld E, 3
@@ -75,15 +75,15 @@ Play_The_Game:
     call Print_String
 
     ; Fetch world's min coordinates and print them
-    ld IX, world_row_min   : ld A, (IX+0)  ; place hero's row offset into A
-    ld H, 0 : ld L, A                      ; load HL pair with A
-    ld B,10 : ld C, 29                     ; set row and column
-    call Print_08_Bit_Number               ; print it
+    ld A, (world_row_min)      ; place hero's row offset into A
+    ld H, 0 : ld L, A          ; load HL pair with A
+    ld B,10 : ld C, 29         ; set row and column
+    call Print_08_Bit_Number   ; print it
 
-    ld IX, world_col_min   : ld A, (IX+0)  ; place hero's column offset into A
-    ld H, 0 : ld L, A                      ; load HL pair with A
-    ld B,11 : ld C, 29                     ; set row and column
-    call Print_08_Bit_Number               ; print it
+    ld A, (world_col_min)      ; place hero's column offset into A
+    ld H, 0 : ld L, A          ; load HL pair with A
+    ld B,11 : ld C, 29         ; set row and column
+    call Print_08_Bit_Number   ; print it
 
     ld B,10 : ld C, 29
     ld D, 2 : ld E, 3
@@ -91,15 +91,15 @@ Play_The_Game:
     call Color_Tile
 
     ; Fetch world's min coordinates and print them
-    ld IX, world_row_max   : ld A, (IX+0)  ; place hero's row offset into A
-    ld H, 0 : ld L, A                      ; load HL pair with A
-    ld B,13 : ld C, 29                     ; set row and column
-    call Print_08_Bit_Number               ; print it
+    ld A, (world_row_max)      ; place hero's row offset into A
+    ld H, 0 : ld L, A          ; load HL pair with A
+    ld B,13 : ld C, 29         ; set row and column
+    call Print_08_Bit_Number   ; print it
 
-    ld IX, world_col_max   : ld A, (IX+0)  ; place hero's column offset into A
-    ld H, 0 : ld L, A                      ; load HL pair with A
-    ld B,14 : ld C, 29                     ; set row and column
-    call Print_08_Bit_Number               ; print it
+    ld A, (world_col_max)      ; place hero's column offset into A
+    ld H, 0 : ld L, A          ; load HL pair with A
+    ld B,14 : ld C, 29         ; set row and column
+    call Print_08_Bit_Number   ; print it
 
     ld B,13 : ld C, 29
     ld D, 2 : ld E, 3
