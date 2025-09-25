@@ -1,3 +1,24 @@
+WORLD_TILE_ROWS   equ  16
+WORLD_TILE_COLS   equ  16
+
+WORLD_ENTRY_SIZE  equ   5  ; number of bytes in each line of the world table
+
+;---------------------------------------------
+; Definition of the 3x3 world around the hero
+;---------------------------------------------
+world_around_hero_address_table:
+; type           row  col   definition
+  db WORLD_TILE,   0,   0 : dw $0000
+  db WORLD_TILE,   0,   0 : dw $0000
+  db WORLD_TILE,   0,   0 : dw $0000
+  db WORLD_TILE,   0,   0 : dw $0000
+  db WORLD_TILE,   0,   0 : dw $0000
+  db WORLD_TILE,   0,   0 : dw $0000
+  db WORLD_TILE,   0,   0 : dw $0000
+  db WORLD_TILE,   0,   0 : dw $0000
+  db WORLD_TILE,   0,   0 : dw $0000
+  db WORLD_END                        ; this marks the end of the world
+
 ;-------------------------
 ; Definition of the world
 ;-------------------------
@@ -274,11 +295,14 @@ world_address_table:
   db WORLD_TILE, 240, 208 : dw tile_004_record
   db WORLD_TILE, 240, 224 : dw tile_003_record
   db WORLD_TILE, 240, 240 : dw tile_004_record
-  db WORLD_END                       ; this marks the end of the world
+  db WORLD_END  ; this marks the end of the world
 
-;----------------------------------------
+;------------------------------------------------------------
 ; Tile records
-;----------------------------------------
+;
+; Note:
+; - dimensions are reduntant, code assumes tiles are 16 x 16
+;------------------------------------------------------------
 ;                   dimensions   color
 tile_001_record:  db   16,  16,  GREEN_PAPER
 tile_002_record:  db   16,  16,  GREEN_PAPER   + BRIGHT

@@ -14,7 +14,7 @@ Draw_The_World:
   ;------------------------------
   ; Draw all the tiles in a loop
   ;------------------------------
-  ld IX, world_address_table
+  ld IX, world_around_hero_address_table
 .loop_the_world
 
     ld A,(IX+0)              ; load the first byte

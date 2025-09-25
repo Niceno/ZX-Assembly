@@ -27,6 +27,10 @@ Play_The_Game:
   ld A, WHITE_PAPER + BLUE_INK
   call Viewport_Create
 
+  ;----------------
+  ; Draw the world
+  ;----------------
+  call Create_3x3_World_Around_Hero
   call Draw_The_World
 
   ;-----------------------------------------------------
@@ -49,6 +53,11 @@ Play_The_Game:
   ;
   ;----------------
 .main_game_loop:
+
+    ;------------------------------
+    ; Update the world around hero
+    ;------------------------------
+    call Create_3x3_World_Around_Hero
 
     ;------------------------
     ; Print hero coordinates
@@ -336,6 +345,7 @@ Play_The_Game:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Draw_The_World.asm"
+  include "Create_3x3_World_Around_Hero.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
