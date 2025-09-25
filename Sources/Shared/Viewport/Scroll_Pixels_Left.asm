@@ -2,7 +2,7 @@
 ; Viewport_Scroll_Pixels_Left
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Scrolls the attributes inside the viewport left
+; - Scrolls the pixels inside the viewport left
 ;
 ; Parameters:
 ; - viewport_pixel_addresses

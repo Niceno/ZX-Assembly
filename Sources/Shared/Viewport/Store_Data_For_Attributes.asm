@@ -70,7 +70,7 @@ viewport_attribute_addresses:
   defw  $0000      ; +40
   defw  $0000      ; +42
   defw  $0000      ; +44
-  defw  $0000      ; +46
+  defw  $0000      ; +46 24th row in the viewport
   defb  "<<<<<<<<<<< VIEW"
   defb  "PORT <<<<<<<<<<<"
 

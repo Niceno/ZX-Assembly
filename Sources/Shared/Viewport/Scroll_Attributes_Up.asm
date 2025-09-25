@@ -27,9 +27,9 @@ Viewport_Scroll_Attributes_Up
   ld A, (IX+0)  ; number of rows inside the viewport
   dec A         ; copy one less than the dimension
 
-  ;-----------------------------
-  ; Main loop for pixel copying
-  ;-----------------------------
+  ;---------------------------------
+  ; Main loop for attribute copying
+  ;---------------------------------
   ld IX, viewport_attribute_addresses  ; let IX point to attribute addresses
 .loop_rows
     ld E, (IX+0)  ; first row (target) goes into DE

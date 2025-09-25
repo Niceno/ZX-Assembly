@@ -27,9 +27,9 @@ Viewport_Scroll_Attributes_Down
   ld A, (IX+0)  ; number of rows inside the viewport
   dec A         ; copy one less than the dimension
 
-  ;-----------------------------
-  ; Main loop for pixel copying
-  ;-----------------------------
+  ;---------------------------------
+  ; Main loop for attribute copying
+  ;---------------------------------
 
   ; This whole contraption is to make IX point to attribute addresses
   ld L, (IX+0)  ; store number of rows in HL
