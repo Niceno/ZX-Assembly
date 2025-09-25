@@ -11,6 +11,7 @@ Play_The_Game:
 
   ld A, (MEM_STORE_SCREEN_COLOR)  ; set color into A
   call Clear_Screen               ; clear the screen
+  call Clear_Shadow               ; important
 
   ;-------------------------
   ;
@@ -266,4 +267,26 @@ Play_The_Game:
   call Main_Menu
 
   ret
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   LOCAL SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Draw_The_World.asm"
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   SHARED SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Shared/Clear_Shadow.asm"
+  include "Shared/Viewport/Create.asm"
+  include "Shared/Viewport/Scroll_Attributes_Up.asm"
+  include "Shared/Viewport/Scroll_Attributes_Down.asm"
+  include "Shared/Viewport/Scroll_Attributes_Left.asm"
+  include "Shared/Viewport/Scroll_Attributes_Right.asm"
+  include "Shared/Delay.asm"
+  include "Shared/Print_08_Bit_Number.asm"
+  include "Shared/Copy_Shadow_Colors_To_Screen.asm"
 

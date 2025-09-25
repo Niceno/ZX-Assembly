@@ -132,8 +132,7 @@ Main_Menu:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Define_Keys.asm"
   include "Play_The_Game.asm"
-  include "Draw_One_Tile.asm"
-  include "Draw_The_World.asm"
+; include "Draw_One_Tile.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -142,15 +141,10 @@ Main_Menu:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Clear_Screen.asm"
   include "Shared/Set_Border_Color.asm"
-  include "Shared/Viewport/Create.asm"
-  include "Shared/Viewport/Scroll_Attributes_Up.asm"
-  include "Shared/Viewport/Scroll_Attributes_Down.asm"
-  include "Shared/Viewport/Scroll_Attributes_Left.asm"
-  include "Shared/Viewport/Scroll_Attributes_Right.asm"
+  include "Shared/Print_String.asm"
+  include "Shared/Udgs/Print_Character.asm"
   include "Shared/Browse_Key_Rows.asm"
   include "Shared/Unpress.asm"
-  include "Shared/Delay.asm"
-  include "Shared/Print_08_Bit_Number.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -236,6 +230,7 @@ text_view: defb "VIEW", 0
 ;-------------------------
 ; Definition of the world
 ;-------------------------
-  include "World_001.inc"
+; include "World_001.inc"
 ; include "World_002.inc"
+  include "World_003.inc"
 
