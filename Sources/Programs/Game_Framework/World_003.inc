@@ -341,6 +341,7 @@ tile_005_record:  db LOCAL_TILE,   0,   0,    16,  16,   MAGENTA_PAPER
                   db LOCAL_TILE,   6,   6,     4,   4,   YELLOW_PAPER + BRIGHT
                   db WORLD_END
 tile_006_record:  db LOCAL_TILE,   0,   0,    16,  16,   MAGENTA_PAPER + BRIGHT
+                  db LOCAL_TILE,   2,   2,     4,   4,   CYAN_PAPER    + BRIGHT
                   db LOCAL_TILE,  10,  10,     4,   4,   WHITE_PAPER   + BRIGHT
                   db WORLD_END
 

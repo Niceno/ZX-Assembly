@@ -19,18 +19,18 @@
 ;-------------------------------------------------------------------------------
 Draw_One_Tile:
 
-  ld A, (HL)             ; LOCAL TILE
+  ld A, (HL)  ; this would read the type of tile
   inc HL
 
 .go_again:
 
   push BC
 
-  ;--------------------------------------
-  ; Fetch local tile's coordinates (in row/column), local tiles
-  ; dimensions (in rows/columns) and transform them into a range
-  ; row0i, col0 -> row1, col1
-  ;--------------------------------------
+  ;-------------------------------------------------
+  ; Fetch local tile's coordinates (in row/column),
+  ; local tiles dimensions (in rows/columns) and
+  ; transform them into a range row0,col0,row1,col1
+  ;-------------------------------------------------
   ld  A, (HL)  ; read local row
   add A, B     ; add global row to A
   ld  B, A     ; B now holds global row0 for this tile
@@ -53,6 +53,14 @@ Draw_One_Tile:
   ld E, A      ; E now holds global col1
   inc HL
 
+  ;------------------------------------
+  ; Load the color and store it in AF'
+  ;------------------------------------
+  ex AF, AF'
+  ld A, (HL)
+  inc HL
+  ex AF, AF'  ; at this stage, AF' holds the color
+
   ;------------------------------------------------------
   ; Clamp a tile and return if there is nothing to print
   ;------------------------------------------------------
@@ -70,17 +78,13 @@ Draw_One_Tile:
   ld A, B : sub (IX+0) : add A, HERO_SCREEN_ROW : ld B, A
   ld A, C : sub (IX+1) : add A, HERO_SCREEN_COL : ld C, A
 
-  ;----------------
-  ; Load the color
-  ;----------------
-  ld A, (HL)
-  inc HL
-
   ;--------------------------------
   ; Place the tile in the viewport
   ;--------------------------------
   push HL
+  ex AF, AF'       ; retreive the color
   call Color_Tile  ; A, BC and DE are the parameters
+  ex AF, AF'
   pop HL
 
 .skip_print:
