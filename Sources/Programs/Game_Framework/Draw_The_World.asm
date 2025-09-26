@@ -17,7 +17,7 @@ Draw_The_World:
   ld IX, world_around_hero_address_table
 .loop_the_world
 
-    ld A,(IX+0)              ; load the first byte
+    ld A, (IX+0)             ; load the first byte
     cp WORLD_END             ; does it mark the end of the world?
     jr z, .end_of_the_world  ; if so, get out of here
 
