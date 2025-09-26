@@ -97,12 +97,14 @@ syn keyword sjasmConstant CELL_ROW_VIEW_MIN  CELL_COL_VIEW_MIN
 syn keyword sjasmConstant CELL_ROW_VIEW_MAX  CELL_COL_VIEW_MAX
 syn keyword sjasmConstant HERO_SCREEN_ROW    HERO_SCREEN_COL
 
-syn keyword sjasmConstant WORLD_ROWS            WORLD_COLS
+syn keyword sjasmConstant WORLD_CELL_ROWS       WORLD_CELL_COLS
+syn keyword sjasmConstant WORLD_TILE_ROWS       WORLD_TILE_COLS
 syn keyword sjasmConstant WORLD_ROW_MIN_OFFSET  WORLD_COL_MIN_OFFSET
 syn keyword sjasmConstant WORLD_ROW_MAX_OFFSET  WORLD_COL_MAX_OFFSET
 syn keyword sjasmConstant HERO_START_ROW        HERO_START_COL
 
-syn keyword sjasmConstant WORLD_END  WORLD_TILE  WORLD_SPRITE
+syn keyword sjasmConstant WORLD_TILE  LOCAL_SPRITE  LOCAL_TILE  WORLD_END
+syn keyword sjasmConstant WORLD_ENTRY_SIZE
 
 syn keyword sjasmConstant BLACK_INK      BLUE_INK     RED_INK
 syn keyword sjasmConstant MAGENTA_INK    GREEN_INK    CYAN_INK

@@ -42,29 +42,6 @@ HERO_SCREEN_ROW  equ  (CELL_ROW_VIEW_MIN + CELL_ROW_VIEW_MAX) / 2
 HERO_SCREEN_COL  equ  (CELL_COL_VIEW_MIN + CELL_COL_VIEW_MAX) / 2
 
 ;-------------------------------------------------------------------------------
-; World's attributes
-;-------------------------------------------------------------------------------
-WORLD_ROWS  equ  256  ; total number of rows in the world
-WORLD_COLS  equ  256  ; total number of cols in the world
-
-WORLD_ROW_MIN_OFFSET  equ  CELL_ROW_VIEW_MIN - HERO_SCREEN_ROW
-WORLD_COL_MIN_OFFSET  equ  CELL_COL_VIEW_MIN - HERO_SCREEN_COL
-WORLD_ROW_MAX_OFFSET  equ  CELL_ROW_VIEW_MAX - HERO_SCREEN_ROW
-WORLD_COL_MAX_OFFSET  equ  CELL_COL_VIEW_MAX - HERO_SCREEN_COL
-
-; Hero;s starting position in rows and cols
-; (Is it compatible with HERO_SCREEN_ROW and HERO_SCREEN_COL?  Does it matter?)
-HERO_START_ROW  equ  WORLD_ROWS / 2 - 1
-HERO_START_COL  equ  WORLD_COLS / 2 - 1
-
-;--------------------
-; World's definition
-;--------------------
-WORLD_END     equ  0  ; reached the end of the world
-WORLD_TILE    equ  1  ; about to define a tile
-WORLD_SPRITE  equ  2  ; about to define a sprite
-
-;-------------------------------------------------------------------------------
 ; ZX Spectrum colors
 ;
 ; To get the color you want, add codes for ink, paper color, bright and flash

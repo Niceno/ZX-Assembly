@@ -1,7 +1,29 @@
-WORLD_TILE_ROWS   equ  16
-WORLD_TILE_COLS   equ  16
+;-------------------------------------------------------------------------------
+; World's attributes
+;-------------------------------------------------------------------------------
+WORLD_CELL_ROWS  equ  256  ; total number of cell rows in the world
+WORLD_CELL_COLS  equ  256  ; total number of cell cols in the world
 
-WORLD_ENTRY_SIZE  equ   5  ; number of bytes in each line of the world table
+WORLD_TILE_ROWS  equ   16  ; total number of tile rows in the world
+WORLD_TILE_COLS  equ   16  ; total number of tile rows in the world
+
+WORLD_ROW_MIN_OFFSET  equ  CELL_ROW_VIEW_MIN - HERO_SCREEN_ROW
+WORLD_COL_MIN_OFFSET  equ  CELL_COL_VIEW_MIN - HERO_SCREEN_COL
+WORLD_ROW_MAX_OFFSET  equ  CELL_ROW_VIEW_MAX - HERO_SCREEN_ROW
+WORLD_COL_MAX_OFFSET  equ  CELL_COL_VIEW_MAX - HERO_SCREEN_COL
+
+; Hero;s starting position in rows and cols
+; (Is it compatible with HERO_SCREEN_ROW and HERO_SCREEN_COL?  Does it matter?)
+HERO_START_ROW  equ  WORLD_CELL_ROWS / 2 - 1
+HERO_START_COL  equ  WORLD_CELL_COLS / 2 - 1
+
+;--------------------
+; World's definition
+;--------------------
+WORLD_END     equ  0  ; reached the end of the world
+WORLD_TILE    equ  1  ; about to define a tile
+LOCAL_SPRITE  equ  2  ; about to define a sprite
+LOCAL_TILE    equ  3
 
 ;---------------------------------------------
 ; Definition of the 3x3 world around the hero
@@ -18,6 +40,8 @@ world_around_hero_address_table:
   db WORLD_TILE,   0,   0 : dw $0000
   db WORLD_TILE,   0,   0 : dw $0000
   db WORLD_END                        ; this marks the end of the world
+
+WORLD_ENTRY_SIZE  equ   5  ; number of bytes in each line of the world table
 
 ;-------------------------
 ; Definition of the world
@@ -303,11 +327,20 @@ world_address_table:
 ; Note:
 ; - dimensions are reduntant, code assumes tiles are 16 x 16
 ;------------------------------------------------------------
-;                   dimensions   color
-tile_001_record:  db   16,  16,  GREEN_PAPER
-tile_002_record:  db   16,  16,  GREEN_PAPER   + BRIGHT
-tile_003_record:  db   16,  16,  GREEN_PAPER   + BRIGHT
-tile_004_record:  db   16,  16,  GREEN_PAPER
-tile_005_record:  db   16,  16,  MAGENTA_PAPER
-tile_006_record:  db   16,  16,  MAGENTA_PAPER + BRIGHT
+;                    type       local pos.  dimensions   color
+tile_001_record:  db LOCAL_TILE,   0,   0,    16,  16,   GREEN_PAPER
+                  db WORLD_END
+tile_002_record:  db LOCAL_TILE,   0,   0,    16,  16,   GREEN_PAPER   + BRIGHT
+                  db WORLD_END
+tile_003_record:  db LOCAL_TILE,   0,   0,    16,  16,   GREEN_PAPER   + BRIGHT
+                  db WORLD_END
+tile_004_record:  db LOCAL_TILE,   0,   0,    16,  16,   GREEN_PAPER
+                  db WORLD_END
+tile_005_record:  db LOCAL_TILE,   0,   0,    16,  16,   MAGENTA_PAPER
+                  db LOCAL_TILE,   4,   4,     8,   8,   YELLOW_PAPER
+                  db LOCAL_TILE,   6,   6,     4,   4,   YELLOW_PAPER + BRIGHT
+                  db WORLD_END
+tile_006_record:  db LOCAL_TILE,   0,   0,    16,  16,   MAGENTA_PAPER + BRIGHT
+                  db LOCAL_TILE,  10,  10,     4,   4,   WHITE_PAPER   + BRIGHT
+                  db WORLD_END
 

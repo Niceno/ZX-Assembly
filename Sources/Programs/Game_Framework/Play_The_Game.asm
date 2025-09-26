@@ -219,7 +219,7 @@ Play_The_Game:
     ; Guard: already at the bottom edge
     ld A, (hero_world_row)
     add A, WORLD_ROW_MAX_OFFSET      ; A = world_col_min
-    cp WORLD_ROWS - 1
+    cp WORLD_CELL_ROWS - 1
     jp z, .got_stuck
 
     ; Update coordinates
@@ -283,7 +283,7 @@ Play_The_Game:
     ; Guard: already at left edge?
     ld A, (hero_world_col)
     add A, WORLD_COL_MAX_OFFSET      ; A = world_col_min
-    cp WORLD_COLS - 1
+    cp WORLD_CELL_COLS - 1
     jp z, .got_stuck
 
     ; Update coordinates
