@@ -103,6 +103,9 @@ syn keyword sjasmConstant WORLD_ROW_MIN_OFFSET  WORLD_COL_MIN_OFFSET
 syn keyword sjasmConstant WORLD_ROW_MAX_OFFSET  WORLD_COL_MAX_OFFSET
 syn keyword sjasmConstant HERO_START_ROW        HERO_START_COL
 
+syn keyword sjasmConstant HERO_GOES_N   HERO_GOES_E   HERO_GOES_S   HERO_GOES_W
+syn keyword sjasmConstant HERO_GOES_NE  HERO_GOES_SE  HERO_GOES_SW  HERO_GOES_NW
+
 syn keyword sjasmConstant WORLD_TILE  LOCAL_SPRITE  LOCAL_TILE  WORLD_END
 syn keyword sjasmConstant WORLD_ENTRY_SIZE
 

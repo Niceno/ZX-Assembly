@@ -139,6 +139,31 @@ Play_The_Game:
     ld A, GREEN_PAPER + BRIGHT
     call Color_Tile
 
+    ; Update sprite
+    ld A, (hero_orientation)
+
+    cp HERO_GOES_N   : jr z, .pick_arrow_up
+    cp HERO_GOES_NE  : jr z, .pick_arrow_up_right
+    cp HERO_GOES_E   : jr z, .pick_arrow_right
+    cp HERO_GOES_SE  : jr z, .pick_arrow_down_right
+    cp HERO_GOES_S   : jr z, .pick_arrow_down
+    cp HERO_GOES_SW  : jr z, .pick_arrow_down_left
+    cp HERO_GOES_W   : jr z, .pick_arrow_left
+    cp HERO_GOES_NW  : jr z, .pick_arrow_up_left
+
+.pick_arrow_up         : ld HL, arrow_up         : jr .done_selecting_sprite
+.pick_arrow_up_right   : ld HL, arrow_up_right   : jr .done_selecting_sprite
+.pick_arrow_right      : ld HL, arrow_right      : jr .done_selecting_sprite
+.pick_arrow_down_right : ld HL, arrow_down_right : jr .done_selecting_sprite
+.pick_arrow_down       : ld HL, arrow_down       : jr .done_selecting_sprite
+.pick_arrow_down_left  : ld HL, arrow_down_left  : jr .done_selecting_sprite
+.pick_arrow_left       : ld HL, arrow_left       : jr .done_selecting_sprite
+.pick_arrow_up_left    : ld HL, arrow_up_left    : jr .done_selecting_sprite
+
+.done_selecting_sprite
+    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
+    call Print_Udgs_Character
+
     ;-----------------------
     ; Create a little delay
     ;-----------------------
@@ -171,135 +196,224 @@ Play_The_Game:
     ld A, (hero_world_col) : add A, WORLD_COL_MAX_OFFSET : ld (world_col_max), A
     ex AF, AF'
 
-    ;---------------
-    ; Action for up
-    ;---------------
+    ;--------------------------------------
+    ;
+    ; Action if the key for up was pressed
+    ;
+    ;--------------------------------------
 .was_the_key_for_up_pressed:
+
     ld HL, key_for_up
     cp (HL)
-    jr nz, .was_the_key_for_down_pressed
+    jp nz, .the_key_for_up_not_pressed
 
-    ; Update sprite
-    ld HL, arrow_up
-    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
-    call Print_Udgs_Character
+    ;------------------
+    ; Hero goes north?
+    ;------------------
+    ld A, (hero_orientation)
+    cp HERO_GOES_N
+    jr nz, .hero_not_going_north
 
-    ; Guard: already at upper edge?
-    ld A, (hero_world_row)
-    add A, WORLD_ROW_MIN_OFFSET      ; A = world_col_min
-    or A                             ; faster than "cp 0"
-    jp z, .got_stuck
+      ; Guard: already at upper edge?
+      ld A, (hero_world_row)
+      add A, WORLD_ROW_MIN_OFFSET      ; A = world_col_min
+      or A                             ; faster than "cp 0"
+      jp z, .got_stuck
 
-    ; Update coordinates
-    ld A, (hero_world_row)  : dec A : ld (hero_world_row),  A
+      ; Update coordinates
+      ld A, (hero_world_row)  : dec A : ld (hero_world_row),  A
 
-    ; Hero goes up =--> screen scrolls down =--> set row max to row min
-    ; Register A still holds hero_world_row here
-    add A, WORLD_ROW_MIN_OFFSET           ; work out min
-    ld (world_row_min), A                 ; store min
-    ld (world_row_max), A                 ; set max = min
-    call Viewport_Scroll_Attributes_Down  ; scroll
-    call Draw_The_World                   ; this depends on world_limits
+      ; Hero goes north =--> screen scrolls down =--> set row max to row min
+      ; Register A still holds hero_world_row here
+      add A, WORLD_ROW_MIN_OFFSET           ; work out min
+      ld (world_row_min), A                 ; store min
+      ld (world_row_max), A                 ; set max = min
+      call Viewport_Scroll_Attributes_Down  ; scroll
+      call Draw_The_World                   ; this depends on world_limits
 
-    jp .main_game_loop
+      jp .main_game_loop
+
+.hero_not_going_north
+
+    ;-----------------------
+    ; Hero goes north-east?
+    ;-----------------------
+    ld A, (hero_orientation)
+    cp HERO_GOES_NE
+    jr nz, .hero_not_going_north_east
+
+    jp .got_stuck
+
+.hero_not_going_north_east
+
+    ;----------------
+    ; Hero goes east?
+    ;----------------
+    ld A, (hero_orientation)
+    cp HERO_GOES_E
+    jr nz, .hero_not_going_east
+
+      ; Guard: already at right edge?
+      ld A, (hero_world_col)
+      add A, WORLD_COL_MAX_OFFSET      ; A = world_col_min
+      cp WORLD_CELL_COLS - 1
+      jp z, .got_stuck
+
+      ; Update coordinates
+      ld A, (hero_world_col)  : inc A : ld (hero_world_col),  A
+
+      ; Hero goes east =--> screen scrolls left =--> set col min to col max
+      ; Register A still holds hero_world_col here
+      add A, WORLD_COL_MAX_OFFSET           ; work out max
+      ld (world_col_max), A                 ; store max
+      ld (world_col_min), A                 ; set min = max
+      call Viewport_Scroll_Attributes_Left  ; scroll
+      call Draw_The_World                   ; this depends on world_limits
+
+      jp .main_game_loop
+
+.hero_not_going_east
+
+    ;-----------------------
+    ; Hero goes south-east?
+    ;-----------------------
+    ld A, (hero_orientation)
+    cp HERO_GOES_SE
+    jr nz, .hero_not_going_down_right
+
+    jp .got_stuck
+
+.hero_not_going_down_right
+
+    ;------------------
+    ; Hero goes south?
+    ;------------------
+    ld A, (hero_orientation)
+    cp HERO_GOES_S
+    jr nz, .hero_not_going_south
+
+      ; Guard: already at the bottom edge
+      ld A, (hero_world_row)
+      add A, WORLD_ROW_MAX_OFFSET      ; A = world_col_min
+      cp WORLD_CELL_ROWS - 1
+      jp z, .got_stuck
+
+      ; Update coordinates
+      ld A, (hero_world_row)  : inc A : ld (hero_world_row),  A
+
+      ; Hero goes south =--> screen scrolls up =--> set row min to row max
+      ; Register A still holds hero_world_row here
+      add A, WORLD_ROW_MAX_OFFSET         ; work out max
+      ld (world_row_max), A               ; store max
+      ld (world_row_min), A               ; set min = max
+      call Viewport_Scroll_Attributes_Up  ; scroll
+      call Draw_The_World                 ; this depends on world_limits
+
+      jp .main_game_loop
+
+.hero_not_going_south
+
+    ;-----------------------
+    ; Hero goes south-west?
+    ;-----------------------
+    ld A, (hero_orientation)
+    cp HERO_GOES_SW
+    jr nz, .hero_not_going_south_west
+
+    jp .got_stuck
+
+.hero_not_going_south_west
 
     ;-----------------
-    ; Action for down
+    ; Hero goes west?
     ;-----------------
-.was_the_key_for_down_pressed:
+    ld A, (hero_orientation)
+    cp HERO_GOES_W
+    jr nz, .hero_not_going_west
+
+      ; Guard: already at left edge?
+      ld A, (hero_world_col)
+      add A, WORLD_COL_MIN_OFFSET      ; A = world_col_min
+      or A                             ; faster than "cp 0"
+      jp z, .got_stuck
+
+      ; Update coordinates
+      ld A, (hero_world_col)  : dec A : ld (hero_world_col),  A
+
+      ; Hero goes west =--> screen scrolls right =--> set col max to col min
+      ; Register A still holds hero_world_col here
+      add A, WORLD_COL_MIN_OFFSET            ; work out min
+      ld (world_col_min), A                  ; store min
+      ld (world_col_max), A                  ; set max = min
+      call Viewport_Scroll_Attributes_Right  ; scroll
+      call Draw_The_World                    ; this depends on world_limits
+
+      jp .main_game_loop
+
+.hero_not_going_west
+
+    ;-----------------------
+    ; Hero goes north-west?
+    ;-----------------------
+    ld A, (hero_orientation)
+    cp HERO_GOES_NW
+    jr nz, .hero_not_going_north_west
+
+    jp .got_stuck
+
+.hero_not_going_north_west
+
+    ;--------------------------------------------------------------
+    ;
+    ; Action if the key for down was pressed (not implemented yet)
+    ;
+    ;--------------------------------------------------------------
+.the_key_for_up_not_pressed
+
     ld HL, key_for_down
     cp (HL)
-    jr nz, .was_the_key_for_left_pressed
+    jp nz, .the_key_for_down_not_pressed
 
-    ; Update sprite
-    ld HL, arrow_down
-    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
-    call Print_Udgs_Character
-
-    ; Guard: already at the bottom edge
-    ld A, (hero_world_row)
-    add A, WORLD_ROW_MAX_OFFSET      ; A = world_col_min
-    cp WORLD_CELL_ROWS - 1
-    jp z, .got_stuck
-
-    ; Update coordinates
-    ld A, (hero_world_row)  : inc A : ld (hero_world_row),  A
-
-    ; Hero goes down =--> screen scrolls up =--> set row min to row max
-    ; Register A still holds hero_world_row here
-    add A, WORLD_ROW_MAX_OFFSET         ; work out max
-    ld (world_row_max), A               ; store max
-    ld (world_row_min), A               ; set min = max
-    call Viewport_Scroll_Attributes_Up  ; scroll
-    call Draw_The_World                 ; this depends on world_limits
-
-    jp .main_game_loop
+    jp .got_stuck
 
     ;-----------------
     ; Action for left
     ;-----------------
-.was_the_key_for_left_pressed:
+.the_key_for_down_not_pressed:
+
     ld HL, key_for_left
     cp (HL)
-    jr nz, .was_the_key_for_right_pressed
+    jr nz, .the_key_for_left_not_pressed
 
-    ; Update sprite
-    ld HL, arrow_left
-    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
-    call Print_Udgs_Character
+    ld A, (hero_orientation)
+    dec A
+    and %00000111 ; keep it in 0..7
+    ld (hero_orientation), A
 
-    ; Guard: already at left edge?
-    ld A, (hero_world_col)
-    add A, WORLD_COL_MIN_OFFSET      ; A = world_col_min
-    or A                             ; faster than "cp 0"
-    jp z, .got_stuck
-
-    ; Update coordinates
-    ld A, (hero_world_col)  : dec A : ld (hero_world_col),  A
-
-    ; Hero goes left =--> screen scrolls right =--> set col max to col min
-    ; Register A still holds hero_world_col here
-    add A, WORLD_COL_MIN_OFFSET            ; work out min
-    ld (world_col_min), A                  ; store min
-    ld (world_col_max), A                  ; set max = min
-    call Viewport_Scroll_Attributes_Right  ; scroll
-    call Draw_The_World                    ; this depends on world_limits
+    call Unpress
 
     jp .main_game_loop
 
     ;------------------
     ; Action for right
     ;------------------
-.was_the_key_for_right_pressed:
+.the_key_for_left_not_pressed:
+
     ld HL, key_for_right
     cp (HL)
-    jr nz, .was_the_key_for_fire_pressed
+    jr nz, .the_key_for_right_not_pressed
 
-    ; Update sprite
-    ld HL, arrow_right
-    ld B, HERO_SCREEN_ROW : ld C, HERO_SCREEN_COL
-    call Print_Udgs_Character
+    ld A, (hero_orientation)
+    inc A
+    and %00000111 ; keep it in 0..7
+    ld (hero_orientation), A
 
-    ; Guard: already at left edge?
-    ld A, (hero_world_col)
-    add A, WORLD_COL_MAX_OFFSET      ; A = world_col_min
-    cp WORLD_CELL_COLS - 1
-    jp z, .got_stuck
-
-    ; Update coordinates
-    ld A, (hero_world_col)  : inc A : ld (hero_world_col),  A
-
-    ; Hero goes right =--> screen scrolls left =--> set col min to col max
-    ; Register A still holds hero_world_col here
-    add A, WORLD_COL_MAX_OFFSET           ; work out max
-    ld (world_col_max), A                 ; store max
-    ld (world_col_min), A                 ; set min = max
-    call Viewport_Scroll_Attributes_Left  ; scroll
-    call Draw_The_World                   ; this depends on world_limits
+    call Unpress
 
     jp .main_game_loop
 
-.was_the_key_for_fire_pressed:
+.the_key_for_right_not_pressed:
+
     ld HL, key_for_fire
     cp (HL)
     jr nz, .were_all_keys_pressed
@@ -320,7 +434,7 @@ Play_The_Game:
   ; You reched the edge of the world
   ;
   ;----------------------------------
-.got_stuck
+.got_stuck:
 
   ei
   push AF
@@ -372,6 +486,8 @@ Play_The_Game:
 hero_world_row:  defb  HERO_START_ROW
 hero_world_col:  defb  HERO_START_COL
 
+hero_orientation:  defb  HERO_GOES_N
+
 ; These four must be in this order - don't mess it up!
 world_limits:
 world_row_min:  defb  HERO_START_ROW + WORLD_ROW_MIN_OFFSET
@@ -384,9 +500,13 @@ text_hero: defb "HERO", 0
 text_view: defb "VIEW", 0
 
 ; Definition of hero's representation
-arrow_up:      defb  $00, $18, $3C, $7E, $18, $18, $18, $00
-arrow_down:    defb  $00, $18, $18, $18, $7E, $3C, $18, $00
-arrow_left:    defb  $00, $10, $30, $7E, $7E, $30, $10, $00
-arrow_right:   defb  $00, $08, $0C, $7E, $7E, $0C, $08, $00
-fire:          defb  $08, $04, $0C, $2A, $3A, $7A, $66, $3C
+arrow_up:          defb  $00, $18, $3C, $7E, $18, $18, $18, $00
+arrow_up_right:    defb  $00, $1E, $0E, $1E, $3A, $70, $20, $00
+arrow_down:        defb  $00, $18, $18, $18, $7E, $3C, $18, $00
+arrow_down_right:  defb  $00, $20, $70, $3A, $1E, $0E, $1E, $00
+arrow_left:        defb  $00, $10, $30, $7E, $7E, $30, $10, $00
+arrow_down_left:   defb  $00, $04, $0E, $5C, $78, $70, $78, $00
+arrow_right:       defb  $00, $08, $0C, $7E, $7E, $0C, $08, $00
+arrow_up_left:     defb  $00, $78, $70, $78, $5C, $0E, $04, $00
+fire:              defb  $08, $04, $0C, $2A, $3A, $7A, $66, $3C
 

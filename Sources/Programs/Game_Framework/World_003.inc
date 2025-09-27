@@ -17,6 +17,16 @@ WORLD_COL_MAX_OFFSET  equ  CELL_COL_VIEW_MAX - HERO_SCREEN_COL
 HERO_START_ROW  equ  WORLD_CELL_ROWS / 2 - 1
 HERO_START_COL  equ  WORLD_CELL_COLS / 2 - 1
 
+; Directions in which hero can move
+HERO_GOES_N   equ  0  ; north
+HERO_GOES_NE  equ  1  ; north-east
+HERO_GOES_E   equ  2  ; east
+HERO_GOES_SE  equ  3  ; south-east
+HERO_GOES_S   equ  4  ; south
+HERO_GOES_SW  equ  5  ; south-west
+HERO_GOES_W   equ  6  ; west
+HERO_GOES_NW  equ  7  ; north-west
+
 ;--------------------
 ; World's definition
 ;--------------------
