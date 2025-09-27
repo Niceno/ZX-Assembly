@@ -43,9 +43,9 @@ Viewport_Scroll_Attributes_Left
     inc HL
 
     ; Perform the copy
-    push BC       ; store the number of columns
-    ldir          ; copy BC bytes from (HL) to (DE)
-    pop BC        ; restore the number of columns
+    push BC  ; store the number of columns
+    ldir     ; copy BC bytes from (HL) to (DE)
+    pop BC   ; restore the number of columns
 
     inc IX
     inc IX

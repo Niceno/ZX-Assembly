@@ -48,9 +48,9 @@ Viewport_Scroll_Attributes_Down
     ld H, (IX-1)
 
     ; Perform the copy
-    push BC       ; store the number of columns
-    ldir          ; copy BC bytes from (HL) to (DE)
-    pop BC        ; restore the number of columns
+    push BC  ; store the number of columns
+    ldir     ; copy BC bytes from (HL) to (DE)
+    pop BC   ; restore the number of columns
 
     dec IX
     dec IX

@@ -46,13 +46,13 @@ Viewport_Scroll_Pixels_Up
     ex AF, AF'
     ld A, 8
 .loop_pixels
-      push BC       ; store the number of columns
-      push DE       ; store target
-      push HL       ; store source
-      ldir          ; copy BC bytes from (HL) to (DE)
-      pop HL        ; restore source
-      pop DE        ; restore target
-      pop BC        ; restore the number of columns
+      push BC  ; store the number of columns
+      push DE  ; store target
+      push HL  ; store source
+      ldir     ; copy BC bytes from (HL) to (DE)
+      pop HL   ; restore source
+      pop DE   ; restore target
+      pop BC   ; restore the number of columns
       inc H
       inc D
       dec A
