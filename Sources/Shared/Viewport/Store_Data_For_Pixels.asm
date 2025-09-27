@@ -17,11 +17,16 @@
 ;-------------------------------------------------------------------------------
 Viewport_Store_Data_For_Pixels
 
+  ;------------------
   ; Store dimensions
+  ;------------------
   ld IX, viewport_pixel_metadata
   ld (IX+0), D  ; number of rows inside the viewport
   ld (IX+1), E  ; number of columns inside the viewport
 
+  ;---------------------------------
+  ; Store addresses of the each row
+  ;---------------------------------
   ld IX, viewport_pixel_addresses
 
 .loop_rows
@@ -45,6 +50,18 @@ Viewport_Store_Data_For_Pixels
     dec D
   jr nz, .loop_rows
 
+  ;---------------------------------
+  ; Store addresses of the last row
+  ; (at this point HL still has it)
+  ;---------------------------------
+  dec IX
+  dec IX
+  push IX
+  pop  HL
+  ld IX, viewport_pixel_metadata
+  ld(IX+2), L
+  ld(IX+3), H
+
   ret
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -55,6 +72,7 @@ Viewport_Store_Data_For_Pixels
 viewport_pixel_metadata:
   defb  $00        ; + 0 number of rows
   defb  $00        ; + 1 number of columns
+  defw  $0000      ; + 2 address of the last row
   defb  ">>>>>>>>>>> VIEW"
   defb  "PORT >>>>>>>>>>>"
 viewport_pixel_addresses:
@@ -81,7 +99,7 @@ viewport_pixel_addresses:
   defw  $0000      ; +40
   defw  $0000      ; +42
   defw  $0000      ; +44
-  defw  $0000      ; +46
+  defw  $0000      ; +46 24th row in the viewport
   defb  "<<<<<<<<<<< VIEW"
   defb  "PORT <<<<<<<<<<<"
 

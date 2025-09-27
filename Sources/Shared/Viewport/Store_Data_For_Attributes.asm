@@ -17,11 +17,16 @@
 ;-------------------------------------------------------------------------------
 Viewport_Store_Data_For_Attributes
 
-  ; Store dimension
+  ;------------------
+  ; Store dimensions
+  ;------------------
   ld IX, viewport_attribute_metadata
   ld (IX+0), D  ; number of rows inside the viewport
   ld (IX+1), E  ; number of columns inside the viewport
 
+  ;---------------------------------
+  ; Store addresses of the each row
+  ;---------------------------------
   ld IX, viewport_attribute_addresses
 
 .loop_rows
@@ -45,6 +50,18 @@ Viewport_Store_Data_For_Attributes
     dec D
   jr nz, .loop_rows
 
+  ;---------------------------------
+  ; Store addresses of the last row
+  ; (at this point HL still has it)
+  ;---------------------------------
+  dec IX
+  dec IX
+  push IX
+  pop  HL
+  ld IX, viewport_attribute_metadata
+  ld(IX+2), L
+  ld(IX+3), H
+
   ret
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -55,6 +72,7 @@ Viewport_Store_Data_For_Attributes
 viewport_attribute_metadata:
   defb  $00        ; + 0 number of rows
   defb  $00        ; + 1 number of columns
+  defw  $0000      ; + 2 address of the last row
   defb  ">>>>>>>>>>> VIEW"
   defb  "PORT >>>>>>>>>>>"
 viewport_attribute_addresses:

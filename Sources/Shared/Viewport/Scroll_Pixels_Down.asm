@@ -35,14 +35,11 @@ Viewport_Scroll_Pixels_Down
   ; Main loop for pixel copying
   ;-----------------------------
 
-  ; This whole contraption is to make IX point to attribute addresses
-  ld L, (IX+0)  ; store number of rows in HL
-  ld H, 0
-  dec HL        ; not to go beyond the last record
-  add HL, HL    ; multiply by two, addresses are stored in two bytes
-  ex DE, HL
-  ld IX, viewport_pixel_addresses
-  add IX, DE
+  ; This is to make IX point to last row in the attribute addresses
+  ld E, (IX+2)
+  ld D, (IX+3)
+  push DE
+  pop IX
 
 .loop_rows
     ld E, (IX+0)  ; first row (target) goes into DE
