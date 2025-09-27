@@ -22,7 +22,7 @@ Viewport_Scroll_Attributes_Down
   ;-------------------------------------------------------------------------
   ld IX, viewport_attribute_metadata
 
-  ld C, (IX+2)  ; let the pair BC hold the number of bytes to transfer
+  ld C, (IX+1)  ; let the pair BC hold the number of bytes to transfer
   ld B, 0       ; high byte is zero
 
   ;--------------------------------------------
@@ -37,7 +37,7 @@ Viewport_Scroll_Attributes_Down
 
   ; This whole contraption is to make IX point to attribute addresses
   ld L, (IX+0)  ; store number of rows in HL
-  ld H, (IX+1)
+  ld H, 0
   dec HL        ; not to go beyond the last record
   add HL, HL    ; multiply by two, addresses are stored in two bytes
   ex DE, HL

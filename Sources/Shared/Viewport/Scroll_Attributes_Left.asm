@@ -22,7 +22,7 @@ Viewport_Scroll_Attributes_Left
   ;-------------------------------------------------------------------------
   ld IX, viewport_attribute_metadata
 
-  ld C, (IX+2)  ; let the pair BC hold the number of bytes to transfer
+  ld C, (IX+1)  ; let the pair BC hold the number of bytes to transfer
   dec C         ; you will shift one column less
   ld B, 0       ; high byte is zero
 

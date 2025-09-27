@@ -17,13 +17,10 @@
 ;-------------------------------------------------------------------------------
 Viewport_Store_Data_For_Pixels
 
-  ; Store dimension as two bytes.  Although it seems an overkill
-  ; here, it makes them easier to read by register pairs later
+  ; Store dimensions
   ld IX, viewport_pixel_metadata
   ld (IX+0), D  ; number of rows inside the viewport
-  ld (IX+1), 0
-  ld (IX+2), E  ; number of columns inside the viewport
-  ld (IX+3), 0
+  ld (IX+1), E  ; number of columns inside the viewport
 
   ld IX, viewport_pixel_addresses
 
@@ -56,8 +53,8 @@ Viewport_Store_Data_For_Pixels
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 viewport_pixel_metadata:
-  defw  $0000      ; + 0 number of rows
-  defw  $0000      ; + 2 number of columns
+  defb  $00        ; + 0 number of rows
+  defb  $00        ; + 1 number of columns
   defb  ">>>>>>>>>>> VIEW"
   defb  "PORT >>>>>>>>>>>"
 viewport_pixel_addresses:
