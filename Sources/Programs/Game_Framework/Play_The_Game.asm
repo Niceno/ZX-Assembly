@@ -341,14 +341,6 @@ Play_The_Game:
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-;   LOCAL SUBROUTINES
-;
-;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Draw_The_World.asm"
-  include "Create_3x3_World_Around_Hero.asm"
-
-;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-;
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -361,4 +353,40 @@ Play_The_Game:
   include "Shared/Delay.asm"
   include "Shared/Print_08_Bit_Number.asm"
   include "Shared/Copy_Shadow_Colors_To_Screen.asm"
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   LOCAL SUBROUTINES
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Draw_The_World.asm"
+  include "Create_3x3_World_Around_Hero.asm"
+
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+;
+;   LOCAL DATA (first used here and in called functions)
+;
+;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+; Hero's position and offset (not all of them will be used in the end)
+hero_world_row:  defb  HERO_START_ROW
+hero_world_col:  defb  HERO_START_COL
+
+; These four must be in this order - don't mess it up!
+world_limits:
+world_row_min:  defb  HERO_START_ROW + WORLD_ROW_MIN_OFFSET
+world_col_min:  defb  HERO_START_COL + WORLD_COL_MIN_OFFSET
+world_row_max:  defb  HERO_START_ROW + WORLD_ROW_MAX_OFFSET
+world_col_max:  defb  HERO_START_COL + WORLD_COL_MAX_OFFSET
+
+; The text written on the right-hand side od the screen, next to viewport
+text_hero: defb "HERO", 0
+text_view: defb "VIEW", 0
+
+; Definition of hero's representation
+arrow_up:      defb  $00, $18, $3C, $7E, $18, $18, $18, $00
+arrow_down:    defb  $00, $18, $18, $18, $7E, $3C, $18, $00
+arrow_left:    defb  $00, $10, $30, $7E, $7E, $30, $10, $00
+arrow_right:   defb  $00, $08, $0C, $7E, $7E, $0C, $08, $00
+fire:          defb  $08, $04, $0C, $2A, $3A, $7A, $66, $3C
 

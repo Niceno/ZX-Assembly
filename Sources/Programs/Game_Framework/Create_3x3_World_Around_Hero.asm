@@ -1,5 +1,19 @@
 ;===============================================================================
 ; Create_3x3_World_Around_Hero:
+;-------------------------------------------------------------------------------
+; Purpose:
+; - From the map of the entire world defined in the global varialbe
+;   world_address_table, extract a 3x3 tileset and store it in the gloabal
+;   variable world_around_hero_address_table
+;
+; Parameters:
+; - none
+;
+; Global variables used:
+; - hero_world_row
+; - hero_world_col
+; - world_address_table
+; - world_around_hero_address_table
 ;
 ; Note:
 ; - Assumes that one tile is 16 x 16.  That allows easy division by 16
@@ -23,12 +37,12 @@ Create_3x3_World_Around_Hero:
   ; Clamp rows, can't be smaller than 0 and bigger than 13
   ;--------------------------------------------------------
   cp 0
-  jr z, .skip_zero_rows          ; tile row is already 0, don't decrease it
+  jr z, .skip_zero_rows      ; tile row is already 0, don't decrease it
 
-  dec A                          ; go up the tile rows
-
+  dec A                      ; go up a row of tiles because ...
+                             ; ... you want to start above hero
   cp 0
-  jr z, .skip_zero_rows          ; if A is zero, skip the loop
+  jr z, .skip_zero_rows      ; if A is zero, skip the loop
 
   cp WORLD_TILE_ROWS - 2
   jr c, .rows_good           ; if A >= 14, c will not be set

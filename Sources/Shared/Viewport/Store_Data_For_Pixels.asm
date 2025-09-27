@@ -1,6 +1,20 @@
 ;===============================================================================
 ; Viewport_Store_Data_For_Pixels
 ;-------------------------------------------------------------------------------
+; Parameters:
+; - BC: holds the upper left corner row and column of the viewport
+; - DE: viewport dimensions in rows and columns, but only D is used
+;
+; Global variables used:
+; - viewport_pixel_metadata
+; - viewport_pixel_addresses
+;
+; Calls:
+; - Calculate_Screen_Pixel_Address
+;
+; Note:
+; - This sub is called only once, when a viewport is created
+;-------------------------------------------------------------------------------
 Viewport_Store_Data_For_Pixels
 
   ; Store dimension as two bytes.  Although it seems an overkill

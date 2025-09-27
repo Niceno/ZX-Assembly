@@ -8,6 +8,9 @@
 ; - BC: row0 and col0 (row and column of the uppere left corner)
 ; - DE: row1 and col1 (row and column of the lowere left corner)
 ;
+; Global parameters used:
+; - world_limits
+;
 ; Returns:
 ; - BC and DE with clamped coordinates
 ; - A holds 1 if there is something to print, 0 if there is nothing to print

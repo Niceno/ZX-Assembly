@@ -2,8 +2,18 @@
 ; Define_Keys
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Shows prompts, records 5 keys
-; - Returns to caller (menu)
+; - Prompts user to define five keys and then returns to caller (Main_Menu)
+;
+; Calls:
+; - Unpress
+; - Clear_Screen
+; - Print_String
+; - Browse_Key_Rows
+; - Print_Udgs_Character
+; - Main_Menu
+;
+; Global variables used:
+; - five_defined_keys
 ;-------------------------------------------------------------------------------
 Define_Keys:
 

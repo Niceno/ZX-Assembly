@@ -5,6 +5,10 @@
 ; - Scrolls the pixels inside the viewport up
 ;
 ; Parameters:
+; - none, it uses global variables to know which portion of the screen to scroll
+;
+; Global variables used:
+; - viewport_pixel_metadata
 ; - viewport_pixel_addresses
 ;
 ; Clobbers:

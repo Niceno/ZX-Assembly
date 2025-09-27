@@ -1,6 +1,17 @@
 ;===============================================================================
 ; Viewport_Store_Data_For_Attributes
 ;-------------------------------------------------------------------------------
+; Parameters:
+; - BC: holds the upper left corner row and column of the viewport
+; - DE: viewport dimensions in rows and columns, but only D is used
+;
+; Global variables used:
+; - viewport_attribute_metadata
+; - viewport_attribute_addresses
+;
+; Calls:
+; - Calculate_Screen_Attribute_Address
+;
 ; Note:
 ; - This sub is called only once, when a viewport is created
 ;-------------------------------------------------------------------------------

@@ -4,10 +4,16 @@
 ; Purpose:
 ; - Creates a viewport
 ;
-; Parameters:
+; Global variables used:
 ; - Global constants CELL_ROW_VIEW_MIN, CELL_ROW_ ... CELL_COL_VIEV_MAX
 ;   are used to define the Viewport.  This is introduced for the sake of
 ;   efficiency, the dimensions of the viewport are practically hard coded.
+;
+; Calls:
+; - Color_Tile
+; - Draw_Frame
+; - Viewport_Store_Data_For_Attributes
+; - Viewport_Store_Data_For_Pixels
 ;-------------------------------------------------------------------------------
 Viewport_Create:
 

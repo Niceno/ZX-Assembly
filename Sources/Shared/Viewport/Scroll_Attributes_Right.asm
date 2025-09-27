@@ -5,6 +5,10 @@
 ; - Scrolls the attributes inside the viewport right
 ;
 ; Parameters:
+; - none, it uses global variables to know which portion of the screen to scroll
+;
+; Global variables used:
+; - viewport_attribute_metadata
 ; - viewport_attribute_addresses
 ;
 ; Clobbers:

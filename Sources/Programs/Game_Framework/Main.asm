@@ -10,10 +10,23 @@
 ; Main_Menu
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - draws “defined keys” page
-; - waits for R or P
-; - dispatches by calling another sub
-; - returns to caller (Main)
+; - The game's main menu.  Sets colors, print currently defined set of keys
+;   and prompts a user wheather he wants to refedine the keys or just play
+;
+; Parameters:
+; - none
+;
+; Global variables used:
+; - text_current
+; - text_current_address_table
+;
+; Calls:
+; - Set_Border_Color
+; - Unpress
+; - Clear_Screen
+; - Print_String
+; - Print_Udgs_Character
+; - Browse_Key_Rows
 ;-------------------------------------------------------------------------------
 Main_Menu:
 
@@ -132,7 +145,6 @@ Main_Menu:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Define_Keys.asm"
   include "Play_The_Game.asm"
-; include "Draw_One_Tile.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
@@ -166,21 +178,9 @@ Main_Menu:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-; Hero's position and offset (not all of them will be used in the end)
-hero_world_row:  defb  HERO_START_ROW
-hero_world_col:  defb  HERO_START_COL
-
-; These four must be in this order - don't mess it up!
-world_limits:
-world_row_min:  defb  HERO_START_ROW + WORLD_ROW_MIN_OFFSET
-world_col_min:  defb  HERO_START_COL + WORLD_COL_MIN_OFFSET
-world_row_max:  defb  HERO_START_ROW + WORLD_ROW_MAX_OFFSET
-world_col_max:  defb  HERO_START_COL + WORLD_COL_MAX_OFFSET
-
-;-------------------------------
-; Storage for user defined keys
-; The unique key code is stored
-;-------------------------------
+;----------------------------------------------------------------
+; Storage for user defined keys  (The unique key code is stored)
+;----------------------------------------------------------------
 five_defined_keys:
 key_for_up:     defb  KEY_Q
 key_for_down:   defb  KEY_A
@@ -188,12 +188,9 @@ key_for_left:   defb  KEY_O
 key_for_right:  defb  KEY_P
 key_for_fire:   defb  KEY_M
 
-arrow_up:      defb $00, $18, $3C, $7E, $18, $18, $18, $00
-arrow_down:    defb $00, $18, $18, $18, $7E, $3C, $18, $00
-arrow_left:    defb $00, $10, $30, $7E, $7E, $30, $10, $00
-arrow_right:   defb $00, $08, $0C, $7E, $7E, $0C, $08, $00
-fire:          defb $08, $04, $0C, $2A, $3A, $7A, $66, $3C
-
+;-------------------------------------------------------
+; Lines of text used to list the currently defined keys
+;-------------------------------------------------------
 text_current:  defb "Currently defined keys:", 0
 
 text_current_address_table:
@@ -211,26 +208,8 @@ text_current_fire:   defb "Key for FIRE  [ ]", 0
 
 text_press_r_or_p:  defb "[R]: redefine keys [P]: play", 0
 
-text_prompt_address_table:
-  defw text_prompt_for_up
-  defw text_prompt_for_down
-  defw text_prompt_for_left
-  defw text_prompt_for_right
-  defw text_prompt_for_fire
-
-text_prompt_for_up:    defb "Press key for UP    [ ]", 0
-text_prompt_for_down:  defb "Press key for DOWN  [ ]", 0
-text_prompt_for_left:  defb "Press key for LEFT  [ ]", 0
-text_prompt_for_right: defb "Press key for RIGHT [ ]", 0
-text_prompt_for_fire:  defb "Press key for FIRE  [ ]", 0
-
-text_hero: defb "HERO", 0
-text_view: defb "VIEW", 0
-
 ;-------------------------
 ; Definition of the world
 ;-------------------------
-; include "World_001.inc"
-; include "World_002.inc"
   include "World_003.inc"
 
