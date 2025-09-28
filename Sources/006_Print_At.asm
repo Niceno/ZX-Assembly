@@ -112,7 +112,6 @@ Main:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Set_Custom_Font.asm"
   include "Shared/Color_Tile.asm"
-  include "Shared/Color_Ver_Line.asm"
   include "Shared/Print_String.asm"
   include "Shared/Print_16_Bit_Number.asm"
 

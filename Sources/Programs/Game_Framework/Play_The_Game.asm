@@ -436,19 +436,9 @@ Play_The_Game:
   ;----------------------------------
 .got_stuck:
 
-  ei
-  push AF
-  push BC
-  ld B, 8
-.flicker
-    ld A, RED_INK  : call Set_Border_Color : halt
-    ld A, CYAN_INK : call Set_Border_Color : halt
-  djnz .flicker
-  pop BC
-  pop AF
-  di
-
+  call Flicker_Border
   call Unpress
+
   jp .main_game_loop
 
   ret

@@ -17,6 +17,45 @@
 ;-------------------------------------------------------------------------------
 Color_Tile
 
+  ex AF, AF'  ; store the color
+
+  ;-----------------------
+  ; Is the tile vertical?
+  ;-----------------------
+  ld A, E  ; check the number of columns
+  xor 1    ; is it 1?
+  jr nz, .the_tile_is_not_vertical  ; E is not one
+
+  ; Yes it is, restore AF, draw a vertical line and get out of here
+  ex AF, AF'
+  call Color_Ver_Line
+  ret
+
+.the_tile_is_not_vertical
+
+  ;-------------------------
+  ; Is the tile horizontal?
+  ;-------------------------
+  ld A, D  ; check the number of rows
+  xor 1    ; is it 1?
+  jr nz, .the_tile_is_not_horizontal  ; D is not one
+
+  ; Yes it is, restore AF, draw a horizontal line and get out of here
+  ex AF, AF'
+  call Color_Hor_Line
+  ret
+
+.the_tile_is_not_horizontal
+
+  ;-----------------------------------------------
+  ; If you are here, the tile is neither vertical
+  ; nor horizontal, but general.  Restore the AF
+  ; and run a full loop through horizontal lines.
+  ;-----------------------------------------------
+
+  ex AF, AF'
+
+  call Flicker_Border
 .loop_rows
     push BC
     push DE
@@ -34,4 +73,7 @@ Color_Tile
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  include "Shared/Flicker_Border.asm"
   include "Shared/Color_Hor_Line.asm"
+  include "Shared/Color_Ver_Line.asm"
+

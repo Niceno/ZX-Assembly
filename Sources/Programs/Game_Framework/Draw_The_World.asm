@@ -10,6 +10,7 @@
 ;
 ; Global variables used:
 ; - world_around_hero_address_table
+; - world_limits
 ;
 ; Calls:
 ; - Draw_One_Tile
