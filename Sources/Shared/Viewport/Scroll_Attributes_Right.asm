@@ -9,7 +9,7 @@
 ;
 ; Global variables used:
 ; - viewport_attribute_metadata
-; - viewport_attribute_addresses
+; - viewport_row_attribute_addresses_left_column
 ;
 ; Clobbers:
 ; - AF, BC, DE, HL, IX
@@ -22,7 +22,7 @@ Viewport_Scroll_Attributes_Right
   ;-------------------------------------------------------------------------
   ld IX, viewport_attribute_metadata
 
-  ld C, (IX+1)  ; let the pair BC hold the number of bytes to transfer
+  ld C, (IX+1)  ; let BC hold the number of bytes to transfer
   dec C         ; you will shift one column less
   ld B, 0       ; high byte is zero
 
@@ -34,17 +34,13 @@ Viewport_Scroll_Attributes_Right
   ;---------------------------------
   ; Main loop for attribute copying
   ;---------------------------------
-  ld IX, viewport_attribute_addresses  ; let IX point to attribute addresses
+  ld IX, viewport_row_attribute_addresses_right_column
 
 .loop_rows
     ld E, (IX+0)  ; target address goes into DE
     ld D, (IX+1)
     ld L, (IX+0)  ; source address goes into HL
     ld H, (IX+1)
-    ex DE, HL     ; DE = DE + BC (via HL)
-    add HL, BC
-    ex DE, HL
-    add HL, BC    ; HL = HL + BC
     dec HL
 
     ; Perform the copy

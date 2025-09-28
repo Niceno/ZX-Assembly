@@ -9,7 +9,7 @@
 ;
 ; Global variables used:
 ; - viewport_pixel_metadata
-; - viewport_pixel_addresses
+; - viewport_row_pixel_addresses_left_column
 ;
 ; Clobbers:
 ; - AF, BC, DE, HL, IX
@@ -22,7 +22,7 @@ Viewport_Scroll_Pixels_Down
   ;-------------------------------------------------------------------------
   ld IX, viewport_pixel_metadata
 
-  ld C, (IX+1)  ; let the pair BC hold the number of bytes to transfer
+  ld C, (IX+1)  ; let BC hold the number of bytes to transfer
   ld B, 0       ; high byte is zero
 
   ;--------------------------------------------
