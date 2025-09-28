@@ -95,7 +95,7 @@ Memory_Browser_Main:
   include "Shared/Unpress.asm"
   include "Shared/Draw_Frame.asm"
   include "Shared/Print_String.asm"
-  include "Shared/Color_Line.asm"
+  include "Shared/Color_Hor_Line.asm"
   include "Shared/Udgs/Merge_Character.asm"
   include "Shared/Browse_Key_Rows.asm"
   include "Shared/Print_Hex_Byte.asm"

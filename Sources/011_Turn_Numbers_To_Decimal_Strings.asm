@@ -33,7 +33,7 @@ Main:  ; If the adress is that of a subroutine, end it up with  suffix
   ld B,  11        ; row
   ld C,  11        ; column
   ld E,   3        ; length
-  call Color_Line
+  call Color_Hor_Line
 
   ;-----------------------
   ;
@@ -49,7 +49,7 @@ Main:  ; If the adress is that of a subroutine, end it up with  suffix
   ld B,   9        ; row
   ld C,   9        ; column
   ld E,   5        ; length
-  call Color_Line
+  call Color_Hor_Line
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -60,7 +60,7 @@ Main:  ; If the adress is that of a subroutine, end it up with  suffix
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Shared/Color_Line.asm"
+  include "Shared/Color_Hor_Line.asm"
   include "Shared/Print_String.asm"
   include "Shared/Print_08_Bit_Number.asm"
   include "Shared/Print_16_Bit_Number.asm"

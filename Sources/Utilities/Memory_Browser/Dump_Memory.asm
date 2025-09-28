@@ -44,7 +44,7 @@ Dump_Memory:
 
     push BC
     push HL
-    call Color_Line
+    call Color_Hor_Line
     pop HL
     pop BC
 
@@ -86,7 +86,7 @@ Dump_Memory:
     ld E, 2
     push BC
     push HL
-    call Color_Line
+    call Color_Hor_Line
     pop HL
     pop BC
 

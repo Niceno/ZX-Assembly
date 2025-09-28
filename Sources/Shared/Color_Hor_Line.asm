@@ -1,8 +1,8 @@
 ;===============================================================================
-; Color_Line
+; Color_Hor_Line
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Colors a line of cells defined by upper left corner and the length
+; - Colors a horizontal line of cells defined by upper left corner and length
 ;
 ; Parameters (passed via registers)
 ; - A:  color
@@ -14,11 +14,8 @@
 ;
 ; Clobbers:
 ; - AF, AF', BC, DE, HL ... but should be double checked
-;
-; Note:
-; - To see why this works, scroll down!
 ;-------------------------------------------------------------------------------
-Color_Line
+Color_Hor_Line
 
   ;--------------------------------------
   ; Calculate screen attributes' address

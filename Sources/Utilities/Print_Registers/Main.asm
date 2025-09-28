@@ -46,7 +46,7 @@ Print_Registers_Main:
   call Print_String
   ld A, BLUE_PAPER + WHITE_INK
   ld B, 0 : ld C, 24 : ld E, 6
-  call Color_Line
+  call Color_Hor_Line
 
   ; Is this the first call?
   ld A, (call_count)
@@ -63,7 +63,7 @@ Print_Registers_Main:
   ld A, BLUE_PAPER + WHITE_INK
   ld B, 0 : ld C, 24 : ld E, 6
   call Increase_Row_For_2nd_Call  ; add 10 to B for the 2nd call
-  call Color_Line
+  call Color_Hor_Line
 
 .first_call
 
@@ -161,7 +161,7 @@ Print_Registers_Main:
     call Compare_Registers
 
     ld E, 4
-    call Color_Line
+    call Color_Hor_Line
 
     ld DE, REG_ROW_SIZE
     add IX, DE
@@ -212,7 +212,7 @@ Print_Registers_Main:
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Shared/Color_Line.asm"
+  include "Shared/Color_Hor_Line.asm"
   include "Shared/Print_String.asm"
   include "Shared/Udgs/Print_Character.asm"
   include "Shared/Udgs/Merge_Character.asm"

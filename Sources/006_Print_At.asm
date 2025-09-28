@@ -45,7 +45,7 @@ Main:
   ld B, 15                      ; upper left row
   ld C,  5                      ; upper left column
   ld E,  1                      ; color line length
-  call Color_Line               ; A, BC and E are parameters
+  call Color_Hor_Line           ; A, BC and E are parameters
 
   ;--------------------------------------------
   ; Set coordinates to 9, 9 and print a string
@@ -62,7 +62,7 @@ Main:
   ld B,  9         ; row
   ld C,  9         ; column
   ld E, 14         ; color line length
-  call Color_Line
+  call Color_Hor_Line
 
   ;-----------------------------
   ; Print the five digit number
@@ -79,7 +79,7 @@ Main:
   ld B, 13         ; row
   ld C, 13         ; column
   ld E,  5         ; color line length
-  call Color_Line
+  call Color_Hor_Line
 
   ;----------------
   ; Color a column
@@ -89,7 +89,7 @@ Main:
   ld C, 24         ; upper left column
   ld D, 10         ; height in rows
   ld E,  1         ; width in columns
-  call Color_Tile
+  call Color_Ver_Line
 
   ;-------------
   ; Color a box
@@ -112,6 +112,7 @@ Main:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Set_Custom_Font.asm"
   include "Shared/Color_Tile.asm"
+  include "Shared/Color_Ver_Line.asm"
   include "Shared/Print_String.asm"
   include "Shared/Print_16_Bit_Number.asm"
 
@@ -139,5 +140,5 @@ custom_font:
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan_006.sna", Main
-  savebin "bojan_006.bin", Main, $ - Main
+  savesna "print_at.sna", Main
+  savebin "print_at.bin", Main, $ - Main

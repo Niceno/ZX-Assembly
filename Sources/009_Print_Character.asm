@@ -42,7 +42,7 @@ Main:
   ld B,  2         ; row
   ld C,  0         ; column
   ld E, 14         ; length
-  call Color_Line
+  call Color_Hor_Line
 
   ld HL, z80_string  ; address where the string is stored
   ld B,  2           ; row
@@ -59,7 +59,7 @@ Main:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Set_Border_Color.asm"
-  include "Shared/Color_Line.asm"
+  include "Shared/Color_Hor_Line.asm"
   include "Shared/Print_String.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

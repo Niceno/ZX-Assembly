@@ -10,7 +10,7 @@
 ; - DE: dimension of the color tile, number of rows (D) and columns (E)
 ;
 ; Calls:
-; - Color_Line
+; - Color_Hor_Line
 ;
 ; Clobbers:
 ; - AF, BC, DE, HL ... but should be double checked
@@ -20,7 +20,7 @@ Color_Tile
 .loop_rows
     push BC
     push DE
-    call Color_Line
+    call Color_Hor_Line
     pop DE
     pop BC
     inc B
@@ -34,4 +34,4 @@ Color_Tile
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Shared/Color_Line.asm"
+  include "Shared/Color_Hor_Line.asm"
