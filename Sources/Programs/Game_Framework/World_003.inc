@@ -12,6 +12,12 @@ WORLD_COL_MIN_OFFSET  equ  CELL_COL_VIEW_MIN - HERO_SCREEN_COL
 WORLD_ROW_MAX_OFFSET  equ  CELL_ROW_VIEW_MAX - HERO_SCREEN_ROW
 WORLD_COL_MAX_OFFSET  equ  CELL_COL_VIEW_MAX - HERO_SCREEN_COL
 
+REDRAW_A  equ  0
+REDRAW_N  equ  1
+REDRAW_E  equ  2
+REDRAW_S  equ  3
+REDRAW_W  equ  4
+
 ; Hero;s starting position in rows and cols
 ; (Is it compatible with HERO_SCREEN_ROW and HERO_SCREEN_COL?  Does it matter?)
 HERO_START_ROW  equ  WORLD_CELL_ROWS / 2 - 1

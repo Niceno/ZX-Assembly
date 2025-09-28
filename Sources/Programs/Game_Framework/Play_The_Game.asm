@@ -4,13 +4,34 @@
 ; Purpose:
 ; - Clears screen, runs main game loop
 ; - Returns to caller (menu) when done
+;
+; Calls:
+; - Unpress
+; - Clear_Screen
+; - Clear_Shadow
+; - Viewport_Create
+; - Draw_The_World
+; - Merge_Grid
+; - Print_Udgs_Character
+; - Create_3x3_World_Around_Hero
+; - Print_String
+; - Print_08_Bit_Number
+; - Color_Tile
+; - Delay
+; - Browse_Key_Rows
 ;-------------------------------------------------------------------------------
 Play_The_Game:
 
   call Unpress  ; unpress first
 
+  ;------------------------------
+  ; Clear real and shadow screen
+  ;------------------------------
+
   ld A, (MEM_STORE_SCREEN_COLOR)  ; set color into A
   call Clear_Screen               ; clear the screen
+
+  ld A, (MEM_STORE_SCREEN_COLOR)  ; set color into A
   call Clear_Shadow               ; important
 
   ;-------------------------
@@ -26,6 +47,16 @@ Play_The_Game:
   ;---------------------
   ld A, WHITE_PAPER + BLUE_INK
   call Viewport_Create
+
+  ;-------------------------------------
+  ; Store "world limits" in BC' and DE'
+  ;-------------------------------------
+  exx
+  ld B, HERO_START_ROW + WORLD_ROW_MIN_OFFSET  ; used to be: "world row min"
+  ld C, HERO_START_COL + WORLD_COL_MIN_OFFSET  ; used to be: "world col min"
+  ld D, HERO_START_ROW + WORLD_ROW_MAX_OFFSET  ; used to be: "world row max"
+  ld E, HERO_START_COL + WORLD_COL_MAX_OFFSET  ; used to be: "world col max"
+  exx
 
   ;----------------
   ; Draw the world
@@ -108,12 +139,16 @@ Play_The_Game:
     call Print_String
 
     ; Fetch world's min coordinates and print them
-    ld A, (world_row_min)      ; place hero's row offset into A
+    exx
+    ld A, B                    ; place hero's row offset into A
+    exx
     ld H, 0 : ld L, A          ; load HL pair with A
     ld B,10 : ld C, 29         ; set row and column for printing
     call Print_08_Bit_Number   ; print it
 
-    ld A, (world_col_min)      ; place hero's column offset into A
+    exx
+    ld A, C                    ; place hero's column offset into A
+    exx
     ld H, 0 : ld L, A          ; load HL pair with A
     ld B,11 : ld C, 29         ; set row and column for printing
     call Print_08_Bit_Number   ; print it
@@ -124,12 +159,16 @@ Play_The_Game:
     call Color_Tile
 
     ; Fetch world's min coordinates and print them
-    ld A, (world_row_max)      ; place hero's row offset into A
+    exx
+    ld A, D                    ; place hero's row offset into A
+    exx
     ld H, 0 : ld L, A          ; load HL pair with A
     ld B,13 : ld C, 29         ; set row and column for printing
     call Print_08_Bit_Number   ; print it
 
-    ld A, (world_col_max)      ; place hero's column offset into A
+    exx
+    ld A, E                    ; place hero's column offset into A
+    exx
     ld H, 0 : ld L, A          ; load HL pair with A
     ld B,14 : ld C, 29         ; set row and column for printing
     call Print_08_Bit_Number   ; print it
@@ -180,22 +219,6 @@ Play_The_Game:
 
     jp z, .main_game_loop  ; no key pressed -> keep polling
 
-    ;---------------------------------------------
-    ;
-    ; A key was pressed - process the action here
-    ; (Note that here A holds the unique key code)
-    ;
-    ;---------------------------------------------
-
-    ; Reset (restore) row and col coordinates
-    ; (If they stayed like this, the whole viewport would redraw.)
-    ex AF, AF'
-    ld A, (hero_world_row) : add A, WORLD_ROW_MIN_OFFSET : ld (world_row_min), A
-    ld A, (hero_world_col) : add A, WORLD_COL_MIN_OFFSET : ld (world_col_min), A
-    ld A, (hero_world_row) : add A, WORLD_ROW_MAX_OFFSET : ld (world_row_max), A
-    ld A, (hero_world_col) : add A, WORLD_COL_MAX_OFFSET : ld (world_col_max), A
-    ex AF, AF'
-
     ;--------------------------------------
     ;
     ; Action if the key for up was pressed
@@ -216,20 +239,17 @@ Play_The_Game:
 
       ; Guard: already at upper edge?
       ld A, (hero_world_row)
-      add A, WORLD_ROW_MIN_OFFSET      ; A = world_col_min
+      add A, WORLD_ROW_MIN_OFFSET      ; A = "world row min"
       or A                             ; faster than "cp 0"
       jp z, .got_stuck
 
-      ; Update coordinates
+      ; Update hero's coordinates
       ld A, (hero_world_row)  : dec A : ld (hero_world_row),  A
 
-      ; Hero goes north =--> screen scrolls down =--> set row max to row min
-      ; Register A still holds hero_world_row here
-      add A, WORLD_ROW_MIN_OFFSET           ; work out min
-      ld (world_row_min), A                 ; store min
-      ld (world_row_max), A                 ; set max = min
+      ; Hero goes north =--> screen scrolls down
       call Viewport_Scroll_Attributes_Down  ; scroll
-      call Draw_The_World                   ; this depends on world_limits
+      ld A, REDRAW_N : ld (world_redraw), A
+      call Draw_The_World                   ; this depends on "world limits"
 
       jp .main_game_loop
 
@@ -255,20 +275,17 @@ Play_The_Game:
 
       ; Guard: already at right edge?
       ld A, (hero_world_col)
-      add A, WORLD_COL_MAX_OFFSET      ; A = world_col_min
+      add A, WORLD_COL_MAX_OFFSET      ; A = "world col max"
       cp WORLD_CELL_COLS - 1
       jp z, .got_stuck
 
       ; Update coordinates
       ld A, (hero_world_col)  : inc A : ld (hero_world_col),  A
 
-      ; Hero goes east =--> screen scrolls left =--> set col min to col max
-      ; Register A still holds hero_world_col here
-      add A, WORLD_COL_MAX_OFFSET           ; work out max
-      ld (world_col_max), A                 ; store max
-      ld (world_col_min), A                 ; set min = max
+      ; Hero goes east =--> screen scrolls left
       call Viewport_Scroll_Attributes_Left  ; scroll
-      call Draw_The_World                   ; this depends on world_limits
+      ld A, REDRAW_E : ld (world_redraw), A
+      call Draw_The_World
 
       jp .main_game_loop
 
@@ -294,20 +311,17 @@ Play_The_Game:
 
       ; Guard: already at the bottom edge
       ld A, (hero_world_row)
-      add A, WORLD_ROW_MAX_OFFSET      ; A = world_col_min
+      add A, WORLD_ROW_MAX_OFFSET  ; A = "world row max"
       cp WORLD_CELL_ROWS - 1
       jp z, .got_stuck
 
       ; Update coordinates
       ld A, (hero_world_row)  : inc A : ld (hero_world_row),  A
 
-      ; Hero goes south =--> screen scrolls up =--> set row min to row max
-      ; Register A still holds hero_world_row here
-      add A, WORLD_ROW_MAX_OFFSET         ; work out max
-      ld (world_row_max), A               ; store max
-      ld (world_row_min), A               ; set min = max
+      ; Hero goes south =--> screen scrolls up
       call Viewport_Scroll_Attributes_Up  ; scroll
-      call Draw_The_World                 ; this depends on world_limits
+      ld A, REDRAW_S : ld (world_redraw), A
+      call Draw_The_World                 ; this depends on "world limits"
 
       jp .main_game_loop
 
@@ -333,20 +347,17 @@ Play_The_Game:
 
       ; Guard: already at left edge?
       ld A, (hero_world_col)
-      add A, WORLD_COL_MIN_OFFSET      ; A = world_col_min
+      add A, WORLD_COL_MIN_OFFSET      ; A = "world col min"
       or A                             ; faster than "cp 0"
       jp z, .got_stuck
 
       ; Update coordinates
       ld A, (hero_world_col)  : dec A : ld (hero_world_col),  A
 
-      ; Hero goes west =--> screen scrolls right =--> set col max to col min
-      ; Register A still holds hero_world_col here
-      add A, WORLD_COL_MIN_OFFSET            ; work out min
-      ld (world_col_min), A                  ; store min
-      ld (world_col_max), A                  ; set max = min
+      ; Hero goes west =--> screen scrolls right
       call Viewport_Scroll_Attributes_Right  ; scroll
-      call Draw_The_World                    ; this depends on world_limits
+      ld A, REDRAW_W : ld (world_redraw), A
+      call Draw_The_World                    ; this depends on "world limits"
 
       jp .main_game_loop
 
@@ -478,16 +489,13 @@ hero_world_col:  defb  HERO_START_COL
 
 hero_orientation:  defb  HERO_GOES_N
 
-; These four must be in this order - don't mess it up!
-world_limits:
-world_row_min:  defb  HERO_START_ROW + WORLD_ROW_MIN_OFFSET
-world_col_min:  defb  HERO_START_COL + WORLD_COL_MIN_OFFSET
-world_row_max:  defb  HERO_START_ROW + WORLD_ROW_MAX_OFFSET
-world_col_max:  defb  HERO_START_COL + WORLD_COL_MAX_OFFSET
+; The way in which the world will be redrawn
+; (A - all, N - north, E - east, S - south, W - west)
+world_redraw:  defb  REDRAW_A
 
 ; The text written on the right-hand side od the screen, next to viewport
-text_hero: defb "HERO", 0
-text_view: defb "VIEW", 0
+text_hero:  defb "HERO", 0
+text_view:  defb "VIEW", 0
 
 ; Definition of hero's representation
 arrow_up:          defb  $00, $18, $3C, $7E, $18, $18, $18, $00
