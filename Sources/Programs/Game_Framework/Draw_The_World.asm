@@ -44,7 +44,7 @@ Draw_The_World:
     ld C, (IX+2)  ; starting column
     ld L, (IX+3)  ; address of tile's ...
     ld H, (IX+4)  ; ... definition
-    ld IX, world_limits  ; =--> inefficient, try to avoid this
+
     call Draw_One_Tile
 
     pop IX               ; =--> inefficient, try to avoid this
