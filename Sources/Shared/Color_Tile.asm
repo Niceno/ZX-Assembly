@@ -55,7 +55,6 @@ Color_Tile
 
   ex AF, AF'
 
-  call Flicker_Border
 .loop_rows
     push BC
     push DE
