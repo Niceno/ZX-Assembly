@@ -36,7 +36,7 @@ Viewport_Scroll_Pixels_Up
   ;-----------------------------
   ld IX, viewport_row_pixel_addresses_left_column
 
-.loop_rows
+.loop_rows_top_down
     ld E, (IX+0)  ; target address goes into DE
     ld D, (IX+1)
     ld L, (IX+2)  ; source address goes into HL
@@ -62,6 +62,6 @@ Viewport_Scroll_Pixels_Up
     inc IX
     inc IX
     dec A
-  jr nz, .loop_rows
+  jr nz, .loop_rows_top_down
 
   ret

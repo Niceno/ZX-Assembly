@@ -41,7 +41,7 @@ Viewport_Scroll_Pixels_Down
   push DE
   pop IX
 
-.loop_rows
+.loop_rows_bottom_up
     ld E, (IX+0)  ; first row (target) goes into DE
     ld D, (IX+1)
     ld L, (IX-2)  ; second row (source) goes into HL
@@ -67,6 +67,6 @@ Viewport_Scroll_Pixels_Down
     dec IX
     dec IX
     dec A
-  jr nz, .loop_rows
+  jr nz, .loop_rows_bottom_up
 
   ret

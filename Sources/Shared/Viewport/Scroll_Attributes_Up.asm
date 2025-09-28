@@ -36,10 +36,10 @@ Viewport_Scroll_Attributes_Up
   ;---------------------------------
   ld IX, viewport_row_attribute_addresses_left_column
 
-.loop_rows
-    ld E, (IX+0)  ; first row (target) goes into DE
+.loop_rows_top_down
+    ld E, (IX+0)  ; target address goes into DE
     ld D, (IX+1)
-    ld L, (IX+2)  ; second row (source) goes into HL
+    ld L, (IX+2)  ; source address goes into HL
     ld H, (IX+3)
 
     ; Perform the copy
@@ -50,6 +50,6 @@ Viewport_Scroll_Attributes_Up
     inc IX
     inc IX
     dec A
-  jr nz, .loop_rows
+  jr nz, .loop_rows_top_down
 
   ret

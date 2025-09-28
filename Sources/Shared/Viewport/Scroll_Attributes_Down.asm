@@ -41,10 +41,10 @@ Viewport_Scroll_Attributes_Down
   push DE
   pop IX
 
-.loop_rows
-    ld E, (IX+0)  ; first row (target) goes into DE
+.loop_rows_bottom_up
+    ld E, (IX+0)  ; target address goes into DE
     ld D, (IX+1)
-    ld L, (IX-2)  ; second row (source) goes into HL
+    ld L, (IX-2)  ; source address goes into HL
     ld H, (IX-1)
 
     ; Perform the copy
@@ -55,6 +55,6 @@ Viewport_Scroll_Attributes_Down
     dec IX
     dec IX
     dec A
-  jr nz, .loop_rows
+  jr nz, .loop_rows_bottom_up
 
   ret
