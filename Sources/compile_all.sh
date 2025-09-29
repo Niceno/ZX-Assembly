@@ -1,32 +1,72 @@
-echo "Compiling 001_Do_Nothing.asm"
-sjasmplus 001_Do_Nothing.asm
-echo "Compiling 002_Print_Your_Name.asm"
-sjasmplus 002_Print_Your_Name.asm
-echo "Compiling 002_Print_A_Few_Lines_Of_Text.asm"
-sjasmplus 002_Print_A_Few_Lines_Of_Text.asm
-echo "Compiling 003_Print_Your_Name_Custom_Font.asm"
-sjasmplus 003_Print_Your_Name_Custom_Font.asm
-echo "Compiling 004_Moving_Asterisk.asm"
-sjasmplus 004_Moving_Asterisk.asm
-echo "Compiling 005_Moving_Monster.asm"
-sjasmplus 005_Moving_Monster.asm
-echo "Compiling 006_Print_At.asm"
-sjasmplus 006_Print_At.asm
-echo "Compiling 007_Read_All_Keys.asm"
-sjasmplus 007_Read_All_Keys.asm
-echo "Compiling 008_Define_Keys.asm"
-sjasmplus 008_Define_Keys.asm
-echo "Compiling 008_Game_Framework.asm"
-sjasmplus 008_Game_Framework.asm
-echo "Compiling 009_Print_Character.asm"
-sjasmplus 009_Print_Character.asm
-echo "Compiling 010_Print_Register_Contents.asm"
-sjasmplus 010_Print_Register_Contents.asm
-echo "Compiling 011_Turn_Numbers_To_Decimal_Strings.asm"
-sjasmplus 011_Turn_Numbers_To_Decimal_Strings.asm
-echo "Compiling 012_Dawn_of_Sprites.asm"
-sjasmplus 012_Dawn_of_Sprites.asm
-echo "Compiling 013_Merge_Grid.asm"
-sjasmplus 013_Merge_Grid.asm
-echo "Compiling 014_Memory_Browser.asm"
-sjasmplus 014_Memory_Browser.asm
+echo "============================================="
+echo "000_Do_Nothing.asm"
+echo "---------------------------------------------"
+sjasmplus 000_Do_Nothing.asm
+echo "============================================="
+echo "001_Print_Your_Name.asm"
+echo "---------------------------------------------"
+sjasmplus 001_Print_Your_Name.asm
+echo "============================================="
+echo "002_Print_Your_Name_In_Custom_Font.asm"
+echo "---------------------------------------------"
+sjasmplus 002_Print_Your_Name_In_Custom_Font.asm
+echo "============================================="
+echo "003_Print_A_Few_Lines_Of_Text.asm"
+echo "---------------------------------------------"
+sjasmplus 003_Print_A_Few_Lines_Of_Text.asm
+echo "============================================="
+echo "004_Print_At.asm"
+echo "---------------------------------------------"
+sjasmplus 004_Print_At.asm
+echo "============================================="
+echo "005_Print_A_Few_Lines_Of_Text_In_Shadow.asm"
+echo "---------------------------------------------"
+sjasmplus 005_Print_A_Few_Lines_Of_Text_In_Shadow.asm
+echo "============================================="
+echo "005_Print_Decimal_Numbers.asm"
+echo "---------------------------------------------"
+sjasmplus 006_Print_Decimal_Numbers.asm
+echo "============================================="
+echo "006_Print_Character.asm"
+echo "---------------------------------------------"
+sjasmplus 007_Print_Character.asm
+echo "============================================="
+echo "010_Moving_Asterisk.asm"
+echo "---------------------------------------------"
+sjasmplus 010_Moving_Asterisk.asm
+echo "============================================="
+echo "011_Moving_Monster.asm"
+echo "---------------------------------------------"
+sjasmplus 011_Moving_Monster.asm
+echo "============================================="
+echo "020_Read_All_Keys_And_Print_Key_Codes.asm"
+echo "---------------------------------------------"
+sjasmplus 020_Read_All_Keys_And_Print_Key_Codes.asm
+echo "============================================="
+echo "021_Define_Keys_Old.asm"
+echo "---------------------------------------------"
+sjasmplus 021_Define_Keys_Old.asm
+echo "============================================="
+echo "022_Define_Keys_Newer.asm"
+echo "---------------------------------------------"
+sjasmplus 022_Define_Keys_Newer.asm
+echo "============================================="
+echo "030_Merge_Grid.asm"
+echo "---------------------------------------------"
+sjasmplus 030_Merge_Grid.asm
+echo "============================================="
+echo "031_Print_Register_Contents.asm"
+echo "---------------------------------------------"
+sjasmplus 031_Print_Register_Contents.asm
+echo "============================================="
+echo "032_Memory_Browser.asm"
+echo "---------------------------------------------"
+sjasmplus 032_Memory_Browser.asm
+echo "============================================="
+echo "040_Dawn_Of_Sprites.asm"
+echo "---------------------------------------------"
+sjasmplus 040_Dawn_Of_Sprites.asm
+echo "============================================="
+echo "050_Game_Framework.asm"
+echo "---------------------------------------------"
+sjasmplus 050_Game_Framework.asm

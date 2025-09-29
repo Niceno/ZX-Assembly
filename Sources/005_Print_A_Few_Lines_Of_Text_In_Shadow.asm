@@ -64,7 +64,7 @@ Main:
     ld E, 16  ; set length of the line
     ld C,  8  ; set starting column
     ld A, CYAN_PAPER + BLUE_INK
-    call Color_Line
+    call Color_Hor_Line
     pop BC             ; restore the counter
 
     ; Next table entry
@@ -98,7 +98,7 @@ Main:
   include "Shared/Copy_Shadow_Pixels_To_Screen.asm"
   include "Shared/Copy_Shadow_Colors_To_Screen.asm"
   include "Shared/Print_String.asm"
-  include "Shared/Color_Line.asm"
+  include "Shared/Color_Hor_Line.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
