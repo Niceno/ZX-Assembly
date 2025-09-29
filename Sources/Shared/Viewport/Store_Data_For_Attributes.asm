@@ -60,10 +60,10 @@ Viewport_Store_Data_For_Attributes
     dec D
   jr nz, .loop_rows_left_column
 
-  ;-----------------------------------------------------
-  ; Store the address of the storage slot of the last
+  ;--------------------------------------------------------
+  ; Store the address of the storage slot of the last left
   ; row in the viewport - important when scrolling down
-  ;-----------------------------------------------------
+  ;--------------------------------------------------------
   dec IX
   dec IX
   push IX
@@ -112,6 +112,18 @@ Viewport_Store_Data_For_Attributes
     dec D
   jr nz, .loop_rows_right_column
 
+  ;---------------------------------------------------------
+  ; Store the address of the storage slot of the last right
+  ; row in the viewport - important when scrolling down
+  ;---------------------------------------------------------
+  dec IX
+  dec IX
+  push IX
+  pop  HL
+  ld IX, viewport_attribute_metadata
+  ld(IX+4), L
+  ld(IX+5), H
+
   ret
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -122,7 +134,8 @@ Viewport_Store_Data_For_Attributes
 viewport_attribute_metadata:
   defb  $00        ; + 0 number of rows
   defb  $00        ; + 1 number of columns
-  defw  $0000      ; + 2 address of the last row
+  defw  $0000      ; + 2 address of the last row on the left
+  defw  $0000      ; + 4 address of the last row on the right
 
 viewport_row_attribute_addresses_left_column:
   defw  $0000      ; + 0

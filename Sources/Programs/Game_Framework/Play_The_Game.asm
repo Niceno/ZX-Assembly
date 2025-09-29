@@ -237,14 +237,14 @@ Play_The_Game:
     cp HERO_GOES_N
     jr nz, .hero_not_going_north
 
-      ; Guard: already at upper edge?
+      ; Guard: already far north?
       ld A, (hero_world_row)
       add A, WORLD_ROW_MIN_OFFSET      ; A = "world row min"
       or A                             ; faster than "cp 0"
       jp z, .got_stuck
 
       ; Update hero's coordinates
-      ld A, (hero_world_row)  : dec A : ld (hero_world_row),  A
+      ld HL, hero_world_row : dec (HL)
 
       ; Hero goes north =--> screen scrolls down
       call Viewport_Scroll_Attributes_Down  ; scroll
@@ -262,25 +262,48 @@ Play_The_Game:
     cp HERO_GOES_NE
     jr nz, .hero_not_going_north_east
 
-    jp .got_stuck
+      ; Guard: already far north?
+      ld A, (hero_world_row)
+      add A, WORLD_ROW_MIN_OFFSET      ; A = "world row min"
+      or A                             ; faster than "cp 0"
+      jp z, .got_stuck
+
+      ; Guard: already far east?
+      ld A, (hero_world_col)
+      add A, WORLD_COL_MAX_OFFSET      ; A = "world col max"
+      cp WORLD_CELL_COLS - 1
+      jp z, .got_stuck
+
+      ; Update hero's coordinates
+      ld HL, hero_world_row : dec (HL)
+      ld HL, hero_world_col : inc (HL)
+
+      ; Hero goes north-east =--> screen scrolls down-left
+      call Viewport_Scroll_Attributes_Down_Left  ; scroll
+      ld A, REDRAW_N : ld (world_redraw), A
+      call Draw_The_World
+      ld A, REDRAW_E : ld (world_redraw), A
+      call Draw_The_World
+
+      jp .main_game_loop
 
 .hero_not_going_north_east
 
-    ;----------------
+    ;-----------------
     ; Hero goes east?
-    ;----------------
+    ;-----------------
     ld A, (hero_orientation)
     cp HERO_GOES_E
     jr nz, .hero_not_going_east
 
-      ; Guard: already at right edge?
+      ; Guard: already far east?
       ld A, (hero_world_col)
       add A, WORLD_COL_MAX_OFFSET      ; A = "world col max"
       cp WORLD_CELL_COLS - 1
       jp z, .got_stuck
 
       ; Update coordinates
-      ld A, (hero_world_col)  : inc A : ld (hero_world_col),  A
+      ld HL, hero_world_col : inc (HL)
 
       ; Hero goes east =--> screen scrolls left
       call Viewport_Scroll_Attributes_Left  ; scroll
@@ -298,7 +321,30 @@ Play_The_Game:
     cp HERO_GOES_SE
     jr nz, .hero_not_going_down_right
 
-    jp .got_stuck
+      ; Guard: already far south?
+      ld A, (hero_world_row)
+      add A, WORLD_ROW_MAX_OFFSET  ; A = "world row max"
+      cp WORLD_CELL_ROWS - 1
+      jp z, .got_stuck
+
+      ; Guard: already far east?
+      ld A, (hero_world_col)
+      add A, WORLD_COL_MAX_OFFSET      ; A = "world col max"
+      cp WORLD_CELL_COLS - 1
+      jp z, .got_stuck
+
+      ; Update coordinates
+      ld HL, hero_world_col : inc (HL)
+      ld HL, hero_world_row : inc (HL)
+
+      ; Hero goes south-east =--> screen scrolls up-left
+      call Viewport_Scroll_Attributes_Up_Left  ; scroll
+      ld A, REDRAW_S : ld (world_redraw), A
+      call Draw_The_World
+      ld A, REDRAW_E : ld (world_redraw), A
+      call Draw_The_World
+
+      jp .main_game_loop
 
 .hero_not_going_down_right
 
@@ -309,14 +355,14 @@ Play_The_Game:
     cp HERO_GOES_S
     jr nz, .hero_not_going_south
 
-      ; Guard: already at the bottom edge
+      ; Guard: already far south?
       ld A, (hero_world_row)
       add A, WORLD_ROW_MAX_OFFSET  ; A = "world row max"
       cp WORLD_CELL_ROWS - 1
       jp z, .got_stuck
 
       ; Update coordinates
-      ld A, (hero_world_row)  : inc A : ld (hero_world_row),  A
+      ld HL, hero_world_row : inc (HL)
 
       ; Hero goes south =--> screen scrolls up
       call Viewport_Scroll_Attributes_Up  ; scroll
@@ -334,7 +380,30 @@ Play_The_Game:
     cp HERO_GOES_SW
     jr nz, .hero_not_going_south_west
 
-    jp .got_stuck
+      ; Guard: already far west?
+      ld A, (hero_world_col)
+      add A, WORLD_COL_MIN_OFFSET      ; A = "world col min"
+      or A                             ; faster than "cp 0"
+      jp z, .got_stuck
+
+      ; Guard: already far south?
+      ld A, (hero_world_row)
+      add A, WORLD_ROW_MAX_OFFSET  ; A = "world row max"
+      cp WORLD_CELL_ROWS - 1
+      jp z, .got_stuck
+
+      ; Update coordinates
+      ld HL, hero_world_col : dec (HL)
+      ld HL, hero_world_row : inc (HL)
+
+      ; Hero goes west =--> screen scrolls right
+      call Viewport_Scroll_Attributes_Up_Right  ; scroll
+      ld A, REDRAW_S : ld (world_redraw), A
+      call Draw_The_World
+      ld A, REDRAW_W : ld (world_redraw), A
+      call Draw_The_World
+
+      jp .main_game_loop
 
 .hero_not_going_south_west
 
@@ -345,19 +414,19 @@ Play_The_Game:
     cp HERO_GOES_W
     jr nz, .hero_not_going_west
 
-      ; Guard: already at left edge?
+      ; Guard: already far west?
       ld A, (hero_world_col)
       add A, WORLD_COL_MIN_OFFSET      ; A = "world col min"
       or A                             ; faster than "cp 0"
       jp z, .got_stuck
 
       ; Update coordinates
-      ld A, (hero_world_col)  : dec A : ld (hero_world_col),  A
+      ld HL, hero_world_col : dec (HL)
 
       ; Hero goes west =--> screen scrolls right
       call Viewport_Scroll_Attributes_Right  ; scroll
       ld A, REDRAW_W : ld (world_redraw), A
-      call Draw_The_World                    ; this depends on "world limits"
+      call Draw_The_World
 
       jp .main_game_loop
 
@@ -370,7 +439,24 @@ Play_The_Game:
     cp HERO_GOES_NW
     jr nz, .hero_not_going_north_west
 
-    jp .got_stuck
+      ; Guard: already far west?
+      ld A, (hero_world_col)
+      add A, WORLD_COL_MIN_OFFSET      ; A = "world col min"
+      or A                             ; faster than "cp 0"
+      jp z, .got_stuck
+
+      ; Update coordinates
+      ld HL, hero_world_row : dec (HL)
+      ld HL, hero_world_col : dec (HL)
+
+      ; Hero goes nort-west =--> screen scrolls down-right
+      call Viewport_Scroll_Attributes_Down_Right  ; scroll
+      ld A, REDRAW_N : ld (world_redraw), A
+      call Draw_The_World
+      ld A, REDRAW_W : ld (world_redraw), A
+      call Draw_The_World
+
+      jp .main_game_loop
 
 .hero_not_going_north_west
 
@@ -462,9 +548,13 @@ Play_The_Game:
   include "Shared/Clear_Shadow.asm"
   include "Shared/Viewport/Create.asm"
   include "Shared/Viewport/Scroll_Attributes_Up.asm"
+  include "Shared/Viewport/Scroll_Attributes_Up_Left.asm"
   include "Shared/Viewport/Scroll_Attributes_Down.asm"
+  include "Shared/Viewport/Scroll_Attributes_Down_Left.asm"
+  include "Shared/Viewport/Scroll_Attributes_Down_Right.asm"  ; NEW
   include "Shared/Viewport/Scroll_Attributes_Left.asm"
   include "Shared/Viewport/Scroll_Attributes_Right.asm"
+  include "Shared/Viewport/Scroll_Attributes_Up_Right.asm"
   include "Shared/Delay.asm"
   include "Shared/Print_08_Bit_Number.asm"
   include "Shared/Copy_Shadow_Colors_To_Screen.asm"

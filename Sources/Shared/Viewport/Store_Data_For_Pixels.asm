@@ -39,7 +39,7 @@ Viewport_Store_Data_For_Pixels
   ;---------------------------------
   ld IX, viewport_row_pixel_addresses_left_column
 
-.loop_rows
+.loop_rows_left_column
     push BC
     push DE
     call Calculate_Screen_Pixel_Address  ; will store address in HL
@@ -58,12 +58,12 @@ Viewport_Store_Data_For_Pixels
     inc IX
 
     dec D
-  jr nz, .loop_rows
+  jr nz, .loop_rows_left_column
 
-  ;-----------------------------------------------------
-  ; Store the address of the storage slot of the last
+  ;--------------------------------------------------------
+  ; Store the address of the storage slot of the last left
   ; row in the viewport - important when scrolling down
-  ;-----------------------------------------------------
+  ;--------------------------------------------------------
   dec IX
   dec IX
   push IX
@@ -112,6 +112,18 @@ Viewport_Store_Data_For_Pixels
     dec D
   jr nz, .loop_rows_right_column
 
+  ;---------------------------------------------------------
+  ; Store the address of the storage slot of the last right
+  ; row in the viewport - important when scrolling down
+  ;---------------------------------------------------------
+  dec IX
+  dec IX
+  push IX
+  pop  HL
+  ld IX, viewport_pixel_metadata
+  ld(IX+4), L
+  ld(IX+5), H
+
   ret
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -122,7 +134,8 @@ Viewport_Store_Data_For_Pixels
 viewport_pixel_metadata:
   defb  $00        ; + 0 number of rows
   defb  $00        ; + 1 number of columns
-  defw  $0000      ; + 2 address of the last row
+  defw  $0000      ; + 2 address of the last row on the left
+  defw  $0000      ; + 4 address of the last row on the right
 
 viewport_row_pixel_addresses_left_column:
   defw  $0000      ; + 0
