@@ -129,5 +129,5 @@ lines_address_table:  ; this is a good name, try to stick to it
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan_002_text.sna", Main
-  savebin "bojan_002_text.bin", Main, $ - Main
+  savesna "005_Print_A_Few_Lines_Of_Text_In_Shadow.sna", Main
+  savebin "005_Print_A_Few_Lines_Of_Text_In_Shadow.bin", Main, $ - Main

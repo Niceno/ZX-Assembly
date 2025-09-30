@@ -158,5 +158,5 @@ unique_code:  defb "Unique code:", 0
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan_007.sna", Main
-  savebin "bojan_007.bin", Main, $ - Main
+  savesna "020_Read_All_Keys_And_Print_Key_Codes.sna", Main
+  savebin "020_Read_All_Keys_And_Print_Key_Codes.bin", Main, $ - Main

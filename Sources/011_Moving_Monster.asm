@@ -100,5 +100,5 @@ space_to_print:  defb $00, $00, $00, $00, $00, $00, $00, $00
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan_005.sna", Main
-  savebin "bojan_005.bin", Main, $ - Main
+  savesna "011_Moving_Monster.sna", Main
+  savebin "011_Moving_Monster.bin", Main, $ - Main

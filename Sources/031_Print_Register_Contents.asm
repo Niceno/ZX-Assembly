@@ -88,5 +88,5 @@ Main:
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan_010.sna", Main
-  savebin "bojan_010.bin", Main, $ - Main
+  savesna "031_Print_Register_Contents.sna", Main
+  savebin "031_Print_Register_Contents.bin", Main, $ - Main

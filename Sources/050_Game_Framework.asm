@@ -35,6 +35,6 @@ Main:
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "game_framework.sna", Main
-  savebin "game_framework.bin", Main, $ - Main
+  savesna "050_Game_Framework.sna", Main
+  savebin "050_Game_Framework.bin", Main, $ - Main
 

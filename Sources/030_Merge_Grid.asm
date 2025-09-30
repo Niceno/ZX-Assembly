@@ -45,5 +45,5 @@ Main:
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan_013.sna", Main
-  savebin "bojan_013.bin", Main, $ - Main
+  savesna "030_Merge_Grid.sna", Main
+  savebin "030_Merge_Grid.bin", Main, $ - Main

@@ -300,5 +300,5 @@ circle_q4:  defb $FD, $F3, $0E, $FE, $FC, $F8, $F0, $C0
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "dawn_of_sprites.sna", Main
-  savebin "dawn_of_sprites.bin", Main, $ - Main
+  savesna "040_Dawn_Of_Sprites.sna", Main
+  savebin "040_Dawn_Of_Sprites.bin", Main, $ - Main

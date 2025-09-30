@@ -77,5 +77,5 @@ z80_string: defb "Z80 is superb!", 0
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan_09.sna", Main
-  savebin "bojan_09.bin", Main, $ - Main
+  savesna "007_Print_Character.sna", Main
+  savebin "007_Print_Character.bin", Main, $ - Main

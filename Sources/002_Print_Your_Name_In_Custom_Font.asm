@@ -88,5 +88,5 @@ custom_font:
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan_003.sna", Main
-  savebin "bojan_003.bin", Main, $ - Main
+  savesna "002_Print_Your_Name_In_Custom_Font.sna", Main
+  savebin "002_Print_Your_Name_In_Custom_Font.bin", Main, $ - Main

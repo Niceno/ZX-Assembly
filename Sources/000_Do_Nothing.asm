@@ -27,5 +27,5 @@ Main:
 ; Save a snapshot that starts execution at the address marked with Main
 ; (Without label "Main", you could have written: SAVESNA "bojan.sna", $8000)
 ;-------------------------------------------------------------------------------
-  savesna "bojan_001.sna", Main
-  savebin "bojan_001.bin", Main, $ - Main
+  savesna "000_Do_Nothing.sna", Main
+  savebin "000_Do_Nothing.bin", Main, $ - Main

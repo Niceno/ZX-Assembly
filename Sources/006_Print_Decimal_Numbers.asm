@@ -78,5 +78,5 @@ number_source:
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan_011.sna", Main
-  savebin "bojan_011.bin", Main, $ - Main
+  savesna "006_Print_Decimal_Numbers.sna", Main
+  savebin "006_Print_Decimal_Numbers.bin", Main, $ - Main

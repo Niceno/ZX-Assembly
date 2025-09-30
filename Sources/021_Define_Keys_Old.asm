@@ -497,5 +497,5 @@ udgs_arrows:  defw arrow_up
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan_008.sna", Main
-  savebin "bojan_008.bin", Main, $ - Main
+  savesna "021_Define_Keys_Old.sna", Main
+  savebin "021_Define_Keys_Old.bin", Main, $ - Main

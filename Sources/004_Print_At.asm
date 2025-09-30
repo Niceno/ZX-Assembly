@@ -139,5 +139,6 @@ custom_font:
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "print_at.sna", Main
-  savebin "print_at.bin", Main, $ - Main
+  savesna "004_Print_At.sna", Main
+  savebin "004_Print_At.bin", Main, $ - Main
+

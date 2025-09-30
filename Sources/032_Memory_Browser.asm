@@ -48,6 +48,6 @@ Main:
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "memory_browser_61952.sna", Main
-  savebin "memory_browser_61952.bin", Main, $ - Main
+  savesna "032_Memory_Browser_61952.sna", Main
+  savebin "032_Memory_Browser_61952.bin", Main, $ - Main
 

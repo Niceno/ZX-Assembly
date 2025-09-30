@@ -337,6 +337,6 @@ PROMPT_KEY_COLUMN  equ  26  ; it is here ==-------------+
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "bojan_008_define_keys.sna", Main
-  savebin "bojan_008_define_keys.bin", Main, $ - Main
+  savesna "022_Define_Keys_Newer.sna", Main
+  savebin "022_Define_Keys_Newer.bin", Main, $ - Main
 
