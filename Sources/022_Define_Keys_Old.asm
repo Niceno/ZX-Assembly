@@ -60,29 +60,29 @@ Main:
     ; Print a little yellow flashing arrow for the entry
     ; and set the "pointers" curr_port_addr and curr_mask_addr
     ;----------------------------------------------------------
-    cp 0 : jr z, .pressed_the_key_for_up
-    cp 1 : jr z, .pressed_the_key_for_down
-    cp 2 : jr z, .pressed_the_key_for_left
-    cp 3 : jr z, .pressed_the_key_for_right
-    cp 4 : jr z, .pressed_the_key_for_fire
+    cp 0 : jr z, .waits_the_key_for_up
+    cp 1 : jr z, .waits_the_key_for_down
+    cp 2 : jr z, .waits_the_key_for_left
+    cp 3 : jr z, .waits_the_key_for_right
+    cp 4 : jr z, .waits_the_key_for_fire
 
-.pressed_the_key_for_up:
+.waits_the_key_for_up:
     ld HL, arrow_up
     jr .now_print_the_symbol
 
-.pressed_the_key_for_down:
+.waits_the_key_for_down:
     ld HL, arrow_down
     jr .now_print_the_symbol
 
-.pressed_the_key_for_left:
+.waits_the_key_for_left:
     ld HL, arrow_left
     jr .now_print_the_symbol
 
-.pressed_the_key_for_right:
+.waits_the_key_for_right:
     ld HL, arrow_right
     jr .now_print_the_symbol
 
-.pressed_the_key_for_fire:
+.waits_the_key_for_fire:
     ld HL, fire
     jr .now_print_the_symbol
 
@@ -97,8 +97,8 @@ Main:
     ld C, 5
 
     ; Color that little box
-    ld A, RED_INK + YELLOW_PAPER + FLASH  ; color of the string
-    ld C, 5                               ; B should hold the row
+    ld A, MAGENTA_INK + YELLOW_PAPER + FLASH  ; color of the string
+    ld C, 5                                   ; B should hold the row
     ld E, 1
     push BC
     call Color_Hor_Line
@@ -153,7 +153,7 @@ Main:
     ld B, A
     ld C, 5
     ld E, 1
-    ld A, RED_INK + YELLOW_PAPER  ; color of the string
+    ld A, MAGENTA_INK + YELLOW_PAPER  ; color of the string
     call Color_Hor_Line
 
     ;--------------------------------------
@@ -245,7 +245,7 @@ Main:
   ld A, (pressed_keys_record)  ; read the single byte into A
   ld L, A                      ; put the value into L
   call Print_08_Bit_Number
-  ld A,  YELLOW_PAPER + RED_INK
+  ld A,  YELLOW_PAPER + MAGENTA_INK
   ld BC,  $0200
   ld DE,  $0103
   call Color_Tile
@@ -290,141 +290,166 @@ Main:
   ; Read the UDKs now
   ;
   ;-------------------
+.browse_the_keys
 
   call Browse_Key_Rows_For_Three_Keys
-  ld A, (pressed_keys_record)
+  ld DE, pressed_keys_record
+  ld A, (DE)                   ; load number of pressed keys into A
   cp 0
 
   jp z, .main_game_loop  ; no key pressed -> keep polling
 
+  ld B, A  ; put the number of pressed keys into B
+  ld C, 0  ; set direction code to 0
+
+  ;-----------------------------------------------
+  ;
+  ; If you are here, at least one key was pressed
+  ;
+  ;-----------------------------------------------
+.carry_on
+    inc DE      ; first (next?) key
+    ld  HL, five_defined_keys
+    ld A, (DE)  ; unique code of the first (next?) key
+
+    ;-----------------
+    ; Up: 1     (2^0)
+    ;-----------------
+    cp (HL) : inc HL
+    jr nz, .key_for_up_was_not_pressed
+      set 0, C  ; goes up, C is 1
+.key_for_up_was_not_pressed
+
+    ;-----------------
+    ; Down: 2   (2^1)
+    ;-----------------
+    cp (HL) : inc HL
+    jr nz, .key_for_down_was_not_pressed
+      set 1, C  ; goes up,        C is 2
+                ; goes up + down, C is 3 <--= don't use that
+.key_for_down_was_not_pressed
+
+    ;-----------------
+    ; Left: 4   (2^2)
+    ;-----------------
+    cp (HL) : inc HL
+    jr nz, .key_for_left_was_not_pressed
+      set 2, C  ; goes left,        C is 4
+                ; goes up + left,   C is 5
+                ; goes down + left, C is 6
+.key_for_left_was_not_pressed
+
+    ;-----------------
+    ; Right: 8  (2^3)
+    ;-----------------
+    cp (HL) : inc HL
+    jr nz, .key_for_right_was_not_pressed
+      set 3, C  ; goes right,        C is  8
+                ; goes right + left, C is 12  <--= don't use that
+                ; goes up + right,   C is  9
+                ; goes down + right, C is 10
+.key_for_right_was_not_pressed
+
+  djnz .carry_on
+
   ;----------------------------------------------
+  ; If no key was pressed, browse the keys again
+  ;----------------------------------------------
+  ld A, C
+  cp 0
+  jr z, .browse_the_keys
+
+  ;----------------------------------------------
+  ;
   ; One of keys was pressed, perform some action
+  ;
   ;----------------------------------------------
 
-  ld A, (pressed_keys_record+1)  ; check only the first key
+  ;--------------------------------
+  ; Clear the character's position
+  ;--------------------------------
+  push BC  ; store the key combination
+  ld HL, empty
+  ld A, (hero_row) : ld B, A
+  ld A, (hero_col) : ld C, A
+  call Print_Udgs_Character
+  pop BC   ; restore the key combination
 
+  ;--------------------------------------
+  ; Place the key combination in A again
+  ;--------------------------------------
+  ld A, C
+
+  ;--------------------------------------------------------------
   ; Pick which action to take depending on which key was pressed
-  ld HL, key_for_up    : cp (HL)  ; upp is pressed
-  jp z, .key_for_up_was_pressed_in_game
+  ;--------------------------------------------------------------
+  cp  1 : jp z, .key_for_up_was_pressed
+  cp  2 : jp z, .key_for_down_was_pressed
+  cp  4 : jp z, .key_for_left_was_pressed
+  cp  8 : jp z, .key_for_right_was_pressed
 
-  ld HL, key_for_down  : cp (HL)  ; down is pressed
-  jp z, .key_for_down_was_pressed_in_game
+  cp  5 : jp z, .keys_for_up_and_left_were_pressed
+  cp  9 : jp z, .keys_for_up_and_right_were_pressed
+  cp  6 : jp z, .keys_for_down_and_left_were_pressed
+  cp 10 : jp z, .keys_for_down_and_right_were_pressed
 
-  ld HL, key_for_left  : cp (HL)  ; left is pressed
-  jp z, .key_for_left_was_pressed_in_game
-
-  ld HL, key_for_right : cp (HL)  ; right is pressed
-  jp z, .key_for_right_was_pressed_in_game
-
+  ;-------------------------------------------------------------
+  ; No useful key combination was pressed, go back to main loop
+  ;-------------------------------------------------------------
   jp .main_game_loop
 
-.key_for_up_was_pressed_in_game:
+.key_for_up_was_pressed:
+  ld HL, hero_row : dec (HL)  ; decrease hero's row position on the map
+  ld HL, arrow_up             ; set up the proper character
+  jr .ready_to_print
 
-  ; Clear the character's position
-  ld HL, empty
-  ld A, (hero_row) : ld B, A
-  ld A, (hero_col) : ld C, A
-  call Print_Udgs_Character
+.key_for_down_was_pressed:
+  ld HL, hero_row : inc (HL)  ; increase hero's row position on the map
+  ld HL, arrow_down           ; set up the proper character
+  jr .ready_to_print
 
-  ; Decrease hero's row position on the map
-  ld A, (hero_row)
-  dec A
-  ld (hero_row), A
-  cp 0
-  jp z, .main_game_over
+.key_for_left_was_pressed:
+  ld HL, hero_col : dec(HL)  ; decrease hero's column position on the map
+  ld HL, arrow_left          ; set up the proper character
+  jr .ready_to_print
 
-  ; Set up the character for up
-  ld HL, arrow_up
+.key_for_right_was_pressed:
+  ld HL, hero_col : inc (HL)  ; increase hero's column position on the map
+  ld HL, arrow_right          ; set up the proper character
+  jr .ready_to_print
+
+.keys_for_up_and_left_were_pressed:
+  ld HL, hero_row : dec (HL)  ; decrease hero's row position on the map
+  ld HL, hero_col : dec (HL)  ; decrease hero's col position on the map
+  ld HL, arrow_up_left        ; set up the proper character
+  jr .ready_to_print
+
+.keys_for_up_and_right_were_pressed:
+  ld HL, hero_row : dec (HL)  ; decrease hero's row position on the map
+  ld HL, hero_col : inc (HL)  ; increase hero's col position on the map
+  ld HL, arrow_up_right       ; set up the proper character
+  jr .ready_to_print
+
+.keys_for_down_and_left_were_pressed:
+  ld HL, hero_row : inc (HL)  ; increase hero's row position on the map
+  ld HL, hero_col : dec (HL)  ; decrease hero's col position on the map
+  ld HL, arrow_down_left      ; set up the proper character
+  jr .ready_to_print
+
+.keys_for_down_and_right_were_pressed:
+  ld HL, hero_row : inc (HL)  ; increase hero's row position on the map
+  ld HL, hero_col : inc (HL)  ; increase hero's col position on the map
+  ld HL, arrow_down_right     ; set up the proper character
+  jr .ready_to_print
+
+.ready_to_print
+
   ld A, (hero_row) : ld B, A
   ld A, (hero_col) : ld C, A
   call Print_Udgs_Character
 
   ; Remember that hero moved
-  ld A, 1
-  ld (hero_moved), A
-
-  jp .main_game_loop  ; continue the main game loop, through key rows
-
-.key_for_down_was_pressed_in_game:
-
-  ; Clear the character's position
-  ld HL, empty
-  ld A, (hero_row) : ld B, A
-  ld A, (hero_col) : ld C, A
-  call Print_Udgs_Character
-
-  ; Increase hero's row position on the map
-  ld A, (hero_row)
-  inc A
-  cp CELL_ROWS
-  jp z, .main_game_over
-  ld (hero_row), A
-
-  ; Set up the character for down
-  ld HL, arrow_down
-  ld A, (hero_row) : ld B, A
-  ld A, (hero_col) : ld C, A
-  call Print_Udgs_Character
-
-  ; Remember that hero moved
-  ld A, 1
-  ld (hero_moved), A
-
-  jp .main_game_loop  ; continue the main game loop, through key rows
-
-.key_for_left_was_pressed_in_game:
-
-  ; Clear the character's position
-  ld HL, empty
-  ld A, (hero_row) : ld B, A
-  ld A, (hero_col) : ld C, A
-  call Print_Udgs_Character
-
-  ; Decrease hero's column position on the map
-  ld A, (hero_col)
-  dec A
-  ld (hero_col), A
-  cp 0
-  jp z, .main_game_over
-
-  ; Set up the character for left
-  ld HL, arrow_left
-  ld A, (hero_row)
-  ld B, A
-  ld A, (hero_col)
-  ld C, A
-  call Print_Udgs_Character
-
-  ; Remember that hero moved
-  ld A, 1
-  ld (hero_moved), A
-
-  jp .main_game_loop  ; continue the main game loop, through key rows
-
-.key_for_right_was_pressed_in_game:
-
-  ; Clear the character's position
-  ld HL, empty
-  ld A, (hero_row) : ld B, A
-  ld A, (hero_col) : ld C, A
-  call Print_Udgs_Character
-
-  ; Increase hero's column position on the map
-  ld A, (hero_col)
-  inc A
-  cp CELL_COLS
-  jp z, .main_game_over
-  ld (hero_col), A
-
-  ; Set up the character for right
-  ld HL, arrow_right
-  ld A, (hero_row) : ld B, A
-  ld A, (hero_col) :  ld C, A
-  call Print_Udgs_Character
-
-  ; Remember that hero moved
-  ld A, 1
-  ld (hero_moved), A
+  ld A, 1 : ld (hero_moved), A
 
   jp .main_game_loop  ; continue the main game loop, through key rows
 
@@ -504,18 +529,22 @@ key_for_fire:   defb  KEY_M
 ;-----------------------
 ; User defined graphics
 ;-----------------------
-arrow_up:      defb $00, $18, $3C, $7E, $18, $18, $18, $00
-arrow_down:    defb $00, $18, $18, $18, $7E, $3C, $18, $00
-arrow_left:    defb $00, $10, $30, $7E, $7E, $30, $10, $00
-arrow_right:   defb $00, $08, $0C, $7E, $7E, $0C, $08, $00
-fire:          defb $08, $04, $0C, $2A, $3A, $7A, $66, $3C
-skull:         defb $3E, $6D, $6D, $7B, $7F, $3E, $2A, $00
-empty:         defb $00, $00, $00, $00, $00, $00, $00, $00
+arrow_up:          defb  $00, $18, $3C, $7E, $18, $18, $18, $00
+arrow_up_right:    defb  $00, $1E, $0E, $1E, $3A, $70, $20, $00
+arrow_down:        defb  $00, $18, $18, $18, $7E, $3C, $18, $00
+arrow_down_right:  defb  $00, $20, $70, $3A, $1E, $0E, $1E, $00
+arrow_left:        defb  $00, $10, $30, $7E, $7E, $30, $10, $00
+arrow_down_left:   defb  $00, $04, $0E, $5C, $78, $70, $78, $00
+arrow_right:       defb  $00, $08, $0C, $7E, $7E, $0C, $08, $00
+arrow_up_left:     defb  $00, $78, $70, $78, $5C, $0E, $04, $00
+fire:              defb  $08, $04, $0C, $2A, $3A, $7A, $66, $3C
+skull:             defb  $3E, $6D, $6D, $7B, $7F, $3E, $2A, $00
+empty:             defb  $00, $00, $00, $00, $00, $00, $00, $00
 
 udgs_arrows:  defw arrow_up
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "021_Define_Keys_Old.sna", Main
-  savebin "021_Define_Keys_Old.bin", Main, $ - Main
+  savesna "022_Define_Keys_Old.sna", Main
+  savebin "022_Define_Keys_Old.bin", Main, $ - Main
