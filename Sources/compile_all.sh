@@ -47,9 +47,13 @@ echo "021_Define_Keys_Old.asm"
 echo "---------------------------------------------"
 sjasmplus 021_Define_Keys_Old.asm
 echo "============================================="
-echo "022_Define_Keys_Newer.asm"
+echo "022_Define_Keys_Old.asm"
 echo "---------------------------------------------"
-sjasmplus 022_Define_Keys_Newer.asm
+sjasmplus 022_Define_Keys_Old.asm
+echo "============================================="
+echo "023_Define_Keys_Newer.asm"
+echo "---------------------------------------------"
+sjasmplus 023_Define_Keys_Newer.asm
 echo "============================================="
 echo "030_Merge_Grid.asm"
 echo "---------------------------------------------"
