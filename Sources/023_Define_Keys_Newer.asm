@@ -135,7 +135,7 @@ Main_Menu:
 
 .wait_for_keys_d_or_r
 
-    call Browse_Key_Rows      ; A = code, C bit0 = 1 if pressed
+    call Browse_Key_Rows_For_One_Key  ; A = code, C bit0 = 1 if pressed
 
     cp KEY_D                  ; is the key "D" pressed?  Set z if so
     call z, Define_Keys
@@ -196,12 +196,13 @@ Define_Keys:
     ;-----------------------------
     ; Browse through all key rows
     ;-----------------------------
-    push BC               ; save the counter in C (through NUMBER_OF_UDKS keys)
-    call Browse_Key_Rows  ; A = unique code, C bit0 = 1 if any key pressed
-    bit  0, C             ; check C register's zeroth bit
-    pop BC                ; retreive the counter in C
+    push BC                           ; save the counter in C
+    call Browse_Key_Rows_For_One_Key  ; A = unique code, ...
+                                      ; ... C bit0 = 1 if any key pressed
+    bit  0, C                         ; check C register's zeroth bit
+    pop BC                            ; retreive the counter in C
 
-    jr z, .define_keys   ; no key pressed -> keep polling
+    jr z, .define_keys  ; no key pressed -> keep polling
 
     ;---------------------------------------------------
     ; A key was pressed - wait untill it gets unpressed

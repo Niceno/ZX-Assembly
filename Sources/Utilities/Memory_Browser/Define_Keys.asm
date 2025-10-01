@@ -47,10 +47,11 @@ Define_Keys:
     ;-----------------------------
     ; Browse through all key rows
     ;-----------------------------
-    push BC               ; save the counter in C (through NUMBER_OF_UDKS keys)
-    call Browse_Key_Rows  ; A = unique code, C bit0 = 1 if any key pressed
-    bit  0, C             ; check C register's zeroth bit
-    pop BC                ; retreive the counter in C
+    push BC                           ; save the counter in C
+    call Browse_Key_Rows_For_One_Key  ; A = unique code, ...
+                                      ; ... C bit0 = 1 if any key pressed
+    bit  0, C                         ; check C register's bit0
+    pop BC                            ; retreive the counter in C
 
     jr z, .define_keys   ; no key pressed -> keep polling
 

@@ -18,7 +18,7 @@
 ; - Print_08_Bit_Number
 ; - Color_Tile
 ; - Delay
-; - Browse_Key_Rows
+; - Browse_Key_Rows_For_One_Key
 ;-------------------------------------------------------------------------------
 Play_The_Game:
 
@@ -214,8 +214,9 @@ Play_The_Game:
     ; Browse through all key rows
     ;
     ;-----------------------------
-    call Browse_Key_Rows  ; A = unique code, C bit0 = 1 if any key pressed
-    bit  0, C             ; check C register's zeroth bit
+    call Browse_Key_Rows_For_One_Key  ; A = unique code, ...
+                                      ; ... C bit0 = 1 if any key pressed
+    bit  0, C                         ; check C register's bit0
 
     jp z, .main_game_loop  ; no key pressed -> keep polling
 

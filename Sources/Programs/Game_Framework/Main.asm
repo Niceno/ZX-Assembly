@@ -26,7 +26,7 @@
 ; - Clear_Screen
 ; - Print_String
 ; - Print_Udgs_Character
-; - Browse_Key_Rows
+; - Browse_Key_Rows_For_One_Key
 ;-------------------------------------------------------------------------------
 Main_Menu:
 
@@ -126,12 +126,12 @@ Main_Menu:
 
 .wait_for_keys_r_or_p
 
-    call Browse_Key_Rows      ; A = code, C bit0 = 1 if pressed
+    call Browse_Key_Rows_For_One_Key  ; A = code, C bit0 = 1 if pressed
 
-    cp KEY_R                  ; is the key "R" pressed?  Set z if so
+    cp KEY_R                          ; is the key "R" pressed?  Set z if so
     call z, Define_Keys
 
-    cp KEY_P                  ; is the key "P" pressed?  Set z if so
+    cp KEY_P                          ; is the key "P" pressed?  Set z if so
     call z, Play_The_Game
 
     jr .wait_for_keys_r_or_p
@@ -155,7 +155,7 @@ Main_Menu:
   include "Shared/Set_Border_Color.asm"
   include "Shared/Print_String.asm"
   include "Shared/Udgs/Print_Character.asm"
-  include "Shared/Browse_Key_Rows.asm"
+  include "Shared/Browse_Key_Rows_For_One_Key.asm"
   include "Shared/Unpress.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

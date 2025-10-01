@@ -113,8 +113,9 @@ Main:
     ;-------------------------
 .read_next_key:
 
-      call Browse_Key_Rows  ; A = unique code, C bit 0 = 1 if any key pressed
-      bit  0, C             ; check C register's zeroth bit
+      call Browse_Key_Rows_For_One_Key  ; A = unique code, ...
+                                        ; C bit 0 = 1 if any key pressed
+      bit  0, C                         ; check C register's zeroth bit
 
       jr z, .read_next_key  ; if not pressed, repeat loop
 

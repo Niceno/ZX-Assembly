@@ -144,11 +144,11 @@ Main:
   ;---------------------------
 .outer_loop_for_attributes:
 
-  call Browse_Key_Rows             ; outputs unique code in A, and flag in C
-  bit 0, C                         ; was a key pressed?
-  jr nz, .process_the_pressed_key  ; if a key was pressed process it
+  call Browse_Key_Rows_For_One_Key  ; outputs unique code in A, and flag in C
+  bit 0, C                          ; was a key pressed?
+  jr nz, .process_the_pressed_key   ; if a key was pressed process it
 
-  jr .outer_loop_for_attributes          ; if not pressed, repeat loop
+  jr .outer_loop_for_attributes     ; if not pressed, repeat loop
 
 .process_the_pressed_key:
 
@@ -195,7 +195,7 @@ Main:
   ;-----------------------
 .outer_loop_for_pixels:
 
-  call Browse_Key_Rows              ; outputs unique code in A, and flag in C
+  call Browse_Key_Rows_For_One_Key  ; outputs unique code in A, and flag in C
   bit 0, C                          ; was a key pressed?
   jr nz, .process_the_pixel_scroll  ; if a key was pressed process it
 

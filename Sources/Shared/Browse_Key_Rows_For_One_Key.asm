@@ -1,5 +1,5 @@
 ;===============================================================================
-; Browse_Key_Rows
+; Browse_Key_Rows_For_One_Key
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Browse through all key rows (Speccy has eight of them), and checks if any
@@ -16,7 +16,7 @@
 ; - A holds the key code
 ; - C holds one if a key was pressed, or zero if no key was pressed
 ;-------------------------------------------------------------------------------
-Browse_Key_Rows:
+Browse_Key_Rows_For_One_Key:
 
   ;-------------------------------------------------------------
   ;

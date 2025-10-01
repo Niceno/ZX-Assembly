@@ -73,11 +73,11 @@ unique_code:  defb "Unique code:", 0
   ;--------------------------------
 .outer_infinite_loop:
 
-  call Browse_Key_Rows             ; outputs unique code in A, and flag in C
-  bit 0, C                         ; was a key pressed?
-  jr nz, .process_the_pressed_key  ; if a key was pressed process it
+  call Browse_Key_Rows_For_One_Key  ; outputs unique code in A, and flag in C
+  bit 0, C                          ; was a key pressed?
+  jr nz, .process_the_pressed_key   ; if a key was pressed process it
 
-  jr .outer_infinite_loop          ; if not pressed, repeat loop
+  jr .outer_infinite_loop           ; if not pressed, repeat loop
 
   ;----------------------------
   ;
@@ -146,7 +146,7 @@ unique_code:  defb "Unique code:", 0
   include "Shared/Color_Tile.asm"
   include "Shared/Print_String.asm"
   include "Shared/Print_08_Bit_Number.asm"
-  include "Shared/Browse_Key_Rows.asm"
+  include "Shared/Browse_Key_Rows_For_One_Key.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

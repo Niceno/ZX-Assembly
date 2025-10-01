@@ -28,7 +28,7 @@ Browse_Memory:
   ;-----------------------
 .wait_for_keys
 
-    call Browse_Key_Rows      ; A = code, C bit0 = 1 if pressed
+    call Browse_Key_Rows_For_One_Key  ; A = code, C bit0 = 1 if pressed
 
     ld HL, key_to_quit : cp (HL)  ; is the key "0" pressed?  Set z if so
     jr z, .done_browsing          ; quit if it is so, quit if "0" was pressed

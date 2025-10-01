@@ -65,10 +65,10 @@ Memory_Browser_Main:
   ld HL, text_press_q : ld B, 21 : ld C, 0 : call Print_String
 
 .wait_for_keys_b_or_q
-    call Browse_Key_Rows      ; A = code, C bit0 = 1 if pressed
-    cp KEY_B                  ; is the key "B" pressed?  Set z if so
+    call Browse_Key_Rows_For_One_Key  ; A = code, C bit0 = 1 if pressed
+    cp KEY_B                          ; is the key "B" pressed?  Set z if so
     call z, Browse_Memory
-    cp KEY_Q                  ; is the key "Q" pressed?  Set z if so
+    cp KEY_Q                          ; is the key "Q" pressed?  Set z if so
     ret z
     jr .wait_for_keys_b_or_q
 
@@ -97,7 +97,7 @@ Memory_Browser_Main:
   include "Shared/Print_String.asm"
   include "Shared/Color_Hor_Line.asm"
   include "Shared/Udgs/Merge_Character.asm"
-  include "Shared/Browse_Key_Rows.asm"
+  include "Shared/Browse_Key_Rows_For_One_Key.asm"
   include "Shared/Print_Hex_Byte.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
