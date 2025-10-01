@@ -1,5 +1,5 @@
-  IFNDEF __PRINT_STRING__
-  DEFINE __PRINT_STRING__
+  ifndef __PRINT_STRING__
+  define __PRINT_STRING__
 
 ;===============================================================================
 ; Print_String
@@ -47,4 +47,5 @@ Print_String:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Print_Character.asm"
 
-  ENDIF
+  endif
+

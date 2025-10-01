@@ -26,3 +26,4 @@ Set_Custom_Font:
   ld (current_font_base), HL
 
   ret
+

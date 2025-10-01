@@ -1,6 +1,14 @@
 ;===============================================================================
 ; Copy_Shadow_Pixels_To_Screen
 ;-------------------------------------------------------------------------------
+; Purpose:
+; - Coppies pixels from the shadow memory to the screen
+;
+; Parameters:
+; - none
+;
+; Clobbers:
+;-------------------------------------------------------------------------------
 Copy_Shadow_Pixels_To_Screen:
 
   ld HL, MEM_SHADOW_PIXELS
@@ -9,3 +17,4 @@ Copy_Shadow_Pixels_To_Screen:
   ldir
 
   ret
+

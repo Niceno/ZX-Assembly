@@ -7,9 +7,6 @@
 ; Parameters:
 ; - B: number of interrups for delay.  Each delay is 0.02 s.  So, five delays,
 ;      for example, would be 0.1 s; ten delays 0.2 s, and so forth.
-;
-; Clobbers:
-; - B
 ;-------------------------------------------------------------------------------
 Delay:
 
