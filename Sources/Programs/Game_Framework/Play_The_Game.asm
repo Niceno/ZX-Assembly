@@ -19,6 +19,7 @@
 ; - Color_Tile
 ; - Delay
 ; - Browse_Key_Rows_For_One_Key
+; - Browse_Key_Rows_For_Three_Keys
 ;-------------------------------------------------------------------------------
 Play_The_Game:
 
@@ -214,6 +215,12 @@ Play_The_Game:
     ; Browse through all key rows
     ;
     ;-----------------------------
+    ; NEW Way of reading keys is much slower, slows the game down a lot
+    ; NEW =--> call Browse_Key_Rows_For_Three_Keys
+    ; NEW =--> ld A, (pressed_keys_record)      ; number of keys pressed
+    ; NEW =--> cp 0
+    ; NEW =--> ld A, (pressed_keys_record + 1)  ; unique key code
+
     call Browse_Key_Rows_For_One_Key  ; A = unique code, ...
                                       ; ... C bit0 = 1 if any key pressed
     bit  0, C                         ; check C register's bit0
@@ -559,6 +566,7 @@ Play_The_Game:
   include "Shared/Delay.asm"
   include "Shared/Print_08_Bit_Number.asm"
   include "Shared/Copy_Shadow_Colors_To_Screen.asm"
+  include "Shared/Browse_Key_Rows_For_Three_Keys.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
