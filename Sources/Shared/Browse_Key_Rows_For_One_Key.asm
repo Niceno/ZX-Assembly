@@ -2,9 +2,9 @@
 ; Browse_Key_Rows_For_One_Key
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Browse through all key rows (Speccy has eight of them), and checks if any
-;   of the keys (denominated by bits in A after the "in" command) are pressed
-;   and, if pressed, creates a unique key code.  It is pretty cool really.
+; - Browse through all key rows (ZX Spectrum has eight of them), and checks
+;   if any of the keys (denominated by bits in A after the "in" command) are
+;   pressed and, if pressed, creates a unique key code.
 ;
 ; Global variables used:
 ; - all_key_ports global array
