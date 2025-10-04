@@ -24,7 +24,7 @@
 ; - Set_Border_Color
 ; - Unpress
 ; - Clear_Screen
-; - Print_String
+; - Print_Hor_String
 ; - Print_Udgs_Character
 ; - Browse_Key_Rows_For_One_Key
 ;-------------------------------------------------------------------------------
@@ -49,7 +49,7 @@ Main_Menu:
 
   ld B, 0 : ld C, 0
   ld HL, text_current
-  call Print_String
+  call Print_Hor_String
 
   ;----------------------------
   ;
@@ -75,12 +75,12 @@ Main_Menu:
     ld   D, (HL)
     ex   DE, HL   ; HL = prompt string
 
-    ld   A, C          ; compute the row ...
-    add  A, A          ; ... as twice the counter
+    ld   A, C              ; compute the row ...
+    add  A, A              ; ... as twice the counter
     add  A, 2
-    ld   B, A          ; set row
-    ld   C, 1          ; set column
-    call Print_String  ; prints zero-terminated string at HL
+    ld   B, A              ; set row
+    ld   C, 1              ; set column
+    call Print_Hor_String  ; prints zero-terminated string at HL
 
     pop BC
 
@@ -122,7 +122,7 @@ Main_Menu:
   ;---------------------------------------
   ld HL, text_press_r_or_p
   ld B, 21 : ld C, 0
-  call Print_String
+  call Print_Hor_String
 
 .wait_for_keys_r_or_p
 
@@ -153,7 +153,7 @@ Main_Menu:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Clear_Screen.asm"
   include "Shared/Set_Border_Color.asm"
-  include "Shared/Print_String.asm"
+  include "Shared/Print_Hor_String.asm"
   include "Shared/Udgs/Print_Character.asm"
   include "Shared/Browse_Key_Rows_For_One_Key.asm"
   include "Shared/Unpress.asm"

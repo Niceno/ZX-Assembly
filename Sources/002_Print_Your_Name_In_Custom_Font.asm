@@ -30,24 +30,46 @@ Main:
   ;-----------------
   call Set_Custom_Font
 
-  ;-------------------------
-  ; Initialize loop counter
-  ;-------------------------
+  ;------------------------------------
+  ; Initialize horizontal loop counter
+  ;------------------------------------
   ld A, (loop_count)  ; you can't do: ld B, (address)
   ld B, A
   ld C, 0
 
   ;---------------------------------------------------
-  ; Print ten times using subroutine Print_String
+  ; Print ten times using subroutine Print_Hor_String
   ;---------------------------------------------------
-.loop:
+.loop_hor:
 
-    ld HL, bojan_string  ; HL holds the address of the text to print
-    push BC              ; Print_String_SUb might clobbers the registers
-    call Print_String
+    ld HL, bojan_string    ; HL holds the address of the text to print
+    push BC                ; Print_Hor_String clobbers the registers
+    call Print_Hor_String
     pop BC
 
-  djnz .loop             ; decrease B and run the loop again
+  djnz .loop_hor           ; decrease B and run the loop again
+
+  ;----------------------------------
+  ; Initialize vertical loop counter
+  ;----------------------------------
+  ld B,  0
+  ld C, 15
+
+  ;---------------------------------------------------
+  ; Print ten times using subroutine Print_Ver_String
+  ;---------------------------------------------------
+.loop_ver:
+
+    ld HL, bojan_string    ; HL holds the address of the text to print
+    push BC                ; Print_Hor_String clobbers the registers
+    call Print_Ver_String
+    pop BC
+
+    inc C
+    ld A, C
+    cp 24
+
+  jr nz, .loop_ver           ; decrease B and run the loop again
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -59,7 +81,8 @@ Main:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Set_Custom_Font.asm"
-  include "Shared/Print_String.asm"
+  include "Shared/Print_Hor_String.asm"
+  include "Shared/Print_Ver_String.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

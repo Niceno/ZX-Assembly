@@ -44,10 +44,10 @@ Main:
   ld E, 14         ; length
   call Color_Hor_Line
 
-  ld HL, z80_string  ; address where the string is stored
-  ld B,  2           ; row
-  ld C,  0           ; column
-  call Print_String
+  ld HL, z80_string      ; address where the string is stored
+  ld B,  2               ; row
+  ld C,  0               ; column
+  call Print_Hor_String
 
   ei  ; <--= (re)enable interrupts if you want to return to OS/BASIC
 
@@ -60,7 +60,7 @@ Main:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Set_Border_Color.asm"
   include "Shared/Color_Hor_Line.asm"
-  include "Shared/Print_String.asm"
+  include "Shared/Print_Hor_String.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

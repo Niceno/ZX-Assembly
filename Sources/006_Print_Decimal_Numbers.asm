@@ -61,7 +61,7 @@ Main:  ; If the adress is that of a subroutine, end it up with  suffix
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Color_Hor_Line.asm"
-  include "Shared/Print_String.asm"
+; include "Shared/Print_Hor_String.asm"
   include "Shared/Print_08_Bit_Number.asm"
   include "Shared/Print_16_Bit_Number.asm"
 

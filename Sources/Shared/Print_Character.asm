@@ -1,3 +1,6 @@
+  ifndef __PRINT_CHARACTER__
+  define __PRINT_CHARACTER__
+
 ;===============================================================================
 ; Print_Character
 ;-------------------------------------------------------------------------------
@@ -67,3 +70,4 @@ print_character_memory_patch_end:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Calculate_Screen_Pixel_Address.asm"
 
+  endif

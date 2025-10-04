@@ -63,7 +63,7 @@ Main_Menu:
 
   ld B, 0 : ld C, 0
   ld HL, text_currently_defined
-  call Print_String
+  call Print_Hor_String
   ld C, 0
 
 .loop_to_print_defined_keys
@@ -83,12 +83,12 @@ Main_Menu:
     ld   D, (HL)
     ex   DE, HL   ; HL = prompt string
 
-    ld   A, C          ; compute the row ...
-    add  A, A          ; ... as twice the counter
+    ld   A, C              ; compute the row ...
+    add  A, A              ; ... as twice the counter
     add  A, 2
-    ld   B, A          ; set row
-    ld   C, 1          ; set column
-    call Print_String  ; prints zero-terminated string at HL
+    ld   B, A              ; set row
+    ld   C, 1              ; set column
+    call Print_Hor_String  ; prints zero-terminated string at HL
 
     pop BC
 
@@ -131,7 +131,7 @@ Main_Menu:
   ;------------------------------------
   ld HL, text_press_d_or_r
   ld B, 21 : ld C, 0
-  call Print_String
+  call Print_Hor_String
 
 .wait_for_keys_d_or_r
 
@@ -185,11 +185,11 @@ Define_Keys:
     ld   D, (HL)
     ex   DE, HL   ; HL = prompt string
 
-    ld   A, C          ; compute the row ...
-    add  A, A          ; ... as twice the counter
-    ld   B, A          ; set row
-    ld   C, 1          ; set column
-    call Print_String  ; prints zero-terminated string at HL
+    ld   A, C              ; compute the row ...
+    add  A, A              ; ... as twice the counter
+    ld   B, A              ; set row
+    ld   C, 1              ; set column
+    call Print_Hor_String  ; prints zero-terminated string at HL
 
     pop  BC  ; restore the counter
 
@@ -261,7 +261,7 @@ Define_Keys:
   include "Shared/Udgs/Print_Character.asm"
   include "Shared/Press_Any_Key.asm"
   include "Shared/Unpress.asm"
-  include "Shared/Print_String.asm"
+  include "Shared/Print_Hor_String.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

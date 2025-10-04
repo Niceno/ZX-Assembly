@@ -39,18 +39,18 @@ Main:
   ; Print DE register names and contents
   ; as well as the text for unique code
   ;--------------------------------------
-  ld B,  0           ; row
-  ld C,  0           ; column
+  ld B,  0               ; row
+  ld C,  0               ; column
   ld HL, reg_d
-  call Print_String  ; HL & BC are the parameters
-  ld B,  1           ; row
-  ld C,  0           ; column
+  call Print_Hor_String  ; HL & BC are the parameters
+  ld B,  1               ; row
+  ld C,  0               ; column
   ld HL, reg_e
-  call Print_String  ; HL & BC are the parameter
-  ld B,  2           ; row
-  ld C,  0           ; column
+  call Print_Hor_String  ; HL & BC are the parameter
+  ld B,  2               ; row
+  ld C,  0               ; column
   ld HL, unique_code
-  call Print_String  ; HL & BC are the parameter
+  call Print_Hor_String  ; HL & BC are the parameter
 
 reg_d:        defb "D (key row):", 0
 reg_e:        defb "E (key bit):", 0
@@ -144,7 +144,7 @@ unique_code:  defb "Unique code:", 0
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Udgs/Print_Character.asm"
   include "Shared/Color_Tile.asm"
-  include "Shared/Print_String.asm"
+  include "Shared/Print_Hor_String.asm"
   include "Shared/Print_08_Bit_Number.asm"
   include "Shared/Browse_Key_Rows_For_One_Key.asm"
 

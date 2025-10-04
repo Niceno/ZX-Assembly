@@ -9,7 +9,7 @@
 ; - BC: row and column
 ;
 ; Calls:
-; - Print_String
+; - Print_Hor_String
 ;-------------------------------------------------------------------------------
 Print_08_Bit_Number:
 
@@ -110,7 +110,7 @@ Print_08_Bit_Number:
 
   pop BC                    ; row and column
   ld HL, number_08_ascii
-  call Print_String
+  call Print_Hor_String
 
   ret
 
@@ -119,11 +119,11 @@ Print_08_Bit_Number:
 ;   SHARED SUBROUTINES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Shared/Print_String.asm"
+  include "Shared/Print_Hor_String.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-;   DATA
+;   LOCAL DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ; Place values followed by some extra places to store decimal digits

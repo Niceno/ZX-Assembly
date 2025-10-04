@@ -30,7 +30,7 @@ Memory_Browser_Main:
   ;----------------------------
 
   ;---------------------------------------------------
-  ; Print ten times using subroutine Print_String
+  ; Print ten times using subroutine Print_Hor_String
   ;---------------------------------------------------
   ld IX, text_key_lines_address_table  ; IX -> the address of lines' addresses
 .loop:
@@ -40,10 +40,10 @@ Memory_Browser_Main:
     ld H, (IX+1)
 
     ; Print one line of text
-    push BC            ; store the counter; Print_String clobbers the registers
+    push BC  ; store the counter; Print_Hor_String clobbers the registers
     ld A, B : add A : ld B, A
-    call Print_String
-    pop BC             ; restore the counter
+    call Print_Hor_String
+    pop BC   ; restore the counter
 
     ; Next table entry
     inc IX
@@ -61,8 +61,8 @@ Memory_Browser_Main:
   ; Press B to browse, D to define keys or Q to quit
   ;
   ;--------------------------------------------------
-  ld HL, text_press_b : ld B, 19 : ld C, 0 : call Print_String
-  ld HL, text_press_q : ld B, 21 : ld C, 0 : call Print_String
+  ld HL, text_press_b : ld B, 19 : ld C, 0 : call Print_Hor_String
+  ld HL, text_press_q : ld B, 21 : ld C, 0 : call Print_Hor_String
 
 .wait_for_keys_b_or_q
     call Browse_Key_Rows_For_One_Key  ; A = code, C bit0 = 1 if pressed
@@ -94,7 +94,7 @@ Memory_Browser_Main:
   include "Shared/Delay.asm"
   include "Shared/Unpress.asm"
   include "Shared/Draw_Frame.asm"
-  include "Shared/Print_String.asm"
+  include "Shared/Print_Hor_String.asm"
   include "Shared/Color_Hor_Line.asm"
   include "Shared/Udgs/Merge_Character.asm"
   include "Shared/Browse_Key_Rows_For_One_Key.asm"

@@ -36,11 +36,11 @@ Define_Keys:
     ld   D, (HL)
     ex   DE, HL   ; HL = prompt string
 
-    ld   A, C          ; compute the row ...
-    add  A, A          ; ... as twice the counter
-    ld   B, A          ; set row
-    ld   C, 1          ; set column
-    call Print_String  ; prints zero-terminated string at HL
+    ld   A, C              ; compute the row ...
+    add  A, A              ; ... as twice the counter
+    ld   B, A              ; set row
+    ld   C, 1              ; set column
+    call Print_Hor_String  ; prints zero-terminated string at HL
 
     pop  BC  ; restore the counter
 

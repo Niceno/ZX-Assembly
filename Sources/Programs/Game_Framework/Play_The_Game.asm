@@ -14,7 +14,7 @@
 ; - Merge_Grid
 ; - Print_Udgs_Character
 ; - Create_3x3_World_Around_Hero
-; - Print_String
+; - Print_Hor_String
 ; - Print_08_Bit_Number
 ; - Color_Tile
 ; - Delay
@@ -96,7 +96,7 @@ Play_The_Game:
     ;------------------------
     ld B, 0 : ld C, 28
     ld HL, text_hero
-    call Print_String
+    call Print_Hor_String
 
     ; Fetch hero's coordinates and print them
     ld A, (hero_world_row)    ; place hero's world row into A
@@ -137,7 +137,7 @@ Play_The_Game:
     ;------------------------
     ld B, 8 : ld C, 28
     ld HL, text_view
-    call Print_String
+    call Print_Hor_String
 
     ; Fetch world's min coordinates and print them
     exx

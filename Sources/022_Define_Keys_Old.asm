@@ -35,7 +35,7 @@ Main:
   ld B, A                  ; put row in B
   ld C, 3                  ; set column too
   ld HL, text_press_a_key  ; the address of the text to print in HL
-  call Print_String
+  call Print_Hor_String
 
   ; Color the text box
   ld A,  BLUE_INK + WHITE_PAPER
@@ -177,11 +177,11 @@ Main:
   ;-----------------------------------------------------------------------
   ld BC, $1303              ; set row (D) to 15 and column (E) to 3
   ld HL, text_keys_defined  ; the address of the text to print in HL
-  call Print_String
+  call Print_Hor_String
 
   ld BC, $1503              ; set row (D) to 15 and column (E) to 3
   ld HL, text_press_fire    ; the address of the text to print in HL
-  call Print_String
+  call Print_Hor_String
 
   ;--------------------------------
   ;
@@ -482,7 +482,7 @@ Main:
   include "Shared/Press_Any_Key.asm"
   include "Shared/Unpress.asm"
   include "Shared/Calculate_Screen_Pixel_Address.asm"
-  include "Shared/Print_String.asm"
+  include "Shared/Print_Hor_String.asm"
   include "Shared/Udgs/Print_Character.asm"
   include "Shared/Delay.asm"
   include "Shared/Print_08_Bit_Number.asm"

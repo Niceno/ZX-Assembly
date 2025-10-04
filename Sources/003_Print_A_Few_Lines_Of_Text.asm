@@ -38,7 +38,7 @@ Main:
   ld C, 0
 
   ;---------------------------------------------------
-  ; Print ten times using subroutine Print_String
+  ; Print ten times using subroutine Print_Hor_String
   ;---------------------------------------------------
   ld IX, lines_address_table  ; IX holds the address of lines' addresses
 .loop:
@@ -48,9 +48,9 @@ Main:
     ld H, (IX+1)
 
     ; Print one line of text
-    push BC            ; store the counter; Print_String clobbers the registers
-    call Print_String
-    pop BC             ; restore the counter
+    push BC  ; store the counter; Print_Hor_String clobbers the registers
+    call Print_Hor_String
+    pop BC   ; restore the counter
 
     ; Next table entry
     inc IX
@@ -73,7 +73,7 @@ Main:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Clear_Screen.asm"
-  include "Shared/Print_String.asm"
+  include "Shared/Print_Hor_String.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;

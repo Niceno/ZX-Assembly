@@ -53,7 +53,7 @@ Main:
   ld B,  9           ; row
   ld C,  9           ; column
   ld HL, z80_string
-  call Print_String
+  call Print_Hor_String
 
   ;-------------------------
   ; Color that line of text
@@ -112,7 +112,7 @@ Main:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Set_Custom_Font.asm"
   include "Shared/Color_Tile.asm"
-  include "Shared/Print_String.asm"
+  include "Shared/Print_Hor_String.asm"
   include "Shared/Print_16_Bit_Number.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

@@ -1,11 +1,11 @@
-  ifndef __PRINT_STRING__
-  define __PRINT_STRING__
+  ifndef __PRINT_VER_STRING__
+  define __PRINT_VER_STRING__
 
 ;===============================================================================
-; Print_String
+; Print_Ver_String
 ;-------------------------------------------------------------------------------
 ; Purpose:
-; - Prints a character box by calling Print_Character for each char
+; - Prints a vertical character box by calling Print_Character for each char
 ;
 ; Parameters (passed via registers)
 ; - HL: address of the null-terminated string
@@ -17,7 +17,7 @@
 ; Clobbers:
 ; - AF, BC, HL
 ;-------------------------------------------------------------------------------
-Print_String:
+Print_Ver_String:
 
 .character_loop
 
@@ -34,7 +34,7 @@ Print_String:
     pop HL      ; restore string pointer
 
     inc HL      ; move to next character in the string
-    inc C       ; move to next column on the screen
+    inc B       ; move to next row on the screen
 
   jr .character_loop  ; loop for next character
 
