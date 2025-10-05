@@ -46,7 +46,9 @@ Main:
   ;---------------------
   ; Create the viewport
   ;---------------------
-  ld A, WHITE_PAPER + BLUE_INK
+  ld A, WHITE_PAPER + BLUE_INK  ; color for the viewport
+  ld H, 1                       ; type of frame for the viewport
+  ld L, YELLOW_PAPER + RED_INK
   call Viewport_Create
 
   ;--------------------------------------------------------------

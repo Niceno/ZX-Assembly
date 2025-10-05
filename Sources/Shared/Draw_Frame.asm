@@ -3,7 +3,8 @@
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - Draws a frame specified with upper left row and column (BC), and height
-;   and width in cells (DE)
+;   and width in cells (DE).  Type of the frame is specified in H, and the
+;   color of the frame in L.
 ;
 ; Clobbers:
 ; - AF, IX
@@ -26,113 +27,215 @@ Draw_Frame:
 
   ifndef __MEMORY_BROWSER_MAIN__
 
+  ;------------------------------
+  ; Select the type of the frame
+  ;------------------------------
+  ld A, H
+
   ; Is it version 1?
   cp 1
-  jr nz, .not_version_1     ; version is not set to 1
+  jr nz, .not_version_1
     ld IX, frame_version_1
     jr .selected_version
 .not_version_1
 
   ; Is it version 2?
   cp 2
-  jr nz, .not_version_2     ; version is not set to 2
+  jr nz, .not_version_2
     ld IX, frame_version_2
     jr .selected_version
 .not_version_2
 
+  ; Is it version 3?
+  cp 3
+  jr nz, .not_version_3
+    ld IX, frame_version_3
+    jr .selected_version
+.not_version_3
+
+  ; Is it version 4?
+  cp 4
+  jr nz, .not_version_4
+    ld IX, frame_version_4
+    jr .selected_version
+.not_version_4
+
 .selected_version
+
   endif
+
+  ;-----------------------------------
+  ; Store the color of the frame in A
+  ;-----------------------------------
+  ld A, L
+
+  push AF
+  push BC
+  push DE
+  push HL
+  call Color_Hor_Line
+  pop HL
+  pop DE
+  pop BC
+  pop AF
+
+  push AF
+  push BC
+  push DE
+  push HL
+  ex AF, AF' : ld A, B : add D : dec A : ld B, A : ex AF, AF'
+  call Color_Hor_Line
+  pop HL
+  pop DE
+  pop BC
+  pop AF
+
+  push AF
+  push BC
+  push DE
+  push HL
+  inc B
+  dec D : dec D
+  call Color_Ver_Line
+  pop HL
+  pop DE
+  pop BC
+  pop AF
+
+  push AF
+  push BC
+  push DE
+  push HL
+  inc B
+  ex AF, AF' : ld A, C : add E : dec A : ld C, A : ex AF, AF'
+  dec D : dec D
+  call Color_Ver_Line
+  pop HL
+  pop DE
+  pop BC
+  pop AF
+
 
   ;--------------------------
   ; Create upper left corner
   ;--------------------------
+  push AF
   push BC
   push DE
+  push HL
   ld L, (IX+0) : ld H, (IX+1) : inc IX : inc IX
   call Print_Udgs_Character
+  pop HL
   pop DE
   pop BC
+  pop AF
 
   ;---------------------------
   ; Create upper right corner
   ;---------------------------
+  push AF
   push BC
   push DE
+  push HL
   ld A, C : add A, E : dec A : ld C, A  ; adjust column (C)
   ld L, (IX+0) : ld H, (IX+1) : inc IX : inc IX
   call Print_Udgs_Character
+  pop HL
   pop DE
   pop BC
+  pop AF
 
   ;--------------------------
   ; Create lower left corner
   ;--------------------------
+  push AF
   push BC
   push DE
+  push HL
   ld A, B : add A, D : dec A : ld B, A  ; adjust row (B)
   ld L, (IX+0) : ld H, (IX+1) : inc IX : inc IX
   call Print_Udgs_Character
+  pop HL
   pop DE
   pop BC
+  pop AF
 
   ;---------------------------
   ; Create lower right corner
   ;---------------------------
+  push AF
   push BC
   push DE
+  push HL
   ld A, C : add A, E : dec A : ld C, A  ; adjust column (C)
   ld A, B : add A, D : dec A : ld B, A  ; adjust row (B)
   ld L, (IX+0) : ld H, (IX+1) : inc IX : inc IX
   call Print_Udgs_Character
+  pop HL
   pop DE
   pop BC
+  pop AF
 
   ;----------
   ; Frame up
   ;----------
+  push AF
   push BC
   push DE
+  push HL
   inc C
   dec E            ; don't overwrite the corner piece
   dec E            ; don't overwrite the corner piece
   ld L, (IX+0) : ld H, (IX+1) : inc IX : inc IX
   call Print_Udgs_Line_Tile
+  pop HL
   pop DE
   pop BC
+  pop AF
 
   ;------------
   ; Frame down
   ;------------
+  push AF
   push BC
   push DE
+  push HL
   ld A, B : add A, D : dec A : ld B, A  ; adjust row (B)
   inc C
   dec E                                 ; don't overwrite the corner piece
   dec E                                 ; don't overwrite the corner piece
   ld L, (IX+0) : ld H, (IX+1) : inc IX : inc IX
   call Print_Udgs_Line_Tile
+  pop HL
   pop DE
   pop BC
+  pop AF
 
   ;------------
   ; Frame left
   ;------------
+  push AF
   push BC
   push DE
+  push HL
   inc B
   dec D              ; don't overwrite the corner piece
   dec D              ; don't overwrite the corner piece
   ld  E, 1           ; set number of columns to 1
   ld L, (IX+0) : ld H, (IX+1) : inc IX : inc IX
   call Print_Udgs_Tile
+  pop HL
   pop DE
   pop BC
+  pop AF
 
   ;-------------
   ; Frame right
   ;-------------
+  push AF
   push BC
   push DE
+  push HL
   inc B                                 ; don't overwrite the corner piece
   ld A, C : add A, E : dec A : ld C, A  ; adjust column (C)
   dec D                                 ; don't overwrite the corner piece
@@ -140,8 +243,10 @@ Draw_Frame:
   ld  E, 1                              ; set number of columns to 1
   ld L, (IX+0) : ld H, (IX+1) : inc IX : inc IX
   call Print_Udgs_Tile
+  pop HL
   pop DE
   pop BC
+  pop AF
 
   ret
 
@@ -152,12 +257,22 @@ Draw_Frame:
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Shared/Udgs/Print_Character.asm"
   include "Shared/Udgs/Print_Tile.asm"
+  include "Shared/Color_Hor_Line.asm"
+  include "Shared/Color_Ver_Line.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
 ;   DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+;----------------------------
+; Original register contents
+;----------------------------
+orig_b:  defb 0
+orig_c:  defb 0
+orig_d:  defb 0
+orig_e:  defb 0
 
 ;-------------------------
 ; Graphics for the frames
@@ -202,4 +317,174 @@ frame_v2_down:   defb $00, $FF, $00, $FF, $00, $00, $00, $00 ;
 frame_v2_left:   defb $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A ;
 frame_v2_right:  defb $50, $50, $50, $50, $50, $50, $50, $50 ;
 frame_v2_up:     defb $00, $00, $00, $00, $FF, $00, $FF, $00 ;
+
+;-----------
+; Version 3
+;-----------
+frame_version_3:
+  defw frame_v3_q1
+  defw frame_v3_q2
+  defw frame_v3_q3
+  defw frame_v3_q4
+  defw frame_v3_up
+  defw frame_v3_down
+  defw frame_v3_left
+  defw frame_v3_right
+
+frame_v3_q1:     defb  %00111111
+                 defb  %01000000
+                 defb  %10100000
+                 defb  %10010000
+                 defb  %10001000
+                 defb  %10000100
+                 defb  %10000011
+                 defb  %10000010
+
+frame_v3_q2:     defb  %11111100
+                 defb  %00000010
+                 defb  %00000101
+                 defb  %00001001
+                 defb  %00010001
+                 defb  %00100001
+                 defb  %11000001
+                 defb  %01000001
+
+frame_v3_q3:     defb  %10000010
+                 defb  %10000011
+                 defb  %10000100
+                 defb  %10001000
+                 defb  %10010000
+                 defb  %10100000
+                 defb  %01000000
+                 defb  %00111111
+
+frame_v3_q4:     defb  %01000001
+                 defb  %11000001
+                 defb  %00100001
+                 defb  %00010001
+                 defb  %00001001
+                 defb  %00000101
+                 defb  %00000010
+                 defb  %11111100
+
+frame_v3_up:     defb  %11111111
+                 defb  %00000000
+                 defb  %00000000
+                 defb  %00000000
+                 defb  %00000000
+                 defb  %00000000
+                 defb  %11111111
+                 defb  %00000000
+
+frame_v3_down:   defb  %00000000
+                 defb  %11111111
+                 defb  %00000000
+                 defb  %00000000
+                 defb  %00000000
+                 defb  %00000000
+                 defb  %00000000
+                 defb  %11111111
+
+frame_v3_left:   defb  %10000010
+                 defb  %10000010
+                 defb  %10000010
+                 defb  %10000010
+                 defb  %10000010
+                 defb  %10000010
+                 defb  %10000010
+                 defb  %10000010
+
+frame_v3_right:  defb  %01000001
+                 defb  %01000001
+                 defb  %01000001
+                 defb  %01000001
+                 defb  %01000001
+                 defb  %01000001
+                 defb  %01000001
+                 defb  %01000001
+
+;-----------
+; Version 4
+;-----------
+frame_version_4:
+  defw frame_v4_q1
+  defw frame_v4_q2
+  defw frame_v4_q3
+  defw frame_v4_q4
+  defw frame_v4_up
+  defw frame_v4_down
+  defw frame_v4_left
+  defw frame_v4_right
+
+frame_v4_q1:     defb  %00000000
+                 defb  %00000000
+                 defb  %10000000
+                 defb  %00100000
+                 defb  %10001000
+                 defb  %00100000
+                 defb  %10001000
+                 defb  %00100010
+
+frame_v4_q2:     defb  %00000000
+                 defb  %00000000
+                 defb  %00000010
+                 defb  %00000101
+                 defb  %00001010
+                 defb  %00010101
+                 defb  %00101010
+                 defb  %01010101
+
+frame_v4_q3:     defb  %10001001
+                 defb  %00100011
+                 defb  %10000111
+                 defb  %00101111
+                 defb  %10011111
+                 defb  %00111111
+                 defb  %01111111
+                 defb  %00111111
+
+frame_v4_q4:     defb  %10101010
+                 defb  %11010101
+                 defb  %11101010
+                 defb  %11110101
+                 defb  %11111010
+                 defb  %11111101
+                 defb  %11111110
+                 defb  %11111100
+
+frame_v4_up:     defb  %00000000
+                 defb  %00000000
+                 defb  %00000000
+                 defb  %00000000
+                 defb  %00000000
+                 defb  %00000000
+                 defb  %00000000
+                 defb  %00000000
+
+frame_v4_down:   defb  %11111111
+                 defb  %11111111
+                 defb  %11111111
+                 defb  %11111111
+                 defb  %11111111
+                 defb  %11111111
+                 defb  %11111111
+                 defb  %11111111
+
+frame_v4_left:   defb  %10001000
+                 defb  %00100010
+                 defb  %10001000
+                 defb  %00100010
+                 defb  %10001000
+                 defb  %00100010
+                 defb  %10001000
+                 defb  %00100010
+
+frame_v4_right:  defb  %10101010
+                 defb  %01010101
+                 defb  %10101010
+                 defb  %01010101
+                 defb  %10101010
+                 defb  %01010101
+                 defb  %10101010
+                 defb  %01010101
 

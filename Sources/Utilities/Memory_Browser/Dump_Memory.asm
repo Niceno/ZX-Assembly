@@ -11,6 +11,7 @@ Dump_Memory:
   push HL
   ld B,  0 : ld C,  0
   ld D, 18 : ld E, 31
+  ld H,  2 : ld L, BLACK_INK + WHITE_PAPER
   call Draw_Frame
   pop HL
   pop BC

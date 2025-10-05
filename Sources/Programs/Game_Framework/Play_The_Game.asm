@@ -47,6 +47,8 @@ Play_The_Game:
   ; Create the viewport
   ;---------------------
   ld A, WHITE_PAPER + BLUE_INK
+  ld H, 4
+  ld L, BLACK_INK + YELLOW_PAPER
   call Viewport_Create
 
   ;-------------------------------------

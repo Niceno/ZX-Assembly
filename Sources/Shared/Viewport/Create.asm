@@ -9,6 +9,8 @@
 ;   are used to define the Viewport.  This is introduced for the sake of
 ;   efficiency, the dimensions of the viewport are practically hard coded.
 ;
+; - HL pair, holds the type of the frame (H) and its color (L)
+;
 ; Calls:
 ; - Color_Tile
 ; - Draw_Frame
@@ -35,7 +37,10 @@ Viewport_Create:
   ;--------------------
   push BC
   push DE
+  push HL
+  ; A holds the color for the call to Color_Tile
   call Color_Tile
+  pop HL
   pop DE
   pop BC
 
@@ -53,10 +58,11 @@ Viewport_Create:
 
   push BC
   push DE
-  ld A, 1                          ; frame version
+;?push HL
   dec B : dec C                    ; expand the frame to ...
   inc D : inc D : inc E : inc E    ; ... enclose the viewport
   call Draw_Frame
+;?pop HL
   pop DE
   pop BC
 
