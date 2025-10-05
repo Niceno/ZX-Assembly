@@ -1,7 +1,3 @@
-;----------------------------------------------------------------------------
-; Core constants for ZX Spectrum 48K: memory map, screen/attribute layout,
-; colors, keyboard ports/keycodes, ROM char addresses, and project addresses
-;----------------------------------------------------------------------------
   include "Include/Constants.inc"
 
 ;--------------------------------------
@@ -34,6 +30,14 @@ Main:
   ld D,  3                      ; length
   ld E,  3                      ; length
   call Color_Tile               ; A, BC and DE are parameters
+
+  ld B, 11                      ; row
+  ld C, 15                      ; column
+  ld D,  3                      ; length
+  ld E,  3                      ; length
+  ld H,  4
+  ld L,  YELLOW_PAPER + BLACK_INK
+  call Draw_Frame
 
   ;--------------------------------------
   ; Print DE register names and contents
@@ -147,6 +151,7 @@ unique_code:  defb "Unique code:", 0
   include "Shared/Print_Hor_String.asm"
   include "Shared/Print_08_Bit_Number.asm"
   include "Shared/Browse_Key_Rows_For_One_Key.asm"
+  include "Shared/Draw_Frame.asm"
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
