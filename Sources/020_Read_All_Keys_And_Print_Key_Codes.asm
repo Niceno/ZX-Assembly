@@ -35,7 +35,7 @@ Main:
   ld C, 15                      ; column
   ld D,  3                      ; length
   ld E,  3                      ; length
-  ld H,  4
+  ld H,  5
   ld L,  YELLOW_PAPER + BLACK_INK
   call Draw_Frame
 
