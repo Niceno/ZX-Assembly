@@ -25,12 +25,6 @@
 ;-------------------------------------------------------------------------------
 Main:
 
-  ;------------------------------
-  ; Specify the beginning of UDG
-  ;------------------------------
-  ld HL, udgs                         ; user defined graphics (UDGs)
-  ld (MEM_USER_DEFINED_GRAPHICS), HL  ; set up UDG system variable.
-
   ;------------------------------------
   ; Set the color and clear the screen
   ;------------------------------------
@@ -277,8 +271,6 @@ Main:
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
   include "Include/Global_Data.inc"
-
-udgs:
 
 ; The 8x8 sprites which follow, were created with the command:
 ; python.exe .\convert_sprite_8x8.py .\[name].8x8 in the directory Figures
