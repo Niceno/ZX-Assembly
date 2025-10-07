@@ -29,16 +29,21 @@ Print_Udgs_Line_Tile:
 
   ex DE, HL  ; store the character/sprite address in DE
 
-  ;--------------------------
-  ; Calculate screen address
-  ;--------------------------
+  ;-----------------------------------------------
+  ; Calculate screen address (and store it in HL)
+  ;-----------------------------------------------
   call Calculate_Screen_Pixel_Address
 
   pop BC  ; this used to be DE, E held the length which is now in C
 
-  ;-----------------------------------------
+  ;-----------------------------------------------
   ; Copy the glyph definition to the screen
-  ;-----------------------------------------
+  ;- - - - - - - - - - - - - - - - - - - - - - - -
+  ; Here, DE holds the glyph definition (source),
+  ; HL holds the screen address (target). Screen
+  ; address (HL) increases by 256 for every new
+  ; byte of glyph definition.
+  ;-----------------------------------------------
 .loop        ; loop through columns (length)
     push DE  ; store character defintion
     push HL  ; store screen address
