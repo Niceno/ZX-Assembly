@@ -17,58 +17,28 @@ Draw_Frame:
   ;
   ;----------------------
 
-  ;---------------------------------------------------------
-  ; If it is from the Memory_Browser, take only one version
-  ; (This is done to save memory)
-  ;---------------------------------------------------------
-  ifdef __MEMORY_BROWSER_MAIN__
-  ld IX, frame_version_2
-  endif
-
-  ifndef __MEMORY_BROWSER_MAIN__
-
   ;------------------------------
   ; Select the type of the frame
+  ;- - - - - - - - - - - - - - -
+  ; Be mindfull that each frame
+  ; definition is 80 bytes long
   ;------------------------------
-  ld A, H
 
-  ; Is it version 1?
-  cp 1
-  jr nz, .not_version_1
-    ld IX, frame_version_1
-    jr .selected_version
-.not_version_1
+  ; In general case
+  ifndef __MEMORY_BROWSER_MAIN__
+    ld IX, frame_definitions - 80
+    ld A, H
+    exx
+    ld BC, 80
+.loop_to_point_to_the_right_frame
+      add IX, BC
+      dec A
+    jr nz, .loop_to_point_to_the_right_frame
+    exx
 
-  ; Is it version 2?
-  cp 2
-  jr nz, .not_version_2
-    ld IX, frame_version_2
-    jr .selected_version
-.not_version_2
-
-  ; Is it version 3?
-  cp 3
-  jr nz, .not_version_3
-    ld IX, frame_version_3
-    jr .selected_version
-.not_version_3
-
-  ; Is it version 4?
-  cp 4
-  jr nz, .not_version_4
-    ld IX, frame_version_4
-    jr .selected_version
-.not_version_4
-
-  ; Is it version 5?
-  cp 5
-  jr nz, .not_version_5
-    ld IX, frame_version_5
-    jr .selected_version
-.not_version_5
-
-.selected_version
-
+  ; For memory browser, use only one
+  else
+    ld IX, frame_definitions
   endif
 
   ;-----------------
@@ -76,53 +46,59 @@ Draw_Frame:
   ; Color the frame
   ;
   ;-----------------
-  ld A, L  ; Store the color of the frame in A
 
-  push AF
-  push BC
-  push DE
-  push HL
-  call Color_Hor_Line
-  pop HL
-  pop DE
-  pop BC
-  pop AF
+  ; Color it only if it is not the mempory browser
+  ifndef __MEMORY_BROWSER_MAIN__
 
-  push AF
-  push BC
-  push DE
-  push HL
-  ex AF, AF' : ld A, B : add D : dec A : ld B, A : ex AF, AF'
-  call Color_Hor_Line
-  pop HL
-  pop DE
-  pop BC
-  pop AF
+    ld A, L  ; Store the color of the frame in A
 
-  push AF
-  push BC
-  push DE
-  push HL
-  inc B
-  dec D : dec D
-  call Color_Ver_Line
-  pop HL
-  pop DE
-  pop BC
-  pop AF
+    push AF
+    push BC
+    push DE
+    push HL
+    call Color_Hor_Line
+    pop HL
+    pop DE
+    pop BC
+    pop AF
 
-  push AF
-  push BC
-  push DE
-  push HL
-  inc B
-  ex AF, AF' : ld A, C : add E : dec A : ld C, A : ex AF, AF'
-  dec D : dec D
-  call Color_Ver_Line
-  pop HL
-  pop DE
-  pop BC
-  pop AF
+    push AF
+    push BC
+    push DE
+    push HL
+    ex AF, AF' : ld A, B : add D : dec A : ld B, A : ex AF, AF'
+    call Color_Hor_Line
+    pop HL
+    pop DE
+    pop BC
+    pop AF
+
+    push AF
+    push BC
+    push DE
+    push HL
+    inc B
+    dec D : dec D
+    call Color_Ver_Line
+    pop HL
+    pop DE
+    pop BC
+    pop AF
+
+    push AF
+    push BC
+    push DE
+    push HL
+    inc B
+    ex AF, AF' : ld A, C : add E : dec A : ld C, A : ex AF, AF'
+    dec D : dec D
+    call Color_Ver_Line
+    pop HL
+    pop DE
+    pop BC
+    pop AF
+
+  endif
 
   ;----------------
   ;
@@ -276,7 +252,7 @@ Draw_Frame:
 
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ;
-;   DATA
+;   LOCAL DATA
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -291,434 +267,10 @@ orig_e:  defb 0
 ;-------------------------
 ; Graphics for the frames
 ;-------------------------
-
+frame_definitions:
+  include "Shared/Frames/Version_01.inc"
   ifndef __MEMORY_BROWSER_MAIN__
-
-;-----------
-; Version 1
-;-----------
-frame_version_1:
-  defw frame_v1_q1
-  defw frame_v1_q2
-  defw frame_v1_q3
-  defw frame_v1_q4
-  defw frame_v1_up
-  defw frame_v1_down
-  defw frame_v1_left
-  defw frame_v1_right
-
-frame_v1_q1:     defb %11111111
-                 defb %10000000
-                 defb %10111111
-                 defb %10111111
-                 defb %10110000
-                 defb %10110111
-                 defb %10110111
-                 defb %10110111
-
-frame_v1_q2:     defb %11111111
-                 defb %00000001
-                 defb %11111101
-                 defb %11111101
-                 defb %00001101
-                 defb %11101101
-                 defb %11101101
-                 defb %11101101
-
-frame_v1_q3:     defb %10110111
-                 defb %10110111
-                 defb %10110111
-                 defb %10110000
-                 defb %10111111
-                 defb %10111111
-                 defb %10000000
-                 defb %11111111
-
-frame_v1_q4:     defb %11101101
-                 defb %11101101
-                 defb %11101101
-                 defb %00001101
-                 defb %11111101
-                 defb %11111101
-                 defb %00000001
-                 defb %11111111
-
-frame_v1_up:     defb %11111111
-                 defb %00000000
-                 defb %11111111
-                 defb %11111111
-                 defb %00000000
-                 defb %11111111
-                 defb %11111111
-                 defb %11111111
-
-frame_v1_down:   defb %11111111
-                 defb %11111111
-                 defb %11111111
-                 defb %00000000
-                 defb %11111111
-                 defb %11111111
-                 defb %00000000
-                 defb %11111111
-
-frame_v1_left:   defb %10110111
-                 defb %10110111
-                 defb %10110111
-                 defb %10110111
-                 defb %10110111
-                 defb %10110111
-                 defb %10110111
-                 defb %10110111
-
-frame_v1_right:  defb %11101101
-                 defb %11101101
-                 defb %11101101
-                 defb %11101101
-                 defb %11101101
-                 defb %11101101
-                 defb %11101101
-                 defb %11101101
-
+    include "Shared/Frames/Version_02.inc"
+    include "Shared/Frames/Version_03.inc"
+    include "Shared/Frames/Version_04.inc"
   endif
-
-;-----------
-; Version 2
-;-----------
-frame_version_2:
-  defw frame_v2_q1
-  defw frame_v2_q2
-  defw frame_v2_q3
-  defw frame_v2_q4
-  defw frame_v2_up
-  defw frame_v2_down
-  defw frame_v2_left
-  defw frame_v2_right
-
-frame_v2_q1:     defb %00000000
-                 defb %00000000
-                 defb %00000000
-                 defb %00000000
-                 defb %00001111
-                 defb %00001000
-                 defb %00001011
-                 defb %00001010
-
-frame_v2_q2:     defb %00000000
-                 defb %00000000
-                 defb %00000000
-                 defb %00000000
-                 defb %11110000
-                 defb %00010000
-                 defb %11010000
-                 defb %01010000
-
-frame_v2_q3:     defb %00001010
-                 defb %00001011
-                 defb %00001000
-                 defb %00001111
-                 defb %00000000
-                 defb %00000000
-                 defb %00000000
-                 defb %00000000
-
-frame_v2_q4:     defb %01010000
-                 defb %11010000
-                 defb %00010000
-                 defb %11110000
-                 defb %00000000
-                 defb %00000000
-                 defb %00000000
-                 defb %00000000
-
-frame_v2_up:     defb %00000000
-                 defb %00000000
-                 defb %00000000
-                 defb %00000000
-                 defb %11111111
-                 defb %00000000
-                 defb %11111111
-                 defb %00000000
-
-frame_v2_down:   defb %00000000
-                 defb %11111111
-                 defb %00000000
-                 defb %11111111
-                 defb %00000000
-                 defb %00000000
-                 defb %00000000
-                 defb %00000000
-
-frame_v2_left:   defb %00001010
-                 defb %00001010
-                 defb %00001010
-                 defb %00001010
-                 defb %00001010
-                 defb %00001010
-                 defb %00001010
-                 defb %00001010
-
-frame_v2_right:  defb %01010000
-                 defb %01010000
-                 defb %01010000
-                 defb %01010000
-                 defb %01010000
-                 defb %01010000
-                 defb %01010000
-                 defb %01010000
-
-;-----------
-; Version 3
-;-----------
-frame_version_3:
-  defw frame_v3_q1
-  defw frame_v3_q2
-  defw frame_v3_q3
-  defw frame_v3_q4
-  defw frame_v3_up
-  defw frame_v3_down
-  defw frame_v3_left
-  defw frame_v3_right
-
-frame_v3_q1:     defb  %00111111
-                 defb  %01000000
-                 defb  %10100000
-                 defb  %10010000
-                 defb  %10001000
-                 defb  %10000100
-                 defb  %10000011
-                 defb  %10000010
-
-frame_v3_q2:     defb  %11111100
-                 defb  %00000010
-                 defb  %00000101
-                 defb  %00001001
-                 defb  %00010001
-                 defb  %00100001
-                 defb  %11000001
-                 defb  %01000001
-
-frame_v3_q3:     defb  %10000010
-                 defb  %10000011
-                 defb  %10000100
-                 defb  %10001000
-                 defb  %10010000
-                 defb  %10100000
-                 defb  %01000000
-                 defb  %00111111
-
-frame_v3_q4:     defb  %01000001
-                 defb  %11000001
-                 defb  %00100001
-                 defb  %00010001
-                 defb  %00001001
-                 defb  %00000101
-                 defb  %00000010
-                 defb  %11111100
-
-frame_v3_up:     defb  %11111111
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %11111111
-                 defb  %00000000
-
-frame_v3_down:   defb  %00000000
-                 defb  %11111111
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %11111111
-
-frame_v3_left:   defb  %10000010
-                 defb  %10000010
-                 defb  %10000010
-                 defb  %10000010
-                 defb  %10000010
-                 defb  %10000010
-                 defb  %10000010
-                 defb  %10000010
-
-frame_v3_right:  defb  %01000001
-                 defb  %01000001
-                 defb  %01000001
-                 defb  %01000001
-                 defb  %01000001
-                 defb  %01000001
-                 defb  %01000001
-                 defb  %01000001
-
-;-----------
-; Version 4
-;-----------
-frame_version_4:
-  defw frame_v4_q1
-  defw frame_v4_q2
-  defw frame_v4_q3
-  defw frame_v4_q4
-  defw frame_v4_up
-  defw frame_v4_down
-  defw frame_v4_left
-  defw frame_v4_right
-
-frame_v4_q1:     defb  %10000000
-                 defb  %00000000
-                 defb  %10000000
-                 defb  %00100000
-                 defb  %10001000
-                 defb  %00100000
-                 defb  %10001000
-                 defb  %00100010
-
-frame_v4_q2:     defb  %00000000
-                 defb  %00000001
-                 defb  %00000010
-                 defb  %00000101
-                 defb  %00001010
-                 defb  %00010101
-                 defb  %00101010
-                 defb  %01010101
-
-frame_v4_q3:     defb  %10001000
-                 defb  %00100011
-                 defb  %10000110
-                 defb  %00101011
-                 defb  %10001110
-                 defb  %00111011
-                 defb  %01101110
-                 defb  %10111011
-
-frame_v4_q4:     defb  %10101010
-                 defb  %10010101
-                 defb  %11101010
-                 defb  %10110101
-                 defb  %11101010
-                 defb  %10111001
-                 defb  %11101110
-                 defb  %10111011
-
-frame_v4_up:     defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-
-frame_v4_down:   defb  %11101110
-                 defb  %10111011
-                 defb  %11101110
-                 defb  %10111011
-                 defb  %11101110
-                 defb  %10111011
-                 defb  %11101110
-                 defb  %10111011
-
-frame_v4_left:   defb  %10001000
-                 defb  %00100010
-                 defb  %10001000
-                 defb  %00100010
-                 defb  %10001000
-                 defb  %00100010
-                 defb  %10001000
-                 defb  %00100010
-
-frame_v4_right:  defb  %10101010
-                 defb  %01010101
-                 defb  %10101010
-                 defb  %01010101
-                 defb  %10101010
-                 defb  %01010101
-                 defb  %10101010
-                 defb  %01010101
-
-;-----------
-; Version 5
-;-----------
-frame_version_5:
-  defw frame_v5_q1
-  defw frame_v5_q2
-  defw frame_v5_q3
-  defw frame_v5_q4
-  defw frame_v5_up
-  defw frame_v5_down
-  defw frame_v5_left
-  defw frame_v5_right
-
-frame_v5_q1:     defb  %10000000
-                 defb  %00000000
-                 defb  %10000000
-                 defb  %00100000
-                 defb  %10001000
-                 defb  %00100000
-                 defb  %10001000
-                 defb  %00100000
-
-frame_v5_q2:     defb  %00000000
-                 defb  %00000001
-                 defb  %00000010
-                 defb  %00000101
-                 defb  %00001010
-                 defb  %00010101
-                 defb  %00101010
-                 defb  %00010101
-
-frame_v5_q3:     defb  %10001000
-                 defb  %00100000
-                 defb  %10000110
-                 defb  %00101011
-                 defb  %10001110
-                 defb  %00111011
-                 defb  %01101110
-                 defb  %10111011
-
-frame_v5_q4:     defb  %00101010
-                 defb  %00010101
-                 defb  %11101010
-                 defb  %10110101
-                 defb  %11101010
-                 defb  %10111001
-                 defb  %11101110
-                 defb  %10111011
-
-frame_v5_up:     defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-                 defb  %00000000
-
-frame_v5_down:   defb  %00000000
-                 defb  %00000000
-                 defb  %11101110
-                 defb  %10111011
-                 defb  %11101110
-                 defb  %10111011
-                 defb  %11101110
-                 defb  %10111011
-
-frame_v5_left:   defb  %10001000
-                 defb  %00100000
-                 defb  %10001000
-                 defb  %00100000
-                 defb  %10001000
-                 defb  %00100000
-                 defb  %10001000
-                 defb  %00100000
-
-frame_v5_right:  defb  %00101010
-                 defb  %00010101
-                 defb  %00101010
-                 defb  %00010101
-                 defb  %00101010
-                 defb  %00010101
-                 defb  %00101010
-                 defb  %00010101
-
-

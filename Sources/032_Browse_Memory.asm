@@ -32,7 +32,7 @@ Main:
   ;-----------------------------------
   ; Call Memory_Browser main function
   ;-----------------------------------
-  call Memory_Browser_Main
+  call Browse_Memory_Main
 
   ei
 
@@ -43,11 +43,11 @@ Main:
 ;   UTILITIES
 ;
 ;%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-  include "Utilities/Memory_Browser/Main.asm"
+  include "Utilities/Browse_Memory/Main.asm"
 
 ;-------------------------------------------------------------------------------
 ; Save a snapshot that starts execution at the address marked with Main
 ;-------------------------------------------------------------------------------
-  savesna "032_Memory_Browser_61952.sna", Main
-  savebin "032_Memory_Browser_61952.bin", Main, $ - Main
+  savesna "032_Browse_Memory_61952.sna", Main
+  savebin "032_Browse_Memory_61952.bin", Main, $ - Main
 

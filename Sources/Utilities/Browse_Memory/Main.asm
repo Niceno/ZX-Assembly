@@ -8,7 +8,7 @@
   define __MEMORY_BROWSER_MAIN__
 
 ;===============================================================================
-; Memory_Browser_Main
+; Browse_Memory_Main
 ;-------------------------------------------------------------------------------
 ; Purpose:
 ; - draws “defined keys” page
@@ -16,7 +16,7 @@
 ; - dispatches by calling another sub
 ; - returns to caller (Main)
 ;-------------------------------------------------------------------------------
-Memory_Browser_Main:
+Browse_Memory_Main:
 
   call Unpress  ; unpress first
 

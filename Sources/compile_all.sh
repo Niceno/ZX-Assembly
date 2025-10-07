@@ -63,9 +63,9 @@ echo "031_Print_Register_Contents.asm"
 echo "---------------------------------------------"
 sjasmplus 031_Print_Register_Contents.asm
 echo "============================================="
-echo "032_Memory_Browser.asm"
+echo "032_Browse_Memory.asm"
 echo "---------------------------------------------"
-sjasmplus 032_Memory_Browser.asm
+sjasmplus 032_Browse_Memory.asm
 echo "============================================="
 echo "040_Dawn_Of_Sprites.asm"
 echo "---------------------------------------------"
