@@ -71,10 +71,12 @@ Draw_Frame:
 
   endif
 
-  ;-----------------------------------
-  ; Store the color of the frame in A
-  ;-----------------------------------
-  ld A, L
+  ;-----------------
+  ;
+  ; Color the frame
+  ;
+  ;-----------------
+  ld A, L  ; Store the color of the frame in A
 
   push AF
   push BC
@@ -122,6 +124,11 @@ Draw_Frame:
   pop BC
   pop AF
 
+  ;----------------
+  ;
+  ; Draw the frame
+  ;
+  ;----------------
 
   ;--------------------------
   ; Create upper left corner
@@ -286,6 +293,10 @@ orig_e:  defb 0
 ;-------------------------
 
   ifndef __MEMORY_BROWSER_MAIN__
+
+;-----------
+; Version 1
+;-----------
 frame_version_1:
   defw frame_v1_q1
   defw frame_v1_q2
@@ -296,16 +307,83 @@ frame_version_1:
   defw frame_v1_left
   defw frame_v1_right
 
-frame_v1_q1:     defb $FF, $80, $BF, $BF, $B0, $B7, $B7, $B7
-frame_v1_q2:     defb $FF, $01, $FD, $FD, $0D, $ED, $ED, $ED
-frame_v1_q3:     defb $B7, $B7, $B7, $B0, $BF, $BF, $80, $FF
-frame_v1_q4:     defb $ED, $ED, $ED, $0D, $FD, $FD, $01, $FF
-frame_v1_up:     defb $FF, $00, $FF, $FF, $00, $FF, $FF, $FF
-frame_v1_down:   defb $FF, $FF, $FF, $00, $FF, $FF, $00, $FF
-frame_v1_left:   defb $B7, $B7, $B7, $B7, $B7, $B7, $B7, $B7
-frame_v1_right:  defb $ED, $ED, $ED, $ED, $ED, $ED, $ED, $ED
+frame_v1_q1:     defb %11111111
+                 defb %10000000
+                 defb %10111111
+                 defb %10111111
+                 defb %10110000
+                 defb %10110111
+                 defb %10110111
+                 defb %10110111
+
+frame_v1_q2:     defb %11111111
+                 defb %00000001
+                 defb %11111101
+                 defb %11111101
+                 defb %00001101
+                 defb %11101101
+                 defb %11101101
+                 defb %11101101
+
+frame_v1_q3:     defb %10110111
+                 defb %10110111
+                 defb %10110111
+                 defb %10110000
+                 defb %10111111
+                 defb %10111111
+                 defb %10000000
+                 defb %11111111
+
+frame_v1_q4:     defb %11101101
+                 defb %11101101
+                 defb %11101101
+                 defb %00001101
+                 defb %11111101
+                 defb %11111101
+                 defb %00000001
+                 defb %11111111
+
+frame_v1_up:     defb %11111111
+                 defb %00000000
+                 defb %11111111
+                 defb %11111111
+                 defb %00000000
+                 defb %11111111
+                 defb %11111111
+                 defb %11111111
+
+frame_v1_down:   defb %11111111
+                 defb %11111111
+                 defb %11111111
+                 defb %00000000
+                 defb %11111111
+                 defb %11111111
+                 defb %00000000
+                 defb %11111111
+
+frame_v1_left:   defb %10110111
+                 defb %10110111
+                 defb %10110111
+                 defb %10110111
+                 defb %10110111
+                 defb %10110111
+                 defb %10110111
+                 defb %10110111
+
+frame_v1_right:  defb %11101101
+                 defb %11101101
+                 defb %11101101
+                 defb %11101101
+                 defb %11101101
+                 defb %11101101
+                 defb %11101101
+                 defb %11101101
+
   endif
 
+;-----------
+; Version 2
+;-----------
 frame_version_2:
   defw frame_v2_q1
   defw frame_v2_q2
@@ -316,14 +394,77 @@ frame_version_2:
   defw frame_v2_left
   defw frame_v2_right
 
-frame_v2_q1:     defb $00, $00, $00, $00, $0F, $08, $0B, $0A ;
-frame_v2_q2:     defb $00, $00, $00, $00, $F0, $10, $D0, $50 ;
-frame_v2_q3:     defb $0A, $0B, $08, $0F, $00, $00, $00, $00 ;
-frame_v2_q4:     defb $50, $D0, $10, $F0, $00, $00, $00, $00 ;
-frame_v2_down:   defb $00, $FF, $00, $FF, $00, $00, $00, $00 ;
-frame_v2_left:   defb $0A, $0A, $0A, $0A, $0A, $0A, $0A, $0A ;
-frame_v2_right:  defb $50, $50, $50, $50, $50, $50, $50, $50 ;
-frame_v2_up:     defb $00, $00, $00, $00, $FF, $00, $FF, $00 ;
+frame_v2_q1:     defb %00000000
+                 defb %00000000
+                 defb %00000000
+                 defb %00000000
+                 defb %00001111
+                 defb %00001000
+                 defb %00001011
+                 defb %00001010
+
+frame_v2_q2:     defb %00000000
+                 defb %00000000
+                 defb %00000000
+                 defb %00000000
+                 defb %11110000
+                 defb %00010000
+                 defb %11010000
+                 defb %01010000
+
+frame_v2_q3:     defb %00001010
+                 defb %00001011
+                 defb %00001000
+                 defb %00001111
+                 defb %00000000
+                 defb %00000000
+                 defb %00000000
+                 defb %00000000
+
+frame_v2_q4:     defb %01010000
+                 defb %11010000
+                 defb %00010000
+                 defb %11110000
+                 defb %00000000
+                 defb %00000000
+                 defb %00000000
+                 defb %00000000
+
+frame_v2_up:     defb %00000000
+                 defb %00000000
+                 defb %00000000
+                 defb %00000000
+                 defb %11111111
+                 defb %00000000
+                 defb %11111111
+                 defb %00000000
+
+frame_v2_down:   defb %00000000
+                 defb %11111111
+                 defb %00000000
+                 defb %11111111
+                 defb %00000000
+                 defb %00000000
+                 defb %00000000
+                 defb %00000000
+
+frame_v2_left:   defb %00001010
+                 defb %00001010
+                 defb %00001010
+                 defb %00001010
+                 defb %00001010
+                 defb %00001010
+                 defb %00001010
+                 defb %00001010
+
+frame_v2_right:  defb %01010000
+                 defb %01010000
+                 defb %01010000
+                 defb %01010000
+                 defb %01010000
+                 defb %01010000
+                 defb %01010000
+                 defb %01010000
 
 ;-----------
 ; Version 3
